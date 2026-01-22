@@ -36,7 +36,7 @@ export default function Navigation() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 flex flex-row justify-between items-center px-10">
+    <nav className="fixed top-0 left-0 w-full z-50 flex flex-row justify-between items-center pl-4 pr-10">
       <div className="flex flex-col gap-y-2 text-black text-4xl font-ortank font-black pt-2">
         글자곁
       </div>

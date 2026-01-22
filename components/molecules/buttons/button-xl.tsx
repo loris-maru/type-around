@@ -10,7 +10,7 @@ export default function ButtonXL({
   return (
     <Link
       href={href}
-      className="relative border border-black rounded-lg text-black bg-foreground px-12 py-6 transition-all duration-300 button-shadow hover:-translate-x-1 hover:-translate-y-1"
+      className="relative border border-black rounded-lg text-black bg-light-gray px-12 py-6 transition-all duration-300 button-shadow hover:-translate-x-1 hover:-translate-y-1"
     >
       {label}
     </Link>

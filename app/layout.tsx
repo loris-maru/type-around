@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navigation from "@/components/global/navigation";
+import SmoothScrollProvider from "@/components/providers/smooth-scroll-provider";
 
 export const metadata: Metadata = {
   title: "글자궤도 - The Future of Independent Korean Type Foundries",
@@ -19,8 +20,10 @@ export default function RootLayout({
         className={`antialiased`}
         style={{ fontFamily: "Whisper, Ortank, sans-serif" }}
       >
-        <Navigation />
-        <div className="relative z-20 w-screen min-h-screen">{children}</div>
+        <SmoothScrollProvider>
+          <Navigation />
+          <div className="relative z-20 w-screen min-h-screen">{children}</div>
+        </SmoothScrollProvider>
       </body>
     </html>
   );

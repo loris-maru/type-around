@@ -16,22 +16,20 @@
   font-display: swap;
 }
 
-:root {
-  --background: #f2f2f2;
-  --foreground: #343434;
-  --font-whisper: "Whisper", monospace;
-  --font-ortank: "Ortank", sans-serif;
-  --shadow-button: 3px 3px 0 0 #000;
-  --shadow-button-hover: 7px 7px 0 -4px #000;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  /* Colors*/
+  --color-light-gray: #f2f2f2;
+  --color-medium-gray: #c9c9c9;
+  --color-dark-gray: #343434;
+
+  /* Fonts  */
   --font-whisper: "Whisper", monospace;
   --font-ortank: "Ortank", sans-serif;
+
+  /* Shadows */
   --shadow-button: 3px 3px 0 0 #000;
   --shadow-button-hover: 7px 7px 0 -4px #000;
+  --shadow-medium-gray: 3px 3px 0 0 #c9c9c9;
 }
 
 /* Button shadow classes */
@@ -43,15 +41,13 @@
   box-shadow: var(--shadow-button-hover) !important;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Medium gray shadow class */
+.shadow-medium-gray {
+  box-shadow: var(--shadow-medium-gray);
 }
 
 body {
-  background: #f2f2f2;
+  background: var(--color-light-gray);
   color: #000000;
   max-width: 10ovw;
   text-rendering: optimizeLegibility;
