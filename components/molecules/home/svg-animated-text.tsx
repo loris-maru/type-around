@@ -75,7 +75,7 @@ export default function ParticleSVG() {
 
   // --- ADJUST THIS VALUE TO CHANGE SVG SIZE ---
   // Range: 0.1 to 1.0 (0.1 = very small, 1.0 = full screen fit)
-  const scaleFactor = 0.8;
+  const scaleFactor = 0.9;
   // --------------------------------------------
 
   useEffect(() => {
