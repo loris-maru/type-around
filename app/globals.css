@@ -1,15 +1,33 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Whisper";
+  src: url("/fonts/WhisperMono-VAR.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ortank";
+  src: url("/fonts/OrtankHangeul_VAR.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f2f2f2;
+  --foreground: #343434;
+  --font-whisper: "Whisper", monospace;
+  --font-ortank: "Ortank", sans-serif;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-whisper: "Whisper", monospace;
+  --font-ortank: "Ortank", sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,7 +38,11 @@
 }
 
 body {
-  background: var(--background);
+  background: var(--foreground);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  max-width: 10ovw;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-size-adjust: 100%;
 }
