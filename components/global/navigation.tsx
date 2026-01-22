@@ -40,9 +40,9 @@ export default function Navigation() {
       <div className="flex flex-col gap-y-2 text-black text-4xl font-ortank font-black pt-2">
         글자곁
       </div>
-      <div className="flex flex-row gap-x-2">
+      <div className="flex flex-row gap-x-1">
         <section
-          className="pt-5 pb-2 px-6 flex flex-row gap-x-14 font-whisper text-lg font-normal text-black"
+          className="pt-5 pb-2 px-6 flex flex-row gap-x-6 font-whisper text-base font-normal text-black"
           style={sectionStyle}
         >
           {NAV_ITEMS.map((item) => (
