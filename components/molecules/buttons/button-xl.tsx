@@ -10,8 +10,7 @@ export default function ButtonXL({
   return (
     <Link
       href={href}
-      className="relative border border-black rounded-lg text-black bg-foreground px-12 py-6"
-      style={{ boxShadow: "var(--shadow-button)" }}
+      className="relative border border-black rounded-lg text-black bg-foreground px-12 py-6 transition-all duration-300 button-shadow hover:-translate-x-1 hover:-translate-y-1"
     >
       {label}
     </Link>

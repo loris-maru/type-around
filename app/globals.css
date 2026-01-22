@@ -22,6 +22,7 @@
   --font-whisper: "Whisper", monospace;
   --font-ortank: "Ortank", sans-serif;
   --shadow-button: 3px 3px 0 0 #000;
+  --shadow-button-hover: 7px 7px 0 -4px #000;
 }
 
 @theme inline {
@@ -30,6 +31,16 @@
   --font-whisper: "Whisper", monospace;
   --font-ortank: "Ortank", sans-serif;
   --shadow-button: 3px 3px 0 0 #000;
+  --shadow-button-hover: 7px 7px 0 -4px #000;
+}
+
+/* Button shadow classes */
+.button-shadow {
+  box-shadow: var(--shadow-button);
+}
+
+.button-shadow:hover {
+  box-shadow: var(--shadow-button-hover) !important;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -40,8 +51,8 @@
 }
 
 body {
-  background: var(--foreground);
-  color: var(--foreground);
+  background: #f2f2f2;
+  color: #000000;
   max-width: 10ovw;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
