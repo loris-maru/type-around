@@ -35,13 +35,16 @@ class Particle {
   update(mouse: { x: number; y: number; radius: number }) {
     const dxMouse = mouse.x - this.x;
     const dyMouse = mouse.y - this.y;
-    const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+    const distMouse = Math.sqrt(
+      dxMouse * dxMouse + dyMouse * dyMouse
+    );
 
     this.angle += this.spin;
 
     if (distMouse < mouse.radius) {
       // --- ACTIVE STATE (Snap to SVG) ---
-      const force = (mouse.radius - distMouse) / mouse.radius;
+      const force =
+        (mouse.radius - distMouse) / mouse.radius;
       const targetX = this.originX;
       const targetY = this.originY;
 
@@ -49,12 +52,15 @@ class Particle {
       this.vy += (targetY - this.y) * 0.15;
 
       // Grow towards the maxSize
-      const targetSize = this.baseSize + this.maxSize * force;
+      const targetSize =
+        this.baseSize + this.maxSize * force;
       this.size += (targetSize - this.size) * 0.2;
     } else {
       // --- IDLE STATE (Loose Revolution) ---
-      const idleX = this.originX + Math.cos(this.angle) * this.distance;
-      const idleY = this.originY + Math.sin(this.angle) * this.distance;
+      const idleX =
+        this.originX + Math.cos(this.angle) * this.distance;
+      const idleY =
+        this.originY + Math.sin(this.angle) * this.distance;
 
       this.vx += (idleX - this.x) * 0.02;
       this.vy += (idleY - this.y) * 0.02;
@@ -100,11 +106,19 @@ export default function ParticleSVG() {
         canvas.width = w;
         canvas.height = h;
 
-        const scale = Math.min(w / img.width, h / img.height) * scaleFactor;
+        const scale =
+          Math.min(w / img.width, h / img.height) *
+          scaleFactor;
         const xPos = (w - img.width * scale) / 2;
         const yPos = (h - img.height * scale) / 2;
 
-        ctx.drawImage(img, xPos, yPos, img.width * scale, img.height * scale);
+        ctx.drawImage(
+          img,
+          xPos,
+          yPos,
+          img.width * scale,
+          img.height * scale
+        );
         const data = ctx.getImageData(0, 0, w, h);
         ctx.clearRect(0, 0, w, h);
 
@@ -112,7 +126,10 @@ export default function ParticleSVG() {
         // Sample every 4 pixels since particles are larger now (avoids too much overlap)
         for (let y = 0; y < data.height; y += 4) {
           for (let x = 0; x < data.width; x += 4) {
-            if (data.data[y * 4 * data.width + x * 4 + 3] > 128) {
+            if (
+              data.data[y * 4 * data.width + x * 4 + 3] >
+              128
+            ) {
               particles.push(new Particle(x, y));
             }
           }
@@ -142,7 +159,10 @@ export default function ParticleSVG() {
     window.addEventListener("resize", init);
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener(
+        "mousemove",
+        handleMouseMove
+      );
       window.removeEventListener("resize", init);
     };
   }, [scaleFactor]);

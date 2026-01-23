@@ -10,7 +10,10 @@ interface HeaderHomeProps {
   opacity: MotionValue<number>;
 }
 
-export default function HeaderHome({ svgScale, opacity }: HeaderHomeProps) {
+export default function HeaderHome({
+  svgScale,
+  opacity,
+}: HeaderHomeProps) {
   return (
     <motion.div
       className="sticky top-0 w-full h-screen flex flex-row justify-between items-center overflow-hidden z-10 pointer-events-none"

@@ -5,7 +5,8 @@ import { useState } from "react";
 import CategoryFilter from "@/components/segments/home/all-fonts/category-filter";
 
 export default function HeaderAllFonts() {
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] =
+    useState<string[]>([]);
 
   const totalFonts = STUDIOS.reduce(
     (acc, studio) => acc + studio.typefaces.length,
@@ -19,7 +20,9 @@ export default function HeaderAllFonts() {
         setSelectedCategories={setSelectedCategories}
       />
       <div className="font-whisper text-sm text-black">
-        <span className="font-light">Total typefaces: </span>
+        <span className="font-light">
+          Total typefaces:{" "}
+        </span>
         <span className="font-bold">{totalFonts}</span>
       </div>
     </div>

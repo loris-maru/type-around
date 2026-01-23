@@ -13,18 +13,26 @@ export type AllFontsProps = {
   containerRef?: React.RefObject<HTMLDivElement | null>;
 };
 
-export default function AllFonts({ opacity, y, containerRef }: AllFontsProps) {
-  const allTypefaces: Typeface[] = STUDIOS.flatMap((studio) =>
-    studio.typefaces.map((typeface, index) => {
-      const hash = studio.id
-        .split("")
-        .reduce((acc, char) => acc + char.charCodeAt(0), 0);
-      return {
-        ...typeface,
-        id: hash + index,
-        category: typeface.category || null,
-      };
-    })
+export default function AllFonts({
+  opacity,
+  y,
+  containerRef,
+}: AllFontsProps) {
+  const allTypefaces: Typeface[] = STUDIOS.flatMap(
+    (studio) =>
+      studio.typefaces.map((typeface, index) => {
+        const hash = studio.id
+          .split("")
+          .reduce(
+            (acc, char) => acc + char.charCodeAt(0),
+            0
+          );
+        return {
+          ...typeface,
+          id: hash + index,
+          category: typeface.category || null,
+        };
+      })
   );
 
   return (
@@ -39,19 +47,23 @@ export default function AllFonts({ opacity, y, containerRef }: AllFontsProps) {
         <HeaderAllFonts />
         <section className="relative w-full px-8 mt-20">
           <div className="grid grid-rows-2 grid-flow-col gap-[60px] w-max">
-            {allTypefaces.map((typeface: Typeface, index: number) => {
-              const columnIndex = Math.floor(index / 2);
-              const isOddColumn = columnIndex % 2 === 1;
+            {allTypefaces.map(
+              (typeface: Typeface, index: number) => {
+                const columnIndex = Math.floor(index / 2);
+                const isOddColumn = columnIndex % 2 === 1;
 
-              return (
-                <div
-                  key={`typeface-${index}_${typeface.slug}`}
-                  className={isOddColumn ? "pt-[92px]" : ""}
-                >
-                  <TypefaceCard typeface={typeface} />
-                </div>
-              );
-            })}
+                return (
+                  <div
+                    key={`typeface-${index}_${typeface.slug}`}
+                    className={
+                      isOddColumn ? "pt-[92px]" : ""
+                    }
+                  >
+                    <TypefaceCard typeface={typeface} />
+                  </div>
+                );
+              }
+            )}
           </div>
         </section>
         <div className="relative w-full h-full flex flex-col items-center justify-center"></div>

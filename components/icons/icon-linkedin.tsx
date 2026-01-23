@@ -1,4 +1,8 @@
-export default function IconLinkedin({ className }: { className?: string }) {
+export default function IconLinkedin({
+  className,
+}: {
+  className?: string;
+}) {
   return (
     <svg
       width="32"

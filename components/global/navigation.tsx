@@ -64,7 +64,10 @@ export default function Navigation() {
             aria-label="Search"
             className="hover:text-gray-500 transition-colors duration-300"
           >
-            <RiSearchLine size={20} color="black" />
+            <RiSearchLine
+              size={20}
+              color="black"
+            />
           </button>
         </section>
       </div>

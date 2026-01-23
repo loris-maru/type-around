@@ -8,10 +8,16 @@ export default function CategoryFilter({
   setSelectedCategories,
 }: CategoryFilterProps) {
   const allCategories = STUDIOS.flatMap((studio) =>
-    studio.typefaces.flatMap((typeface) => typeface.category)
+    studio.typefaces.flatMap(
+      (typeface) => typeface.category
+    )
   );
   const fontCategories: string[] = Array.from(
-    new Set(allCategories.filter((c): c is string => typeof c === "string"))
+    new Set(
+      allCategories.filter(
+        (c): c is string => typeof c === "string"
+      )
+    )
   );
 
   const handleCategoryToggle = (category: string) => {
@@ -30,13 +36,18 @@ export default function CategoryFilter({
           className="flex flex-row font-whisper text-sm gap-x-2"
         >
           <div className="flex flex-row items-center">
-            <label htmlFor={category} className="font-light capitalize">
+            <label
+              htmlFor={category}
+              className="font-light capitalize"
+            >
               {category}{" "}
             </label>
             <span className="font-bold ml-1">
               {
                 STUDIOS.flatMap((studio) =>
-                  studio.typefaces.flatMap((typeface) => typeface.category)
+                  studio.typefaces.flatMap(
+                    (typeface) => typeface.category
+                  )
                 ).filter((c) => c === category).length
               }
               :

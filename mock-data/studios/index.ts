@@ -7,6 +7,20 @@ const STUDIOS = [
     gradient: ["#FFF8E8", "#F2F2F2"],
     image: "/mock/profile/studio_profile_01.png",
     website: "https://www.lo-ol.design",
+    email: "hello@lo-ol.design",
+    imageCover: "/mock/studios/profile_studio.webp",
+    socialMedia: [
+      {
+        name: "Instagram",
+        href: "https://www.instagram.com/lo-ol.studio",
+        service: "instagram",
+      },
+      {
+        name: "LinkedIn",
+        href: "https://www.linkedin.com/company/lo-ol-studio",
+        service: "linkedin",
+      },
+    ],
     typefaces: [
       {
         name: "Giparan",
@@ -66,6 +80,20 @@ const STUDIOS = [
     gradient: ["#FFF8E8", "#F2F2F2"],
     image: "/mock/profile/studio_profile_01.png",
     website: "https://www.lo-ol.design",
+    email: "contact@minjootype.com",
+    imageCover: "/mock/studios/profile_studio.webp",
+    socialMedia: [
+      {
+        name: "Instagram",
+        href: "https://www.instagram.com/minjootype",
+        service: "instagram",
+      },
+      {
+        name: "LinkedIn",
+        href: "https://www.linkedin.com/company/minjoo-type",
+        service: "linkedin",
+      },
+    ],
     typefaces: [
       {
         name: "Giparan",
@@ -125,6 +153,20 @@ const STUDIOS = [
     gradient: ["#FFF8E8", "#F2F2F2"],
     image: "/mock/profile/studio_profile_01.png",
     website: "https://www.lo-ol.design",
+    email: "info@fontpia.com",
+    imageCover: "/mock/studios/profile_studio.webp",
+    socialMedia: [
+      {
+        name: "Instagram",
+        href: "https://www.instagram.com/fontpia",
+        service: "instagram",
+      },
+      {
+        name: "LinkedIn",
+        href: "https://www.linkedin.com/company/font-pia",
+        service: "linkedin",
+      },
+    ],
     typefaces: [
       {
         name: "Giparan",
@@ -184,6 +226,20 @@ const STUDIOS = [
     gradient: ["#FFF8E8", "#F2F2F2"],
     image: "/mock/profile/studio_profile_01.png",
     website: "https://www.lo-ol.design",
+    email: "hello@moadesign.com",
+    imageCover: "/mock/studios/profile_studio.webp",
+    socialMedia: [
+      {
+        name: "Instagram",
+        href: "https://www.instagram.com/moadesign",
+        service: "instagram",
+      },
+      {
+        name: "LinkedIn",
+        href: "https://www.linkedin.com/company/moa-design",
+        service: "linkedin",
+      },
+    ],
     typefaces: [
       {
         name: "Giparan",
@@ -243,6 +299,20 @@ const STUDIOS = [
     gradient: ["#FFF8E8", "#F2F2F2"],
     image: "/mock/profile/studio_profile_01.png",
     website: "https://www.lo-ol.design",
+    email: "contact@mijinletters.com",
+    imageCover: "/mock/studios/profile_studio.webp",
+    socialMedia: [
+      {
+        name: "Instagram",
+        href: "https://www.instagram.com/mijinletters",
+        service: "instagram",
+      },
+      {
+        name: "LinkedIn",
+        href: "https://www.linkedin.com/company/mijin-letters",
+        service: "linkedin",
+      },
+    ],
     typefaces: [
       {
         name: "Giparan",
@@ -302,6 +372,20 @@ const STUDIOS = [
     gradient: ["#FFF8E8", "#F2F2F2"],
     image: "/mock/profile/studio_profile_01.png",
     website: "https://www.lo-ol.design",
+    email: "hello@suyeonghan.com",
+    imageCover: "/mock/studios/profile_studio.webp",
+    socialMedia: [
+      {
+        name: "Instagram",
+        href: "https://www.instagram.com/suyeonghan",
+        service: "instagram",
+      },
+      {
+        name: "LinkedIn",
+        href: "https://www.linkedin.com/company/suyeong-han-studio",
+        service: "linkedin",
+      },
+    ],
     typefaces: [
       {
         name: "Giparan",

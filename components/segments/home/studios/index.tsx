@@ -12,7 +12,10 @@ export default function Studios() {
       typefaces: studio.typefaces.map((typeface, index) => {
         const hash = studio.id
           .split("")
-          .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+          .reduce(
+            (acc, char) => acc + char.charCodeAt(0),
+            0
+          );
         return {
           ...typeface,
           id: hash + index,
@@ -34,7 +37,10 @@ export default function Studios() {
 
         <div className="relative w-full grid grid-cols-3 gap-12">
           {studiosWithIds.map((studio) => (
-            <StudioCard key={studio.id} studio={studio} />
+            <StudioCard
+              key={studio.id}
+              studio={studio}
+            />
           ))}
         </div>
       </div>

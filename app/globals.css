@@ -61,6 +61,14 @@
   line-height: 2.5rem;
 }
 
+.gradient-header {
+  background: linear-gradient(
+    180deg,
+    #fff8e8 29.33%,
+    #f2f2f2 100%
+  );
+}
+
 body {
   background: var(--color-light-gray);
   color: #000000;

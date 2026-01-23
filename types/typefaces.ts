@@ -18,4 +18,12 @@ export type Studio = {
   image: string;
   website: string;
   typefaces: Typeface[];
+  email: string;
+  imageCover: string;
+  gradient: string[];
+  socialMedia: {
+    name: string;
+    href: string;
+    service: string;
+  }[];
 };

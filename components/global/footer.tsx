@@ -29,7 +29,11 @@ const FOOTER_LINKS: { href: string; label: string }[] = [
   },
 ];
 
-const PRIMARY_LINKS: { href: string; label: string; body: string }[] = [
+const PRIMARY_LINKS: {
+  href: string;
+  label: string;
+  body: string;
+}[] = [
   {
     href: "/",
     label: "Discover",

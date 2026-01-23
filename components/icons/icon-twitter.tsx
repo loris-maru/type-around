@@ -1,4 +1,8 @@
-export default function IconTwitter({ className }: { className?: string }) {
+export default function IconTwitter({
+  className,
+}: {
+  className?: string;
+}) {
   return (
     <svg
       width="30"
