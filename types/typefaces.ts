@@ -1,14 +1,16 @@
 export type Typeface = {
   id: number;
+  category: string[];
   name: string;
+  hangeulName?: string;
   slug: string;
   description: string;
   icon: string;
   fonts: number;
   characters: number;
   releaseDate: string;
-  category: string[] | null;
   studio: string;
+  gradient?: string;
 };
 
 export type Studio = {

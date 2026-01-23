@@ -7,10 +7,12 @@ import Link from "next/link";
 import { slugify } from "@/utils/slugify";
 
 export default function TypefaceLine({
+  studioName,
   familyName,
   styles,
   fonts,
 }: {
+  studioName: string;
   familyName: string;
   styles: number;
   fonts: number;
@@ -67,7 +69,7 @@ export default function TypefaceLine({
         </div>
       </header>
       <Link
-        href={`/studio/${slugify(familyName)}/typeface/${slugify(familyName)}`}
+        href={`/studio/${slugify(studioName)}/typeface/${slugify(familyName)}`}
         className="relative w-full overflow-hidden"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}

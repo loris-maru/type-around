@@ -21,12 +21,38 @@ export default async function StudioPage({
     return <div>Studio not found</div>;
   }
 
+  const studioWithIds = {
+    ...studio,
+    typefaces: studio.typefaces.map((typeface, index) => {
+      const hash = studio.id
+        .split("")
+        .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+      return {
+        ...typeface,
+        id: hash + index,
+        category: typeface.category || null,
+        hangeulName:
+          "hangeulName" in typeface &&
+          typeof typeface.hangeulName === "string"
+            ? typeface.hangeulName
+            : "오흐탕크",
+        gradient:
+          "gradient" in typeface &&
+          typeof typeface.gradient === "string"
+            ? typeface.gradient
+            : Array.isArray(studio.gradient)
+              ? studio.gradient[0]
+              : studio.gradient,
+      };
+    }),
+  };
+
   return (
     <div className="relative w-full">
       <StudioHeader gradient={studio.gradient} />
       <StudioProfile />
       <TypeTester />
-      <TypefacesList />
+      <TypefacesList studio={studioWithIds} />
       <FontsInUseList />
       <Footer />
     </div>
