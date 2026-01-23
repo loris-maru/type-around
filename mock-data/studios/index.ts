@@ -1,8 +1,6 @@
-import { generateUUID } from "@/utils/generate-uuid";
-
 const STUDIOS = [
   {
-    id: generateUUID(),
+    id: "655ff073-cc90-48ff-a8c8-808e8418888d",
     name: "lo-ol Studio",
     description:
       "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
@@ -61,7 +59,7 @@ const STUDIOS = [
     ],
   },
   {
-    id: generateUUID(),
+    id: "2297e6ff-4b7c-47d3-a7da-975863006012",
     name: "Minjoo Type",
     description:
       "Vivamus ut lacinia nunc quisque congue nibh lacinia enim velit.",
@@ -120,7 +118,7 @@ const STUDIOS = [
     ],
   },
   {
-    id: generateUUID(),
+    id: "e83c73c5-42d0-40aa-aa5c-859a8c58c904",
     name: "Font Pia",
     description:
       "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
@@ -179,7 +177,7 @@ const STUDIOS = [
     ],
   },
   {
-    id: generateUUID(),
+    id: "0ab4b7de-649b-44d5-b164-695de9435361",
     name: "Moa Design",
     description:
       "Vivamus ut lacinia nunc quisque congue nibh lacinia enim velit.",
@@ -238,7 +236,7 @@ const STUDIOS = [
     ],
   },
   {
-    id: generateUUID(),
+    id: "8336194b-7272-4799-99cf-9a2de8d71b2d",
     name: "Mijin Letters",
     description:
       "Vivamus ut lacinia nunc quisque congue nibh lacinia enim velit.",
@@ -297,7 +295,7 @@ const STUDIOS = [
     ],
   },
   {
-    id: generateUUID(),
+    id: "d77ce74f-45ce-4e65-b20f-1ccfda87e234",
     name: "Suyeong Han Studio",
     description:
       "Vivamus ut lacinia nunc quisque congue nibh lacinia enim velit.",

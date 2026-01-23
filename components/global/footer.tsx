@@ -44,7 +44,7 @@ const PRIMARY_LINKS: { href: string; label: string; body: string }[] = [
 
 export default function Footer() {
   return (
-    <footer className="relative w-full h-[40vh] p-10 flex flex-row justify-between items-center">
+    <footer className="relative w-full h-[40vh] p-10 flex flex-row justify-between items-center mt-44">
       <div className="relative flex flex-row gap-2 w-1/2 h-full">
         <div className="relative grid grid-rows-2 gap-1 h-full">
           {PRIMARY_LINKS.map((link) => (

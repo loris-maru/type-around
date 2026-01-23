@@ -8,17 +8,17 @@ export default function CategoryFilter({
   setSelectedCategories,
 }: CategoryFilterProps) {
   const allCategories = STUDIOS.flatMap((studio) =>
-    studio.typefaces.flatMap((typeface) => typeface.category),
+    studio.typefaces.flatMap((typeface) => typeface.category)
   );
   const fontCategories: string[] = Array.from(
-    new Set(allCategories.filter((c): c is string => typeof c === "string")),
+    new Set(allCategories.filter((c): c is string => typeof c === "string"))
   );
 
   const handleCategoryToggle = (category: string) => {
     setSelectedCategories((prev) =>
       prev.includes(category)
         ? prev.filter((c) => c !== category)
-        : [...prev, category],
+        : [...prev, category]
     );
   };
 
@@ -36,7 +36,7 @@ export default function CategoryFilter({
             <span className="font-bold ml-1">
               {
                 STUDIOS.flatMap((studio) =>
-                  studio.typefaces.flatMap((typeface) => typeface.category),
+                  studio.typefaces.flatMap((typeface) => typeface.category)
                 ).filter((c) => c === category).length
               }
               :

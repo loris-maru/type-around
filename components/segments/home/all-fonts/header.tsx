@@ -9,7 +9,7 @@ export default function HeaderAllFonts() {
 
   const totalFonts = STUDIOS.reduce(
     (acc, studio) => acc + studio.typefaces.length,
-    0,
+    0
   );
 
   return (

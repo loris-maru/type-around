@@ -26,7 +26,7 @@ export default function StudioCard({ studio }: { studio: Studio }) {
           <div>
             {studio.typefaces.reduce(
               (acc, typeface) => acc + typeface.fonts,
-              0,
+              0
             )}{" "}
             fonts
           </div>

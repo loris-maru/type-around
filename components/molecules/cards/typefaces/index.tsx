@@ -3,11 +3,12 @@
 import { Typeface } from "@/types/typefaces";
 import Image from "next/image";
 import Link from "next/link";
+import { slugify } from "@/utils/slugify";
 
 export default function TypefaceCard({ typeface }: { typeface: Typeface }) {
   return (
     <Link
-      href={`/typeface/${typeface.id}`}
+      href={`/${slugify(typeface.studio)}/typeface/${slugify(typeface.name)}`}
       className="relative w-[300px] h-[350px] flex flex-col items-center justify-between bg-white border border-black shadow-button p-5 rounded-lg"
       prefetch={false}
     >

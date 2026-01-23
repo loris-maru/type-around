@@ -24,7 +24,7 @@ export default function AllFonts({ opacity, y, containerRef }: AllFontsProps) {
         id: hash + index,
         category: typeface.category || null,
       };
-    }),
+    })
   );
 
   return (

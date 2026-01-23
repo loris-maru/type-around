@@ -23,7 +23,7 @@ export default function HorizontalSection() {
           category: typeface.category || null,
           studio: studio.name,
         };
-      }),
+      })
     );
   }, []);
 
