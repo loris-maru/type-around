@@ -16,6 +16,13 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Arvana";
+  src: url("/fonts/Arvana-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+
 @theme inline {
   /* Colors*/
   --color-light-gray: #f2f2f2;
@@ -25,6 +32,7 @@
   /* Fonts  */
   --font-whisper: "Whisper", monospace;
   --font-ortank: "Ortank", sans-serif;
+  --font-arvana: "Arvana", sans-serif;
 
   /* Shadows */
   --shadow-button: 3px 3px 0 0 #000;
@@ -44,6 +52,13 @@
 /* Medium gray shadow class */
 .shadow-medium-gray {
   box-shadow: var(--shadow-medium-gray);
+}
+
+.section-title {
+  font-family: var(--font-ortank);
+  font-weight: 900;
+  font-size: 2.25rem;
+  line-height: 2.5rem;
 }
 
 body {

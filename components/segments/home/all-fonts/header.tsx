@@ -1,6 +1,6 @@
 "use client";
 
-import STUDIOS from "@/mock-data/studios.ts";
+import STUDIOS from "@/mock-data/studios";
 import { useState } from "react";
 import CategoryFilter from "@/components/segments/home/all-fonts/category-filter";
 
@@ -13,14 +13,11 @@ export default function HeaderAllFonts() {
   );
 
   return (
-    <div className="relative w-full flex flex-row justify-between items-center px-8">
-      <div>
-        <h2 className="text-4xl font-black font-ortank mb-2">All Fonts</h2>
-        <CategoryFilter
-          selectedCategories={selectedCategories}
-          setSelectedCategories={setSelectedCategories}
-        />
-      </div>
+    <div className="relative w-full flex flex-row gap-x-4 items-center px-8">
+      <CategoryFilter
+        selectedCategories={selectedCategories}
+        setSelectedCategories={setSelectedCategories}
+      />
       <div className="font-whisper text-sm text-black">
         <span className="font-light">Total typefaces: </span>
         <span className="font-bold">{totalFonts}</span>

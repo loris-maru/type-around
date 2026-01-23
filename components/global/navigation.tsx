@@ -42,7 +42,7 @@ export default function Navigation() {
       </div>
       <div className="flex flex-row gap-x-1">
         <section
-          className="pt-5 pb-2 px-6 flex flex-row gap-x-6 font-whisper text-base font-normal text-black"
+          className="pt-5 pb-2 px-6 flex flex-row gap-x-6 font-whisper text-base font-normal text-black bg-light-gray"
           style={sectionStyle}
         >
           {NAV_ITEMS.map((item) => (
@@ -56,7 +56,7 @@ export default function Navigation() {
           ))}
         </section>
         <section
-          className="pt-5 pb-2 px-5 flex flex-row gap-x-14 font-whisper text-lg font-normal"
+          className="pt-5 pb-2 px-5 flex flex-row gap-x-14 font-whisper text-lg font-normal bg-light-gray"
           style={sectionStyle}
         >
           <button

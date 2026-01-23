@@ -4,8 +4,8 @@ import { MotionValue } from "motion/react";
 import { motion } from "motion/react";
 import HeaderAllFonts from "@/components/segments/home/all-fonts/header";
 import { Typeface } from "@/types/typefaces";
-import STUDIOS from "@/mock-data/studios.ts";
-import TypefaceCard from "../../../molecules/cards/typeface-card";
+import STUDIOS from "@/mock-data/studios";
+import TypefaceCard from "@/components/molecules/cards/typefaces";
 
 export type AllFontsProps = {
   opacity: MotionValue<number>;
@@ -15,11 +15,16 @@ export type AllFontsProps = {
 
 export default function AllFonts({ opacity, y, containerRef }: AllFontsProps) {
   const allTypefaces: Typeface[] = STUDIOS.flatMap((studio) =>
-    studio.typefaces.map((typeface, index) => ({
-      ...typeface,
-      id: studio.id * 1000 + index, // Generate unique ID based on studio ID and index
-      category: typeface.category || null, // Ensure category is either string[] or null
-    })),
+    studio.typefaces.map((typeface, index) => {
+      const hash = studio.id
+        .split("")
+        .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+      return {
+        ...typeface,
+        id: hash + index,
+        category: typeface.category || null,
+      };
+    }),
   );
 
   return (

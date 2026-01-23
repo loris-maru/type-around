@@ -12,7 +12,7 @@ export type Typeface = {
 };
 
 export type Studio = {
-  id: number;
+  id: string;
   name: string;
   description: string;
   image: string;

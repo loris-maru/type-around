@@ -1,6 +1,6 @@
 "use client";
 
-import STUDIOS from "@/mock-data/studios.ts";
+import STUDIOS from "@/mock-data/studios";
 import { CategoryFilterProps } from "@/types/Global";
 
 export default function CategoryFilter({

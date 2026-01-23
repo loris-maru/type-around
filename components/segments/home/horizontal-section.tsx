@@ -1,62 +1,91 @@
 "use client";
 
 import { useRef, useMemo } from "react";
-import { useScroll, useTransform, motion } from "motion/react";
-import STUDIOS from "@/mock-data/studios.ts";
+import { useScroll, useTransform, motion, useInView } from "motion/react";
+import STUDIOS from "@/mock-data/studios";
 import { Typeface } from "@/types/typefaces";
-import TypefaceCard from "@/components/molecules/cards/typeface-card";
+import HeaderAllFonts from "@/components/segments/home/all-fonts/header";
+import TypefaceCard from "@/components/molecules/cards/typefaces";
 
 export default function HorizontalSection() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
 
-  // Flatten all typefaces from all studios and add required fields
   const allTypefaces: Typeface[] = useMemo(() => {
     return STUDIOS.flatMap((studio) =>
-      studio.typefaces.map((typeface, index) => ({
-        ...typeface,
-        id: studio.id * 1000 + index, // Generate unique ID based on studio ID and index
-        category: typeface.category || null, // Ensure category is either string[] or null
-        studio: studio.name, // Add studio name
-      })),
+      studio.typefaces.map((typeface, index) => {
+        const hash = studio.id
+          .split("")
+          .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+        return {
+          ...typeface,
+          id: hash + index,
+          category: typeface.category || null,
+          studio: studio.name,
+        };
+      }),
     );
   }, []);
 
-  // Track scroll progress through the 300vh sticky container
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  // Calculate number of columns (2 cards per column)
-  const numColumns = Math.ceil(allTypefaces.length / 2);
-  // Each column: card width (300px) + gap (60px) = 360px per column
-  // Plus padding on both sides (8 * 2 = 16px total from px-8)
-  const columnWidth = 300 + 60; // 360px per column
-  const totalWidth = numColumns * columnWidth + 64; // Add padding (32px on each side)
+  const isInView = useInView(stickyRef, {
+    amount: 0.55,
+    once: false,
+  });
+
+  const columns = useMemo(() => {
+    const cols: Typeface[][] = [];
+    const maxCardsPerColumn = 2;
+    for (let i = 0; i < allTypefaces.length; i += maxCardsPerColumn) {
+      const columnCards = allTypefaces.slice(i, i + maxCardsPerColumn);
+      const limitedCards = columnCards.slice(0, maxCardsPerColumn);
+      if (limitedCards.length > 0 && limitedCards.length <= maxCardsPerColumn) {
+        cols.push(limitedCards);
+      }
+    }
+    return cols;
+  }, [allTypefaces]);
+
+  const numColumns = columns.length;
+  const columnWidth = 300 + 60;
+  const totalWidth = numColumns * columnWidth + 64;
   const viewportWidth =
     typeof window !== "undefined" ? window.innerWidth : 1920;
-  // Calculate translation: move from 0 to -(totalWidth - viewportWidth)
   const translateAmount = Math.min(0, -(totalWidth - viewportWidth));
   const x = useTransform(scrollYProgress, [0, 1], [0, translateAmount]);
 
   return (
     <div ref={containerRef} className="relative h-[300vh] w-full">
-      {/* Sticky container */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
-        {/* Horizontal scrolling content */}
-        <motion.div className="h-full w-max" style={{ x }}>
-          <div className="grid grid-rows-2 grid-flow-col gap-[60px] h-full px-8">
-            {allTypefaces.map((typeface, index) => {
-              const columnIndex = Math.floor(index / 2);
+      <div
+        ref={stickyRef}
+        className="sticky top-0 h-screen w-full overflow-hidden"
+      >
+        {isInView && (
+          <div className="fixed top-3 left-28 z-50 bg-light-gray">
+            <HeaderAllFonts />
+          </div>
+        )}
+        <motion.div className="h-full w-max pt-10" style={{ x }}>
+          <div className="flex flex-row gap-x-[60px] px-8 h-full items-start">
+            {columns.map((columnTypefaces, columnIndex) => {
               const isOddColumn = columnIndex % 2 === 1;
-              const isTopCard = index % 2 === 0; // First card in each column (0, 2, 4, ...)
 
               return (
-                <div
-                  key={typeface.id}
-                  className={isOddColumn && isTopCard ? "pt-[120px]" : ""}
-                >
-                  <TypefaceCard typeface={typeface} />
+                <div key={columnIndex} className="flex flex-col gap-y-[80px]">
+                  {columnTypefaces.slice(0, 2).map((typeface, cardIndex) => (
+                    <div
+                      key={typeface.id}
+                      className={
+                        isOddColumn && cardIndex === 0 ? "pt-[120px]" : ""
+                      }
+                    >
+                      <TypefaceCard typeface={typeface} />
+                    </div>
+                  ))}
                 </div>
               );
             })}
