@@ -1,6 +1,6 @@
 "use client";
 
-import { NavigationItem } from "@/types/global";
+import { NavigationItem } from "@/types/Global";
 import Link from "next/link";
 import { RiSearchLine } from "react-icons/ri";
 
