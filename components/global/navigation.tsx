@@ -36,33 +36,36 @@ export default function Navigation() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 flex flex-row justify-between items-center pl-4 pr-10">
-      <div className="flex flex-col gap-y-2 text-black text-4xl font-ortank font-black pt-2">
+    <nav className="fixed left-0 top-0 z-50 flex w-full flex-row items-center justify-between pl-4 pr-10">
+      <Link
+        href="/"
+        className="font-ortank flex flex-col gap-y-2 pt-2 text-4xl font-black text-black"
+      >
         글자곁
-      </div>
+      </Link>
       <div className="flex flex-row gap-x-1">
         <section
-          className="pt-5 pb-2 px-6 flex flex-row gap-x-6 font-whisper text-base font-normal text-black bg-light-gray"
+          className="bg-light-gray font-whisper flex flex-row gap-x-6 px-6 pb-2 pt-5 text-base font-normal text-black"
           style={sectionStyle}
         >
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="hover:text-gray-500 transition-colors duration-300"
+              className="transition-colors duration-300 hover:text-gray-500"
             >
               {item.label}
             </Link>
           ))}
         </section>
         <section
-          className="pt-5 pb-2 px-5 flex flex-row gap-x-14 font-whisper text-lg font-normal bg-light-gray"
+          className="bg-light-gray font-whisper flex flex-row gap-x-14 px-5 pb-2 pt-5 text-lg font-normal"
           style={sectionStyle}
         >
           <button
             type="button"
             aria-label="Search"
-            className="hover:text-gray-500 transition-colors duration-300"
+            className="transition-colors duration-300 hover:text-gray-500"
           >
             <RiSearchLine
               size={20}
