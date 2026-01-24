@@ -1,11 +1,14 @@
 import TypefaceHeader from "@/components/segments/typeface/header";
 import { slugify } from "@/utils/slugify";
 import STUDIOS from "@/mock-data/studios";
-import { Typeface } from "@/types/typefaces";
+import { Typeface, Studio } from "@/types/typefaces";
 import TypeTester from "@/components/segments/type-tester";
 import Footer from "@/components/global/footer";
 import DownloadButtons from "@/components/segments/typeface/download-buttons";
 import TypefaceStatus from "@/components/segments/typeface/status";
+import TypefaceUpdates from "@/components/segments/typeface/updates";
+import TypefaceShop from "@/components/segments/typeface/shop";
+import MoreContent from "@/components/segments/typeface/more-content";
 
 export default async function TypefacePage({
   params,
@@ -49,6 +52,24 @@ export default async function TypefacePage({
           ? studio.gradient[0]
           : studio.gradient,
     category: rawTypeface.category || null,
+    fonts: rawTypeface.fonts.map((font) => ({
+      ...font,
+      price: 0,
+      text: font.fullName,
+    })),
+  };
+
+  const studioWithTypefaces: Studio = {
+    ...studio,
+    typefaces: studio.typefaces.map((tf, index) => ({
+      ...tf,
+      id: hash + index,
+      fonts: tf.fonts.map((font) => ({
+        ...font,
+        price: 0,
+        text: font.fullName,
+      })),
+    })),
   };
 
   return (
@@ -61,6 +82,9 @@ export default async function TypefacePage({
       <TypeTester />
       <DownloadButtons />
       <TypefaceStatus />
+      <TypefaceUpdates />
+      <TypefaceShop fonts={typeface.fonts} />
+      <MoreContent studio={studioWithTypefaces} />
       <Footer />
     </div>
   );

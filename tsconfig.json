@@ -29,7 +29,8 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts",
-    "mock-data/studios"
+    "mock-data/studios",
+    "components/segments/typeface/updates/index.tss"
   ],
   "exclude": ["node_modules"]
 }

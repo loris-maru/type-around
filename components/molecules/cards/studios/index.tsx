@@ -17,7 +17,7 @@ export default function StudioCard({
   return (
     <Link
       href={`/studio/${slugify(studio.name)}`}
-      className="relative w-full flex flex-col justify-between bg-white border border-black shadow-button p-5 rounded-lg transition-all duration-300 ease-in-out hover:-translate-x-1 hover:-translate-y-1 hover:shadow-button-hover"
+      className="relative flex w-full flex-col justify-between rounded-lg border border-black bg-white p-5 shadow-button transition-all duration-300 ease-in-out hover:-translate-x-1 hover:-translate-y-1 hover:shadow-button-hover"
       prefetch={false}
       onMouseOver={() => setIsHovered(true)}
       onFocus={() => setIsHovered(true)}
@@ -25,15 +25,16 @@ export default function StudioCard({
       onBlur={() => setIsHovered(false)}
     >
       <header className="relative flex flex-col gap-2">
-        <div className="font-black text-2xl font-ortank">
+        <div className="font-ortank text-2xl font-black">
           {studio.name}
         </div>
-        <div className="block w-full h-px bg-neutral-300" />
+        <div className="block h-px w-full bg-neutral-300" />
         <div className="flex flex-row gap-4 text-sm">
           <div>{studio.typefaces.length} type families</div>
           <div>
             {studio.typefaces.reduce(
-              (acc, typeface) => acc + typeface.fonts,
+              (acc, typeface) =>
+                acc + typeface.fonts.length,
               0
             )}{" "}
             fonts
@@ -41,7 +42,7 @@ export default function StudioCard({
         </div>
       </header>
       <div
-        className="relative w-full h-[220px] my-3 overflow-hidden transition-all duration-300 ease-in-out"
+        className="relative my-3 h-[220px] w-full overflow-hidden transition-all duration-300 ease-in-out"
         style={{ borderRadius: isHovered ? "24px" : "0px" }}
       >
         <Image
@@ -49,7 +50,7 @@ export default function StudioCard({
           alt={studio.name}
           width={100}
           height={100}
-          className="w-full h-auto object-cover scale-100 hover:scale-125 transition-all duration-300 ease-in-out"
+          className="h-auto w-full scale-100 object-cover transition-all duration-300 ease-in-out"
           style={{
             transform: isHovered
               ? "scale(1.2)"

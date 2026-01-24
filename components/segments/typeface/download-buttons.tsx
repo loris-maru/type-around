@@ -1,6 +1,7 @@
 "use client";
 
 import IconDownload from "@/components/icons/icon-download";
+import { cn } from "@/utils/class-names";
 
 export default function DownloadButtons() {
   const handleDownloadTrialFonts = () => {
@@ -21,7 +22,9 @@ export default function DownloadButtons() {
           type="button"
           aria-label="Download trial font"
           name="download-trial-font"
-          className="flex w-1/2 justify-between px-16 py-12 flex-row items-center gap-x-2 font-whisper text-sm text-black font-medium"
+          className={cn(
+            "flex w-1/2 justify-between px-16 py-12 flex-row items-center gap-x-2 font-whisper text-sm text-black font-medium transition-all duration-300 ease-in-out hover:-translate-x-1 hover:-translate-y-1 hover:bg-white download-button-hover"
+          )}
           onClick={handleDownloadTrialFonts}
         >
           <div className="font-ortank text-2xl font-bold">
@@ -34,7 +37,9 @@ export default function DownloadButtons() {
           type="button"
           aria-label="Download specimen"
           name="download-specimen"
-          className="flex w-1/2 justify-between px-24 py-12 flex-row items-center gap-x-2 font-whisper text-sm text-black font-medium"
+          className={cn(
+            "flex w-1/2 justify-between px-24 py-12 flex-row items-center gap-x-2 font-whisper text-sm text-black font-medium transition-all duration-300 ease-in-out hover:-translate-x-1 hover:-translate-y-1 hover:bg-white download-button-hover"
+          )}
           onClick={handleDownloadSpecimen}
         >
           <div className="font-ortank text-2xl font-bold">

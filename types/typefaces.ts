@@ -1,3 +1,12 @@
+export type Font = {
+  price: number;
+  text: string;
+  fullName: string;
+  name: string;
+  weight: number;
+  style: string;
+};
+
 export type Typeface = {
   id: number;
   category: string[];
@@ -6,7 +15,7 @@ export type Typeface = {
   slug: string;
   description: string;
   icon: string;
-  fonts: number;
+  fonts: Font[];
   characters: number;
   releaseDate: string;
   studio: string;

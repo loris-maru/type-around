@@ -6,6 +6,7 @@ import FontsInUseList from "@/components/segments/studio/fonts-in-use-list";
 import STUDIOS from "@/mock-data/studios";
 import { slugify } from "@/utils/slugify";
 import Footer from "@/components/global/footer";
+import { Studio } from "@/types/typefaces";
 
 export default async function StudioPage({
   params,
@@ -30,7 +31,7 @@ export default async function StudioPage({
       return {
         ...typeface,
         id: hash + index,
-        category: typeface.category || null,
+        category: typeface.category || [],
         hangeulName:
           "hangeulName" in typeface &&
           typeof typeface.hangeulName === "string"
@@ -43,9 +44,20 @@ export default async function StudioPage({
             : Array.isArray(studio.gradient)
               ? studio.gradient[0]
               : studio.gradient,
+        fonts: typeface.fonts.map((font) => ({
+          ...font,
+          price:
+            "price" in font
+              ? (font as { price: number }).price
+              : 0,
+          text:
+            "text" in font
+              ? (font as { text: string }).text
+              : "",
+        })),
       };
     }),
-  };
+  } as unknown as Studio;
 
   return (
     <div className="relative w-full">

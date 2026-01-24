@@ -1,3 +1,5 @@
+import TYPE_FAMILIES from "../type-families";
+
 const STUDIOS = [
   {
     id: "655ff073-cc90-48ff-a8c8-808e8418888d",
@@ -28,11 +30,13 @@ const STUDIOS = [
         description:
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_giparan.svg",
-        fonts: 8,
         characters: 1456,
         releaseDate: "2024-01-01",
         category: ["sans-serif"],
         studio: "lo-ol Studio",
+        fonts:
+          TYPE_FAMILIES.find((tf) => tf.slug === "giparan")
+            ?.fonts || [],
       },
       {
         name: "Arvana",
@@ -40,11 +44,13 @@ const STUDIOS = [
         description:
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_arvana.svg",
-        fonts: 12,
         characters: 1024,
         releaseDate: "2024-01-01",
         category: ["serif"],
         studio: "lo-ol Studio",
+        fonts:
+          TYPE_FAMILIES.find((tf) => tf.slug === "arvana")
+            ?.fonts || [],
       },
       {
         name: "Ortank",
@@ -52,11 +58,13 @@ const STUDIOS = [
         description:
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_ortank.svg",
-        fonts: 8,
         characters: 2800,
         releaseDate: "2024-01-01",
         category: ["sans-serif"],
         studio: "lo-ol Studio",
+        fonts:
+          TYPE_FAMILIES.find((tf) => tf.slug === "ortank")
+            ?.fonts || [],
       },
       {
         name: "Banya Mist",
@@ -64,11 +72,14 @@ const STUDIOS = [
         description:
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_banya.svg",
-        fonts: 8,
         characters: 1456,
         releaseDate: "2024-01-01",
         category: ["serif"],
         studio: "lo-ol Studio",
+        fonts:
+          TYPE_FAMILIES.find(
+            (tf) => tf.slug === "banya-mist"
+          )?.fonts || [],
       },
     ],
   },
@@ -101,11 +112,13 @@ const STUDIOS = [
         description:
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_giparan.svg",
-        fonts: 8,
         characters: 1456,
         releaseDate: "2024-01-01",
         category: ["sans-serif"],
         studio: "Minjoo Type",
+        fonts:
+          TYPE_FAMILIES.find((tf) => tf.slug === "giparan")
+            ?.fonts || [],
       },
       {
         name: "Arvana",
@@ -113,11 +126,13 @@ const STUDIOS = [
         description:
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_arvana.svg",
-        fonts: 12,
         characters: 1024,
         releaseDate: "2024-01-01",
         category: ["serif"],
         studio: "Minjoo Type",
+        fonts:
+          TYPE_FAMILIES.find((tf) => tf.slug === "arvana")
+            ?.fonts || [],
       },
       {
         name: "Ortank",
@@ -125,11 +140,13 @@ const STUDIOS = [
         description:
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_ortank.svg",
-        fonts: 8,
         characters: 2800,
         releaseDate: "2024-01-01",
         category: ["sans-serif"],
         studio: "Minjoo Type",
+        fonts:
+          TYPE_FAMILIES.find((tf) => tf.slug === "ortank")
+            ?.fonts || [],
       },
       {
         name: "Banya Mist",
@@ -137,11 +154,14 @@ const STUDIOS = [
         description:
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_banya.svg",
-        fonts: 8,
         characters: 1456,
         releaseDate: "2024-01-01",
         category: ["serif"],
         studio: "Minjoo Type",
+        fonts:
+          TYPE_FAMILIES.find(
+            (tf) => tf.slug === "banya-mist"
+          )?.fonts || [],
       },
     ],
   },
@@ -174,11 +194,13 @@ const STUDIOS = [
         description:
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_giparan.svg",
-        fonts: 8,
         characters: 1456,
         releaseDate: "2024-01-01",
         category: ["sans-serif"],
         studio: "Font Pia",
+        fonts:
+          TYPE_FAMILIES.find((tf) => tf.slug === "giparan")
+            ?.fonts || [],
       },
       {
         name: "Arvana",
@@ -186,11 +208,13 @@ const STUDIOS = [
         description:
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_arvana.svg",
-        fonts: 12,
         characters: 1024,
         releaseDate: "2024-01-01",
         category: ["serif"],
         studio: "Font Pia",
+        fonts:
+          TYPE_FAMILIES.find((tf) => tf.slug === "arvana")
+            ?.fonts || [],
       },
       {
         name: "Ortank",
@@ -198,11 +222,13 @@ const STUDIOS = [
         description:
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_ortank.svg",
-        fonts: 8,
         characters: 2800,
         releaseDate: "2024-01-01",
         category: ["sans-serif"],
         studio: "Font Pia",
+        fonts:
+          TYPE_FAMILIES.find((tf) => tf.slug === "ortank")
+            ?.fonts || [],
       },
       {
         name: "Banya Mist",
@@ -210,11 +236,14 @@ const STUDIOS = [
         description:
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_banya.svg",
-        fonts: 8,
         characters: 1456,
         releaseDate: "2024-01-01",
         category: ["serif"],
         studio: "Font Pia",
+        fonts:
+          TYPE_FAMILIES.find(
+            (tf) => tf.slug === "banya-mist"
+          )?.fonts || [],
       },
     ],
   },
@@ -247,11 +276,13 @@ const STUDIOS = [
         description:
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_giparan.svg",
-        fonts: 8,
         characters: 1456,
         releaseDate: "2024-01-01",
         category: ["sans-serif"],
         studio: "Moa Design",
+        fonts:
+          TYPE_FAMILIES.find((tf) => tf.slug === "giparan")
+            ?.fonts || [],
       },
       {
         name: "Arvana",
@@ -259,11 +290,13 @@ const STUDIOS = [
         description:
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_arvana.svg",
-        fonts: 12,
         characters: 1024,
         releaseDate: "2024-01-01",
         category: ["serif"],
         studio: "Moa Design",
+        fonts:
+          TYPE_FAMILIES.find((tf) => tf.slug === "arvana")
+            ?.fonts || [],
       },
       {
         name: "Ortank",
@@ -271,11 +304,13 @@ const STUDIOS = [
         description:
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_ortank.svg",
-        fonts: 8,
         characters: 2800,
         releaseDate: "2024-01-01",
         category: ["sans-serif"],
         studio: "Moa Design",
+        fonts:
+          TYPE_FAMILIES.find((tf) => tf.slug === "ortank")
+            ?.fonts || [],
       },
       {
         name: "Banya Mist",
@@ -283,11 +318,14 @@ const STUDIOS = [
         description:
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_banya.svg",
-        fonts: 8,
         characters: 1456,
         releaseDate: "2024-01-01",
         category: ["serif"],
         studio: "Moa Design",
+        fonts:
+          TYPE_FAMILIES.find(
+            (tf) => tf.slug === "banya-mist"
+          )?.fonts || [],
       },
     ],
   },
@@ -320,11 +358,13 @@ const STUDIOS = [
         description:
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_giparan.svg",
-        fonts: 8,
         characters: 1456,
         releaseDate: "2024-01-01",
         category: ["sans-serif"],
-        studio: "Moa Design",
+        studio: "Mijin Letters",
+        fonts:
+          TYPE_FAMILIES.find((tf) => tf.slug === "giparan")
+            ?.fonts || [],
       },
       {
         name: "Arvana",
@@ -332,11 +372,13 @@ const STUDIOS = [
         description:
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_arvana.svg",
-        fonts: 12,
         characters: 1024,
         releaseDate: "2024-01-01",
         category: ["serif"],
-        studio: "Moa Design",
+        studio: "Mijin Letters",
+        fonts:
+          TYPE_FAMILIES.find((tf) => tf.slug === "arvana")
+            ?.fonts || [],
       },
       {
         name: "Ortank",
@@ -344,11 +386,13 @@ const STUDIOS = [
         description:
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_ortank.svg",
-        fonts: 8,
         characters: 2800,
         releaseDate: "2024-01-01",
         category: ["sans-serif"],
-        studio: "Moa Design",
+        studio: "Mijin Letters",
+        fonts:
+          TYPE_FAMILIES.find((tf) => tf.slug === "ortank")
+            ?.fonts || [],
       },
       {
         name: "Banya Mist",
@@ -356,11 +400,14 @@ const STUDIOS = [
         description:
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_banya.svg",
-        fonts: 8,
         characters: 1456,
         releaseDate: "2024-01-01",
         category: ["serif"],
-        studio: "Moa Design",
+        studio: "Mijin Letters",
+        fonts:
+          TYPE_FAMILIES.find(
+            (tf) => tf.slug === "banya-mist"
+          )?.fonts || [],
       },
     ],
   },
@@ -393,11 +440,13 @@ const STUDIOS = [
         description:
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_giparan.svg",
-        fonts: 8,
         characters: 1456,
         releaseDate: "2024-01-01",
         category: ["sans-serif"],
-        studio: "Moa Design",
+        studio: "Suyeong Han Studio",
+        fonts:
+          TYPE_FAMILIES.find((tf) => tf.slug === "giparan")
+            ?.fonts || [],
       },
       {
         name: "Arvana",
@@ -405,11 +454,13 @@ const STUDIOS = [
         description:
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_arvana.svg",
-        fonts: 12,
         characters: 1024,
         releaseDate: "2024-01-01",
         category: ["serif"],
-        studio: "Moa Design",
+        studio: "Suyeong Han Studio",
+        fonts:
+          TYPE_FAMILIES.find((tf) => tf.slug === "arvana")
+            ?.fonts || [],
       },
       {
         name: "Ortank",
@@ -417,11 +468,13 @@ const STUDIOS = [
         description:
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_ortank.svg",
-        fonts: 8,
         characters: 2800,
         releaseDate: "2024-01-01",
         category: ["sans-serif"],
-        studio: "Moa Design",
+        studio: "Suyeong Han Studio",
+        fonts:
+          TYPE_FAMILIES.find((tf) => tf.slug === "ortank")
+            ?.fonts || [],
       },
       {
         name: "Banya Mist",
@@ -429,11 +482,14 @@ const STUDIOS = [
         description:
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_banya.svg",
-        fonts: 8,
         characters: 1456,
         releaseDate: "2024-01-01",
         category: ["serif"],
-        studio: "Moa Design",
+        studio: "Suyeong Han Studio",
+        fonts:
+          TYPE_FAMILIES.find(
+            (tf) => tf.slug === "banya-mist"
+          )?.fonts || [],
       },
     ],
   },

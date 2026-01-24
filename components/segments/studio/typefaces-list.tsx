@@ -33,8 +33,8 @@ export default function TypefacesList({
             <TypefaceLine
               studioName={studio.name}
               familyName={typeface.name}
-              styles={typeface.fonts}
-              fonts={typeface.fonts}
+              styles={typeface.fonts.length}
+              fonts={typeface.fonts.length}
             />
             {index !== typefacesWithIds.length - 1 && (
               <div className="relative w-full h-px bg-neutral-300 my-4" />

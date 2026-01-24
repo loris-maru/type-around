@@ -28,9 +28,31 @@ export default function HorizontalSection() {
         return {
           ...typeface,
           id: hash + index,
-          category: typeface.category || null,
-          studio: studio.name,
-        };
+          category: typeface.category || [],
+          hangeulName:
+            "hangeulName" in typeface &&
+            typeof typeface.hangeulName === "string"
+              ? typeface.hangeulName
+              : "오흐탕크",
+          gradient:
+            "gradient" in typeface &&
+            typeof typeface.gradient === "string"
+              ? typeface.gradient
+              : Array.isArray(studio.gradient)
+                ? studio.gradient[0]
+                : studio.gradient,
+          fonts: typeface.fonts.map((font) => ({
+            ...font,
+            price:
+              "price" in font
+                ? (font as { price: number }).price
+                : 0,
+            text:
+              "text" in font
+                ? (font as { text: string }).text
+                : "",
+          })),
+        } as Typeface;
       })
     );
   }, []);
