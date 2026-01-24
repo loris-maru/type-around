@@ -1,7 +1,7 @@
 "use client";
 
 import STUDIOS from "@/mock-data/studios";
-import { CategoryFilterProps } from "@/types/Global";
+import { CategoryFilterProps } from "@/types/global";
 
 export default function CategoryFilter({
   selectedCategories,

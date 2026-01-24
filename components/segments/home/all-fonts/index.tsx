@@ -18,16 +18,13 @@ export default function AllFonts({
   y,
   containerRef,
 }: AllFontsProps) {
-  const allTypefaces: Typeface[] = STUDIOS.flatMap(
-    (studio) =>
-      studio.typefaces.map((typeface, index) => {
-        const hash = studio.id
-          .split("")
-          .reduce(
-            (acc, char) => acc + char.charCodeAt(0),
-            0
-          );
-        return {
+  const allTypefaces = STUDIOS.flatMap((studio) =>
+    studio.typefaces.map((typeface, index) => {
+      const hash = studio.id
+        .split("")
+        .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+      return {
+        typeface: {
           ...typeface,
           id: hash + index,
           category: typeface.category || [],
@@ -54,8 +51,10 @@ export default function AllFonts({
                 ? (font as { text: string }).text
                 : "",
           })),
-        } as Typeface;
-      })
+        } as Typeface,
+        studioName: studio.name,
+      };
+    })
   );
 
   return (
@@ -71,7 +70,7 @@ export default function AllFonts({
         <section className="relative w-full px-8 mt-20">
           <div className="grid grid-rows-2 grid-flow-col gap-[60px] w-max">
             {allTypefaces.map(
-              (typeface: Typeface, index: number) => {
+              ({ typeface, studioName }, index: number) => {
                 const columnIndex = Math.floor(index / 2);
                 const isOddColumn = columnIndex % 2 === 1;
 
@@ -82,7 +81,10 @@ export default function AllFonts({
                       isOddColumn ? "pt-[92px]" : ""
                     }
                   >
-                    <TypefaceCard typeface={typeface} />
+                    <TypefaceCard
+                      typeface={typeface}
+                      studioName={studioName}
+                    />
                   </div>
                 );
               }

@@ -26,7 +26,6 @@ export default function Home() {
 
   return (
     <main className="relative w-full">
-      {/* Hero Section - 100vh */}
       <section className="relative h-screen w-full flex items-center justify-center bg-light-gray">
         <HeaderHome
           svgScale={svgScale}
@@ -34,7 +33,6 @@ export default function Home() {
         />
       </section>
 
-      {/* Horizontal Section - 300vh with sticky scroll */}
       <HorizontalSection />
 
       <HighlightPoints />
@@ -51,7 +49,6 @@ export default function Home() {
 
       <Studios />
 
-      {/* Footer Section - 100vh */}
       <Footer />
     </main>
   );

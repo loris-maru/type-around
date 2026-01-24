@@ -148,7 +148,10 @@ export default function HorizontalSection() {
                             : ""
                         }
                       >
-                        <TypefaceCard typeface={typeface} />
+                        <TypefaceCard
+                          studioName={typeface.studio}
+                          typeface={typeface}
+                        />
                       </div>
                     ))}
                 </div>

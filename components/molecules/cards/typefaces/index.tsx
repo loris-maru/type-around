@@ -11,8 +11,10 @@ const DESCRIPTION_TEXT =
   "는 지오매트릭 그로테스크 계열의 서체로 기하학적 형태의 한계를 탐구한 결과물입니다.";
 
 export default function TypefaceCard({
+  studioName,
   typeface,
 }: {
+  studioName: string;
   typeface: Typeface;
 }) {
   const [isHovered, setIsHovered] =
@@ -53,7 +55,7 @@ export default function TypefaceCard({
       }}
     >
       <Link
-        href={`/${slugify(typeface.studio)}/typeface/${slugify(typeface.name)}`}
+        href={`studio/${slugify(studioName)}/typeface/${slugify(typeface.name)}`}
         className="relative flex h-[350px] w-full flex-col items-center justify-between overflow-hidden rounded-lg border border-black bg-white p-5 shadow-button"
         prefetch={false}
         onMouseOver={() => setIsHovered(true)}

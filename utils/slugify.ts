@@ -1,4 +1,7 @@
-export function slugify(str: string): string {
+export function slugify(
+  str: string | undefined | null
+): string {
+  if (!str) return "";
   return str
     .toLowerCase()
     .trim()
