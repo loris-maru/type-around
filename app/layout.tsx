@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import Navigation from "@/components/global/navigation";
 import SmoothScrollProvider from "@/components/providers/smooth-scroll-provider";
@@ -16,20 +17,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`antialiased`}
-        style={{
-          fontFamily: "Whisper, Ortank, sans-serif",
-        }}
-      >
-        <SmoothScrollProvider>
-          <Navigation />
-          <div className="relative z-20 w-screen min-h-screen">
-            {children}
-          </div>
-        </SmoothScrollProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body
+          className={`antialiased`}
+          style={{
+            fontFamily: "Whisper, Ortank, sans-serif",
+          }}
+        >
+          <SmoothScrollProvider>
+            <Navigation />
+            <div className="relative z-20 w-screen min-h-screen">
+              {children}
+            </div>
+          </SmoothScrollProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

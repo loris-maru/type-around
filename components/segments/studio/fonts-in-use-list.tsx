@@ -77,7 +77,6 @@ export default function FontsInUseList() {
                   name={font.name}
                   typeface={font.typeface}
                   category={font.category}
-                  description={font.description}
                   image={font.image}
                 />
               </div>

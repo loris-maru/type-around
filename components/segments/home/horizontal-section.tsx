@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useState } from "react";
 import {
   useScroll,
   useTransform,
@@ -15,6 +15,9 @@ import TypefaceCard from "@/components/molecules/cards/typefaces";
 export default function HorizontalSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
+  const [hoveredCardId, setHoveredCardId] = useState<
+    number | null
+  >(null);
 
   const allTypefaces: Typeface[] = useMemo(() => {
     return STUDIOS.flatMap((studio) =>
@@ -127,6 +130,13 @@ export default function HorizontalSection() {
         <motion.div
           className="h-full w-max pt-10"
           style={{ x }}
+          animate={{
+            scale: hoveredCardId !== null ? 1.1 : 1,
+          }}
+          transition={{
+            duration: 0.3,
+            ease: "easeInOut",
+          }}
         >
           <div className="flex flex-row gap-x-[60px] px-8 h-full items-start">
             {columns.map((columnTypefaces, columnIndex) => {
@@ -146,6 +156,12 @@ export default function HorizontalSection() {
                           isOddColumn && cardIndex === 0
                             ? "pt-[120px]"
                             : ""
+                        }
+                        onMouseEnter={() =>
+                          setHoveredCardId(typeface.id)
+                        }
+                        onMouseLeave={() =>
+                          setHoveredCardId(null)
                         }
                       >
                         <TypefaceCard

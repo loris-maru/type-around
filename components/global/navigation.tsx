@@ -1,7 +1,9 @@
 "use client";
 
 import { NavigationItem } from "@/types/Global";
+import { SignedOut } from "@clerk/nextjs";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { RiSearchLine } from "react-icons/ri";
 
 const NAV_ITEMS: NavigationItem[] = [
@@ -34,6 +36,10 @@ export default function Navigation() {
     borderLeft: "1px solid #000000",
     borderRadius: "0 0 8px 8px",
   };
+
+  const pathname = usePathname();
+
+  const isSignedInPage = pathname === "/sign-in";
 
   return (
     <nav className="fixed left-0 top-0 z-50 flex w-full flex-row items-center justify-between pl-4 pr-10">
@@ -73,6 +79,17 @@ export default function Navigation() {
             />
           </button>
         </section>
+        {!isSignedInPage && (
+          <SignedOut>
+            <Link
+              href="/sign-in"
+              className="font-whisper text-base font-normal text-black px-5 pb-2 pt-5 bg-light-gray"
+              style={sectionStyle}
+            >
+              Login
+            </Link>
+          </SignedOut>
+        )}
       </div>
     </nav>
   );

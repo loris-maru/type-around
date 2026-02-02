@@ -35,9 +35,11 @@
   --font-arvana: "Arvana", sans-serif;
 
   /* Shadows */
-  --shadow-button: 3px 3px 0 0 #000;
-  --shadow-button-hover: 7px 7px 0 -4px #000;
-  --shadow-medium-gray: 3px 3px 0 0 #c9c9c9;
+  --shadow-transparent: 0 0 0 0 rgba(0, 0, 0, 0, 0);
+  --shadow-button: 3px 3px 0 0 rgba(0, 0, 0, 1);
+  --shadow-button-hover: 7px 7px 0 -4px rgba(0, 0, 0, 1);
+  --shadow-button-inactive: 0 0 0 0 rgba(0, 0, 0, 1);
+  --shadow-medium-gray: 3px 3px 0 0 rgba(201, 201, 201, 1);
 }
 
 /* Button shadow classes */
@@ -57,6 +59,11 @@
 /* Download button hover shadow */
 .download-button-hover:hover {
   box-shadow: 6px 6px 0 0 rgb(0, 0, 0) !important;
+}
+
+/* Button shadow inactive class */
+.shadow-button-inactive {
+  box-shadow: var(--shadow-button-inactive);
 }
 
 .section-title {

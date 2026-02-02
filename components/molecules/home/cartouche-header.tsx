@@ -8,7 +8,7 @@ export default function CartoucheHeader() {
         fonts. From Korea with love.
       </p>
       <ButtonXL
-        href="/fonts-collection"
+        href="/typefaces"
         label="View all 200 fonts"
       />
     </div>
