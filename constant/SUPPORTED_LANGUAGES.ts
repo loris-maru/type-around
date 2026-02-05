@@ -1,0 +1,15 @@
+export const SUPPORTED_LANGUAGES = [
+  "Korean",
+  "English",
+  "Japanese",
+  "Chinese (Simplified)",
+  "Chinese (Traditional)",
+  "Latin Extended",
+  "Cyrillic",
+  "Greek",
+  "Vietnamese",
+  "Thai",
+  "Arabic",
+  "Hebrew",
+  "Devanagari",
+];

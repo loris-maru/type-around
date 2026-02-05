@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useParams } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import {
   Studio,
@@ -9,22 +10,49 @@ import {
 } from "@/types/studio";
 import {
   getOrCreateStudio,
+  getStudioById,
   updateStudioInformation,
   updateStudioSocialMedia,
   updateStudioPage,
   addStudioTypeface,
   removeStudioTypeface,
+  updateStudioTypeface,
 } from "@/lib/firebase/studios";
 
 export function useStudio() {
   const { user, isLoaded } = useUser();
+  const params = useParams();
   const [studio, setStudio] = useState<Studio | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
+  // Get studio ID from URL params (e.g., /account/[id])
+  const studioIdFromUrl = params?.id as string | undefined;
+
   // Fetch or create studio on mount
   useEffect(() => {
     async function fetchStudio() {
+      // If we have a studio ID from URL, fetch that studio directly
+      if (studioIdFromUrl) {
+        try {
+          setIsLoading(true);
+          const fetchedStudio =
+            await getStudioById(studioIdFromUrl);
+          setStudio(fetchedStudio);
+          setError(null);
+        } catch (err) {
+          setError(
+            err instanceof Error
+              ? err
+              : new Error("Failed to fetch studio")
+          );
+        } finally {
+          setIsLoading(false);
+        }
+        return;
+      }
+
+      // Otherwise, use Clerk user to get or create studio
       if (!isLoaded) return;
 
       if (!user) {
@@ -55,7 +83,7 @@ export function useStudio() {
     }
 
     fetchStudio();
-  }, [user, isLoaded]);
+  }, [user, isLoaded, studioIdFromUrl]);
 
   // Update studio information
   const updateInformation = useCallback(
@@ -192,6 +220,44 @@ export function useStudio() {
     [studio]
   );
 
+  // Update a typeface in the studio
+  const updateTypeface = useCallback(
+    async (
+      typefaceId: string,
+      updates: Partial<StudioTypeface>
+    ) => {
+      if (!studio) throw new Error("No studio loaded");
+
+      try {
+        await updateStudioTypeface(
+          studio.id,
+          typefaceId,
+          updates
+        );
+        setStudio((prev) =>
+          prev
+            ? {
+                ...prev,
+                typefaces: prev.typefaces.map((t) =>
+                  t.id === typefaceId
+                    ? { ...t, ...updates }
+                    : t
+                ),
+              }
+            : null
+        );
+      } catch (err) {
+        setError(
+          err instanceof Error
+            ? err
+            : new Error("Failed to update typeface")
+        );
+        throw err;
+      }
+    },
+    [studio]
+  );
+
   return {
     studio,
     isLoading,
@@ -201,5 +267,6 @@ export function useStudio() {
     updateStudioPageSettings,
     addTypeface,
     removeTypeface,
+    updateTypeface,
   };
 }

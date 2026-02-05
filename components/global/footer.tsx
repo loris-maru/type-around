@@ -1,50 +1,10 @@
 import Link from "next/link";
 import LinksList from "./footer/links-list";
 import SocialMediaNewsletter from "./footer/social-media-newsletter";
-
-const FOOTER_LINKS: { href: string; label: string }[] = [
-  {
-    href: "/about",
-    label: "About",
-  },
-  {
-    href: "/faq",
-    label: "FAQ",
-  },
-  {
-    href: "/privacy-policy",
-    label: "Privacy Policy",
-  },
-  {
-    href: "/terms-of-service",
-    label: "Terms of Service",
-  },
-  {
-    href: "/support",
-    label: "Support",
-  },
-  {
-    href: "/",
-    label: "Contact us",
-  },
-];
-
-const PRIMARY_LINKS: {
-  href: string;
-  label: string;
-  body: string;
-}[] = [
-  {
-    href: "/",
-    label: "Discover",
-    body: "All fonts",
-  },
-  {
-    href: "/",
-    label: "Browse",
-    body: "All studios",
-  },
-];
+import {
+  FOOTER_LINKS,
+  PRIMARY_LINKS,
+} from "@/constant/FOOTER_LINKS";
 
 export default function Footer() {
   return (

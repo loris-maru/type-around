@@ -1,0 +1,27 @@
+export interface NavigationItem {
+  label: string;
+  href: string;
+}
+
+export const GLOBAL_NAV_ITEMS: NavigationItem[] = [
+  {
+    label: "fonts",
+    href: "/fonts",
+  },
+  {
+    label: "Studios",
+    href: "/studios",
+  },
+  {
+    label: "About",
+    href: "/about",
+  },
+  {
+    label: "FAQ",
+    href: "/faq",
+  },
+  {
+    label: "Contact",
+    href: "/contact",
+  },
+];

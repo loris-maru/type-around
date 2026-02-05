@@ -1,33 +1,10 @@
 "use client";
 
-import { NavigationItem } from "@/types/Global";
 import { SignedOut } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { RiSearchLine } from "react-icons/ri";
-
-const NAV_ITEMS: NavigationItem[] = [
-  {
-    label: "fonts",
-    href: "/fonts",
-  },
-  {
-    label: "Studios",
-    href: "/studios",
-  },
-  {
-    label: "About",
-    href: "/about",
-  },
-  {
-    label: "FAQ",
-    href: "/faq",
-  },
-  {
-    label: "Contact",
-    href: "/contact",
-  },
-];
+import { GLOBAL_NAV_ITEMS } from "@/constant/GLOBAL_NAV_ITEMS";
 
 export default function Navigation() {
   const sectionStyle = {
@@ -54,7 +31,7 @@ export default function Navigation() {
           className="bg-light-gray font-whisper flex flex-row gap-x-6 px-6 pb-2 pt-5 text-base font-normal text-black"
           style={sectionStyle}
         >
-          {NAV_ITEMS.map((item) => (
+          {GLOBAL_NAV_ITEMS.map((item) => (
             <Link
               key={item.href}
               href={item.href}

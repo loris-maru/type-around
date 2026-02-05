@@ -27,13 +27,29 @@ export const GradientSchema = z.object({
 });
 
 export const FontSchema = z.object({
-  price: z.number().min(0),
-  text: z.string(),
-  fullName: z.string(),
-  name: z.string(),
+  id: z.string(),
+  styleName: z.string(),
   weight: z.number(),
-  style: z.string(),
+  width: z.number().default(100),
+  isItalic: z.boolean().default(false),
+  printPrice: z.number().min(0).default(0),
+  webPrice: z.number().min(0).default(0),
+  file: z.string().default(""),
+  // Legacy fields for backwards compatibility
+  price: z.number().min(0).optional(),
+  text: z.string().optional(),
+  fullName: z.string().optional(),
+  name: z.string().optional(),
+  style: z.string().optional(),
 });
+
+export const TypefaceStatusEnum = z.enum([
+  "in progress",
+  "complete",
+]);
+export type TypefaceStatus = z.infer<
+  typeof TypefaceStatusEnum
+>;
 
 export const StudioTypefaceSchema = z.object({
   id: z.string(),
@@ -48,6 +64,14 @@ export const StudioTypefaceSchema = z.object({
   releaseDate: z.string(),
   studio: z.string(),
   gradient: z.string().optional(),
+  status: TypefaceStatusEnum.default("in progress"),
+  published: z.boolean().default(false),
+  // New fields
+  supportedLanguages: z.array(z.string()).default([]),
+  headerImage: z.string().default(""),
+  specimen: z.string().default(""),
+  eula: z.string().default(""),
+  variableFontFile: z.string().default(""),
 });
 
 export const StudioSchema = z.object({

@@ -1,0 +1,47 @@
+"use client";
+
+interface FormTextareaProps {
+  label: string;
+  name: string;
+  value: string;
+  onChange: (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => void;
+  rows?: number;
+  required?: boolean;
+  placeholder?: string;
+}
+
+export default function FormTextarea({
+  label,
+  name,
+  value,
+  onChange,
+  rows = 4,
+  required = false,
+  placeholder,
+}: FormTextareaProps) {
+  return (
+    <div>
+      <label
+        htmlFor={name}
+        className="block text-sm font-medium text-neutral-700 mb-1"
+      >
+        {label}
+        {required && (
+          <span className="text-red-500"> *</span>
+        )}
+      </label>
+      <textarea
+        id={name}
+        name={name}
+        value={value}
+        onChange={onChange}
+        rows={rows}
+        required={required}
+        placeholder={placeholder}
+        className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent resize-none"
+      />
+    </div>
+  );
+}

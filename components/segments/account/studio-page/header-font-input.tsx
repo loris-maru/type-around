@@ -12,6 +12,10 @@ import {
   RiCloseLine,
   RiFileTextLine,
 } from "react-icons/ri";
+import {
+  ACCEPTED_FONT_FORMATS,
+  ACCEPTED_FONT_FORMATS_STRING,
+} from "@/constant/ACCEPTED_FONT_FORMATS";
 
 type FontFile = {
   name: string;
@@ -19,12 +23,6 @@ type FontFile = {
   file: File;
 };
 
-const ACCEPTED_FORMATS = [
-  ".woff",
-  ".woff2",
-  ".otf",
-  ".ttf",
-];
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 export default function HeaderFontInput() {
@@ -37,8 +35,8 @@ export default function HeaderFontInput() {
 
   const validateFile = (file: File): string | null => {
     const extension = `.${file.name.split(".").pop()?.toLowerCase()}`;
-    if (!ACCEPTED_FORMATS.includes(extension)) {
-      return `Invalid format. Accepted: ${ACCEPTED_FORMATS.join(", ")}`;
+    if (!ACCEPTED_FONT_FORMATS.includes(extension)) {
+      return `Invalid format. Accepted: ${ACCEPTED_FONT_FORMATS.join(", ")}`;
     }
     if (file.size > MAX_FILE_SIZE) {
       return "File size exceeds 5MB limit";
@@ -123,7 +121,7 @@ export default function HeaderFontInput() {
           onDrop={handleDrop}
           onClick={() => inputRef.current?.click()}
           className={cn(
-            "w-full px-6 py-8 border-[2px] border-dashed rounded-lg cursor-pointer",
+            "w-full px-6 py-8 border-2 border-dashed rounded-lg cursor-pointer",
             "transition-colors flex flex-col items-center justify-center gap-3",
             isDragging
               ? "border-black bg-neutral-100"
@@ -148,7 +146,7 @@ export default function HeaderFontInput() {
             </p>
           </div>
           <p className="text-xs text-neutral-400">
-            {ACCEPTED_FORMATS.join(", ")} (max 5MB)
+            {ACCEPTED_FONT_FORMATS.join(", ")} (max 5MB)
           </p>
         </div>
       ) : (
@@ -185,7 +183,7 @@ export default function HeaderFontInput() {
       <input
         ref={inputRef}
         type="file"
-        accept={ACCEPTED_FORMATS.join(",")}
+        accept={ACCEPTED_FONT_FORMATS_STRING}
         onChange={handleInputChange}
         className="hidden"
       />

@@ -23,6 +23,55 @@ import {
 const COLLECTION_NAME = "studios";
 
 /**
+ * Apply default values to fonts for backwards compatibility
+ */
+function normalizeFonts(fonts: unknown[]): unknown[] {
+  return fonts.map((font) => {
+    if (typeof font === "object" && font !== null) {
+      const f = font as Record<string, unknown>;
+      return {
+        ...font,
+        id: f.id ?? crypto.randomUUID(),
+        styleName: f.styleName ?? f.name ?? "",
+        width: f.width ?? 100,
+        isItalic: f.isItalic ?? false,
+        printPrice: f.printPrice ?? f.price ?? 0,
+        webPrice: f.webPrice ?? 0,
+        file: f.file ?? "",
+      };
+    }
+    return font;
+  });
+}
+
+/**
+ * Apply default values to typefaces for backwards compatibility
+ */
+function normalizeTypefaces(
+  typefaces: unknown[]
+): unknown[] {
+  return typefaces.map((typeface) => {
+    if (typeof typeface === "object" && typeface !== null) {
+      const t = typeface as Record<string, unknown>;
+      return {
+        ...typeface,
+        status: t.status ?? "in progress",
+        published: t.published ?? false,
+        supportedLanguages: t.supportedLanguages ?? [],
+        headerImage: t.headerImage ?? "",
+        specimen: t.specimen ?? "",
+        eula: t.eula ?? "",
+        variableFontFile: t.variableFontFile ?? "",
+        fonts: Array.isArray(t.fonts)
+          ? normalizeFonts(t.fonts)
+          : [],
+      };
+    }
+    return typeface;
+  });
+}
+
+/**
  * Get a studio by ID
  */
 export async function getStudioById(
@@ -32,7 +81,15 @@ export async function getStudioById(
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    const data = { id: docSnap.id, ...docSnap.data() };
+    const rawData = docSnap.data();
+    // Normalize typefaces to add default values for new fields
+    const data = {
+      id: docSnap.id,
+      ...rawData,
+      typefaces: rawData.typefaces
+        ? normalizeTypefaces(rawData.typefaces)
+        : [],
+    };
     // Validate with Zod
     const result = StudioSchema.safeParse(data);
     if (result.success) {
@@ -59,7 +116,15 @@ export async function getStudioByEmail(
 
   if (!querySnapshot.empty) {
     const docData = querySnapshot.docs[0];
-    const data = { id: docData.id, ...docData.data() };
+    const rawData = docData.data();
+    // Normalize typefaces to add default values for new fields
+    const data = {
+      id: docData.id,
+      ...rawData,
+      typefaces: rawData.typefaces
+        ? normalizeTypefaces(rawData.typefaces)
+        : [],
+    };
     const result = StudioSchema.safeParse(data);
     if (result.success) {
       return result.data;
@@ -190,6 +255,25 @@ export async function removeStudioTypeface(
 
   const updatedTypefaces = studio.typefaces.filter(
     (t) => t.id !== typefaceId
+  );
+  await updateStudio(studioId, {
+    typefaces: updatedTypefaces,
+  });
+}
+
+/**
+ * Update a typeface in the studio
+ */
+export async function updateStudioTypeface(
+  studioId: string,
+  typefaceId: string,
+  updates: Partial<StudioTypeface>
+): Promise<void> {
+  const studio = await getStudioById(studioId);
+  if (!studio) throw new Error("Studio not found");
+
+  const updatedTypefaces = studio.typefaces.map((t) =>
+    t.id === typefaceId ? { ...t, ...updates } : t
   );
   await updateStudio(studioId, {
     typefaces: updatedTypefaces,
