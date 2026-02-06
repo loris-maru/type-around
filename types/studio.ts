@@ -7,6 +7,28 @@ export const DesignerSchema = z.object({
   lastName: z.string().min(1, "Last name is required"),
 });
 
+// Studio member roles
+export const MemberRoleEnum = z.enum([
+  "owner",
+  "admin",
+  "editor",
+]);
+export type MemberRole = z.infer<typeof MemberRoleEnum>;
+
+// Studio member schema (Clerk users with access to the studio)
+export const StudioMemberSchema = z.object({
+  id: z.string(), // Clerk user ID
+  email: z.string().email(),
+  firstName: z.string().default(""),
+  lastName: z.string().default(""),
+  imageUrl: z.string().default(""),
+  role: MemberRoleEnum.default("editor"),
+  addedAt: z.string(), // ISO date string
+});
+export type StudioMember = z.infer<
+  typeof StudioMemberSchema
+>;
+
 export const SocialMediaSchema = z.object({
   name: z.string().min(1, "Name is required"),
   url: z.string().url("Must be a valid URL"),
@@ -118,6 +140,8 @@ export const StudioSchema = z.object({
   fontsInUse: z.array(FontInUseSchema).default([]),
   // Stripe Connect
   stripeAccountId: z.string().optional().default(""),
+  // Team members with access to the studio
+  members: z.array(StudioMemberSchema).default([]),
 });
 
 // Inferred Types from Zod schemas
@@ -191,4 +215,5 @@ export const DEFAULT_STUDIO: Omit<
   typefaces: [],
   fontsInUse: [],
   stripeAccountId: "",
+  members: [],
 };

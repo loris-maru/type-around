@@ -1,9 +1,12 @@
 "use client";
 
-import { SignedOut } from "@clerk/nextjs";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { RiSearchLine } from "react-icons/ri";
+import {
+  RiGalleryView,
+  RiSearchLine,
+} from "react-icons/ri";
 import { GLOBAL_NAV_ITEMS } from "@/constant/GLOBAL_NAV_ITEMS";
 
 export default function Navigation() {
@@ -62,11 +65,23 @@ export default function Navigation() {
               href="/sign-in"
               className="font-whisper text-base font-normal text-black px-5 pb-2 pt-5 bg-light-gray"
               style={sectionStyle}
+              aria-label="Login"
             >
               Login
             </Link>
           </SignedOut>
         )}
+
+        <SignedIn>
+          <Link
+            href="/account"
+            aria-label="to Account"
+            className="font-whisper text-base font-normal text-black px-5 pb-2 pt-5 bg-light-gray"
+            style={sectionStyle}
+          >
+            <RiGalleryView className="w-5 h-5" />
+          </Link>
+        </SignedIn>
       </div>
     </nav>
   );

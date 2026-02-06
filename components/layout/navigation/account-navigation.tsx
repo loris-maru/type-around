@@ -6,7 +6,11 @@ import {
   useRouter,
   usePathname,
 } from "next/navigation";
-import { RiArrowDownSLine } from "react-icons/ri";
+import { SignOutButton } from "@clerk/nextjs";
+import {
+  RiArrowDownSLine,
+  RiLogoutBoxLine,
+} from "react-icons/ri";
 import { cn } from "@/utils/class-names";
 import { slugify } from "@/utils/slugify";
 import { useStudio } from "@/hooks/use-studio";
@@ -245,6 +249,19 @@ export default function AccountNavigation() {
             </div>
           );
         })}
+      </div>
+
+      {/* Logout Button */}
+      <div className="mt-4">
+        <SignOutButton redirectUrl="/">
+          <button
+            type="button"
+            className="w-full flex items-center gap-2 text-base font-whisper text-black transition-colors cursor-pointer"
+          >
+            <RiLogoutBoxLine className="w-4 h-4" />
+            Log-out
+          </button>
+        </SignOutButton>
       </div>
     </div>
   );

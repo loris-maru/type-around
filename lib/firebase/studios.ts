@@ -314,3 +314,74 @@ export async function updateStudioStripeAccountId(
 ): Promise<void> {
   await updateStudio(studioId, { stripeAccountId });
 }
+
+/**
+ * Get all studios where user is owner or member
+ */
+export async function getStudiosByUserEmail(
+  email: string
+): Promise<Studio[]> {
+  const studios: Studio[] = [];
+
+  // Query for studios where user is owner
+  const ownerQuery = query(
+    collection(db, COLLECTION_NAME),
+    where("ownerEmail", "==", email)
+  );
+  const ownerSnapshot = await getDocs(ownerQuery);
+
+  for (const docData of ownerSnapshot.docs) {
+    const rawData = docData.data();
+    const data = {
+      id: docData.id,
+      ...rawData,
+      typefaces: rawData.typefaces
+        ? normalizeTypefaces(rawData.typefaces)
+        : [],
+    };
+    const result = StudioSchema.safeParse(data);
+    if (result.success) {
+      studios.push(result.data);
+    } else {
+      studios.push(data as Studio);
+    }
+  }
+
+  // Query for all studios and filter for membership
+  // (Firestore doesn't support array-contains on nested objects directly)
+  const allStudiosQuery = query(
+    collection(db, COLLECTION_NAME)
+  );
+  const allSnapshot = await getDocs(allStudiosQuery);
+
+  for (const docData of allSnapshot.docs) {
+    // Skip if already added as owner
+    if (studios.some((s) => s.id === docData.id)) continue;
+
+    const rawData = docData.data();
+    const members = rawData.members || [];
+
+    // Check if user is a member
+    const isMember = members.some(
+      (m: { email?: string }) => m.email === email
+    );
+
+    if (isMember) {
+      const data = {
+        id: docData.id,
+        ...rawData,
+        typefaces: rawData.typefaces
+          ? normalizeTypefaces(rawData.typefaces)
+          : [],
+      };
+      const result = StudioSchema.safeParse(data);
+      if (result.success) {
+        studios.push(result.data);
+      } else {
+        studios.push(data as Studio);
+      }
+    }
+  }
+
+  return studios;
+}
