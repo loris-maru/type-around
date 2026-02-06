@@ -9,15 +9,17 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { db } from "./config";
-import {
+import type {
   Studio,
+  StudioTypeface,
+  SocialMedia,
+} from "@/types/studio";
+import {
   StudioSchema,
   CreateStudioSchema,
   UpdateStudioInfoSchema,
   UpdateStudioPageSchema,
   DEFAULT_STUDIO,
-  StudioTypeface,
-  SocialMedia,
 } from "@/types/studio";
 
 const COLLECTION_NAME = "studios";
@@ -183,8 +185,14 @@ export async function updateStudioInformation(
     location?: string;
     foundedIn?: string;
     contactEmail?: string;
-    designers?: { firstName: string; lastName: string }[];
+    designers?: {
+      id: string;
+      firstName: string;
+      lastName: string;
+    }[];
     website?: string;
+    thumbnail?: string;
+    avatar?: string;
   }
 ): Promise<void> {
   // Validate with Zod
@@ -215,6 +223,7 @@ export async function updateStudioPage(
   id: string,
   data: {
     headerFont?: string;
+    heroCharacter?: string;
     gradient?: { from: string; to: string };
   }
 ): Promise<void> {
@@ -294,4 +303,14 @@ export async function getOrCreateStudio(
   }
 
   return studio;
+}
+
+/**
+ * Update studio Stripe account ID
+ */
+export async function updateStudioStripeAccountId(
+  studioId: string,
+  stripeAccountId: string
+): Promise<void> {
+  await updateStudio(studioId, { stripeAccountId });
 }

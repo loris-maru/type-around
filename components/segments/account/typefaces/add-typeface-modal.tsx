@@ -5,15 +5,7 @@ import { RiCloseLine } from "react-icons/ri";
 import { Studio, StudioTypeface } from "@/types/studio";
 import { generateUUID } from "@/utils/generate-uuid";
 import { slugify } from "@/utils/slugify";
-import { TYPEFACE_CATEGORIES } from "@/constant/TYPEFACE_CATEGORIES";
-import MultiSelectDropdown from "@/components/global/multi-select-dropdown";
-
-const CATEGORY_OPTIONS = TYPEFACE_CATEGORIES.map(
-  (category) => ({
-    value: category,
-    label: category,
-  })
-);
+import TagInput from "@/components/global/tag-input";
 
 export type AddTypefaceModalProps = {
   isOpen: boolean;
@@ -99,6 +91,7 @@ export default function AddTypefaceModal({
         published: false,
         supportedLanguages: [],
         headerImage: "",
+        heroLetter: "",
         specimen: "",
         eula: "",
         variableFontFile: "",
@@ -219,12 +212,11 @@ export default function AddTypefaceModal({
           </div>
 
           {/* Categories */}
-          <MultiSelectDropdown
+          <TagInput
             label="Categories"
-            options={CATEGORY_OPTIONS}
             value={formData.categories}
             onChange={handleCategoriesChange}
-            placeholder="Select categories..."
+            placeholder="Type a category and press Enter..."
           />
 
           {/* Release Date */}

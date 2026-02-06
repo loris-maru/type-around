@@ -2,14 +2,10 @@
 
 import { RiSaveLine } from "react-icons/ri";
 import { motion, AnimatePresence } from "motion/react";
-
-interface TypefaceDetailHeaderProps {
-  hasChanges: boolean;
-  isSaving: boolean;
-  onSave: () => void;
-}
+import { TypefaceDetailHeaderProps } from "@/types/components";
 
 export default function TypefaceDetailHeader({
+  typefaceName,
   hasChanges,
   isSaving,
   onSave,
@@ -17,8 +13,8 @@ export default function TypefaceDetailHeader({
   return (
     <>
       <div className="mb-8">
-        <h1 className="font-ortank text-2xl font-bold">
-          Edit Typeface
+        <h1 className="font-ortank text-3xl font-bold">
+          Type family: {typefaceName}
         </h1>
       </div>
 

@@ -11,8 +11,7 @@ import EmblaCarousel, {
 } from "embla-carousel";
 import FontsInUseCard from "@/components/molecules/cards/fonts-in-use";
 import { FONTS_IN_USE } from "@/mock-data/fonts-in-use";
-
-const CARDS_PER_VIEW = 3;
+import { FONTS_IN_USE_CARDS_PER_VIEW } from "@/constant/UI_LAYOUT";
 
 export default function FontsInUseList() {
   const [emblaRef, setEmblaRef] =
@@ -26,7 +25,7 @@ export default function FontsInUseList() {
     if (!emblaRef) return;
 
     const embla = EmblaCarousel(emblaRef, {
-      slidesToScroll: CARDS_PER_VIEW,
+      slidesToScroll: FONTS_IN_USE_CARDS_PER_VIEW,
       align: "start",
       containScroll: "trimSnaps",
     });
@@ -54,7 +53,7 @@ export default function FontsInUseList() {
   }, []);
 
   const totalPages = Math.ceil(
-    FONTS_IN_USE.length / CARDS_PER_VIEW
+    FONTS_IN_USE.length / FONTS_IN_USE_CARDS_PER_VIEW
   );
 
   return (
@@ -87,7 +86,8 @@ export default function FontsInUseList() {
           <div className="relative w-full flex flex-row justify-center items-center gap-2 mt-8">
             {Array.from({ length: totalPages }).map(
               (_, index) => {
-                const slideIndex = index * CARDS_PER_VIEW;
+                const slideIndex =
+                  index * FONTS_IN_USE_CARDS_PER_VIEW;
                 return (
                   <button
                     key={index}
@@ -97,7 +97,8 @@ export default function FontsInUseList() {
                     className={`w-8 h-2 rounded-lg transition-all duration-300 ${
                       selectedIndex >= slideIndex &&
                       selectedIndex <
-                        slideIndex + CARDS_PER_VIEW
+                        slideIndex +
+                          FONTS_IN_USE_CARDS_PER_VIEW
                         ? "bg-black"
                         : "bg-neutral-300 hover:bg-neutral-400"
                     }`}

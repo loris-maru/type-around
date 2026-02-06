@@ -1,11 +1,7 @@
 "use client";
 
 import { ReactLenis } from "lenis/react";
-import { ReactNode } from "react";
-
-interface SmoothScrollProviderProps {
-  children: ReactNode;
-}
+import { SmoothScrollProviderProps } from "@/types/components";
 
 export default function SmoothScrollProvider({
   children,

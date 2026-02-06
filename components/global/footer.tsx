@@ -15,7 +15,7 @@ export default function Footer() {
             <Link
               key={link.body}
               href={link.href}
-              className="w-[400px] p-5 rounded-lg border border-neutral-300 text-black bg-light-gray transition-all duration-300 ease-in-out hover:bg-light-gray hover:text-white"
+              className="w-[400px] p-5 rounded-lg border border-neutral-300 text-black bg-transparent transition-all duration-300 ease-in-out"
             >
               <div className="text-base font-whisper text-black">
                 {link.label}

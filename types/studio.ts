@@ -2,6 +2,7 @@ import { z } from "zod";
 
 // Zod Schemas
 export const DesignerSchema = z.object({
+  id: z.string().optional().default(""),
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
 });
@@ -34,7 +35,8 @@ export const FontSchema = z.object({
   isItalic: z.boolean().default(false),
   printPrice: z.number().min(0).default(0),
   webPrice: z.number().min(0).default(0),
-  file: z.string().default(""),
+  file: z.string().default(""), // Type tester file (woff2)
+  salesFiles: z.array(z.string()).default([]), // Files for purchase (woff2, woff, ttf, otf)
   // Legacy fields for backwards compatibility
   price: z.number().min(0).optional(),
   text: z.string().optional(),
@@ -69,9 +71,26 @@ export const StudioTypefaceSchema = z.object({
   // New fields
   supportedLanguages: z.array(z.string()).default([]),
   headerImage: z.string().default(""),
+  heroLetter: z.string().default(""),
   specimen: z.string().default(""),
   eula: z.string().default(""),
   variableFontFile: z.string().default(""),
+});
+
+export const FontInUseSchema = z.object({
+  id: z.string(),
+  images: z
+    .array(z.string())
+    .min(1, "At least one image is required"),
+  projectName: z
+    .string()
+    .min(1, "Project name is required"),
+  designerName: z
+    .string()
+    .min(1, "Designer name is required"),
+  typefaceId: z.string().min(1, "Typeface is required"),
+  typefaceName: z.string().default(""),
+  description: z.string().default(""),
 });
 
 export const StudioSchema = z.object({
@@ -89,10 +108,16 @@ export const StudioSchema = z.object({
     .string()
     .url("Must be a valid URL")
     .or(z.literal("")),
+  thumbnail: z.string().default(""),
+  avatar: z.string().default(""),
   socialMedia: z.array(SocialMediaSchema),
   headerFont: z.string(),
+  heroCharacter: z.string().default(""),
   gradient: GradientSchema,
   typefaces: z.array(StudioTypefaceSchema),
+  fontsInUse: z.array(FontInUseSchema).default([]),
+  // Stripe Connect
+  stripeAccountId: z.string().optional().default(""),
 });
 
 // Inferred Types from Zod schemas
@@ -103,6 +128,7 @@ export type Font = z.infer<typeof FontSchema>;
 export type StudioTypeface = z.infer<
   typeof StudioTypefaceSchema
 >;
+export type FontInUse = z.infer<typeof FontInUseSchema>;
 export type Studio = z.infer<typeof StudioSchema>;
 
 // Schema for creating a new studio (without id)
@@ -125,6 +151,8 @@ export const UpdateStudioInfoSchema = z.object({
     .optional(),
   designers: z.array(DesignerSchema).optional(),
   website: z.string().url().or(z.literal("")).optional(),
+  thumbnail: z.string().optional(),
+  avatar: z.string().optional(),
 });
 export type UpdateStudioInfo = z.infer<
   typeof UpdateStudioInfoSchema
@@ -133,6 +161,7 @@ export type UpdateStudioInfo = z.infer<
 // Schema for updating studio page design
 export const UpdateStudioPageSchema = z.object({
   headerFont: z.string().optional(),
+  heroCharacter: z.string().optional(),
   gradient: GradientSchema.optional(),
 });
 export type UpdateStudioPage = z.infer<
@@ -150,11 +179,16 @@ export const DEFAULT_STUDIO: Omit<
   contactEmail: "",
   designers: [],
   website: "",
+  thumbnail: "",
+  avatar: "",
   socialMedia: [],
   headerFont: "",
+  heroCharacter: "",
   gradient: {
     from: "#FFF8E8",
     to: "#F2F2F2",
   },
   typefaces: [],
+  fontsInUse: [],
+  stripeAccountId: "",
 };

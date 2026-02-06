@@ -4,15 +4,7 @@ import { useState } from "react";
 import { RiArrowDownSLine } from "react-icons/ri";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/utils/class-names";
-
-interface CollapsibleSectionProps {
-  id: string;
-  title: string;
-  count?: number;
-  countLabel?: string;
-  children: React.ReactNode;
-  defaultOpen?: boolean;
-}
+import { CollapsibleSectionProps } from "@/types/components";
 
 export default function CollapsibleSection({
   id,

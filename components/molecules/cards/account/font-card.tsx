@@ -1,13 +1,7 @@
 "use client";
 
 import { RiDeleteBinLine } from "react-icons/ri";
-import { Font } from "@/types/studio";
-
-interface FontCardProps {
-  font: Font;
-  onRemove: (fontId: string) => void;
-  onEdit: (font: Font) => void;
-}
+import { FontCardProps } from "@/types/components";
 
 export default function FontCard({
   font,

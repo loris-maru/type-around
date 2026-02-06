@@ -2,17 +2,12 @@
 
 import FileDropZone from "@/components/global/file-drop-zone";
 import CollapsibleSection from "@/components/global/collapsible-section";
-
-interface FilesAssetsSectionProps {
-  headerImage: string;
-  specimen: string;
-  eula: string;
-  variableFontFile: string;
-  onFileChange: (field: string) => (value: string) => void;
-}
+import { FilesAssetsSectionProps } from "@/types/components";
 
 export default function FilesAssetsSection({
+  studioId,
   headerImage,
+  heroLetter,
   specimen,
   eula,
   variableFontFile,
@@ -31,7 +26,22 @@ export default function FilesAssetsSection({
           onChange={onFileChange("headerImage")}
           description=".jpg, .png, .webp, .svg"
           icon="image"
+          studioId={studioId}
+          folder="images"
         />
+
+        <div>
+          <FileDropZone
+            label="Single hero letter (SVG)"
+            accept=".svg"
+            value={heroLetter}
+            onChange={onFileChange("heroLetter")}
+            description="Put a SVG of your typeface favorite letter. This will be used with an effect."
+            icon="image"
+            studioId={studioId}
+            folder="icons"
+          />
+        </div>
 
         <FileDropZone
           label="Specimen (PDF)"
@@ -39,6 +49,8 @@ export default function FilesAssetsSection({
           value={specimen}
           onChange={onFileChange("specimen")}
           description=".pdf"
+          studioId={studioId}
+          folder="documents"
         />
 
         <FileDropZone
@@ -47,6 +59,8 @@ export default function FilesAssetsSection({
           value={eula}
           onChange={onFileChange("eula")}
           description=".pdf"
+          studioId={studioId}
+          folder="documents"
         />
 
         <FileDropZone
@@ -55,6 +69,8 @@ export default function FilesAssetsSection({
           value={variableFontFile}
           onChange={onFileChange("variableFontFile")}
           description=".ttf, .otf, .woff, .woff2"
+          studioId={studioId}
+          folder="fonts"
         />
       </div>
     </CollapsibleSection>

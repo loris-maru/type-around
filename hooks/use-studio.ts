@@ -17,6 +17,7 @@ import {
   addStudioTypeface,
   removeStudioTypeface,
   updateStudioTypeface,
+  updateStudio as updateStudioFirebase,
 } from "@/lib/firebase/studios";
 
 export function useStudio() {
@@ -92,8 +93,14 @@ export function useStudio() {
       location?: string;
       foundedIn?: string;
       contactEmail?: string;
-      designers?: { firstName: string; lastName: string }[];
+      designers?: {
+        id: string;
+        firstName: string;
+        lastName: string;
+      }[];
       website?: string;
+      thumbnail?: string;
+      avatar?: string;
     }) => {
       if (!studio) throw new Error("No studio loaded");
 
@@ -143,6 +150,7 @@ export function useStudio() {
   const updateStudioPageSettings = useCallback(
     async (data: {
       headerFont?: string;
+      heroCharacter?: string;
       gradient?: { from: string; to: string };
     }) => {
       if (!studio) throw new Error("No studio loaded");
@@ -258,6 +266,30 @@ export function useStudio() {
     [studio]
   );
 
+  // Generic update studio method
+  const updateStudio = useCallback(
+    async (
+      data: Partial<Omit<Studio, "id" | "ownerEmail">>
+    ) => {
+      if (!studio) throw new Error("No studio loaded");
+
+      try {
+        await updateStudioFirebase(studio.id, data);
+        setStudio((prev) =>
+          prev ? { ...prev, ...data } : null
+        );
+      } catch (err) {
+        setError(
+          err instanceof Error
+            ? err
+            : new Error("Failed to update studio")
+        );
+        throw err;
+      }
+    },
+    [studio]
+  );
+
   return {
     studio,
     isLoading,
@@ -268,5 +300,6 @@ export function useStudio() {
     addTypeface,
     removeTypeface,
     updateTypeface,
+    updateStudio,
   };
 }

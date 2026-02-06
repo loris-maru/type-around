@@ -1,8 +1,4 @@
-interface SectionTitleProps {
-  title: string;
-  count?: number;
-  countLabel?: string;
-}
+import { SectionTitleProps } from "@/types/components";
 
 export default function SectionTitle({
   title,

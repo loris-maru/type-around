@@ -1,0 +1,65 @@
+---
+description: Project conventions for constants and type declarations
+alwaysApply: true
+---
+
+# Project Conventions
+
+## Constants Location
+
+All hardcoded constant content must be placed in the `constant/` folder at the project root.
+
+```typescript
+// ❌ BAD - Constants defined inline in components
+const CATEGORIES = ["Sans Serif", "Serif", "Display"];
+const NAV_ITEMS = [{ name: "Home", path: "/" }];
+
+// ✅ GOOD - Import from constant folder
+import { TYPEFACE_CATEGORIES } from "@/constant/TYPEFACE_CATEGORIES";
+import { NAV_ITEMS } from "@/constant/NAV_ITEMS";
+```
+
+### Naming Convention
+
+- Use SCREAMING_SNAKE_CASE for constant names
+- File name should match the exported constant name
+- One constant per file (or related group)
+
+```
+constant/
+  TYPEFACE_CATEGORIES.ts
+  NAV_ITEMS.ts
+  SUPPORTED_LANGUAGES.ts
+  ACCEPTED_FONT_FORMATS.ts
+```
+
+## Type Declarations
+
+Always use `type` instead of `interface` for type declarations. All types should be in the `types/` folder.
+
+```typescript
+// ❌ BAD - Using interface
+interface User {
+  id: string;
+  name: string;
+}
+
+// ✅ GOOD - Using type
+type User = {
+  id: string;
+  name: string;
+};
+```
+
+### Type Location
+
+- Global/shared types go in `types/` folder
+- Component-specific types can be defined in the same file
+
+```
+types/
+  studio.ts
+  typefaces.ts
+  cart.ts
+  index.ts  // barrel export
+```

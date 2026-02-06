@@ -1,16 +1,9 @@
 "use client";
 
 import { RiAddFill } from "react-icons/ri";
-import { Font } from "@/types/studio";
 import CollapsibleSection from "@/components/global/collapsible-section";
 import { FontCard } from "@/components/molecules/cards/account";
-
-interface FontsListSectionProps {
-  fonts: Font[];
-  onRemoveFont: (fontId: string) => void;
-  onEditFont: (font: Font) => void;
-  onAddFontClick: () => void;
-}
+import { FontsListSectionProps } from "@/types/components";
 
 export default function FontsListSection({
   fonts,

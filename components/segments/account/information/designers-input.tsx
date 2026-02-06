@@ -6,12 +6,7 @@ import {
   RiCloseLine,
   RiArrowDownSLine,
 } from "react-icons/ri";
-
-type Designer = {
-  id: string;
-  firstName: string;
-  lastName: string;
-};
+import { Designer } from "@/types/studio";
 
 // Mock data - replace with actual data from your backend
 const EXISTING_DESIGNERS: Designer[] = [];
@@ -111,7 +106,7 @@ export default function DesignersInput() {
         <button
           type="button"
           onClick={() => setIsFormOpen(true)}
-          className="w-full px-6 py-5 border border-dashed border-neutral-300 bg-neutral-50 hover:bg-neutral-100 transition-colors flex items-center justify-center gap-2 text-neutral-500 font-whisper"
+          className="w-full px-6 py-5 border border-neutral-300 rounded-4xl transition-colors flex items-center justify-center gap-2 text-black font-whisper cursor-pointer"
         >
           <RiAddFill className="w-5 h-5" />
           Add a designer

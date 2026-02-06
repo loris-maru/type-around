@@ -10,33 +10,31 @@ import {
 import {
   RiUploadCloud2Line,
   RiCloseLine,
-  RiFileTextLine,
   RiLoader4Line,
 } from "react-icons/ri";
-import {
-  ACCEPTED_FONT_FORMATS,
-  ACCEPTED_FONT_FORMATS_STRING,
-} from "@/constant/ACCEPTED_FONT_FORMATS";
-import { MAX_FONT_FILE_SIZE } from "@/constant/FILE_UPLOAD_LIMITS";
 import { uploadFile } from "@/lib/firebase/storage";
 import { useStudio } from "@/hooks/use-studio";
+import {
+  MAX_SVG_FILE_SIZE,
+  ACCEPTED_SVG_FORMATS,
+} from "@/constant/FILE_UPLOAD_LIMITS";
 
-export default function HeaderFontInput() {
+export default function HeroCharacterInput() {
   const { studio, updateStudioPageSettings } = useStudio();
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const currentValue = studio?.headerFont || "";
+  const currentValue = studio?.heroCharacter || "";
 
   const validateFile = (file: File): string | null => {
     const extension = `.${file.name.split(".").pop()?.toLowerCase()}`;
-    if (!ACCEPTED_FONT_FORMATS.includes(extension)) {
-      return `Invalid format. Accepted: ${ACCEPTED_FONT_FORMATS.join(", ")}`;
+    if (!ACCEPTED_SVG_FORMATS.includes(extension)) {
+      return "Invalid format. Only SVG files are accepted.";
     }
-    if (file.size > MAX_FONT_FILE_SIZE) {
-      return "File size exceeds 5MB limit";
+    if (file.size > MAX_SVG_FILE_SIZE) {
+      return "File size exceeds 2MB limit";
     }
     return null;
   };
@@ -59,12 +57,14 @@ export default function HeaderFontInput() {
     try {
       const url = await uploadFile(
         file,
-        "fonts",
+        "icons",
         studio.id
       );
-      await updateStudioPageSettings({ headerFont: url });
+      await updateStudioPageSettings({
+        heroCharacter: url,
+      });
     } catch (err) {
-      setError("Failed to upload font");
+      setError("Failed to upload SVG");
       console.error("Upload error:", err);
     } finally {
       setIsUploading(false);
@@ -108,9 +108,9 @@ export default function HeaderFontInput() {
   const handleRemoveFile = async () => {
     setError(null);
     try {
-      await updateStudioPageSettings({ headerFont: "" });
+      await updateStudioPageSettings({ heroCharacter: "" });
     } catch {
-      setError("Failed to remove font");
+      setError("Failed to remove file");
     }
     if (inputRef.current) {
       inputRef.current.value = "";
@@ -127,7 +127,7 @@ export default function HeaderFontInput() {
   return (
     <div className="relative w-full">
       <label className="text-base font-normal text-neutral-500 mb-2 block">
-        Header Font
+        Single Character
       </label>
 
       {isUploading ? (
@@ -160,8 +160,8 @@ export default function HeaderFontInput() {
           <div className="text-center">
             <p className="font-whisper font-medium text-black">
               {isDragging
-                ? "Drop your font file here"
-                : "Drag & drop your font file"}
+                ? "Drop your SVG file here"
+                : "Drag & drop your SVG file"}
             </p>
             <p className="text-sm text-neutral-500 mt-1">
               or{" "}
@@ -172,14 +172,19 @@ export default function HeaderFontInput() {
             </p>
           </div>
           <p className="text-xs text-neutral-400">
-            {ACCEPTED_FONT_FORMATS.join(", ")} (max 5MB)
+            Upload a SVG with your hero character (max 2MB)
           </p>
         </div>
       ) : (
         <div className="w-full px-4 py-4 border border-neutral-300 bg-white rounded-lg flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-neutral-100 rounded-lg flex items-center justify-center">
-              <RiFileTextLine className="w-5 h-5 text-neutral-600" />
+            <div className="w-10 h-10 bg-neutral-100 rounded-lg flex items-center justify-center overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={currentValue}
+                alt="Preview"
+                className="w-8 h-8 object-contain"
+              />
             </div>
             <div>
               <p className="font-whisper font-medium text-black text-sm truncate max-w-[200px]">
@@ -206,7 +211,7 @@ export default function HeaderFontInput() {
       <input
         ref={inputRef}
         type="file"
-        accept={ACCEPTED_FONT_FORMATS_STRING}
+        accept=".svg"
         onChange={handleInputChange}
         className="hidden"
       />

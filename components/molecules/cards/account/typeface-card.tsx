@@ -1,11 +1,6 @@
 "use client";
 
-import { StudioTypeface } from "@/types/studio";
-
-interface TypefaceCardProps {
-  typeface: StudioTypeface;
-  onClick?: () => void;
-}
+import { TypefaceCardProps } from "@/types/components";
 
 export default function TypefaceCard({
   typeface,

@@ -3,16 +3,10 @@
 import FormInput from "@/components/global/form-input";
 import FormTextarea from "@/components/global/form-textarea";
 import MultiSelectDropdown from "@/components/global/multi-select-dropdown";
+import TagInput from "@/components/global/tag-input";
 import CollapsibleSection from "@/components/global/collapsible-section";
-import { TYPEFACE_CATEGORIES } from "@/constant/TYPEFACE_CATEGORIES";
 import { SUPPORTED_LANGUAGES } from "@/constant/SUPPORTED_LANGUAGES";
-
-const CATEGORY_OPTIONS = TYPEFACE_CATEGORIES.map(
-  (category) => ({
-    value: category,
-    label: category,
-  })
-);
+import { BasicInformationSectionProps } from "@/types/components";
 
 const LANGUAGE_OPTIONS = SUPPORTED_LANGUAGES.map(
   (language) => ({
@@ -20,23 +14,6 @@ const LANGUAGE_OPTIONS = SUPPORTED_LANGUAGES.map(
     label: language,
   })
 );
-
-interface BasicInformationSectionProps {
-  name: string;
-  hangeulName: string;
-  categories: string[];
-  characters: number | string;
-  releaseDate: string;
-  description: string;
-  supportedLanguages: string[];
-  onInputChange: (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement
-    >
-  ) => void;
-  onCategoriesChange: (values: string[]) => void;
-  onLanguagesChange: (values: string[]) => void;
-}
 
 export default function BasicInformationSection({
   name,
@@ -72,12 +49,11 @@ export default function BasicInformationSection({
           />
         </div>
 
-        <MultiSelectDropdown
+        <TagInput
           label="Categories"
-          options={CATEGORY_OPTIONS}
           value={categories}
           onChange={onCategoriesChange}
-          placeholder="Select categories..."
+          placeholder="Type a category and press Enter..."
         />
 
         <div className="grid grid-cols-2 gap-4">

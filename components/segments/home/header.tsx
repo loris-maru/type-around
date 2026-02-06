@@ -2,13 +2,8 @@
 
 import CartoucheHeader from "@/components/molecules/home/cartouche-header";
 import SVGAnimatedText from "@/components/molecules/home/svg-animated-text";
-import { MotionValue } from "motion/react";
 import { motion } from "motion/react";
-
-interface HeaderHomeProps {
-  svgScale: MotionValue<number>;
-  opacity: MotionValue<number>;
-}
+import { HeaderHomeProps } from "@/types/components";
 
 export default function HeaderHome({
   svgScale,

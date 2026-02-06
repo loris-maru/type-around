@@ -29,7 +29,7 @@ export default function SocialMediaNewsletter() {
           <Link
             key={link.name}
             href={link.href}
-            className="flex flex-col gap-2 items-center justify-center rounded-lg border border-neutral-300 py-10 bg-light-gray text-black transition-all duration-300 ease-in-out hover:bg-black hover:text-light-gray"
+            className="flex flex-col gap-2 items-center justify-center rounded-lg border border-neutral-300 py-10 text-xs text-black transition-all duration-300 ease-in-out hover:bg-black hover:text-light-gray"
           >
             <div>{link.icon}</div>
             <div>{link.name}</div>

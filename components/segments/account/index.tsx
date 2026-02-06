@@ -10,8 +10,7 @@ import AccountFontsInUse from "./fonts-in-use";
 import AccountStripe from "./stripe";
 import AccountSettings from "./settings";
 import TypefaceDetail from "./typefaces/typeface-detail";
-
-const DEFAULT_NAV = "about";
+import { DEFAULT_ACCOUNT_NAV } from "@/constant/UI_LAYOUT";
 
 const NAV_COMPONENTS: Record<string, ComponentType> = {
   about: AccountInformation,
@@ -24,16 +23,17 @@ const NAV_COMPONENTS: Record<string, ComponentType> = {
 
 function AccountContent() {
   const searchParams = useSearchParams();
-  const nav = searchParams.get("nav") || DEFAULT_NAV;
+  const nav =
+    searchParams.get("nav") || DEFAULT_ACCOUNT_NAV;
   const typefaceSlug = searchParams.get("typeface");
 
-  // Handle individual typeface view (e.g., ?nav=typefaces&typeface=arvana)
   if (nav === "typefaces" && typefaceSlug) {
     return <TypefaceDetail typefaceSlug={typefaceSlug} />;
   }
 
   const Component =
-    NAV_COMPONENTS[nav] ?? NAV_COMPONENTS[DEFAULT_NAV];
+    NAV_COMPONENTS[nav] ??
+    NAV_COMPONENTS[DEFAULT_ACCOUNT_NAV];
 
   return <Component />;
 }

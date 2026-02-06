@@ -5,28 +5,38 @@ import {
   RiCloseLine,
   RiUploadCloud2Line,
   RiFileTextLine,
+  RiLoader4Line,
+  RiDeleteBinLine,
 } from "react-icons/ri";
 import { Font } from "@/types/studio";
+import {
+  AddFontModalProps,
+  SalesFile,
+} from "@/types/components";
 import { generateUUID } from "@/utils/generate-uuid";
-
-interface AddFontModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSave: (font: Font) => void;
-  editingFont?: Font | null;
-}
+import {
+  uploadFile,
+  uploadMultipleFiles,
+} from "@/lib/firebase/storage";
 
 export default function AddFontModal({
   isOpen,
   onClose,
   onSave,
   editingFont,
+  studioId,
 }: AddFontModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const salesFilesInputRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState<string | null>(
     null
+  );
+  const [pendingFile, setPendingFile] =
+    useState<File | null>(null);
+  const [salesFiles, setSalesFiles] = useState<SalesFile[]>(
+    []
   );
 
   const [formData, setFormData] = useState({
@@ -51,7 +61,29 @@ export default function AddFontModal({
         webPrice: editingFont.webPrice.toString(),
         file: editingFont.file,
       });
-      setFileName(editingFont.file || null);
+      // Extract filename from URL for display
+      const displayName = editingFont.file
+        ? decodeURIComponent(
+            editingFont.file
+              .split("/")
+              .pop()
+              ?.split("?")[0] || ""
+          )
+        : null;
+      setFileName(displayName);
+      setPendingFile(null);
+
+      // Load existing sales files
+      const existingSalesFiles = (
+        editingFont.salesFiles || []
+      ).map((url) => ({
+        id: generateUUID(),
+        name: decodeURIComponent(
+          url.split("/").pop()?.split("?")[0] || ""
+        ),
+        url,
+      }));
+      setSalesFiles(existingSalesFiles);
     } else {
       resetForm();
     }
@@ -73,29 +105,36 @@ export default function AddFontModal({
     }
   };
 
+  const isValidFontFile = (file: File) => {
+    const ext = file.name.toLowerCase();
+    return (
+      ext.endsWith(".otf") ||
+      ext.endsWith(".ttf") ||
+      ext.endsWith(".woff") ||
+      ext.endsWith(".woff2")
+    );
+  };
+
+  const isValidTypeTesterFile = (file: File) => {
+    return file.name.toLowerCase().endsWith(".woff2");
+  };
+
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = e.target.files?.[0];
-    if (file) {
+    if (file && isValidTypeTesterFile(file)) {
       setFileName(file.name);
-      // In a real app, you'd upload to storage and get a URL
-      setFormData((prev) => ({ ...prev, file: file.name }));
+      setPendingFile(file);
     }
   };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     const file = e.dataTransfer.files?.[0];
-    if (
-      file &&
-      (file.name.endsWith(".otf") ||
-        file.name.endsWith(".ttf") ||
-        file.name.endsWith(".woff") ||
-        file.name.endsWith(".woff2"))
-    ) {
+    if (file && isValidTypeTesterFile(file)) {
       setFileName(file.name);
-      setFormData((prev) => ({ ...prev, file: file.name }));
+      setPendingFile(file);
     }
   };
 
@@ -110,7 +149,57 @@ export default function AddFontModal({
       file: "",
     });
     setFileName(null);
+    setPendingFile(null);
+    setSalesFiles([]);
     setError(null);
+  };
+
+  // Sales files handlers
+  const handleSalesFilesChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const validFiles =
+      Array.from(files).filter(isValidFontFile);
+    const newSalesFiles: SalesFile[] = validFiles.map(
+      (file) => ({
+        id: generateUUID(),
+        name: file.name,
+        file,
+      })
+    );
+
+    setSalesFiles((prev) => [...prev, ...newSalesFiles]);
+
+    if (salesFilesInputRef.current) {
+      salesFilesInputRef.current.value = "";
+    }
+  };
+
+  const handleSalesFilesDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    const files = e.dataTransfer.files;
+    if (!files) return;
+
+    const validFiles =
+      Array.from(files).filter(isValidFontFile);
+    const newSalesFiles: SalesFile[] = validFiles.map(
+      (file) => ({
+        id: generateUUID(),
+        name: file.name,
+        file,
+      })
+    );
+
+    setSalesFiles((prev) => [...prev, ...newSalesFiles]);
+  };
+
+  const handleRemoveSalesFile = (id: string) => {
+    setSalesFiles((prev) =>
+      prev.filter((f) => f.id !== id)
+    );
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -119,6 +208,38 @@ export default function AddFontModal({
     setError(null);
 
     try {
+      // Upload new font file if selected
+      let fileUrl = formData.file;
+      if (pendingFile) {
+        fileUrl = await uploadFile(
+          pendingFile,
+          "fonts",
+          studioId
+        );
+      }
+
+      // Upload new sales files and combine with existing ones
+      const pendingSalesFiles = salesFiles.filter(
+        (f) => f.file
+      );
+      const existingSalesFileUrls = salesFiles
+        .filter((f) => f.url)
+        .map((f) => f.url as string);
+
+      let newSalesFileUrls: string[] = [];
+      if (pendingSalesFiles.length > 0) {
+        newSalesFileUrls = await uploadMultipleFiles(
+          pendingSalesFiles.map((f) => f.file as File),
+          "fonts",
+          studioId
+        );
+      }
+
+      const allSalesFileUrls = [
+        ...existingSalesFileUrls,
+        ...newSalesFileUrls,
+      ];
+
       const font: Font = {
         id: editingFont?.id || generateUUID(),
         styleName: formData.styleName,
@@ -127,7 +248,8 @@ export default function AddFontModal({
         isItalic: formData.isItalic,
         printPrice: parseFloat(formData.printPrice) || 0,
         webPrice: parseFloat(formData.webPrice) || 0,
-        file: formData.file,
+        file: fileUrl,
+        salesFiles: allSalesFileUrls,
       };
 
       onSave(font);
@@ -306,10 +428,10 @@ export default function AddFontModal({
             </div>
           </div>
 
-          {/* Font File */}
+          {/* Font File for Type Tester */}
           <div>
             <label className="block text-sm font-medium text-neutral-700 mb-1">
-              Font File
+              Font file for type tester (woff2)
             </label>
             <div
               onDragOver={(e) => e.preventDefault()}
@@ -320,7 +442,7 @@ export default function AddFontModal({
               <input
                 ref={fileInputRef}
                 type="file"
-                accept=".otf,.ttf,.woff,.woff2"
+                accept=".woff2"
                 onChange={handleFileChange}
                 className="hidden"
               />
@@ -335,14 +457,87 @@ export default function AddFontModal({
                 <div className="flex flex-col items-center gap-2">
                   <RiUploadCloud2Line className="w-8 h-8 text-neutral-400" />
                   <span className="text-sm text-neutral-500">
-                    Drop font file or click to browse
+                    Drop woff2 file or click to browse
                   </span>
                   <span className="text-xs text-neutral-400">
-                    .otf, .ttf, .woff, .woff2
+                    .woff2
                   </span>
                 </div>
               )}
             </div>
+          </div>
+
+          {/* Fonts for Sales */}
+          <div>
+            <label className="block text-sm font-medium text-neutral-700 mb-1">
+              Fonts for sales
+            </label>
+            <p className="text-sm font-whisper font-normal text-neutral-500 mb-2">
+              Add here the font package that the user will
+              get when buying this font. Put all the fonts
+              for print and web (woff2, woff, ttf and otf).
+            </p>
+            <div
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={handleSalesFilesDrop}
+              onClick={() =>
+                salesFilesInputRef.current?.click()
+              }
+              className="w-full p-6 border-2 border-dashed border-neutral-300 rounded-lg cursor-pointer hover:border-neutral-400 transition-colors"
+            >
+              <input
+                ref={salesFilesInputRef}
+                type="file"
+                accept=".otf,.ttf,.woff,.woff2"
+                multiple
+                onChange={handleSalesFilesChange}
+                className="hidden"
+              />
+              <div className="flex flex-col items-center gap-2">
+                <RiUploadCloud2Line className="w-8 h-8 text-neutral-400" />
+                <span className="text-sm text-neutral-500">
+                  Drop font files or click to browse
+                </span>
+                <span className="text-xs text-neutral-400">
+                  .woff2, .woff, .ttf, .otf (multiple files
+                  allowed)
+                </span>
+              </div>
+            </div>
+
+            {/* Sales Files List */}
+            {salesFiles.length > 0 && (
+              <div className="mt-3 space-y-2">
+                {salesFiles.map((sf) => (
+                  <div
+                    key={sf.id}
+                    className="flex items-center justify-between px-3 py-2 bg-neutral-50 rounded-lg"
+                  >
+                    <div className="flex items-center gap-2">
+                      <RiFileTextLine className="w-4 h-4 text-neutral-500" />
+                      <span className="text-sm text-neutral-700 truncate max-w-[200px]">
+                        {sf.name}
+                      </span>
+                      {sf.url && (
+                        <span className="text-xs text-green-600">
+                          (uploaded)
+                        </span>
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRemoveSalesFile(sf.id);
+                      }}
+                      className="p-1 hover:bg-neutral-200 rounded transition-colors"
+                    >
+                      <RiDeleteBinLine className="w-4 h-4 text-neutral-500 hover:text-red-500" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Submit */}
@@ -350,10 +545,15 @@ export default function AddFontModal({
             <button
               type="submit"
               disabled={isSubmitting || !formData.styleName}
-              className="w-full py-3 bg-black text-white font-whisper font-medium rounded-lg hover:bg-neutral-800 disabled:bg-neutral-400 disabled:cursor-not-allowed transition-colors"
+              className="w-full py-3 bg-black text-white font-whisper font-medium rounded-lg hover:bg-neutral-800 disabled:bg-neutral-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
             >
+              {isSubmitting && (
+                <RiLoader4Line className="w-5 h-5 animate-spin" />
+              )}
               {isSubmitting
-                ? "Saving..."
+                ? pendingFile
+                  ? "Uploading..."
+                  : "Saving..."
                 : editingFont
                   ? "Save Changes"
                   : "Add Font"}

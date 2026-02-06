@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { useStudio } from "@/hooks/use-studio";
 import { StudioTypeface, Font } from "@/types/studio";
+import { TypefaceDetailProps } from "@/types/components";
 import AddFontModal from "./add-font-modal";
 import {
   TypefaceDetailHeader,
@@ -10,10 +11,6 @@ import {
   FontsListSection,
   FilesAssetsSection,
 } from "./detail";
-
-interface TypefaceDetailProps {
-  typefaceSlug: string;
-}
 
 export default function TypefaceDetail({
   typefaceSlug,
@@ -179,6 +176,7 @@ export default function TypefaceDetail({
   return (
     <div className="relative w-full pb-20">
       <TypefaceDetailHeader
+        typefaceName={typeface.name}
         hasChanges={hasChanges}
         isSaving={isSaving}
         onSave={handleSave}
@@ -207,7 +205,9 @@ export default function TypefaceDetail({
       />
 
       <FilesAssetsSection
+        studioId={studio?.id || ""}
         headerImage={formData.headerImage || ""}
+        heroLetter={formData.heroLetter || ""}
         specimen={formData.specimen || ""}
         eula={formData.eula || ""}
         variableFontFile={formData.variableFontFile || ""}
@@ -219,6 +219,7 @@ export default function TypefaceDetail({
         onClose={handleCloseFontModal}
         onSave={handleSaveFont}
         editingFont={editingFont}
+        studioId={studio?.id || ""}
       />
     </div>
   );

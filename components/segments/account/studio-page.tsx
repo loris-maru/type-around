@@ -38,7 +38,7 @@ export default function AccountStudioPage() {
         title="Design"
         FORM_FIELDS={STUDIO_PAGE_FORM_FIELDS}
         initialValues={initialValues}
-        onSubmit={handleSubmit}
+        onChange={handleSubmit}
         isLoading={isLoading}
       />
     </div>

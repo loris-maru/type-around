@@ -1,19 +1,6 @@
 "use client";
 
-interface FormInputProps {
-  label: string;
-  name: string;
-  value: string | number;
-  onChange: (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => void;
-  type?: "text" | "number" | "date" | "email" | "url";
-  required?: boolean;
-  placeholder?: string;
-  min?: string | number;
-  max?: string | number;
-  step?: string | number;
-}
+import { FormInputProps } from "@/types/components";
 
 export default function FormInput({
   label,
