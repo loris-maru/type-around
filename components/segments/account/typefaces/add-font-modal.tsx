@@ -1,23 +1,23 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   RiCloseLine,
-  RiUploadCloud2Line,
+  RiDeleteBinLine,
   RiFileTextLine,
   RiLoader4Line,
-  RiDeleteBinLine,
+  RiUploadCloud2Line,
 } from "react-icons/ri";
-import { Font } from "@/types/studio";
-import {
-  AddFontModalProps,
-  SalesFile,
-} from "@/types/components";
-import { generateUUID } from "@/utils/generate-uuid";
 import {
   uploadFile,
   uploadMultipleFiles,
 } from "@/lib/firebase/storage";
+import type {
+  AddFontModalProps,
+  SalesFile,
+} from "@/types/components";
+import type { Font } from "@/types/studio";
+import { generateUUID } from "@/utils/generate-uuid";
 
 export default function AddFontModal({
   isOpen,
@@ -85,9 +85,21 @@ export default function AddFontModal({
       }));
       setSalesFiles(existingSalesFiles);
     } else {
-      resetForm();
+      setFormData({
+        styleName: "",
+        weight: "400",
+        width: "100",
+        isItalic: false,
+        printPrice: "",
+        webPrice: "",
+        file: "",
+      });
+      setFileName(null);
+      setPendingFile(null);
+      setSalesFiles([]);
+      setError(null);
     }
-  }, [editingFont, isOpen]);
+  }, [editingFont]);
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -243,8 +255,8 @@ export default function AddFontModal({
       const font: Font = {
         id: editingFont?.id || generateUUID(),
         styleName: formData.styleName,
-        weight: parseInt(formData.weight) || 400,
-        width: parseInt(formData.width) || 100,
+        weight: parseInt(formData.weight, 10) || 400,
+        width: parseInt(formData.width, 10) || 100,
         isItalic: formData.isItalic,
         printPrice: parseFloat(formData.printPrice) || 0,
         webPrice: parseFloat(formData.webPrice) || 0,
@@ -271,10 +283,20 @@ export default function AddFontModal({
     onClose();
   };
 
+  useEffect(() => {
+    if (!isOpen) return;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-100 flex items-center justify-center">
+      {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop dismiss */}
+      {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop dismiss */}
       <div
         className="absolute inset-0 bg-black/50"
         onClick={handleClose}
@@ -430,9 +452,14 @@ export default function AddFontModal({
 
           {/* Font File for Type Tester */}
           <div>
-            <label className="block text-sm font-medium text-neutral-700 mb-1">
+            <label
+              htmlFor="fontFile"
+              className="block text-sm font-medium text-neutral-700 mb-1"
+            >
               Font file for type tester (woff2)
             </label>
+            {/* biome-ignore lint/a11y/noStaticElementInteractions: drop zone triggers file input */}
+            {/* biome-ignore lint/a11y/useKeyWithClickEvents: drop zone triggers file input */}
             <div
               onDragOver={(e) => e.preventDefault()}
               onDrop={handleDrop}
@@ -469,7 +496,10 @@ export default function AddFontModal({
 
           {/* Fonts for Sales */}
           <div>
-            <label className="block text-sm font-medium text-neutral-700 mb-1">
+            <label
+              htmlFor="salesFiles"
+              className="block text-sm font-medium text-neutral-700 mb-1"
+            >
               Fonts for sales
             </label>
             <p className="text-sm font-whisper font-normal text-neutral-500 mb-2">
@@ -477,6 +507,8 @@ export default function AddFontModal({
               get when buying this font. Put all the fonts
               for print and web (woff2, woff, ttf and otf).
             </p>
+            {/* biome-ignore lint/a11y/noStaticElementInteractions: drop zone triggers file input
+            biome-ignore lint/a11y/useKeyWithClickEvents: drop zone triggers file input */}
             <div
               onDragOver={(e) => e.preventDefault()}
               onDrop={handleSalesFilesDrop}

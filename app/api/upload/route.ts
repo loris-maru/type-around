@@ -74,9 +74,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate unique file path
-    const fileExtension = fileName.split(".").pop() || "";
-    const uniqueFileName = `${crypto.randomUUID()}.${fileExtension}`;
+    // Generate unique file path while preserving the original filename
+    const sanitizedName = fileName.replace(
+      /[^a-zA-Z0-9._-]/g,
+      "_"
+    );
+    const uniqueFileName = `${crypto.randomUUID()}_${sanitizedName}`;
     const filePath = `studios/${studioId}/${folder}/${uniqueFileName}`;
 
     // Get signed URL

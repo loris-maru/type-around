@@ -1,12 +1,12 @@
 "use client";
 
+import CollapsibleSection from "@/components/global/collapsible-section";
 import FormInput from "@/components/global/form-input";
 import FormTextarea from "@/components/global/form-textarea";
 import MultiSelectDropdown from "@/components/global/multi-select-dropdown";
 import TagInput from "@/components/global/tag-input";
-import CollapsibleSection from "@/components/global/collapsible-section";
 import { SUPPORTED_LANGUAGES } from "@/constant/SUPPORTED_LANGUAGES";
-import { BasicInformationSectionProps } from "@/types/components";
+import type { BasicInformationSectionProps } from "@/types/components";
 
 const LANGUAGE_OPTIONS = SUPPORTED_LANGUAGES.map(
   (language) => ({

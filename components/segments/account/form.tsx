@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useMemo } from "react";
-import { FormField } from "@/types/forms";
-import { FormValues } from "@/types/components";
+import type { FormValues } from "@/types/components";
+import type { FormField } from "@/types/forms";
 
 export default function AccountForm({
   title,
@@ -36,7 +36,7 @@ export default function AccountForm({
       <h2 className="text-xl font-ortank font-bold">
         {title}
       </h2>
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-12">
         {FORM_FIELDS.map((field) => {
           const Icon = field.icon;
           const CustomComponent = field.customComponent;

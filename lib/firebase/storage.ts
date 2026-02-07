@@ -2,7 +2,8 @@ export type UploadFolder =
   | "fonts"
   | "images"
   | "documents"
-  | "icons";
+  | "icons"
+  | "layout";
 
 /**
  * Upload a file using signed URLs (secure, server-verified)

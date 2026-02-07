@@ -2,6 +2,19 @@ import type { MotionValue } from "motion/react";
 import type { ReactNode } from "react";
 import type { UploadFolder } from "@/lib/firebase/storage";
 import type {
+  BlogArticle,
+  BlogBlockData,
+  GalleryBlockData,
+  ImageBlockData,
+  LayoutBlock,
+  LayoutBlockId,
+  LayoutItem,
+  LayoutItemData,
+  SpacerBlockData,
+  StoreBlockData,
+  VideoBlockData,
+} from "./layout";
+import type {
   Font,
   FontInUse,
   MemberRole,
@@ -278,6 +291,78 @@ export type AddMemberFormProps = {
   onMemberAdded: (members: StudioMember[]) => void;
   onCancel: () => void;
   onError: (error: string) => void;
+};
+
+// ===========================================
+// Layout Builder Component Props
+// ===========================================
+
+export type LayoutBuilderProps = {
+  value: LayoutItem[];
+  onChange: (layout: LayoutItem[]) => void;
+  studioId: string;
+};
+
+export type BlockBuilderProps = {
+  activeItems: LayoutItem[];
+  handleRemove: (key: string) => void;
+  handleReorder: (newOrder: LayoutItem[]) => void;
+  handleUpdateData: (
+    key: string,
+    data: LayoutItemData
+  ) => void;
+  getLabelForId: (id: LayoutBlockId) => string;
+  studioId: string;
+};
+
+export type BlocksListProps = {
+  availableBlocks: LayoutBlock[];
+  handleAdd: (blockId: LayoutBlockId) => void;
+};
+
+export type GalleryBlockModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (data: GalleryBlockData) => void;
+  initialData?: GalleryBlockData;
+  studioId: string;
+};
+
+export type MediaBlockModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (data: ImageBlockData | VideoBlockData) => void;
+  initialData?: ImageBlockData | VideoBlockData;
+  studioId: string;
+  type: "image" | "video";
+};
+
+export type SpacerBlockModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (data: SpacerBlockData) => void;
+  initialData?: SpacerBlockData;
+};
+
+export type StoreBlockModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (data: StoreBlockData) => void;
+  initialData?: StoreBlockData;
+  studioId: string;
+};
+
+export type BlogArticleModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (article: BlogArticle) => void;
+  initialArticle?: BlogArticle;
+};
+
+export type BlogBlockInlineProps = {
+  data: BlogBlockData;
+  onUpdateData: (data: BlogBlockData) => void;
+  onRemove: () => void;
 };
 
 // ===========================================

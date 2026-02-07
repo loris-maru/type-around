@@ -1,7 +1,6 @@
-import { FormField } from "@/types/forms";
-import HeaderFontInput from "./header-font-input";
-import HeroCharacterInput from "./hero-character-input";
+import type { FormField } from "@/types/forms";
 import GradientColorInput from "./gradient-color-input";
+import HeaderFontInput from "./header-font-input";
 
 const STUDIO_PAGE_FORM_FIELDS: FormField[] = [
   {
@@ -10,13 +9,6 @@ const STUDIO_PAGE_FORM_FIELDS: FormField[] = [
     type: "custom",
     placeholder: "",
     customComponent: HeaderFontInput,
-  },
-  {
-    label: "Single Character",
-    slug: "heroCharacter",
-    type: "custom",
-    placeholder: "",
-    customComponent: HeroCharacterInput,
   },
   {
     label: "Gradient Color",

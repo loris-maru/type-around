@@ -2,7 +2,7 @@
 
 import CollapsibleSection from "@/components/global/collapsible-section";
 import FileDropZone from "@/components/global/file-drop-zone";
-import { FilesAssetsSectionProps } from "@/types/components";
+import type { FilesAssetsSectionProps } from "@/types/components";
 
 export default function FilesAssetsSection({
   studioId,

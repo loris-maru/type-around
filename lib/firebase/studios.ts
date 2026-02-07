@@ -1,26 +1,26 @@
 import {
+  collection,
   doc,
   getDoc,
+  getDocs,
+  query,
   setDoc,
   updateDoc,
-  collection,
-  query,
   where,
-  getDocs,
 } from "firebase/firestore";
-import { db } from "./config";
 import type {
+  SocialMedia,
   Studio,
   StudioTypeface,
-  SocialMedia,
 } from "@/types/studio";
 import {
-  StudioSchema,
   CreateStudioSchema,
+  DEFAULT_STUDIO,
+  StudioSchema,
   UpdateStudioInfoSchema,
   UpdateStudioPageSchema,
-  DEFAULT_STUDIO,
 } from "@/types/studio";
+import { db } from "./config";
 
 const COLLECTION_NAME = "studios";
 
@@ -225,6 +225,11 @@ export async function updateStudioPage(
     headerFont?: string;
     heroCharacter?: string;
     gradient?: { from: string; to: string };
+    pageLayout?: {
+      blockId: string;
+      key: string;
+      data?: Record<string, unknown>;
+    }[];
   }
 ): Promise<void> {
   // Validate with Zod

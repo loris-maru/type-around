@@ -1,31 +1,32 @@
 "use client";
 
+import { useUser } from "@clerk/nextjs";
+import { useParams } from "next/navigation";
 import {
   createContext,
-  useContext,
-  useState,
-  useEffect,
   useCallback,
+  useContext,
+  useEffect,
   useMemo,
+  useState,
 } from "react";
-import { useParams } from "next/navigation";
-import { useUser } from "@clerk/nextjs";
-import type {
-  Studio,
-  SocialMedia,
-  StudioTypeface,
-} from "@/types/studio";
 import {
+  addStudioTypeface,
   getOrCreateStudio,
   getStudioById,
-  updateStudioInformation,
-  updateStudioSocialMedia,
-  updateStudioPage,
-  addStudioTypeface,
   removeStudioTypeface,
-  updateStudioTypeface,
   updateStudio as updateStudioFirebase,
+  updateStudioInformation,
+  updateStudioPage,
+  updateStudioSocialMedia,
+  updateStudioTypeface,
 } from "@/lib/firebase/studios";
+import type { LayoutItem } from "@/types/layout";
+import type {
+  SocialMedia,
+  Studio,
+  StudioTypeface,
+} from "@/types/studio";
 
 type StudioContextValue = {
   studio: Studio | null;
@@ -52,6 +53,7 @@ type StudioContextValue = {
     headerFont?: string;
     heroCharacter?: string;
     gradient?: { from: string; to: string };
+    pageLayout?: LayoutItem[];
   }) => Promise<void>;
   addTypeface: (typeface: StudioTypeface) => Promise<void>;
   removeTypeface: (typefaceId: string) => Promise<void>;
@@ -174,6 +176,7 @@ export function StudioProvider({
       headerFont?: string;
       heroCharacter?: string;
       gradient?: { from: string; to: string };
+      pageLayout?: LayoutItem[];
     }) => {
       if (!studio) throw new Error("No studio loaded");
       await updateStudioPage(studio.id, data);

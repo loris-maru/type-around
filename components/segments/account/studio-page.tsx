@@ -1,7 +1,9 @@
 "use client";
 
 import { useStudio } from "@/hooks/use-studio";
+import type { LayoutItem } from "@/types/layout";
 import AccountForm from "./form";
+import LayoutBuilder from "./studio-page/layout-builder";
 import STUDIO_PAGE_FORM_FIELDS from "./studio-page/STUDIO_PAGE_FORM_FIELDS";
 
 export default function AccountStudioPage() {
@@ -11,7 +13,6 @@ export default function AccountStudioPage() {
   const handleSubmit = async (
     values: Record<string, string>
   ) => {
-    // Parse gradient values if they exist
     const gradientFrom = values.gradientFrom;
     const gradientTo = values.gradientTo;
 
@@ -24,6 +25,12 @@ export default function AccountStudioPage() {
     });
   };
 
+  const handleLayoutChange = async (
+    layout: LayoutItem[]
+  ) => {
+    await updateStudioPageSettings({ pageLayout: layout });
+  };
+
   const initialValues = studio
     ? {
         headerFont: studio.headerFont,
@@ -33,7 +40,7 @@ export default function AccountStudioPage() {
     : undefined;
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full flex flex-col gap-y-10">
       <AccountForm
         title="Design"
         FORM_FIELDS={STUDIO_PAGE_FORM_FIELDS}
@@ -41,6 +48,21 @@ export default function AccountStudioPage() {
         onChange={handleSubmit}
         isLoading={isLoading}
       />
+
+      {studio?.id && (
+        <div className="relative w-full flex flex-col gap-y-4">
+          <h2 className="text-xl font-ortank font-bold">
+            Layout
+          </h2>
+          <LayoutBuilder
+            value={
+              (studio.pageLayout as LayoutItem[]) || []
+            }
+            onChange={handleLayoutChange}
+            studioId={studio.id}
+          />
+        </div>
+      )}
     </div>
   );
 }

@@ -23,7 +23,7 @@ export default function Navigation() {
   const isSignedInPage = pathname === "/sign-in";
 
   return (
-    <nav className="fixed left-0 top-0 z-50 flex w-full flex-row items-center justify-between pl-4 pr-10">
+    <nav className="fixed left-0 top-0 z-40 flex w-full flex-row items-center justify-between pl-4 pr-10">
       <Link
         href="/"
         className="font-ortank flex flex-col gap-y-2 pt-2 text-4xl font-black text-black"

@@ -37,16 +37,21 @@ export default function FileDropZone({
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [originalFileName, setOriginalFileName] = useState<
+    string | null
+  >(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleUpload = async (file: File) => {
     setIsUploading(true);
     setError(null);
+    setOriginalFileName(file.name);
     try {
       const url = await uploadFile(file, folder, studioId);
       onChange(url);
     } catch (err) {
       setError("Failed to upload file");
+      setOriginalFileName(null);
       console.error("Upload error:", err);
     } finally {
       setIsUploading(false);
@@ -91,6 +96,7 @@ export default function FileDropZone({
   const handleDelete = () => {
     onChange("");
     setError(null);
+    setOriginalFileName(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -99,14 +105,22 @@ export default function FileDropZone({
   const IconComponent =
     icon === "image" ? RiImageLine : RiFileTextLine;
 
-  // Extract filename from URL for display
-  const displayValue = value
-    ? value.includes("/")
-      ? decodeURIComponent(
-          value.split("/").pop()?.split("?")[0] || value
-        )
-      : value
-    : "";
+  // Use original filename if available, otherwise extract from URL
+  // Storage filenames are formatted as "uuid_originalname.ext"
+  const displayValue = (() => {
+    if (!value) return "";
+    if (originalFileName) return originalFileName;
+
+    const urlFileName = decodeURIComponent(
+      value.split("/").pop()?.split("?")[0] || value
+    );
+    // Strip the UUID prefix (36 chars + underscore) if present
+    const uuidPrefixPattern = /^[a-f0-9-]{36}_/;
+    if (uuidPrefixPattern.test(urlFileName)) {
+      return urlFileName.replace(uuidPrefixPattern, "");
+    }
+    return urlFileName;
+  })();
 
   const showPreview = value && isPreviewableImage(value);
 

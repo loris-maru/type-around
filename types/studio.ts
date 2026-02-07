@@ -136,6 +136,15 @@ export const StudioSchema = z.object({
   headerFont: z.string(),
   heroCharacter: z.string().default(""),
   gradient: GradientSchema,
+  pageLayout: z
+    .array(
+      z.object({
+        blockId: z.string(),
+        key: z.string(),
+        data: z.any().optional(),
+      })
+    )
+    .default([]),
   typefaces: z.array(StudioTypefaceSchema),
   fontsInUse: z.array(FontInUseSchema).default([]),
   // Stripe Connect
@@ -187,6 +196,15 @@ export const UpdateStudioPageSchema = z.object({
   headerFont: z.string().optional(),
   heroCharacter: z.string().optional(),
   gradient: GradientSchema.optional(),
+  pageLayout: z
+    .array(
+      z.object({
+        blockId: z.string(),
+        key: z.string(),
+        data: z.any().optional(),
+      })
+    )
+    .optional(),
 });
 export type UpdateStudioPage = z.infer<
   typeof UpdateStudioPageSchema
@@ -212,6 +230,7 @@ export const DEFAULT_STUDIO: Omit<
     from: "#FFF8E8",
     to: "#F2F2F2",
   },
+  pageLayout: [],
   typefaces: [],
   fontsInUse: [],
   stripeAccountId: "",

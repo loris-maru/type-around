@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RiDeleteBinLine } from "react-icons/ri";
 import type { FontCardProps } from "@/types/components";
 
@@ -31,6 +31,14 @@ export default function FontCard({
   const handleCancel = () => {
     setShowConfirm(false);
   };
+
+  useEffect(() => {
+    if (!showConfirm) return;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showConfirm]);
 
   return (
     <>
@@ -68,7 +76,7 @@ export default function FontCard({
 
       {/* Delete Confirmation Modal */}
       {showConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 z-100 flex items-center justify-center">
           {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop click to dismiss */}
           {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop click to dismiss */}
           <div

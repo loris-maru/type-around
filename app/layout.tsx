@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
+import type { Metadata } from "next";
 import "./globals.css";
 import Navigation from "@/components/global/navigation";
 import SmoothScrollProvider from "@/components/providers/smooth-scroll-provider";

@@ -1,6 +1,6 @@
 "use client";
 
-import { FormInputProps } from "@/types/components";
+import type { FormInputProps } from "@/types/components";
 
 export default function FormInput({
   label,
