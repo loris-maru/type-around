@@ -1,7 +1,15 @@
-import { ReactNode } from "react";
-import { MotionValue } from "motion/react";
-import { Font, FontInUse, StudioTypeface } from "./studio";
-import { UploadFolder } from "@/lib/firebase/storage";
+import type { ReactNode } from "react";
+import type { MotionValue } from "motion/react";
+import type {
+  Font,
+  FontInUse,
+  Studio,
+  StudioMember,
+  StudioTypeface,
+  MemberRole,
+} from "./studio";
+import type { UploadFolder } from "@/lib/firebase/storage";
+import type { Typeface } from "./typefaces";
 
 // ===========================================
 // Global Component Props
@@ -73,12 +81,52 @@ export type FileDropZoneProps = {
 };
 
 // ===========================================
+// Custom Select Component Props
+// ===========================================
+
+export type CustomSelectOption = {
+  value: string;
+  label: string;
+};
+
+export type CustomSelectProps = {
+  value: string;
+  options: CustomSelectOption[];
+  onChange: (value: string) => void;
+  className?: string;
+};
+
+// ===========================================
+// Multi-Select Dropdown Component Props
+// ===========================================
+
+export type MultiSelectDropdownOption = {
+  value: string;
+  label: string;
+};
+
+export type MultiSelectDropdownProps = {
+  options: MultiSelectDropdownOption[];
+  value: string[];
+  onChange: (value: string[]) => void;
+  placeholder?: string;
+  label?: string;
+  showTags?: boolean;
+};
+
+// ===========================================
 // Home Component Props
 // ===========================================
 
 export type HeaderHomeProps = {
   svgScale: MotionValue<number>;
   opacity: MotionValue<number>;
+};
+
+export type AllFontsProps = {
+  opacity: MotionValue<number>;
+  y: MotionValue<number>;
+  containerRef?: React.RefObject<HTMLDivElement | null>;
 };
 
 // ===========================================
@@ -147,6 +195,18 @@ export type AddFontInUseModalProps = {
   studioId: string;
 };
 
+export type AddTypefaceModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  studio: Studio | null;
+  onAddTypeface: (typeface: StudioTypeface) => Promise<void>;
+};
+
+export type AddTypefaceProps = {
+  studio: Studio | null;
+  onAddTypeface: (typeface: StudioTypeface) => Promise<void>;
+};
+
 // ===========================================
 // Card Component Props
 // ===========================================
@@ -162,10 +222,51 @@ export type TypefaceCardProps = {
   onClick?: () => void;
 };
 
+export type PublicTypefaceCardProps = {
+  studioName: string;
+  typeface: Typeface;
+};
+
 export type FontInUseCardProps = {
   fontInUse: FontInUse;
   onRemove: (id: string) => void;
   onEdit: (fontInUse: FontInUse) => void;
+};
+
+// ===========================================
+// Settings Component Props
+// ===========================================
+
+export type MemberAvatarProps = {
+  imageUrl?: string;
+  name: string;
+  size?: "sm" | "md" | "lg";
+};
+
+export type MemberRoleBadgeProps = {
+  role: MemberRole;
+  isOwner: boolean;
+  canManageMembers: boolean;
+  isRemoving: boolean;
+  onRoleChange?: (role: MemberRole) => void;
+  onRemove?: () => void;
+};
+
+export type MemberListItemProps = {
+  member: StudioMember;
+  currentUserEmail?: string;
+  isOwner: boolean;
+  canManageMembers: boolean;
+  isRemoving: boolean;
+  onRoleChange: (memberId: string, role: MemberRole) => void;
+  onRemove: (memberId: string) => void;
+};
+
+export type AddMemberFormProps = {
+  studio: Studio;
+  onMemberAdded: (members: StudioMember[]) => void;
+  onCancel: () => void;
+  onError: (error: string) => void;
 };
 
 // ===========================================

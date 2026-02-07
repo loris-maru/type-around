@@ -2,23 +2,7 @@
 
 import MemberAvatar from "./member-avatar";
 import MemberRoleBadge from "./member-role-badge";
-import type {
-  StudioMember,
-  MemberRole,
-} from "@/types/studio";
-
-type MemberListItemProps = {
-  member: StudioMember;
-  currentUserEmail?: string;
-  isOwner: boolean;
-  canManageMembers: boolean;
-  isRemoving: boolean;
-  onRoleChange: (
-    memberId: string,
-    role: MemberRole
-  ) => void;
-  onRemove: (memberId: string) => void;
-};
+import type { MemberListItemProps } from "@/types/components";
 
 export default function MemberListItem({
   member,

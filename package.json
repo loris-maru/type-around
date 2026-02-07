@@ -15,7 +15,9 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@clerk/backend": "^2.30.1",
     "@clerk/nextjs": "^6.36.8",
+    "@google-cloud/storage": "^7.19.0",
     "@react-hooks-library/core": "^0.6.2",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",

@@ -44,6 +44,7 @@ export default function TypefaceDetail({
           typeface.supportedLanguages || [],
         fonts: typeface.fonts || [],
         headerImage: typeface.headerImage || "",
+        heroLetter: typeface.heroLetter || "",
         specimen: typeface.specimen || "",
         eula: typeface.eula || "",
         variableFontFile: typeface.variableFontFile || "",

@@ -6,17 +6,10 @@ import {
   RiLoaderLine,
   RiDeleteBinLine,
 } from "react-icons/ri";
-import { ROLE_LABELS } from "@/constant/MEMBER_ROLES";
+import CustomSelect from "@/components/global/custom-select";
+import { ROLE_LABELS, ROLE_OPTIONS } from "@/constant/MEMBER_ROLES";
+import type { MemberRoleBadgeProps } from "@/types/components";
 import type { MemberRole } from "@/types/studio";
-
-type MemberRoleBadgeProps = {
-  role: MemberRole;
-  isOwner: boolean;
-  canManageMembers: boolean;
-  isRemoving: boolean;
-  onRoleChange?: (role: MemberRole) => void;
-  onRemove?: () => void;
-};
 
 export default function MemberRoleBadge({
   role,
@@ -28,7 +21,7 @@ export default function MemberRoleBadge({
 }: MemberRoleBadgeProps) {
   if (role === "owner") {
     return (
-      <div className="flex items-center gap-2 px-3 py-1.5 bg-neutral-100 rounded-lg">
+      <div className="flex items-center gap-2 px-6 py-1.5 bg-neutral-100 rounded-lg">
         <RiShieldUserLine className="w-4 h-4 text-neutral-600" />
         <span className="text-sm font-whisper font-medium text-neutral-700">
           Owner
@@ -40,18 +33,13 @@ export default function MemberRoleBadge({
   return (
     <div className="flex items-center gap-4">
       {isOwner && onRoleChange ? (
-        <select
+        <CustomSelect
           value={role}
-          onChange={(e) =>
-            onRoleChange(e.target.value as MemberRole)
-          }
-          className="px-3 py-1.5 border border-neutral-300 rounded-lg text-sm font-whisper bg-white"
-        >
-          <option value="admin">Admin</option>
-          <option value="editor">Editor</option>
-        </select>
+          options={ROLE_OPTIONS}
+          onChange={(val) => onRoleChange(val as MemberRole)}
+        />
       ) : (
-        <div className="flex items-center gap-2 px-3 py-1.5 bg-neutral-50 rounded-lg">
+        <div className="flex items-center gap-2 px-6 py-1.5 bg-neutral-50 rounded-lg">
           {role === "admin" ? (
             <RiShieldUserLine className="w-4 h-4 text-neutral-500" />
           ) : (

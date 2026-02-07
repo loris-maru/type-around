@@ -1,44 +1,50 @@
-import {
-  ref,
-  uploadBytes,
-  getDownloadURL,
-  deleteObject,
-} from "firebase/storage";
-import { storage } from "./config";
-import { generateUUID } from "@/utils/generate-uuid";
-
-export type UploadFolder =
-  | "fonts"
-  | "images"
-  | "documents"
-  | "icons";
+export type UploadFolder = "fonts" | "images" | "documents" | "icons";
 
 /**
- * Upload a file to Firebase Storage
+ * Upload a file using signed URLs (secure, server-verified)
  * @param file - The file to upload
  * @param folder - The folder to upload to (fonts, images, documents, icons)
  * @param studioId - The studio ID for organizing files
- * @returns The download URL of the uploaded file
+ * @returns The public URL of the uploaded file
  */
 export async function uploadFile(
   file: File,
   folder: UploadFolder,
   studioId: string
 ): Promise<string> {
-  // Generate unique filename to avoid collisions
-  const fileExtension = file.name.split(".").pop();
-  const uniqueFileName = `${generateUUID()}.${fileExtension}`;
-  const filePath = `studios/${studioId}/${folder}/${uniqueFileName}`;
+  // Get signed URL from API route (verifies authentication server-side)
+  const response = await fetch("/api/upload", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      studioId,
+      fileName: file.name,
+      contentType: file.type || "application/octet-stream",
+      folder,
+    }),
+  });
 
-  const storageRef = ref(storage, filePath);
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.error || "Failed to get upload URL");
+  }
 
-  // Upload the file
-  const snapshot = await uploadBytes(storageRef, file);
+  const { uploadUrl, publicUrl } = await response.json();
 
-  // Get the download URL
-  const downloadURL = await getDownloadURL(snapshot.ref);
+  // Upload directly to Google Cloud Storage using signed URL
+  const uploadResponse = await fetch(uploadUrl, {
+    method: "PUT",
+    headers: {
+      "Content-Type": file.type || "application/octet-stream",
+    },
+    body: file,
+  });
 
-  return downloadURL;
+  if (!uploadResponse.ok) {
+    throw new Error(`Upload failed: ${uploadResponse.statusText}`);
+  }
+
+  return publicUrl;
 }
 
 /**
@@ -60,20 +66,13 @@ export async function uploadMultipleFiles(
 }
 
 /**
- * Delete a file from Firebase Storage by URL
+ * Delete a file from storage by URL
+ * Note: File deletion requires server-side implementation
  * @param fileUrl - The download URL of the file to delete
  */
-export async function deleteFile(
-  fileUrl: string
-): Promise<void> {
-  try {
-    // Extract the path from the URL
-    const storageRef = ref(storage, fileUrl);
-    await deleteObject(storageRef);
-  } catch (error) {
-    // File might not exist, ignore the error
-    console.warn("Failed to delete file:", error);
-  }
+export async function deleteFile(fileUrl: string): Promise<void> {
+  // TODO: Implement server-side deletion using signed URLs
+  console.warn("File deletion not yet implemented for:", fileUrl);
 }
 
 /**

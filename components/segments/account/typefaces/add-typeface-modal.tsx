@@ -2,19 +2,11 @@
 
 import { useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
-import { Studio, StudioTypeface } from "@/types/studio";
+import type { StudioTypeface } from "@/types/studio";
+import type { AddTypefaceModalProps } from "@/types/components";
 import { generateUUID } from "@/utils/generate-uuid";
 import { slugify } from "@/utils/slugify";
 import TagInput from "@/components/global/tag-input";
-
-export type AddTypefaceModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  studio: Studio | null;
-  onAddTypeface: (
-    typeface: StudioTypeface
-  ) => Promise<void>;
-};
 
 export default function AddTypefaceModal({
   isOpen,

@@ -385,3 +385,44 @@ export async function getStudiosByUserEmail(
 
   return studios;
 }
+
+/**
+ * Get all published typefaces from all studios
+ */
+export async function getAllPublishedTypefaces(): Promise<
+  Array<StudioTypeface & { studioName: string; studioSlug: string }>
+> {
+  const allTypefaces: Array<
+    StudioTypeface & { studioName: string; studioSlug: string }
+  > = [];
+
+  const allStudiosQuery = query(collection(db, COLLECTION_NAME));
+  const snapshot = await getDocs(allStudiosQuery);
+
+  for (const docData of snapshot.docs) {
+    const rawData = docData.data();
+    const studioName = rawData.name || "Unknown Studio";
+    const studioSlug = studioName
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+
+    const typefaces = rawData.typefaces
+      ? normalizeTypefaces(rawData.typefaces)
+      : [];
+
+    for (const typeface of typefaces) {
+      const t = typeface as StudioTypeface;
+      // Only include published typefaces
+      if (t.published) {
+        allTypefaces.push({
+          ...t,
+          studioName,
+          studioSlug,
+        });
+      }
+    }
+  }
+
+  return allTypefaces;
+}

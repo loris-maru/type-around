@@ -2,15 +2,8 @@
 
 import { useState } from "react";
 import { RiAddFill } from "react-icons/ri";
-import { Studio, StudioTypeface } from "@/types/studio";
+import type { AddTypefaceProps } from "@/types/components";
 import AddTypefaceModal from "./add-typeface-modal";
-
-export type AddTypefaceProps = {
-  studio: Studio | null;
-  onAddTypeface: (
-    typeface: StudioTypeface
-  ) => Promise<void>;
-};
 
 export default function AddTypeface({
   studio,

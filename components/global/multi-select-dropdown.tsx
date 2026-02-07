@@ -6,20 +6,7 @@ import {
   RiCheckLine,
   RiCloseLine,
 } from "react-icons/ri";
-
-export interface MultiSelectDropdownOption {
-  value: string;
-  label: string;
-}
-
-export type MultiSelectDropdownProps = {
-  options: MultiSelectDropdownOption[];
-  value: string[];
-  onChange: (value: string[]) => void;
-  placeholder?: string;
-  label?: string;
-  showTags?: boolean;
-};
+import type { MultiSelectDropdownProps } from "@/types/components";
 
 export default function MultiSelectDropdown({
   options,

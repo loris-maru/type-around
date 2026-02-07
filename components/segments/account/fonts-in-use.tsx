@@ -3,7 +3,7 @@
 import { useState, useCallback, useMemo } from "react";
 import { RiAddFill } from "react-icons/ri";
 import { useStudio } from "@/hooks/use-studio";
-import { FontInUse } from "@/types/studio";
+import type { FontInUse } from "@/types/studio";
 import { FontInUseCard } from "@/components/molecules/cards/account";
 import AddFontInUseModal from "./fonts-in-use/add-font-in-use-modal";
 

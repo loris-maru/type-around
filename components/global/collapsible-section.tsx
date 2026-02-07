@@ -4,7 +4,7 @@ import { useState } from "react";
 import { RiArrowDownSLine } from "react-icons/ri";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/utils/class-names";
-import { CollapsibleSectionProps } from "@/types/components";
+import type { CollapsibleSectionProps } from "@/types/components";
 
 export default function CollapsibleSection({
   id,
@@ -15,12 +15,10 @@ export default function CollapsibleSection({
   defaultOpen = true,
 }: CollapsibleSectionProps) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   return (
-    <section
-      id={id}
-      className="mb-10 scroll-mt-8"
-    >
+    <section id={id} className="mb-10 scroll-mt-8">
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
@@ -29,7 +27,7 @@ export default function CollapsibleSection({
         <h2 className="text-xl font-ortank font-bold">
           {title}
           {count !== undefined && countLabel && (
-            <span className="text-neutral-500 font-normal ml-2">
+            <span className="text-neutral-500 font-whisper text-sm font-normal ml-2">
               ({count} {countLabel})
             </span>
           )}
@@ -52,7 +50,9 @@ export default function CollapsibleSection({
               duration: 0.2,
               ease: "easeInOut",
             }}
-            className="overflow-hidden"
+            onAnimationStart={() => setIsAnimating(true)}
+            onAnimationComplete={() => setIsAnimating(false)}
+            className={isAnimating ? "overflow-hidden" : "overflow-visible"}
           >
             {children}
           </motion.div>

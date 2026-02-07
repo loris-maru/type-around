@@ -48,18 +48,35 @@ export default function AccountSettings() {
   const allMembers = useMemo(() => {
     if (!studio) return [];
 
+    const ownerEmailLower = studio.ownerEmail.toLowerCase();
+
+    // Check if owner exists in members array (to reuse their profile data)
+    const ownerInMembers = (studio.members || []).find(
+      (m) => m.email.toLowerCase() === ownerEmailLower
+    );
+
+    // Use Clerk user data if current user is the owner, or data from members entry
     const ownerMember: StudioMember = {
-      id: studio.id,
+      id: `owner-${studio.id}`,
       email: studio.ownerEmail,
-      firstName: "",
-      lastName: "",
-      imageUrl: "",
+      firstName: ownerInMembers?.firstName || user?.firstName || "",
+      lastName: ownerInMembers?.lastName || user?.lastName || "",
+      imageUrl: ownerInMembers?.imageUrl || user?.imageUrl || "",
       role: "owner",
       addedAt: "",
     };
 
-    return [ownerMember, ...(studio.members || [])];
-  }, [studio]);
+    // Filter out the owner and deduplicate by email (case-insensitive)
+    const seenEmails = new Set<string>([ownerEmailLower]);
+    const nonOwnerMembers = (studio.members || []).filter((m) => {
+      const emailLower = m.email.toLowerCase();
+      if (seenEmails.has(emailLower)) return false;
+      seenEmails.add(emailLower);
+      return true;
+    });
+
+    return [ownerMember, ...nonOwnerMembers];
+  }, [studio, user]);
 
   const handleRemoveMember = async (memberId: string) => {
     if (!studio) return;
@@ -132,16 +149,6 @@ export default function AccountSettings() {
             account and content.
           </p>
         </div>
-        {canManageMembers && !isAddingMember && (
-          <button
-            type="button"
-            onClick={() => setIsAddingMember(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-neutral-800 transition-colors font-whisper font-medium"
-          >
-            <RiUserAddLine className="w-4 h-4" />
-            Add member
-          </button>
-        )}
       </div>
 
       {/* Error Message */}

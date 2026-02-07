@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useRef, KeyboardEvent } from "react";
+import { useRef, useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
+import type { TagInputProps } from "@/types/components";
 import { cn } from "@/utils/class-names";
-import { TagInputProps } from "@/types/components";
 
 export default function TagInput({
   label,
@@ -17,7 +17,7 @@ export default function TagInput({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleKeyDown = (
-    e: KeyboardEvent<HTMLInputElement>
+    e: React.KeyboardEvent<HTMLInputElement>
   ) => {
     const trimmedValue = inputValue.trim();
 
@@ -67,13 +67,15 @@ export default function TagInput({
 
   return (
     <div className={className}>
-      <label className="block text-sm font-medium text-neutral-700 mb-1">
+      <label htmlFor={label} className="block text-sm font-medium text-neutral-700 mb-1" >
         {label}
       </label>
+      {/* biome-ignore lint/a11y/useKeyWithClickEvents: click delegates focus to inner input */}
+      {/* biome-ignore lint/a11y/noStaticElementInteractions: container delegates focus to inner input */}
       <div
         onClick={handleContainerClick}
         className={cn(
-          "min-h-[48px] px-3 py-2 border rounded-lg cursor-text transition-colors",
+          "w-full min-h-[48px] px-3 py-2 border rounded-lg cursor-text transition-colors",
           "flex flex-wrap gap-2 items-center",
           isFocused
             ? "border-black ring-2 ring-black ring-opacity-20"
@@ -83,8 +85,8 @@ export default function TagInput({
         {/* Tags */}
         {value.map((tag, index) => (
           <span
-            key={`${tag}-${index}`}
-            className="inline-flex items-center gap-1 px-2.5 py-1 bg-neutral-100 text-sm rounded-md group"
+            key={`${tag}`}
+            className="inline-flex items-center gap-1 px-5 py-2 bg-black text-white text-sm rounded-3xl group"
           >
             {tag}
             <button

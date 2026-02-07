@@ -181,7 +181,7 @@ export default function AccountNavigation() {
 
   return (
     <div className="relative z-0 w-full">
-      <div className="mb-2">Your studio</div>
+      <div className="mb-2 font-ortank font-bold text-xl">{studio?.name || "Your studio"}</div>
       <div className="relative w-full flex flex-col gap-y-2">
         {ACCOUNT_NAV_ITEMS.map((item) => {
           const isTypefaces = item === "Typefaces";

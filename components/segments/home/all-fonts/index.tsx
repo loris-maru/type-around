@@ -1,17 +1,11 @@
 "use client";
 
-import { MotionValue } from "motion/react";
 import { motion } from "motion/react";
 import HeaderAllFonts from "@/components/segments/home/all-fonts/header";
-import { Typeface } from "@/types/typefaces";
+import type { Typeface } from "@/types/typefaces";
+import type { AllFontsProps } from "@/types/components";
 import STUDIOS from "@/mock-data/studios";
 import TypefaceCard from "@/components/molecules/cards/typefaces";
-
-export type AllFontsProps = {
-  opacity: MotionValue<number>;
-  y: MotionValue<number>;
-  containerRef?: React.RefObject<HTMLDivElement | null>;
-};
 
 export default function AllFonts({
   opacity,

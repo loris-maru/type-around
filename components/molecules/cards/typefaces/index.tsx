@@ -1,23 +1,18 @@
 "use client";
 
-import { Typeface } from "@/types/typefaces";
 import Image from "next/image";
 import Link from "next/link";
 import { slugify } from "@/utils/slugify";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/utils/class-names";
-
-const DESCRIPTION_TEXT =
-  "는 지오매트릭 그로테스크 계열의 서체로 기하학적 형태의 한계를 탐구한 결과물입니다.";
+import { TYPEFACE_CARD_DESCRIPTION_TEXT } from "@/constant/TYPEFACE_CARD_TEXT";
+import type { PublicTypefaceCardProps } from "@/types/components";
 
 export default function TypefaceCard({
   studioName,
   typeface,
-}: {
-  studioName: string;
-  typeface: Typeface;
-}) {
+}: PublicTypefaceCardProps) {
   const [isHovered, setIsHovered] =
     useState<boolean>(false);
   const [displayedText, setDisplayedText] =
@@ -28,9 +23,9 @@ export default function TypefaceCard({
       setDisplayedText("");
       let currentIndex = 0;
       const interval = setInterval(() => {
-        if (currentIndex < DESCRIPTION_TEXT.length) {
+        if (currentIndex < TYPEFACE_CARD_DESCRIPTION_TEXT.length) {
           setDisplayedText(
-            DESCRIPTION_TEXT.slice(0, currentIndex + 1)
+            TYPEFACE_CARD_DESCRIPTION_TEXT.slice(0, currentIndex + 1)
           );
           currentIndex++;
         } else {
@@ -94,7 +89,7 @@ export default function TypefaceCard({
                 {displayedText}
                 {isHovered &&
                   displayedText.length <
-                    DESCRIPTION_TEXT.length && (
+                    TYPEFACE_CARD_DESCRIPTION_TEXT.length && (
                     <motion.span
                       animate={{ opacity: [1, 0] }}
                       transition={{

@@ -118,9 +118,12 @@ export async function addStudioMember(
       };
     }
 
-    // Check if member already exists
+    // Check if member already exists (by ID or email, case-insensitive)
+    const memberEmailLower = member.email.toLowerCase();
     const existingMember = studio.members?.find(
-      (m) => m.id === member.id
+      (m) =>
+        m.id === member.id ||
+        m.email.toLowerCase() === memberEmailLower
     );
     if (existingMember) {
       return {
@@ -129,8 +132,8 @@ export async function addStudioMember(
       };
     }
 
-    // Check if trying to add the owner
-    if (member.email === studio.ownerEmail) {
+    // Check if trying to add the owner (case-insensitive)
+    if (memberEmailLower === studio.ownerEmail.toLowerCase()) {
       return {
         success: false,
         error: "The owner is already a member by default",

@@ -1,12 +1,9 @@
 "use client";
 
-import { SignedIn, SignedOut } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  RiGalleryView,
-  RiSearchLine,
-} from "react-icons/ri";
+import { RiMapPinUserFill, RiSearchLine } from "react-icons/ri";
 import { GLOBAL_NAV_ITEMS } from "@/constant/GLOBAL_NAV_ITEMS";
 
 export default function Navigation() {
@@ -18,6 +15,7 @@ export default function Navigation() {
   };
 
   const pathname = usePathname();
+  const { isSignedIn, isLoaded } = useAuth();
 
   const isSignedInPage = pathname === "/sign-in";
 
@@ -38,7 +36,7 @@ export default function Navigation() {
             <Link
               key={item.href}
               href={item.href}
-              className="transition-colors duration-300 hover:text-gray-500"
+              className="transition-colors duration-300 hover:text-gray-500 capitalize"
             >
               {item.label}
             </Link>
@@ -53,35 +51,36 @@ export default function Navigation() {
             aria-label="Search"
             className="transition-colors duration-300 hover:text-gray-500"
           >
-            <RiSearchLine
-              size={20}
-              color="black"
-            />
+            <RiSearchLine size={20} color="black" />
           </button>
         </section>
-        {!isSignedInPage && (
-          <SignedOut>
-            <Link
-              href="/sign-in"
-              className="font-whisper text-base font-normal text-black px-5 pb-2 pt-5 bg-light-gray"
-              style={sectionStyle}
-              aria-label="Login"
-            >
-              Login
-            </Link>
-          </SignedOut>
-        )}
 
-        <SignedIn>
-          <Link
-            href="/account"
-            aria-label="to Account"
-            className="font-whisper text-base font-normal text-black px-5 pb-2 pt-5 bg-light-gray"
-            style={sectionStyle}
-          >
-            <RiGalleryView className="w-5 h-5" />
-          </Link>
-        </SignedIn>
+        {/* Auth buttons - only render after Clerk is loaded to prevent hydration mismatch */}
+        {isLoaded && (
+          <>
+            {!isSignedIn && !isSignedInPage && (
+              <Link
+                href="/sign-in"
+                className="font-whisper text-base font-normal text-black px-5 pb-2 pt-5 bg-light-gray"
+                style={sectionStyle}
+                aria-label="Login"
+              >
+                Login
+              </Link>
+            )}
+
+            {isSignedIn && (
+              <Link
+                href="/account"
+                aria-label="to Account"
+                className="relative font-whisper text-base font-normal text-black px-5 pb-2 pt-5 bg-light-gray"
+                style={sectionStyle}
+              >
+                <RiMapPinUserFill className="relative -top-1 w-6 h-6" />
+              </Link>
+            )}
+          </>
+        )}
       </div>
     </nav>
   );
