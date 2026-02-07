@@ -7,11 +7,12 @@ export const ROLE_LABELS: Record<MemberRole, string> = {
   editor: "Editor",
 };
 
-export const ROLE_DESCRIPTIONS: Record<MemberRole, string> = {
-  owner: "Full access to all settings and billing",
-  admin: "Can manage members and all content",
-  editor: "Can edit content and typefaces",
-};
+export const ROLE_DESCRIPTIONS: Record<MemberRole, string> =
+  {
+    owner: "Full access to all settings and billing",
+    admin: "Can manage members and all content",
+    editor: "Can edit content and typefaces",
+  };
 
 export const ROLE_OPTIONS: CustomSelectOption[] = [
   { value: "admin", label: "Admin" },

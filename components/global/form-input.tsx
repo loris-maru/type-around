@@ -18,7 +18,7 @@ export default function FormInput({
     <div>
       <label
         htmlFor={name}
-        className="block text-sm font-medium text-neutral-700 mb-1"
+        className="block text-sm font-normal text-neutral-700 mb-1"
       >
         {label}
         {required && (
@@ -36,7 +36,7 @@ export default function FormInput({
         min={min}
         max={max}
         step={step}
-        className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+        className="w-full font-whisper font-semibold text-base text-black px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
       />
     </div>
   );

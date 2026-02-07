@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { RiAddFill } from "react-icons/ri";
+import { FontInUseCard } from "@/components/molecules/cards/account";
 import { useStudio } from "@/hooks/use-studio";
 import type { FontInUse } from "@/types/studio";
-import { FontInUseCard } from "@/components/molecules/cards/account";
 import AddFontInUseModal from "./fonts-in-use/add-font-in-use-modal";
 
 export default function AccountFontsInUse() {

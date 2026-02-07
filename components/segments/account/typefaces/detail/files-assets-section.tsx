@@ -1,12 +1,11 @@
 "use client";
 
-import FileDropZone from "@/components/global/file-drop-zone";
 import CollapsibleSection from "@/components/global/collapsible-section";
+import FileDropZone from "@/components/global/file-drop-zone";
 import { FilesAssetsSectionProps } from "@/types/components";
 
 export default function FilesAssetsSection({
   studioId,
-  headerImage,
   heroLetter,
   specimen,
   eula,
@@ -18,18 +17,7 @@ export default function FilesAssetsSection({
       id="assets"
       title="Assets"
     >
-      <div className="grid grid-cols-2 gap-4">
-        <FileDropZone
-          label="Header Image"
-          accept=".jpg,.jpeg,.png,.webp,.svg"
-          value={headerImage}
-          onChange={onFileChange("headerImage")}
-          description=".jpg, .png, .webp, .svg"
-          icon="image"
-          studioId={studioId}
-          folder="images"
-        />
-
+      <div className="grid grid-cols-2 gap-8">
         <div>
           <FileDropZone
             label="Single hero letter (SVG)"
@@ -69,6 +57,7 @@ export default function FilesAssetsSection({
           value={variableFontFile}
           onChange={onFileChange("variableFontFile")}
           description=".ttf, .otf, .woff, .woff2"
+          instruction="If available, add the variable font file. This will be used to display the variable font in the browser."
           studioId={studioId}
           folder="fonts"
         />

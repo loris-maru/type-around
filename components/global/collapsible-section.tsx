@@ -1,10 +1,10 @@
 "use client";
 
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { RiArrowDownSLine } from "react-icons/ri";
-import { motion, AnimatePresence } from "motion/react";
-import { cn } from "@/utils/class-names";
 import type { CollapsibleSectionProps } from "@/types/components";
+import { cn } from "@/utils/class-names";
 
 export default function CollapsibleSection({
   id,
@@ -18,7 +18,10 @@ export default function CollapsibleSection({
   const [isAnimating, setIsAnimating] = useState(false);
 
   return (
-    <section id={id} className="mb-10 scroll-mt-8">
+    <section
+      id={id}
+      className="mb-10 scroll-mt-8"
+    >
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
@@ -51,8 +54,14 @@ export default function CollapsibleSection({
               ease: "easeInOut",
             }}
             onAnimationStart={() => setIsAnimating(true)}
-            onAnimationComplete={() => setIsAnimating(false)}
-            className={isAnimating ? "overflow-hidden" : "overflow-visible"}
+            onAnimationComplete={() =>
+              setIsAnimating(false)
+            }
+            className={
+              isAnimating
+                ? "overflow-hidden"
+                : "overflow-visible"
+            }
           >
             {children}
           </motion.div>

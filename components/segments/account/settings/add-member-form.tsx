@@ -1,12 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { RiLoaderLine, RiUserAddLine } from "react-icons/ri";
+import {
+  RiLoaderLine,
+  RiUserAddLine,
+} from "react-icons/ri";
 import MemberAvatar from "./member-avatar";
 import { ROLE_DESCRIPTIONS } from "@/constant/MEMBER_ROLES";
-import { lookupUserByEmail, addStudioMember } from "@/actions/members";
+import {
+  lookupUserByEmail,
+  addStudioMember,
+} from "@/actions/members";
 import type { AddMemberFormProps } from "@/types/components";
-import type { StudioMember, MemberRole } from "@/types/studio";
+import type {
+  StudioMember,
+  MemberRole,
+} from "@/types/studio";
 
 export default function AddMemberForm({
   studio,
@@ -15,7 +24,8 @@ export default function AddMemberForm({
   onError,
 }: AddMemberFormProps) {
   const [inviteEmail, setInviteEmail] = useState("");
-  const [lookupResult, setLookupResult] = useState<StudioMember | null>(null);
+  const [lookupResult, setLookupResult] =
+    useState<StudioMember | null>(null);
   const [isLookingUp, setIsLookingUp] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -25,19 +35,26 @@ export default function AddMemberForm({
     setIsLookingUp(true);
     setLookupResult(null);
 
-    const result = await lookupUserByEmail(inviteEmail.trim());
+    const result = await lookupUserByEmail(
+      inviteEmail.trim()
+    );
 
     if (result.success && result.member) {
       const foundMember = result.member;
-      const foundEmailLower = foundMember.email.toLowerCase();
+      const foundEmailLower =
+        foundMember.email.toLowerCase();
       const existingMember = studio.members?.find(
         (m) =>
           m.email.toLowerCase() === foundEmailLower ||
           m.id === foundMember.id
       );
       if (existingMember) {
-        onError("This user is already a member of your studio");
-      } else if (foundEmailLower === studio.ownerEmail.toLowerCase()) {
+        onError(
+          "This user is already a member of your studio"
+        );
+      } else if (
+        foundEmailLower === studio.ownerEmail.toLowerCase()
+      ) {
         onError("This is the owner's email address");
       } else {
         setLookupResult(foundMember);
@@ -54,7 +71,10 @@ export default function AddMemberForm({
 
     setIsSubmitting(true);
 
-    const result = await addStudioMember(studio.id, lookupResult);
+    const result = await addStudioMember(
+      studio.id,
+      lookupResult
+    );
 
     if (result.success && result.members) {
       onMemberAdded(result.members);
@@ -91,7 +111,9 @@ export default function AddMemberForm({
             onChange={(e) => setInviteEmail(e.target.value)}
             placeholder="Enter email address..."
             className="flex-1 px-4 py-3 border border-neutral-300 rounded-lg font-whisper placeholder:text-neutral-400"
-            onKeyDown={(e) => e.key === "Enter" && handleLookupUser()}
+            onKeyDown={(e) =>
+              e.key === "Enter" && handleLookupUser()
+            }
           />
           <button
             type="button"
@@ -128,7 +150,9 @@ export default function AddMemberForm({
               size="lg"
             />
             <div>
-              <p className="font-whisper font-medium">{displayName}</p>
+              <p className="font-whisper font-medium">
+                {displayName}
+              </p>
               <p className="text-sm text-neutral-500 font-whisper">
                 {lookupResult.email}
               </p>
@@ -139,7 +163,9 @@ export default function AddMemberForm({
             <select
               value={lookupResult.role}
               onChange={(e) =>
-                handleRoleChange(e.target.value as MemberRole)
+                handleRoleChange(
+                  e.target.value as MemberRole
+                )
               }
               className="px-4 py-3 border border-neutral-300 rounded-lg font-whisper"
             >
@@ -183,7 +209,8 @@ export default function AddMemberForm({
       )}
 
       <p className="mt-4 text-sm text-neutral-500 font-whisper">
-        The user must have an existing account to be added as a member.
+        The user must have an existing account to be added
+        as a member.
       </p>
     </div>
   );

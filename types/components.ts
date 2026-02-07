@@ -1,14 +1,14 @@
-import type { ReactNode } from "react";
 import type { MotionValue } from "motion/react";
+import type { ReactNode } from "react";
+import type { UploadFolder } from "@/lib/firebase/storage";
 import type {
   Font,
   FontInUse,
+  MemberRole,
   Studio,
   StudioMember,
   StudioTypeface,
-  MemberRole,
 } from "./studio";
-import type { UploadFolder } from "@/lib/firebase/storage";
 import type { Typeface } from "./typefaces";
 
 // ===========================================
@@ -75,6 +75,7 @@ export type FileDropZoneProps = {
   value: string;
   onChange: (value: string) => void;
   description?: string;
+  instruction?: string;
   icon?: "file" | "image";
   studioId: string;
   folder: UploadFolder;
@@ -87,6 +88,7 @@ export type FileDropZoneProps = {
 export type CustomSelectOption = {
   value: string;
   label: string;
+  icon?: React.ReactNode;
 };
 
 export type CustomSelectProps = {
@@ -139,9 +141,11 @@ export type TypefaceDetailProps = {
 
 export type TypefaceDetailHeaderProps = {
   typefaceName: string;
+  status: string;
   hasChanges: boolean;
   isSaving: boolean;
   onSave: () => void;
+  onStatusChange: (status: string) => void;
 };
 
 export type BasicInformationSectionProps = {
@@ -199,12 +203,16 @@ export type AddTypefaceModalProps = {
   isOpen: boolean;
   onClose: () => void;
   studio: Studio | null;
-  onAddTypeface: (typeface: StudioTypeface) => Promise<void>;
+  onAddTypeface: (
+    typeface: StudioTypeface
+  ) => Promise<void>;
 };
 
 export type AddTypefaceProps = {
   studio: Studio | null;
-  onAddTypeface: (typeface: StudioTypeface) => Promise<void>;
+  onAddTypeface: (
+    typeface: StudioTypeface
+  ) => Promise<void>;
 };
 
 // ===========================================
@@ -258,7 +266,10 @@ export type MemberListItemProps = {
   isOwner: boolean;
   canManageMembers: boolean;
   isRemoving: boolean;
-  onRoleChange: (memberId: string, role: MemberRole) => void;
+  onRoleChange: (
+    memberId: string,
+    role: MemberRole
+  ) => void;
   onRemove: (memberId: string) => void;
 };
 

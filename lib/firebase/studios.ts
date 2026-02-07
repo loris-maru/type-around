@@ -390,13 +390,23 @@ export async function getStudiosByUserEmail(
  * Get all published typefaces from all studios
  */
 export async function getAllPublishedTypefaces(): Promise<
-  Array<StudioTypeface & { studioName: string; studioSlug: string }>
+  Array<
+    StudioTypeface & {
+      studioName: string;
+      studioSlug: string;
+    }
+  >
 > {
   const allTypefaces: Array<
-    StudioTypeface & { studioName: string; studioSlug: string }
+    StudioTypeface & {
+      studioName: string;
+      studioSlug: string;
+    }
   > = [];
 
-  const allStudiosQuery = query(collection(db, COLLECTION_NAME));
+  const allStudiosQuery = query(
+    collection(db, COLLECTION_NAME)
+  );
   const snapshot = await getDocs(allStudiosQuery);
 
   for (const docData of snapshot.docs) {

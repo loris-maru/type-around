@@ -133,7 +133,9 @@ export async function addStudioMember(
     }
 
     // Check if trying to add the owner (case-insensitive)
-    if (memberEmailLower === studio.ownerEmail.toLowerCase()) {
+    if (
+      memberEmailLower === studio.ownerEmail.toLowerCase()
+    ) {
       return {
         success: false,
         error: "The owner is already a member by default",

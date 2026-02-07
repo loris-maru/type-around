@@ -1,8 +1,8 @@
 "use client";
 
+import type { MemberListItemProps } from "@/types/components";
 import MemberAvatar from "./member-avatar";
 import MemberRoleBadge from "./member-role-badge";
-import type { MemberListItemProps } from "@/types/components";
 
 export default function MemberListItem({
   member,

@@ -10,7 +10,11 @@ import {
 } from "react";
 import { useParams } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
-import type { Studio, SocialMedia, StudioTypeface } from "@/types/studio";
+import type {
+  Studio,
+  SocialMedia,
+  StudioTypeface,
+} from "@/types/studio";
 import {
   getOrCreateStudio,
   getStudioById,
@@ -32,12 +36,18 @@ type StudioContextValue = {
     location?: string;
     foundedIn?: string;
     contactEmail?: string;
-    designers?: { id: string; firstName: string; lastName: string }[];
+    designers?: {
+      id: string;
+      firstName: string;
+      lastName: string;
+    }[];
     website?: string;
     thumbnail?: string;
     avatar?: string;
   }) => Promise<void>;
-  updateSocialMedia: (socialMedia: SocialMedia[]) => Promise<void>;
+  updateSocialMedia: (
+    socialMedia: SocialMedia[]
+  ) => Promise<void>;
   updateStudioPageSettings: (data: {
     headerFont?: string;
     heroCharacter?: string;
@@ -54,9 +64,14 @@ type StudioContextValue = {
   ) => Promise<void>;
 };
 
-const StudioContext = createContext<StudioContextValue | null>(null);
+const StudioContext =
+  createContext<StudioContextValue | null>(null);
 
-export function StudioProvider({ children }: { children: React.ReactNode }) {
+export function StudioProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { user, isLoaded } = useUser();
   const params = useParams();
   const [studio, setStudio] = useState<Studio | null>(null);
@@ -71,12 +86,15 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
       if (studioIdFromUrl) {
         try {
           setIsLoading(true);
-          const fetchedStudio = await getStudioById(studioIdFromUrl);
+          const fetchedStudio =
+            await getStudioById(studioIdFromUrl);
           setStudio(fetchedStudio);
           setError(null);
         } catch (err) {
           setError(
-            err instanceof Error ? err : new Error("Failed to fetch studio")
+            err instanceof Error
+              ? err
+              : new Error("Failed to fetch studio")
           );
         } finally {
           setIsLoading(false);
@@ -94,13 +112,19 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
 
       try {
         setIsLoading(true);
-        const email = user.primaryEmailAddress?.emailAddress || "";
-        const fetchedStudio = await getOrCreateStudio(user.id, email);
+        const email =
+          user.primaryEmailAddress?.emailAddress || "";
+        const fetchedStudio = await getOrCreateStudio(
+          user.id,
+          email
+        );
         setStudio(fetchedStudio);
         setError(null);
       } catch (err) {
         setError(
-          err instanceof Error ? err : new Error("Failed to fetch studio")
+          err instanceof Error
+            ? err
+            : new Error("Failed to fetch studio")
         );
       } finally {
         setIsLoading(false);
@@ -116,14 +140,20 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
       location?: string;
       foundedIn?: string;
       contactEmail?: string;
-      designers?: { id: string; firstName: string; lastName: string }[];
+      designers?: {
+        id: string;
+        firstName: string;
+        lastName: string;
+      }[];
       website?: string;
       thumbnail?: string;
       avatar?: string;
     }) => {
       if (!studio) throw new Error("No studio loaded");
       await updateStudioInformation(studio.id, data);
-      setStudio((prev) => (prev ? { ...prev, ...data } : null));
+      setStudio((prev) =>
+        prev ? { ...prev, ...data } : null
+      );
     },
     [studio]
   );
@@ -132,7 +162,9 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
     async (socialMedia: SocialMedia[]) => {
       if (!studio) throw new Error("No studio loaded");
       await updateStudioSocialMedia(studio.id, socialMedia);
-      setStudio((prev) => (prev ? { ...prev, socialMedia } : null));
+      setStudio((prev) =>
+        prev ? { ...prev, socialMedia } : null
+      );
     },
     [studio]
   );
@@ -145,7 +177,9 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
     }) => {
       if (!studio) throw new Error("No studio loaded");
       await updateStudioPage(studio.id, data);
-      setStudio((prev) => (prev ? { ...prev, ...data } : null));
+      setStudio((prev) =>
+        prev ? { ...prev, ...data } : null
+      );
     },
     [studio]
   );
@@ -156,7 +190,10 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
       await addStudioTypeface(studio.id, typeface);
       setStudio((prev) =>
         prev
-          ? { ...prev, typefaces: [...prev.typefaces, typeface] }
+          ? {
+              ...prev,
+              typefaces: [...prev.typefaces, typeface],
+            }
           : null
       );
     },
@@ -171,7 +208,9 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
         prev
           ? {
               ...prev,
-              typefaces: prev.typefaces.filter((t) => t.id !== typefaceId),
+              typefaces: prev.typefaces.filter(
+                (t) => t.id !== typefaceId
+              ),
             }
           : null
       );
@@ -180,15 +219,24 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
   );
 
   const updateTypeface = useCallback(
-    async (typefaceId: string, updates: Partial<StudioTypeface>) => {
+    async (
+      typefaceId: string,
+      updates: Partial<StudioTypeface>
+    ) => {
       if (!studio) throw new Error("No studio loaded");
-      await updateStudioTypeface(studio.id, typefaceId, updates);
+      await updateStudioTypeface(
+        studio.id,
+        typefaceId,
+        updates
+      );
       setStudio((prev) =>
         prev
           ? {
               ...prev,
               typefaces: prev.typefaces.map((t) =>
-                t.id === typefaceId ? { ...t, ...updates } : t
+                t.id === typefaceId
+                  ? { ...t, ...updates }
+                  : t
               ),
             }
           : null
@@ -198,10 +246,14 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
   );
 
   const updateStudio = useCallback(
-    async (data: Partial<Omit<Studio, "id" | "ownerEmail">>) => {
+    async (
+      data: Partial<Omit<Studio, "id" | "ownerEmail">>
+    ) => {
       if (!studio) throw new Error("No studio loaded");
       await updateStudioFirebase(studio.id, data);
-      setStudio((prev) => (prev ? { ...prev, ...data } : null));
+      setStudio((prev) =>
+        prev ? { ...prev, ...data } : null
+      );
     },
     [studio]
   );
@@ -234,14 +286,18 @@ export function StudioProvider({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <StudioContext.Provider value={value}>{children}</StudioContext.Provider>
+    <StudioContext.Provider value={value}>
+      {children}
+    </StudioContext.Provider>
   );
 }
 
 export function useStudioContext(): StudioContextValue {
   const context = useContext(StudioContext);
   if (!context) {
-    throw new Error("useStudioContext must be used within a StudioProvider");
+    throw new Error(
+      "useStudioContext must be used within a StudioProvider"
+    );
   }
   return context;
 }

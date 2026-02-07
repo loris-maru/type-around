@@ -1,17 +1,17 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 import {
-  RiUploadCloud2Line,
+  RiDeleteBinLine,
   RiFileTextLine,
   RiImageLine,
   RiLoader4Line,
   RiRefreshLine,
-  RiDeleteBinLine,
+  RiUploadCloud2Line,
 } from "react-icons/ri";
+import { IMAGE_EXTENSIONS } from "@/constant/IMAGE_EXTENSIONS";
 import { uploadFile } from "@/lib/firebase/storage";
 import type { FileDropZoneProps } from "@/types/components";
-import { IMAGE_EXTENSIONS } from "@/constant/IMAGE_EXTENSIONS";
 
 function getExtensionFromUrl(url: string): string {
   const path = url.split("?")[0];
@@ -28,6 +28,7 @@ export default function FileDropZone({
   accept,
   value,
   onChange,
+  instruction,
   description,
   icon = "file",
   studioId,
@@ -71,7 +72,9 @@ export default function FileDropZone({
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = e.target.files?.[0];
     if (file) {
       handleUpload(file);
@@ -93,12 +96,15 @@ export default function FileDropZone({
     }
   };
 
-  const IconComponent = icon === "image" ? RiImageLine : RiFileTextLine;
+  const IconComponent =
+    icon === "image" ? RiImageLine : RiFileTextLine;
 
   // Extract filename from URL for display
   const displayValue = value
     ? value.includes("/")
-      ? decodeURIComponent(value.split("/").pop()?.split("?")[0] || value)
+      ? decodeURIComponent(
+          value.split("/").pop()?.split("?")[0] || value
+        )
       : value
     : "";
 
@@ -106,9 +112,16 @@ export default function FileDropZone({
 
   return (
     <div>
-      <span className="block text-sm font-medium text-neutral-700 mb-1">
-        {label}
-      </span>
+      <div className="flex flex-row gap-x-2">
+        <span className="block text-sm font-semibold text-black mb-1">
+          {label}
+        </span>
+        {!instruction && (
+          <span className="text-xs text-neutral-400">
+            {instruction}
+          </span>
+        )}
+      </div>
 
       <input
         ref={fileInputRef}
@@ -168,7 +181,9 @@ export default function FileDropZone({
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
-          onClick={() => !isUploading && fileInputRef.current?.click()}
+          onClick={() =>
+            !isUploading && fileInputRef.current?.click()
+          }
           className={`relative w-full p-6 border-2 border-dashed rounded-lg transition-colors ${
             isUploading
               ? "cursor-wait border-neutral-300 bg-neutral-50"
@@ -180,7 +195,9 @@ export default function FileDropZone({
           {isUploading ? (
             <div className="flex flex-col items-center gap-2">
               <RiLoader4Line className="w-8 h-8 text-neutral-400 animate-spin" />
-              <span className="text-sm text-neutral-500">Uploading...</span>
+              <span className="text-sm text-neutral-500">
+                Uploading...
+              </span>
             </div>
           ) : (
             <div className="flex flex-col items-center gap-2">
@@ -189,14 +206,18 @@ export default function FileDropZone({
                 Drop file or click to browse
               </span>
               {description && (
-                <span className="text-xs text-neutral-400">{description}</span>
+                <span className="text-xs text-neutral-400">
+                  {description}
+                </span>
               )}
             </div>
           )}
         </button>
       )}
 
-      {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+      {error && (
+        <p className="mt-1 text-sm text-red-500">{error}</p>
+      )}
     </div>
   );
 }

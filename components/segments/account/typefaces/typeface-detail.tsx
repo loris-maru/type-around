@@ -1,15 +1,20 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useStudio } from "@/hooks/use-studio";
-import { StudioTypeface, Font } from "@/types/studio";
-import { TypefaceDetailProps } from "@/types/components";
+import type { TypefaceDetailProps } from "@/types/components";
+import type { Font, StudioTypeface } from "@/types/studio";
 import AddFontModal from "./add-font-modal";
 import {
-  TypefaceDetailHeader,
   BasicInformationSection,
-  FontsListSection,
   FilesAssetsSection,
+  FontsListSection,
+  TypefaceDetailHeader,
 } from "./detail";
 
 export default function TypefaceDetail({
@@ -48,6 +53,7 @@ export default function TypefaceDetail({
         specimen: typeface.specimen || "",
         eula: typeface.eula || "",
         variableFontFile: typeface.variableFontFile || "",
+        published: typeface.published ?? false,
       });
       setHasChanges(false);
     }
@@ -136,6 +142,22 @@ export default function TypefaceDetail({
     setEditingFont(null);
   }, []);
 
+  const handleStatusChange = useCallback(
+    (status: string) => {
+      setFormData((prev) => ({
+        ...prev,
+        published: status === "published",
+      }));
+      setHasChanges(true);
+    },
+    []
+  );
+
+  const currentStatus = useMemo(
+    () => (formData.published ? "published" : "draft"),
+    [formData.published]
+  );
+
   const handleSave = async () => {
     if (!typeface || !hasChanges) return;
 
@@ -145,7 +167,8 @@ export default function TypefaceDetail({
         ...formData,
         characters:
           parseInt(
-            formData.characters?.toString() || "0"
+            formData.characters?.toString() || "0",
+            10
           ) || 0,
       });
       setHasChanges(false);
@@ -175,12 +198,14 @@ export default function TypefaceDetail({
   }
 
   return (
-    <div className="relative w-full pb-20">
+    <div className="relative w-full pb-20 flex flex-col gap-y-10">
       <TypefaceDetailHeader
         typefaceName={typeface.name}
+        status={currentStatus}
         hasChanges={hasChanges}
         isSaving={isSaving}
         onSave={handleSave}
+        onStatusChange={handleStatusChange}
       />
 
       <BasicInformationSection

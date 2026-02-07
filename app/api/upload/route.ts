@@ -37,7 +37,8 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { studioId, fileName, contentType, folder } = body;
+    const { studioId, fileName, contentType, folder } =
+      body;
 
     if (!studioId || !fileName || !contentType || !folder) {
       return NextResponse.json(
@@ -58,10 +59,13 @@ export async function POST(request: NextRequest) {
     // Check if user is owner or member
     const clerk = await clerkClient();
     const user = await clerk.users.getUser(userId);
-    const userEmail = user.primaryEmailAddress?.emailAddress;
+    const userEmail =
+      user.primaryEmailAddress?.emailAddress;
 
     const isOwner = studio.ownerEmail === userEmail;
-    const isMember = studio.members?.some((m) => m.email === userEmail);
+    const isMember = studio.members?.some(
+      (m) => m.email === userEmail
+    );
 
     if (!isOwner && !isMember) {
       return NextResponse.json(

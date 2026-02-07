@@ -3,7 +3,7 @@
 import { RiAddFill } from "react-icons/ri";
 import CollapsibleSection from "@/components/global/collapsible-section";
 import { FontCard } from "@/components/molecules/cards/account";
-import { FontsListSectionProps } from "@/types/components";
+import type { FontsListSectionProps } from "@/types/components";
 
 export default function FontsListSection({
   fonts,

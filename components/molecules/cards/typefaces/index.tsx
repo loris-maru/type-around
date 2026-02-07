@@ -23,9 +23,15 @@ export default function TypefaceCard({
       setDisplayedText("");
       let currentIndex = 0;
       const interval = setInterval(() => {
-        if (currentIndex < TYPEFACE_CARD_DESCRIPTION_TEXT.length) {
+        if (
+          currentIndex <
+          TYPEFACE_CARD_DESCRIPTION_TEXT.length
+        ) {
           setDisplayedText(
-            TYPEFACE_CARD_DESCRIPTION_TEXT.slice(0, currentIndex + 1)
+            TYPEFACE_CARD_DESCRIPTION_TEXT.slice(
+              0,
+              currentIndex + 1
+            )
           );
           currentIndex++;
         } else {

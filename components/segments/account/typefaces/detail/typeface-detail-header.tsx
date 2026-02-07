@@ -1,21 +1,30 @@
 "use client";
 
+import { AnimatePresence, motion } from "motion/react";
 import { RiSaveLine } from "react-icons/ri";
-import { motion, AnimatePresence } from "motion/react";
-import { TypefaceDetailHeaderProps } from "@/types/components";
+import CustomSelect from "@/components/global/custom-select";
+import { TYPEFACE_STATUS_OPTIONS } from "@/constant/TYPEFACE_STATUS";
+import type { TypefaceDetailHeaderProps } from "@/types/components";
 
 export default function TypefaceDetailHeader({
   typefaceName,
+  status,
   hasChanges,
   isSaving,
   onSave,
+  onStatusChange,
 }: TypefaceDetailHeaderProps) {
   return (
     <>
-      <div className="mb-8">
+      <div className="flex w-full flex-row justify-between items-center mb-8">
         <h1 className="font-ortank text-3xl font-bold">
           Type family: {typefaceName}
         </h1>
+        <CustomSelect
+          value={status}
+          options={TYPEFACE_STATUS_OPTIONS}
+          onChange={onStatusChange}
+        />
       </div>
 
       {/* Fixed Save Button with spring animation */}

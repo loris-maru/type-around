@@ -1,24 +1,24 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
-import {
-  useSearchParams,
-  useRouter,
-  usePathname,
-} from "next/navigation";
 import { SignOutButton } from "@clerk/nextjs";
+import {
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
+import { useCallback, useEffect } from "react";
 import {
   RiArrowDownSLine,
   RiLogoutBoxLine,
 } from "react-icons/ri";
-import { cn } from "@/utils/class-names";
-import { slugify } from "@/utils/slugify";
-import { useStudio } from "@/hooks/use-studio";
 import {
   ACCOUNT_NAV_ITEMS,
   DEFAULT_ACCOUNT_NAV,
 } from "@/constant/ACCOUNT_NAV_ITEMS";
 import { TYPEFACE_SECTIONS } from "@/constant/TYPEFACE_SECTIONS";
+import { useStudio } from "@/hooks/use-studio";
+import { cn } from "@/utils/class-names";
+import { slugify } from "@/utils/slugify";
 
 const NavigationButton = ({
   label,
@@ -181,7 +181,9 @@ export default function AccountNavigation() {
 
   return (
     <div className="relative z-0 w-full">
-      <div className="mb-2 font-ortank font-bold text-xl">{studio?.name || "Your studio"}</div>
+      <div className="mb-2 font-ortank font-bold text-xl">
+        {studio?.name || "Your studio"}
+      </div>
       <div className="relative w-full flex flex-col gap-y-2">
         {ACCOUNT_NAV_ITEMS.map((item) => {
           const isTypefaces = item === "Typefaces";

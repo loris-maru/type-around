@@ -3,7 +3,10 @@
 import { useAuth } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { RiMapPinUserFill, RiSearchLine } from "react-icons/ri";
+import {
+  RiMapPinUserFill,
+  RiSearchLine,
+} from "react-icons/ri";
 import { GLOBAL_NAV_ITEMS } from "@/constant/GLOBAL_NAV_ITEMS";
 
 export default function Navigation() {
@@ -51,7 +54,10 @@ export default function Navigation() {
             aria-label="Search"
             className="transition-colors duration-300 hover:text-gray-500"
           >
-            <RiSearchLine size={20} color="black" />
+            <RiSearchLine
+              size={20}
+              color="black"
+            />
           </button>
         </section>
 

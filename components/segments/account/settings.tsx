@@ -1,25 +1,25 @@
 "use client";
 
-import { useState, useMemo } from "react";
 import { useUser } from "@clerk/nextjs";
+import { useMemo, useState } from "react";
 import {
-  RiUserAddLine,
-  RiLoaderLine,
   RiCloseLine,
+  RiLoaderLine,
+  RiUserAddLine,
 } from "react-icons/ri";
-import { useStudio } from "@/hooks/use-studio";
 import {
   removeStudioMember,
   updateMemberRole,
 } from "@/actions/members";
-import {
-  MemberListItem,
-  AddMemberForm,
-} from "./settings/index";
+import { useStudio } from "@/hooks/use-studio";
 import type {
-  StudioMember,
   MemberRole,
+  StudioMember,
 } from "@/types/studio";
+import {
+  AddMemberForm,
+  MemberListItem,
+} from "./settings/index";
 
 export default function AccountSettings() {
   const { user } = useUser();
@@ -59,21 +59,26 @@ export default function AccountSettings() {
     const ownerMember: StudioMember = {
       id: `owner-${studio.id}`,
       email: studio.ownerEmail,
-      firstName: ownerInMembers?.firstName || user?.firstName || "",
-      lastName: ownerInMembers?.lastName || user?.lastName || "",
-      imageUrl: ownerInMembers?.imageUrl || user?.imageUrl || "",
+      firstName:
+        ownerInMembers?.firstName || user?.firstName || "",
+      lastName:
+        ownerInMembers?.lastName || user?.lastName || "",
+      imageUrl:
+        ownerInMembers?.imageUrl || user?.imageUrl || "",
       role: "owner",
       addedAt: "",
     };
 
     // Filter out the owner and deduplicate by email (case-insensitive)
     const seenEmails = new Set<string>([ownerEmailLower]);
-    const nonOwnerMembers = (studio.members || []).filter((m) => {
-      const emailLower = m.email.toLowerCase();
-      if (seenEmails.has(emailLower)) return false;
-      seenEmails.add(emailLower);
-      return true;
-    });
+    const nonOwnerMembers = (studio.members || []).filter(
+      (m) => {
+        const emailLower = m.email.toLowerCase();
+        if (seenEmails.has(emailLower)) return false;
+        seenEmails.add(emailLower);
+        return true;
+      }
+    );
 
     return [ownerMember, ...nonOwnerMembers];
   }, [studio, user]);

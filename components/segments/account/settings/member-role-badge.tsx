@@ -7,7 +7,10 @@ import {
   RiDeleteBinLine,
 } from "react-icons/ri";
 import CustomSelect from "@/components/global/custom-select";
-import { ROLE_LABELS, ROLE_OPTIONS } from "@/constant/MEMBER_ROLES";
+import {
+  ROLE_LABELS,
+  ROLE_OPTIONS,
+} from "@/constant/MEMBER_ROLES";
 import type { MemberRoleBadgeProps } from "@/types/components";
 import type { MemberRole } from "@/types/studio";
 
@@ -36,7 +39,9 @@ export default function MemberRoleBadge({
         <CustomSelect
           value={role}
           options={ROLE_OPTIONS}
-          onChange={(val) => onRoleChange(val as MemberRole)}
+          onChange={(val) =>
+            onRoleChange(val as MemberRole)
+          }
         />
       ) : (
         <div className="flex items-center gap-2 px-6 py-1.5 bg-neutral-50 rounded-lg">
