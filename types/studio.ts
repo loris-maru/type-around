@@ -1,10 +1,25 @@
 import { z } from "zod";
 
 // Zod Schemas
+export const DesignerSocialMediaSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  url: z.string().url("Must be a valid URL"),
+});
+export type DesignerSocialMedia = z.infer<
+  typeof DesignerSocialMediaSchema
+>;
+
 export const DesignerSchema = z.object({
   id: z.string().optional().default(""),
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
+  email: z.string().email().or(z.literal("")).default(""),
+  biography: z.string().default(""),
+  avatar: z.string().default(""),
+  website: z.string().url().or(z.literal("")).default(""),
+  socialMedia: z
+    .array(DesignerSocialMediaSchema)
+    .default([]),
 });
 
 // Studio member roles
@@ -90,6 +105,9 @@ export const StudioTypefaceSchema = z.object({
   gradient: z.string().optional(),
   status: TypefaceStatusEnum.default("in progress"),
   published: z.boolean().default(false),
+  // Designer IDs (references to studio.designers[].id)
+  designerIds: z.array(z.string()).default([]),
+  fontLineText: z.string().default(""),
   // New fields
   supportedLanguages: z.array(z.string()).default([]),
   headerImage: z.string().default(""),
@@ -182,7 +200,18 @@ export const UpdateStudioInfoSchema = z.object({
     .email()
     .or(z.literal(""))
     .optional(),
-  designers: z.array(DesignerSchema).optional(),
+  designers: z
+    .array(
+      DesignerSchema.partial().extend({
+        firstName: z
+          .string()
+          .min(1, "First name is required"),
+        lastName: z
+          .string()
+          .min(1, "Last name is required"),
+      })
+    )
+    .optional(),
   website: z.string().url().or(z.literal("")).optional(),
   thumbnail: z.string().optional(),
   avatar: z.string().optional(),

@@ -3,10 +3,10 @@
 import { useState } from "react";
 import {
   RiAddFill,
-  RiCloseLine,
   RiArrowDownSLine,
+  RiCloseLine,
 } from "react-icons/ri";
-import { Designer } from "@/types/studio";
+import type { Designer } from "@/types/studio";
 
 // Mock data - replace with actual data from your backend
 const EXISTING_DESIGNERS: Designer[] = [];
@@ -32,6 +32,11 @@ export default function DesignersInput() {
       id: `designer-${Date.now()}`,
       firstName: firstName.trim(),
       lastName: lastName.trim(),
+      email: "",
+      biography: "",
+      avatar: "",
+      website: "",
+      socialMedia: [],
     };
 
     setDesigners([...designers, newDesigner]);
@@ -73,9 +78,9 @@ export default function DesignersInput() {
 
   return (
     <div className="relative w-full">
-      <label className="text-base font-normal text-neutral-500 mb-2">
+      <span className="font-whisper text-sm font-normal text-black mb-2">
         Designers
-      </label>
+      </span>
 
       {/* Selected designers tags */}
       {selectedDesigners.length > 0 && (
@@ -182,11 +187,15 @@ export default function DesignersInput() {
           </div>
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
-              <label className="text-sm font-normal text-neutral-500 mb-1 block">
+              <label
+                htmlFor="designer-first-name"
+                className="block font-whisper text-sm font-normal text-black mb-2"
+              >
                 First name
               </label>
               <input
                 type="text"
+                id="designer-first-name"
                 value={firstName}
                 onChange={(e) =>
                   setFirstName(e.target.value)
@@ -196,11 +205,15 @@ export default function DesignersInput() {
               />
             </div>
             <div>
-              <label className="text-sm font-normal text-neutral-500 mb-1 block">
+              <label
+                htmlFor="designer-last-name"
+                className="block font-whisper text-sm font-normal text-black mb-2"
+              >
                 Last name
               </label>
               <input
                 type="text"
+                id="designer-last-name"
                 value={lastName}
                 onChange={(e) =>
                   setLastName(e.target.value)

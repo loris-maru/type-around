@@ -186,9 +186,14 @@ export async function updateStudioInformation(
     foundedIn?: string;
     contactEmail?: string;
     designers?: {
-      id: string;
+      id?: string;
       firstName: string;
       lastName: string;
+      email?: string;
+      biography?: string;
+      avatar?: string;
+      website?: string;
+      socialMedia?: { name: string; url: string }[];
     }[];
     website?: string;
     thumbnail?: string;
@@ -203,7 +208,12 @@ export async function updateStudioInformation(
     );
   }
 
-  await updateStudio(id, result.data);
+  await updateStudio(
+    id,
+    result.data as Partial<
+      Omit<Studio, "id" | "ownerEmail">
+    >
+  );
 }
 
 /**

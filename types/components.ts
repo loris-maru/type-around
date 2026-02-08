@@ -16,6 +16,12 @@ import type {
   VideoBlockData,
 } from "./layout";
 import type {
+  FontInUseSubmission,
+  Purchase,
+  StudioSummary,
+} from "./my-account";
+import type {
+  Designer,
   Font,
   FontInUse,
   MemberRole,
@@ -80,6 +86,7 @@ export type TagInputProps = {
   value: string[];
   onChange: (values: string[]) => void;
   placeholder?: string;
+  theme?: "dark" | "light";
   className?: string;
 };
 
@@ -158,8 +165,10 @@ export type TypefaceDetailHeaderProps = {
   status: string;
   hasChanges: boolean;
   isSaving: boolean;
+  isPublished: boolean;
   onSave: () => void;
   onStatusChange: (status: string) => void;
+  onTogglePublish: () => void;
 };
 
 export type BasicInformationSectionProps = {
@@ -170,6 +179,9 @@ export type BasicInformationSectionProps = {
   releaseDate: string;
   description: string;
   supportedLanguages: string[];
+  designerIds: string[];
+  studioDesigners: Designer[];
+  fontLineText: string;
   onInputChange: (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement
@@ -177,6 +189,7 @@ export type BasicInformationSectionProps = {
   ) => void;
   onCategoriesChange: (values: string[]) => void;
   onLanguagesChange: (values: string[]) => void;
+  onDesignerIdsChange: (ids: string[]) => void;
 };
 
 export type FontsListSectionProps = {
@@ -414,6 +427,51 @@ export type ColorPickerProps = {
   id?: string;
   value: string;
   onChange: (value: string) => void;
+};
+
+// ===========================================
+// Designers Component Props
+// ===========================================
+
+export type DesignerCardProps = {
+  designer: Designer;
+  onEdit: (designer: Designer) => void;
+  onRemove: (id: string) => void;
+};
+
+export type AddDesignerModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (designer: Designer) => void;
+  editingDesigner?: Designer | null;
+  studioId: string;
+};
+
+// ===========================================
+// My Account Component Props
+// ===========================================
+
+export type PurchaseCardProps = {
+  purchase: Purchase;
+};
+
+export type SubmissionCardProps = {
+  submission: FontInUseSubmission;
+  onAccept: (
+    submission: FontInUseSubmission
+  ) => Promise<void>;
+  onReject: (submissionId: string) => Promise<void>;
+};
+
+export type SubmitFontInUseModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onSubmit: (
+    data: Omit<FontInUseSubmission, "id">
+  ) => Promise<void>;
+  studios: StudioSummary[];
+  userId: string;
+  userName: string;
 };
 
 // ===========================================

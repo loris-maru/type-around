@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
-import type { StudioTypeface } from "@/types/studio";
+import TagInput from "@/components/global/tag-input";
 import type { AddTypefaceModalProps } from "@/types/components";
+import type { StudioTypeface } from "@/types/studio";
 import { generateUUID } from "@/utils/generate-uuid";
 import { slugify } from "@/utils/slugify";
-import TagInput from "@/components/global/tag-input";
 
 export default function AddTypefaceModal({
   isOpen,
@@ -74,13 +74,15 @@ export default function AddTypefaceModal({
         category: formData.categories,
         icon: "",
         fonts: [],
-        characters: parseInt(formData.characters) || 0,
+        characters: parseInt(formData.characters, 10) || 0,
         releaseDate:
           formData.releaseDate ||
           new Date().toISOString().split("T")[0],
         studio: studio.name || studio.id,
         status: "in progress",
         published: false,
+        designerIds: [],
+        fontLineText: "",
         supportedLanguages: [],
         headerImage: "",
         heroLetter: "",
@@ -158,7 +160,7 @@ export default function AddTypefaceModal({
           <div>
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-neutral-700 mb-1"
+              className="block font-whisper text-sm font-normal text-black mb-2"
             >
               Name <span className="text-red-500">*</span>
             </label>
@@ -178,7 +180,7 @@ export default function AddTypefaceModal({
           <div>
             <label
               htmlFor="hangeulName"
-              className="block text-sm font-medium text-neutral-700 mb-1"
+              className="block font-whisper text-sm font-normal text-black mb-2"
             >
               Hangeul Name
             </label>
@@ -197,7 +199,7 @@ export default function AddTypefaceModal({
           <div>
             <label
               htmlFor="description"
-              className="block text-sm font-medium text-neutral-700 mb-1"
+              className="block font-whisper text-sm font-normal text-black mb-2"
             >
               Description
             </label>
@@ -224,7 +226,7 @@ export default function AddTypefaceModal({
           <div>
             <label
               htmlFor="releaseDate"
-              className="block text-sm font-medium text-neutral-700 mb-1"
+              className="block font-whisper text-sm font-normal text-black mb-2"
             >
               Release Date
             </label>

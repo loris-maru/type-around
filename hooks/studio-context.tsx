@@ -143,9 +143,14 @@ export function StudioProvider({
       foundedIn?: string;
       contactEmail?: string;
       designers?: {
-        id: string;
+        id?: string;
         firstName: string;
         lastName: string;
+        email?: string;
+        biography?: string;
+        avatar?: string;
+        website?: string;
+        socialMedia?: { name: string; url: string }[];
       }[];
       website?: string;
       thumbnail?: string;
@@ -154,7 +159,7 @@ export function StudioProvider({
       if (!studio) throw new Error("No studio loaded");
       await updateStudioInformation(studio.id, data);
       setStudio((prev) =>
-        prev ? { ...prev, ...data } : null
+        prev ? ({ ...prev, ...data } as typeof prev) : null
       );
     },
     [studio]

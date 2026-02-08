@@ -18,7 +18,7 @@ export default function FormInput({
     <div>
       <label
         htmlFor={name}
-        className="block text-sm font-normal text-neutral-700 mb-1"
+        className="block font-whisper text-sm font-normal text-black mb-2"
       >
         {label}
         {required && (

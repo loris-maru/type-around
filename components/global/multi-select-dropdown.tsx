@@ -63,7 +63,7 @@ export default function MultiSelectDropdown({
       className="relative"
     >
       {label && (
-        <label className="block text-sm font-medium text-neutral-700 mb-1">
+        <label className="block font-whisper text-sm font-normal text-black mb-2">
           {label}
         </label>
       )}

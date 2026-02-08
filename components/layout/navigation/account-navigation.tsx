@@ -91,7 +91,7 @@ const TypefaceSubItem = ({
       type="button"
       onClick={onClick}
       className={cn(
-        "w-full text-left text-base font-whisper px-4 py-3 transition-colors",
+        "w-full text-left text-base font-whisper px-4 transition-colors",
         isActive
           ? "text-black font-semibold"
           : "text-dark-gray font-normal"
@@ -210,7 +210,7 @@ export default function AccountNavigation() {
 
               {/* Typefaces submenu */}
               {hasTypefaces && isTypefacesExpanded && (
-                <div className="mt-1 flex flex-col gap-y-1">
+                <div className="mt-1 flex flex-col py-4 gap-y-3">
                   {studio.typefaces.map((typeface) => {
                     const isActiveTypeface =
                       activeTypeface === typeface.slug;
@@ -227,7 +227,7 @@ export default function AccountNavigation() {
                         />
                         {/* Section links for active typeface */}
                         {isActiveTypeface && (
-                          <div className="flex flex-col">
+                          <div className="flex flex-col my-4 border-l border-neutral-300 ml-4">
                             {TYPEFACE_SECTIONS.map(
                               (section) => (
                                 <SectionLink

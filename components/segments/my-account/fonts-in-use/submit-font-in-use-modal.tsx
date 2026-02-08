@@ -9,72 +9,60 @@ import {
   RiUploadCloud2Line,
 } from "react-icons/ri";
 import { uploadFile } from "@/lib/firebase/storage";
-import {
-  AddFontInUseModalProps,
-  ImagePreview,
-} from "@/types/components";
-import { FontInUse } from "@/types/studio";
+import type { SubmitFontInUseModalProps } from "@/types/components";
+import type { StudioSummary } from "@/types/my-account";
+import type { ImagePreview } from "@/types/components";
 import { generateUUID } from "@/utils/generate-uuid";
 
-export default function AddFontInUseModal({
+export default function SubmitFontInUseModal({
   isOpen,
   onClose,
-  onSave,
-  editingFontInUse,
-  typefaces,
-  studioId,
-}: AddFontInUseModalProps) {
+  onSubmit,
+  studios,
+  userId,
+  userName,
+}: SubmitFontInUseModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [images, setImages] = useState<ImagePreview[]>([]);
 
+  const [selectedStudio, setSelectedStudio] =
+    useState<StudioSummary | null>(null);
+
   const [formData, setFormData] = useState({
+    studioId: "",
     projectName: "",
     designerName: "",
     typefaceId: "",
     description: "",
   });
 
-  // Prefill form when editing, re-run when modal opens
+  // Reset form when modal opens
   useEffect(() => {
     if (!isOpen) return;
-    if (editingFontInUse) {
-      setFormData({
-        projectName: editingFontInUse.projectName,
-        designerName: editingFontInUse.designerName,
-        typefaceId: editingFontInUse.typefaceId,
-        description: editingFontInUse.description,
-      });
-      setImages(
-        editingFontInUse.images.map((url) => ({
-          id: generateUUID(),
-          previewUrl: url,
-          uploadedUrl: url, // Already uploaded
-        }))
-      );
-    } else {
-      setFormData({
-        projectName: "",
-        designerName: "",
-        typefaceId: "",
-        description: "",
-      });
-      setImages((prev) => {
-        for (const img of prev) {
-          if (
-            img.file &&
-            img.previewUrl.startsWith("blob:")
-          ) {
-            URL.revokeObjectURL(img.previewUrl);
-          }
+    setFormData({
+      studioId: "",
+      projectName: "",
+      designerName: "",
+      typefaceId: "",
+      description: "",
+    });
+    setImages((prev) => {
+      for (const img of prev) {
+        if (
+          img.file &&
+          img.previewUrl.startsWith("blob:")
+        ) {
+          URL.revokeObjectURL(img.previewUrl);
         }
-        return [];
-      });
-      setError(null);
-    }
-  }, [editingFontInUse, isOpen]);
+      }
+      return [];
+    });
+    setSelectedStudio(null);
+    setError(null);
+  }, [isOpen]);
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -84,7 +72,18 @@ export default function AddFontInUseModal({
     >
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    if (name === "studioId") {
+      const studio = studios.find((s) => s.id === value);
+      setSelectedStudio(studio || null);
+      setFormData((prev) => ({
+        ...prev,
+        studioId: value,
+        typefaceId: "",
+      }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleFilesSelected = (files: FileList | null) => {
@@ -100,7 +99,7 @@ export default function AddFontInUseModal({
       (file) => ({
         id: generateUUID(),
         previewUrl: URL.createObjectURL(file),
-        file, // Store file for upload on submit
+        file,
       })
     );
 
@@ -135,7 +134,6 @@ export default function AddFontInUseModal({
   const handleRemoveImage = (id: string) => {
     setImages((prev) => {
       const image = prev.find((img) => img.id === id);
-      // Revoke blob URL if it's a new image
       if (
         image?.file &&
         image.previewUrl.startsWith("blob:")
@@ -147,19 +145,20 @@ export default function AddFontInUseModal({
   };
 
   const resetForm = () => {
-    // Revoke all blob URLs
-    images.forEach((img) => {
+    for (const img of images) {
       if (img.file && img.previewUrl.startsWith("blob:")) {
         URL.revokeObjectURL(img.previewUrl);
       }
-    });
+    }
     setFormData({
+      studioId: "",
       projectName: "",
       designerName: "",
       typefaceId: "",
       description: "",
     });
     setImages([]);
+    setSelectedStudio(null);
     setError(null);
   };
 
@@ -173,44 +172,51 @@ export default function AddFontInUseModal({
         throw new Error("At least one image is required");
       }
 
-      // Upload new images to Firebase Storage
+      if (!selectedStudio) {
+        throw new Error("Please select a studio");
+      }
+
+      // Upload images
       const uploadedUrls: string[] = await Promise.all(
         images.map(async (img) => {
           if (img.file) {
-            // New image - upload to storage
             return await uploadFile(
               img.file,
               "images",
-              studioId
+              `submissions/${userId}`
             );
           }
-          // Existing image - use existing URL
           return img.uploadedUrl || img.previewUrl;
         })
       );
 
-      const selectedTypeface = typefaces.find(
-        (t) => t.id === formData.typefaceId
-      );
+      const selectedTypeface =
+        selectedStudio.typefaces.find(
+          (t) => t.id === formData.typefaceId
+        );
 
-      const fontInUse: FontInUse = {
-        id: editingFontInUse?.id || generateUUID(),
+      await onSubmit({
+        studioId: selectedStudio.id,
+        studioName: selectedStudio.name,
+        submittedBy: userName,
+        submittedByUserId: userId,
+        submittedAt: new Date().toISOString(),
+        status: "pending",
         images: uploadedUrls,
         projectName: formData.projectName,
         designerName: formData.designerName,
         typefaceId: formData.typefaceId,
         typefaceName: selectedTypeface?.name || "",
         description: formData.description,
-      };
+      });
 
-      onSave(fontInUse);
       resetForm();
       onClose();
     } catch (err) {
       setError(
         err instanceof Error
           ? err.message
-          : "Failed to save"
+          : "Failed to submit"
       );
     } finally {
       setIsSubmitting(false);
@@ -244,14 +250,12 @@ export default function AddFontInUseModal({
       <div className="relative bg-white rounded-lg w-full max-w-lg mx-4 max-h-[90vh] flex flex-col">
         <div className="flex items-center justify-between p-6 border-b border-neutral-200 shrink-0">
           <h2 className="font-ortank text-xl font-bold">
-            {editingFontInUse
-              ? "Edit Font In Use"
-              : "Add Font In Use"}
+            Submit a Font In Use
           </h2>
           <button
             type="button"
             onClick={handleClose}
-            className="p-1 hover:bg-neutral-100 rounded-lg transition-colors"
+            className="p-1 hover:bg-neutral-100 rounded-lg transition-colors cursor-pointer"
           >
             <RiCloseLine className="w-6 h-6" />
           </button>
@@ -266,6 +270,74 @@ export default function AddFontInUseModal({
               {error}
             </div>
           )}
+
+          {/* Studio Select */}
+          <div>
+            <label
+              htmlFor="studioId"
+              className="block font-whisper text-sm font-normal text-black mb-2"
+            >
+              Studio <span className="text-red-500">*</span>
+            </label>
+            <select
+              id="studioId"
+              name="studioId"
+              value={formData.studioId}
+              onChange={handleInputChange}
+              required
+              className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent bg-white"
+            >
+              <option value="">Select a studio</option>
+              {studios.map((studio) => (
+                <option
+                  key={studio.id}
+                  value={studio.id}
+                >
+                  {studio.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Typeface Select */}
+          <div>
+            <label
+              htmlFor="typefaceId"
+              className="block font-whisper text-sm font-normal text-black mb-2"
+            >
+              Typeface{" "}
+              <span className="text-red-500">*</span>
+            </label>
+            <select
+              id="typefaceId"
+              name="typefaceId"
+              value={formData.typefaceId}
+              onChange={handleInputChange}
+              required
+              disabled={!selectedStudio}
+              className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent bg-white disabled:bg-neutral-100 disabled:text-neutral-400"
+            >
+              <option value="">
+                {selectedStudio
+                  ? "Select a typeface"
+                  : "Select a studio first"}
+              </option>
+              {selectedStudio?.typefaces.map((typeface) => (
+                <option
+                  key={typeface.id}
+                  value={typeface.id}
+                >
+                  {typeface.name}
+                </option>
+              ))}
+            </select>
+            {selectedStudio &&
+              selectedStudio.typefaces.length === 0 && (
+                <p className="text-xs text-neutral-500 mt-1">
+                  This studio has no typefaces.
+                </p>
+              )}
+          </div>
 
           {/* Images Drop Zone */}
           <div>
@@ -307,7 +379,6 @@ export default function AddFontInUseModal({
               </div>
             </div>
 
-            {/* Image Previews */}
             {images.length > 0 && (
               <div className="grid grid-cols-4 gap-2 mt-3">
                 {images.map((img) => (
@@ -380,41 +451,6 @@ export default function AddFontInUseModal({
             />
           </div>
 
-          {/* Typeface Select */}
-          <div>
-            <label
-              htmlFor="typefaceId"
-              className="block font-whisper text-sm font-normal text-black mb-2"
-            >
-              Typeface{" "}
-              <span className="text-red-500">*</span>
-            </label>
-            <select
-              id="typefaceId"
-              name="typefaceId"
-              value={formData.typefaceId}
-              onChange={handleInputChange}
-              required
-              className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent bg-white"
-            >
-              <option value="">Select a typeface</option>
-              {typefaces.map((typeface) => (
-                <option
-                  key={typeface.id}
-                  value={typeface.id}
-                >
-                  {typeface.name}
-                </option>
-              ))}
-            </select>
-            {typefaces.length === 0 && (
-              <p className="text-xs text-neutral-500 mt-1">
-                No typefaces available. Create a typeface
-                first.
-              </p>
-            )}
-          </div>
-
           {/* Description */}
           <div>
             <label
@@ -440,21 +476,20 @@ export default function AddFontInUseModal({
               type="submit"
               disabled={
                 isSubmitting ||
+                !formData.studioId ||
                 !formData.projectName ||
                 !formData.designerName ||
                 !formData.typefaceId ||
                 images.length === 0
               }
-              className="w-full py-3 bg-black text-white font-whisper font-medium rounded-lg hover:bg-neutral-800 disabled:bg-neutral-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+              className="w-full py-3 bg-black text-white font-whisper font-medium rounded-lg hover:bg-neutral-800 disabled:bg-neutral-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
               {isSubmitting && (
                 <RiLoader4Line className="w-5 h-5 animate-spin" />
               )}
               {isSubmitting
-                ? "Uploading..."
-                : editingFontInUse
-                  ? "Save Changes"
-                  : "Add Font In Use"}
+                ? "Submitting..."
+                : "Submit Font In Use"}
             </button>
           </div>
         </form>

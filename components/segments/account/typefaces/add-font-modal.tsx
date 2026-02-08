@@ -330,7 +330,7 @@ export default function AddFontModal({
           <div>
             <label
               htmlFor="styleName"
-              className="block text-sm font-medium text-neutral-700 mb-1"
+              className="block font-whisper text-sm font-normal text-black mb-2"
             >
               Style Name{" "}
               <span className="text-red-500">*</span>
@@ -352,7 +352,7 @@ export default function AddFontModal({
             <div>
               <label
                 htmlFor="weight"
-                className="block text-sm font-medium text-neutral-700 mb-1"
+                className="block font-whisper text-sm font-normal text-black mb-2"
               >
                 Weight Value
               </label>
@@ -372,7 +372,7 @@ export default function AddFontModal({
             <div>
               <label
                 htmlFor="width"
-                className="block text-sm font-medium text-neutral-700 mb-1"
+                className="block font-whisper text-sm font-normal text-black mb-2"
               >
                 Width Value
               </label>
@@ -402,7 +402,7 @@ export default function AddFontModal({
             />
             <label
               htmlFor="isItalic"
-              className="text-sm font-medium text-neutral-700"
+              className="font-whisper text-sm font-normal text-black"
             >
               Is Italic?
             </label>
@@ -413,7 +413,7 @@ export default function AddFontModal({
             <div>
               <label
                 htmlFor="printPrice"
-                className="block text-sm font-medium text-neutral-700 mb-1"
+                className="block font-whisper text-sm font-normal text-black mb-2"
               >
                 Print Price ($)
               </label>
@@ -432,7 +432,7 @@ export default function AddFontModal({
             <div>
               <label
                 htmlFor="webPrice"
-                className="block text-sm font-medium text-neutral-700 mb-1"
+                className="block font-whisper text-sm font-normal text-black mb-2"
               >
                 Web Price ($)
               </label>
@@ -454,7 +454,7 @@ export default function AddFontModal({
           <div>
             <label
               htmlFor="fontFile"
-              className="block text-sm font-medium text-neutral-700 mb-1"
+              className="block font-whisper text-sm font-normal text-black mb-2"
             >
               Font file for type tester (woff2)
             </label>
@@ -498,7 +498,7 @@ export default function AddFontModal({
           <div>
             <label
               htmlFor="salesFiles"
-              className="block text-sm font-medium text-neutral-700 mb-1"
+              className="block font-whisper text-sm font-normal text-black mb-2"
             >
               Fonts for sales
             </label>

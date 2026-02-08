@@ -126,7 +126,7 @@ export default function HeroCharacterInput() {
 
   return (
     <div className="relative w-full">
-      <label className="text-base font-normal text-neutral-500 mb-2 block">
+      <label className="block font-whisper text-sm font-normal text-black mb-2">
         Single Character
       </label>
 

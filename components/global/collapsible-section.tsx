@@ -20,7 +20,7 @@ export default function CollapsibleSection({
   return (
     <section
       id={id}
-      className="mb-10 scroll-mt-8"
+      className="mb-6 scroll-mt-8"
     >
       <button
         type="button"

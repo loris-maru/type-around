@@ -65,7 +65,7 @@ export default function AccountForm({
             >
               <label
                 htmlFor={field.slug}
-                className="text-base font-normal text-neutral-500 mb-2"
+                className="block font-whisper text-sm font-normal text-black mb-2"
               >
                 {field.label}
               </label>

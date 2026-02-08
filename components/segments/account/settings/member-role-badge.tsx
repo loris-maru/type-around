@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  RiShieldUserLine,
+  RiDeleteBinLine,
   RiEditLine,
   RiLoaderLine,
-  RiDeleteBinLine,
+  RiShieldUserLine,
 } from "react-icons/ri";
 import CustomSelect from "@/components/global/custom-select";
 import {
@@ -24,9 +24,9 @@ export default function MemberRoleBadge({
 }: MemberRoleBadgeProps) {
   if (role === "owner") {
     return (
-      <div className="flex items-center gap-2 px-6 py-1.5 bg-neutral-100 rounded-lg">
-        <RiShieldUserLine className="w-4 h-4 text-neutral-600" />
-        <span className="text-sm font-whisper font-medium text-neutral-700">
+      <div className="flex items-center gap-2 px-4 py-1.5 border border-neutral-300 rounded-3xl">
+        <RiShieldUserLine className="w-4 h-4 text-black" />
+        <span className="text-sm font-whisper font-medium text-black">
           Owner
         </span>
       </div>

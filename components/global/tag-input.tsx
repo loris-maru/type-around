@@ -10,6 +10,7 @@ export default function TagInput({
   value,
   onChange,
   placeholder = "Type and press Enter...",
+  theme = "dark",
   className,
 }: TagInputProps) {
   const [inputValue, setInputValue] = useState("");
@@ -69,7 +70,7 @@ export default function TagInput({
     <div className={className}>
       <label
         htmlFor={label}
-        className="block text-sm font-medium text-neutral-700 mb-1"
+        className="block font-whisper text-sm font-normal text-black mb-2"
       >
         {label}
       </label>
@@ -89,7 +90,12 @@ export default function TagInput({
         {value.map((tag, index) => (
           <span
             key={`${tag}`}
-            className="inline-flex items-center gap-1 px-5 py-2 bg-black text-white text-sm rounded-3xl group"
+            className={cn(
+              "inline-flex items-center gap-1 px-5 py-2 text-sm rounded-3xl group",
+              theme === "dark"
+                ? "bg-black text-white"
+                : "bg-transparent text-black border border-black"
+            )}
           >
             {tag}
             <button
@@ -98,9 +104,21 @@ export default function TagInput({
                 e.stopPropagation();
                 handleRemoveTag(index);
               }}
-              className="p-0.5 hover:bg-neutral-200 rounded transition-colors"
+              className={cn(
+                "p-0.5 rounded transition-colors",
+                theme === "dark"
+                  ? "hover:bg-neutral-200"
+                  : "hover:bg-neutral-100"
+              )}
             >
-              <RiCloseLine className="w-3.5 h-3.5 text-neutral-500 group-hover:text-neutral-700" />
+              <RiCloseLine
+                className={cn(
+                  "w-3.5 h-3.5",
+                  theme === "dark"
+                    ? "text-neutral-500 group-hover:text-neutral-700"
+                    : "text-neutral-400 group-hover:text-black"
+                )}
+              />
             </button>
           </span>
         ))}

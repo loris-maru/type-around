@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { RiArrowDropDownLine } from "react-icons/ri";
 import type { CustomSelectProps } from "@/types/components";
 import { cn } from "@/utils/class-names";
 
@@ -13,10 +12,6 @@ export default function CustomSelect({
 }: CustomSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-
-  const selectedOption = options.find(
-    (opt) => opt.value === value
-  );
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -49,30 +44,6 @@ export default function CustomSelect({
       ref={dropdownRef}
       className={cn("relative", className)}
     >
-      <button
-        type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className={cn(
-          "flex items-center gap-2 px-4 py-2 border rounded-lg text-sm font-whisper font-medium transition-colors",
-          isOpen
-            ? "border-black bg-white"
-            : "border-neutral-300 bg-white hover:border-neutral-400"
-        )}
-      >
-        {selectedOption?.icon && (
-          <span className="shrink-0">
-            {selectedOption.icon}
-          </span>
-        )}
-        <span>{selectedOption?.label || value}</span>
-        <RiArrowDropDownLine
-          className={cn(
-            "w-5 h-5 text-neutral-500 transition-transform duration-200",
-            isOpen && "rotate-180"
-          )}
-        />
-      </button>
-
       {isOpen && (
         <div className="absolute z-50 right-0 mt-1 min-w-full bg-white border border-neutral-200 rounded-lg shadow-lg overflow-hidden">
           {options.map((option) => (

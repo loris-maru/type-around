@@ -47,6 +47,8 @@ export default function TypefaceDetail({
         description: typeface.description,
         supportedLanguages:
           typeface.supportedLanguages || [],
+        designerIds: typeface.designerIds || [],
+        fontLineText: typeface.fontLineText || "",
         fonts: typeface.fonts || [],
         headerImage: typeface.headerImage || "",
         heroLetter: typeface.heroLetter || "",
@@ -88,6 +90,17 @@ export default function TypefaceDetail({
       setFormData((prev) => ({
         ...prev,
         supportedLanguages: values,
+      }));
+      setHasChanges(true);
+    },
+    []
+  );
+
+  const handleDesignerIdsChange = useCallback(
+    (ids: string[]) => {
+      setFormData((prev) => ({
+        ...prev,
+        designerIds: ids,
       }));
       setHasChanges(true);
     },
@@ -153,6 +166,32 @@ export default function TypefaceDetail({
     []
   );
 
+  const handleTogglePublish = useCallback(async () => {
+    if (!typeface) return;
+    const newPublished = !formData.published;
+    const updatedFormData = {
+      ...formData,
+      published: newPublished,
+    };
+    setFormData(updatedFormData);
+    setIsSaving(true);
+    try {
+      await updateTypeface(typeface.id, {
+        ...updatedFormData,
+        characters:
+          parseInt(
+            updatedFormData.characters?.toString() || "0",
+            10
+          ) || 0,
+      });
+      setHasChanges(false);
+    } catch (err) {
+      console.error("Failed to save typeface:", err);
+    } finally {
+      setIsSaving(false);
+    }
+  }, [typeface, formData, updateTypeface]);
+
   const currentStatus = useMemo(
     () => (formData.published ? "published" : "draft"),
     [formData.published]
@@ -198,14 +237,16 @@ export default function TypefaceDetail({
   }
 
   return (
-    <div className="relative w-full pb-20 flex flex-col gap-y-10">
+    <div className="relative w-full pb-20 flex flex-col gap-y-2">
       <TypefaceDetailHeader
         typefaceName={typeface.name}
         status={currentStatus}
         hasChanges={hasChanges}
         isSaving={isSaving}
+        isPublished={formData.published ?? false}
         onSave={handleSave}
         onStatusChange={handleStatusChange}
+        onTogglePublish={handleTogglePublish}
       />
 
       <BasicInformationSection
@@ -218,9 +259,13 @@ export default function TypefaceDetail({
         supportedLanguages={
           formData.supportedLanguages || []
         }
+        designerIds={formData.designerIds || []}
+        studioDesigners={studio?.designers || []}
+        fontLineText={formData.fontLineText || ""}
         onInputChange={handleInputChange}
         onCategoriesChange={handleCategoriesChange}
         onLanguagesChange={handleLanguagesChange}
+        onDesignerIdsChange={handleDesignerIdsChange}
       />
 
       <FontsListSection

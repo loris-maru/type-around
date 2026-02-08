@@ -150,7 +150,7 @@ export default function HeaderFontInput() {
 
   return (
     <div className="relative w-full">
-      <span className="text-base font-normal text-neutral-500 mb-2 block">
+      <span className="block font-whisper text-sm font-normal text-black mb-2">
         Header Font
       </span>
 
