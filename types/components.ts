@@ -12,6 +12,7 @@ import type {
   LayoutItemData,
   SpacerBlockData,
   StoreBlockData,
+  TypefaceListBlockData,
   VideoBlockData,
 } from "./layout";
 import type {
@@ -363,6 +364,56 @@ export type BlogBlockInlineProps = {
   data: BlogBlockData;
   onUpdateData: (data: BlogBlockData) => void;
   onRemove: () => void;
+};
+
+export type TypefaceListBlockModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (data: TypefaceListBlockData) => void;
+  initialData?: TypefaceListBlockData;
+};
+
+// ===========================================
+// Studio Preview Component Props
+// ===========================================
+
+export type StudioGalleryProps = {
+  data: GalleryBlockData;
+};
+
+export type StudioImageBlockProps = {
+  data: ImageBlockData;
+};
+
+export type StudioVideoBlockProps = {
+  data: VideoBlockData;
+};
+
+export type StudioSpacerBlockProps = {
+  data: SpacerBlockData;
+};
+
+export type StudioStoreBlockProps = {
+  data: StoreBlockData;
+};
+
+export type StudioBlogBlockProps = {
+  data: BlogBlockData;
+};
+
+export type PreviewBlockRendererProps = {
+  block: LayoutItem;
+  studio: Studio;
+};
+
+// ===========================================
+// Molecule Component Props
+// ===========================================
+
+export type ColorPickerProps = {
+  id?: string;
+  value: string;
+  onChange: (value: string) => void;
 };
 
 // ===========================================

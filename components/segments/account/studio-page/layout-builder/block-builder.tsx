@@ -3,6 +3,7 @@
 import { Reorder } from "motion/react";
 import { useState } from "react";
 import { RiCloseLine, RiDraggable } from "react-icons/ri";
+import { CONFIGURABLE_BLOCKS } from "@/constant/BLOCK_CLASS_MAPS";
 import { LAYOUT_BLOCKS } from "@/constant/LAYOUT_BLOCKS";
 import type { BlockBuilderProps } from "@/types/components";
 import type {
@@ -14,6 +15,7 @@ import type {
   LayoutItemData,
   SpacerBlockData,
   StoreBlockData,
+  TypefaceListBlockData,
   VideoBlockData,
 } from "@/types/layout";
 import { cn } from "@/utils/class-names";
@@ -22,6 +24,7 @@ import GalleryBlockModal from "./gallery-block-modal";
 import MediaBlockModal from "./media-block-modal";
 import SpacerBlockModal from "./spacer-block-modal";
 import StoreBlockModal from "./store-block-modal";
+import TypefaceListBlockModal from "./typeface-list-block-modal";
 
 export default function BlockBuilder({
   activeItems,
@@ -43,7 +46,7 @@ export default function BlockBuilder({
 
   const handleBlockClick = (item: LayoutItem) => {
     if (
-      isRepeatable(item.blockId) &&
+      CONFIGURABLE_BLOCKS.includes(item.blockId) &&
       item.blockId !== "blog"
     ) {
       setEditingItem(item);
@@ -151,7 +154,10 @@ export default function BlockBuilder({
                   <RiDraggable className="w-4 h-4 text-neutral-400" />
                 </div>
 
-                {repeatable ? (
+                {repeatable ||
+                CONFIGURABLE_BLOCKS.includes(
+                  item.blockId
+                ) ? (
                   <button
                     type="button"
                     onClick={() => handleBlockClick(item)}
@@ -260,6 +266,20 @@ export default function BlockBuilder({
             editingItem.data as StoreBlockData | undefined
           }
           studioId={studioId}
+        />
+      )}
+
+      {/* Typeface List modal */}
+      {editingItem?.blockId === "typeface-list" && (
+        <TypefaceListBlockModal
+          isOpen
+          onClose={() => setEditingItem(null)}
+          onSave={handleModalSave}
+          initialData={
+            editingItem.data as
+              | TypefaceListBlockData
+              | undefined
+          }
         />
       )}
     </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Reorder } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -10,6 +11,7 @@ import {
   RiLoader4Line,
   RiUploadCloud2Line,
 } from "react-icons/ri";
+import ColorPicker from "@/components/molecules/color-picker";
 import { uploadFile } from "@/lib/firebase/storage";
 import type { GalleryBlockModalProps } from "@/types/components";
 import type { GalleryImage } from "@/types/layout";
@@ -24,6 +26,12 @@ export default function GalleryBlockModal({
 }: GalleryBlockModalProps) {
   const [gap, setGap] = useState<number>(
     initialData?.gap ?? 0
+  );
+  const [backgroundColor, setBackgroundColor] = useState(
+    initialData?.backgroundColor || ""
+  );
+  const [fontColor, setFontColor] = useState(
+    initialData?.fontColor || ""
   );
   const [images, setImages] = useState<GalleryImage[]>(() =>
     (initialData?.images || []).map((img) => ({
@@ -126,7 +134,7 @@ export default function GalleryBlockModal({
   };
 
   const handleSave = () => {
-    onSave({ gap, images });
+    onSave({ gap, images, backgroundColor, fontColor });
     onClose();
   };
 
@@ -141,7 +149,7 @@ export default function GalleryBlockModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center">
+    <div className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden">
       {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop dismiss */}
       {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop dismiss */}
       <div
@@ -165,31 +173,75 @@ export default function GalleryBlockModal({
         </div>
 
         {/* Scrollable content */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
-          {/* Gap */}
-          <div>
-            <label
-              htmlFor="gallery-gap"
-              className="block text-sm font-semibold text-black mb-1"
-            >
-              Gap
-            </label>
-            <div className="relative w-32">
-              <input
-                type="number"
-                id="gallery-gap"
-                value={gap}
-                onChange={(e) =>
-                  setGap(
-                    Math.max(0, Number(e.target.value))
-                  )
-                }
-                min={0}
-                className="w-full px-3 py-2 pr-10 text-sm border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
-              />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-neutral-400 pointer-events-none">
-                px
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-6 space-y-6">
+          {/* Gap + Colors */}
+          <div className="grid grid-cols-3 gap-4">
+            <div>
+              <label
+                htmlFor="gallery-gap"
+                className="block text-sm font-semibold text-black mb-1"
+              >
+                Gap
+              </label>
+              <div className="relative">
+                <input
+                  type="number"
+                  id="gallery-gap"
+                  value={gap}
+                  onChange={(e) =>
+                    setGap(
+                      Math.max(0, Number(e.target.value))
+                    )
+                  }
+                  min={0}
+                  className="w-full px-3 py-2 pr-10 text-sm border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-neutral-400 pointer-events-none">
+                  px
+                </span>
+              </div>
+            </div>
+            <div>
+              <span className="block text-sm font-semibold text-black mb-1">
+                Background color
               </span>
+              <div className="flex items-center gap-2">
+                <ColorPicker
+                  id="gallery-bg-color"
+                  value={backgroundColor || "#ffffff"}
+                  onChange={setBackgroundColor}
+                />
+                <input
+                  type="text"
+                  value={backgroundColor}
+                  onChange={(e) =>
+                    setBackgroundColor(e.target.value)
+                  }
+                  placeholder="#ffffff"
+                  className="w-20 px-2 py-2 text-sm border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                />
+              </div>
+            </div>
+            <div>
+              <span className="block text-sm font-semibold text-black mb-1">
+                Font color
+              </span>
+              <div className="flex items-center gap-2">
+                <ColorPicker
+                  id="gallery-font-color"
+                  value={fontColor || "#000000"}
+                  onChange={setFontColor}
+                />
+                <input
+                  type="text"
+                  value={fontColor}
+                  onChange={(e) =>
+                    setFontColor(e.target.value)
+                  }
+                  placeholder="#000000"
+                  className="w-20 px-2 py-2 text-sm border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                />
+              </div>
             </div>
           </div>
 
@@ -254,12 +306,13 @@ export default function GalleryBlockModal({
                   {/* Thumbnail */}
                   <div className="w-16 h-16 rounded-lg bg-neutral-100 overflow-hidden shrink-0 flex items-center justify-center">
                     {img.url ? (
-                      /* biome-ignore lint: dynamic image URL from storage */
-                      /* eslint-disable-next-line @next/next/no-img-element */
-                      <img
+                      <Image
                         src={img.url}
                         alt={img.title || "Gallery image"}
+                        width={64}
+                        height={64}
                         className="w-full h-full object-cover"
+                        unoptimized
                       />
                     ) : (
                       <RiImageLine className="w-5 h-5 text-neutral-400" />

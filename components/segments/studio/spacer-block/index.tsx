@@ -1,20 +1,12 @@
-import type { SpacerBlockData } from "@/types/layout";
-
-const SIZE_MAP = {
-  s: "h-8",
-  m: "h-16",
-  l: "h-32",
-  xl: "h-48",
-} as const;
+import { SPACER_CLASS_MAP } from "@/constant/BLOCK_CLASS_MAPS";
+import type { StudioSpacerBlockProps } from "@/types/components";
 
 export default function StudioSpacerBlock({
   data,
-}: {
-  data: SpacerBlockData;
-}) {
+}: StudioSpacerBlockProps) {
   return (
     <div
-      className={SIZE_MAP[data.size || "m"]}
+      className={SPACER_CLASS_MAP[data.size || "m"]}
       aria-hidden="true"
     />
   );

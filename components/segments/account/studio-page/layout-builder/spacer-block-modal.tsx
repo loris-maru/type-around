@@ -33,7 +33,7 @@ export default function SpacerBlockModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center">
+    <div className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden">
       {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop dismiss */}
       {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop dismiss */}
       <div
@@ -41,8 +41,8 @@ export default function SpacerBlockModal({
         onClick={onClose}
       />
 
-      <div className="relative bg-white rounded-lg w-full max-w-sm mx-4">
-        <div className="flex items-center justify-between p-6 border-b border-neutral-200">
+      <div className="relative bg-white rounded-lg w-full max-w-sm mx-4 max-h-[90vh] flex flex-col">
+        <div className="flex items-center justify-between p-6 border-b border-neutral-200 shrink-0">
           <h2 className="font-ortank text-xl font-bold">
             Spacer Block
           </h2>
@@ -55,7 +55,7 @@ export default function SpacerBlockModal({
           </button>
         </div>
 
-        <div className="p-6 space-y-5">
+        <div className="flex-1 min-h-0 p-6 space-y-5 overflow-y-auto overscroll-contain">
           {/* Size */}
           <div>
             <span className="block text-sm font-semibold text-black mb-2">

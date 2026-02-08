@@ -19,7 +19,14 @@ export type LayoutBlock = {
 // --- Block configuration data ---
 
 export type BlockAlignment = "left" | "center" | "right";
-export type BlockMargin = "s" | "m" | "l" | "xl";
+export type BlockMargin = "none" | "s" | "m" | "l" | "xl";
+export type BlockSize =
+  | "full"
+  | "20"
+  | "40"
+  | "50"
+  | "60"
+  | "80";
 
 export type GalleryImage = {
   key: string;
@@ -33,6 +40,8 @@ export type GalleryImage = {
 export type GalleryBlockData = {
   gap: number;
   images: GalleryImage[];
+  backgroundColor: string;
+  fontColor: string;
 };
 
 export type ImageBlockData = {
@@ -41,6 +50,9 @@ export type ImageBlockData = {
   description: string;
   alignment: BlockAlignment;
   margin: BlockMargin;
+  size: BlockSize;
+  backgroundColor: string;
+  fontColor: string;
 };
 
 export type VideoBlockData = {
@@ -49,6 +61,16 @@ export type VideoBlockData = {
   description: string;
   alignment: BlockAlignment;
   margin: BlockMargin;
+  size: BlockSize;
+  backgroundColor: string;
+  fontColor: string;
+};
+
+// --- Typeface list block ---
+
+export type TypefaceListBlockData = {
+  backgroundColor: string;
+  fontColor: string;
 };
 
 export type SpacerSize = "s" | "m" | "l" | "xl";
@@ -94,6 +116,7 @@ export type LayoutItemData =
   | SpacerBlockData
   | StoreBlockData
   | BlogBlockData
+  | TypefaceListBlockData
   | undefined;
 
 export type LayoutItem = {
@@ -116,5 +139,10 @@ export type MarginOption = {
 
 export type SpacerSizeOption = {
   value: SpacerSize;
+  label: string;
+};
+
+export type SizeOption = {
+  value: BlockSize;
   label: string;
 };

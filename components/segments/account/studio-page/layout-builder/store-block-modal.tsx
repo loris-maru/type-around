@@ -89,7 +89,7 @@ export default function StoreBlockModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center">
+    <div className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden">
       {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop dismiss */}
       {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop dismiss */}
       <div
@@ -113,7 +113,7 @@ export default function StoreBlockModal({
         </div>
 
         {/* Scrollable content */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-4">
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-6 space-y-4">
           {products.length > 0 && (
             <Reorder.Group
               axis="y"

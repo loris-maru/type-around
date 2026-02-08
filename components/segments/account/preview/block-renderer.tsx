@@ -10,13 +10,14 @@ import StudioVideoBlock from "@/components/segments/studio/video-block";
 import StudioSpacerBlock from "@/components/segments/studio/spacer-block";
 import StudioStoreBlock from "@/components/segments/studio/store-block";
 import StudioBlogBlock from "@/components/segments/studio/blog-block";
+import type { PreviewBlockRendererProps } from "@/types/components";
 import type {
   BlogBlockData,
   GalleryBlockData,
   ImageBlockData,
-  LayoutItem,
   SpacerBlockData,
   StoreBlockData,
+  TypefaceListBlockData,
   VideoBlockData,
 } from "@/types/layout";
 import type { Studio } from "@/types/studio";
@@ -68,10 +69,7 @@ function toMockStudio(studio: Studio): MockStudio {
 export default function PreviewBlockRenderer({
   block,
   studio,
-}: {
-  block: LayoutItem;
-  studio: Studio;
-}) {
+}: PreviewBlockRendererProps) {
   switch (block.blockId) {
     case "about":
       return <StudioProfile />;
@@ -79,10 +77,31 @@ export default function PreviewBlockRenderer({
     case "type-tester":
       return <TypeTester />;
 
-    case "typeface-list":
+    case "typeface-list": {
+      const tfData = block.data as
+        | TypefaceListBlockData
+        | undefined;
+      const tfStyle: React.CSSProperties = {};
+      if (tfData?.backgroundColor)
+        tfStyle.backgroundColor = tfData.backgroundColor;
+      if (tfData?.fontColor)
+        tfStyle.color = tfData.fontColor;
       return (
-        <TypefacesList studio={toMockStudio(studio)} />
+        <div style={tfStyle}>
+          <h3
+            className="text-2xl font-ortank font-bold px-10 pt-12"
+            style={
+              tfData?.fontColor
+                ? { color: tfData.fontColor }
+                : undefined
+            }
+          >
+            Our typefaces
+          </h3>
+          <TypefacesList studio={toMockStudio(studio)} />
+        </div>
       );
+    }
 
     case "fonts-in-use":
       return <FontsInUseList />;

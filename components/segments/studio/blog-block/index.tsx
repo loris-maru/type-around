@@ -2,16 +2,12 @@
 
 import { useState } from "react";
 import { RiArrowLeftLine } from "react-icons/ri";
-import type {
-  BlogArticle,
-  BlogBlockData,
-} from "@/types/layout";
+import type { StudioBlogBlockProps } from "@/types/components";
+import type { BlogArticle } from "@/types/layout";
 
 export default function StudioBlogBlock({
   data,
-}: {
-  data: BlogBlockData;
-}) {
+}: StudioBlogBlockProps) {
   const [activeArticle, setActiveArticle] =
     useState<BlogArticle | null>(null);
 

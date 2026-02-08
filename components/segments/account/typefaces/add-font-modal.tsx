@@ -294,7 +294,7 @@ export default function AddFontModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center">
+    <div className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden">
       {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop dismiss */}
       {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop dismiss */}
       <div
@@ -302,8 +302,8 @@ export default function AddFontModal({
         onClick={handleClose}
       />
 
-      <div className="relative bg-white rounded-lg w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between p-6 border-b border-neutral-200">
+      <div className="relative bg-white rounded-lg w-full max-w-lg mx-4 max-h-[90vh] flex flex-col">
+        <div className="flex items-center justify-between p-6 border-b border-neutral-200 shrink-0">
           <h2 className="font-ortank text-xl font-bold">
             {editingFont ? "Edit Font" : "Add New Font"}
           </h2>
@@ -318,7 +318,7 @@ export default function AddFontModal({
 
         <form
           onSubmit={handleSubmit}
-          className="p-6 space-y-4"
+          className="flex-1 min-h-0 p-6 space-y-4 overflow-y-auto overscroll-contain"
         >
           {error && (
             <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">

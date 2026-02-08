@@ -1,8 +1,8 @@
 "use client";
 
-import { useStudio } from "@/hooks/use-studio";
 import Footer from "@/components/global/footer";
 import StudioHeader from "@/components/segments/studio/header";
+import { useStudio } from "@/hooks/use-studio";
 import type { LayoutItem } from "@/types/layout";
 import PreviewBlockRenderer from "./block-renderer";
 

@@ -119,17 +119,18 @@ export default function AddTypefaceModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center">
-      {/* Backdrop */}
+    <div className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden">
+      {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop dismiss */}
+      {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop dismiss */}
       <div
         className="absolute inset-0 bg-black/50"
         onClick={handleClose}
       />
 
       {/* Modal Content */}
-      <div className="relative bg-white rounded-lg w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
+      <div className="relative bg-white rounded-lg w-full max-w-lg mx-4 max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-neutral-200">
+        <div className="flex items-center justify-between p-6 border-b border-neutral-200 shrink-0">
           <h2 className="font-ortank text-xl font-bold">
             Add New Typeface
           </h2>
@@ -145,7 +146,7 @@ export default function AddTypefaceModal({
         {/* Form */}
         <form
           onSubmit={handleSubmit}
-          className="p-6 space-y-4"
+          className="flex-1 min-h-0 p-6 space-y-4 overflow-y-auto overscroll-contain"
         >
           {error && (
             <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">

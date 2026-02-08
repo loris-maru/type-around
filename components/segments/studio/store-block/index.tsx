@@ -1,18 +1,20 @@
 "use client";
 
-import type { StoreBlockData } from "@/types/layout";
+import Image from "next/image";
+import type { StudioStoreBlockProps } from "@/types/components";
 
 export default function StudioStoreBlock({
   data,
-}: {
-  data: StoreBlockData;
-}) {
+}: StudioStoreBlockProps) {
   const { products } = data;
 
   if (!products || products.length === 0) return null;
 
   return (
     <section className="relative w-full px-10 py-12">
+      <h3 className="text-2xl font-ortank font-bold mb-8">
+        Store
+      </h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((product) => (
           <div
@@ -22,11 +24,12 @@ export default function StudioStoreBlock({
             {/* Product images */}
             {product.images.length > 0 && (
               <div className="relative w-full aspect-square bg-neutral-100 overflow-hidden">
-                {/* biome-ignore lint: dynamic image URL from storage */}
-                <img
+                <Image
                   src={product.images[0]}
                   alt={product.name || "Product"}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
+                  unoptimized
                 />
                 {product.images.length > 1 && (
                   <span className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-0.5 rounded-full font-whisper">

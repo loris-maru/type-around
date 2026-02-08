@@ -1,17 +1,11 @@
 "use client";
 
-import { useState, ChangeEvent } from "react";
+import { type ChangeEvent, useState } from "react";
+import ColorPicker from "@/components/molecules/color-picker";
 
 export default function GradientColorInput() {
   const [color1, setColor1] = useState("#FFF8E8");
   const [color2, setColor2] = useState("#F2F2F2");
-
-  const handleColorChange = (
-    e: ChangeEvent<HTMLInputElement>,
-    setter: (value: string) => void
-  ) => {
-    setter(e.target.value);
-  };
 
   const handleHexChange = (
     e: ChangeEvent<HTMLInputElement>,
@@ -21,7 +15,7 @@ export default function GradientColorInput() {
 
     // Add # if not present
     if (!value.startsWith("#")) {
-      value = "#" + value;
+      value = `#${value}`;
     }
 
     // Only update if it's a valid hex format (partial or complete)
@@ -32,23 +26,19 @@ export default function GradientColorInput() {
 
   return (
     <div className="relative w-full">
-      <label className="text-base font-normal text-neutral-500 mb-2 block">
+      <span className="text-base font-normal text-neutral-500 mb-2 block">
         Gradient Color
-      </label>
+      </span>
 
       <div className="flex items-stretch gap-4">
         {/* Color inputs column */}
         <div className="flex flex-col gap-3">
           {/* Color 1 */}
           <div className="flex items-center gap-2">
-            <input
-              type="color"
+            <ColorPicker
+              id="gradient-color-1"
               value={color1}
-              onChange={(e) =>
-                handleColorChange(e, setColor1)
-              }
-              className="w-8 h-8 border-0 cursor-pointer rounded overflow-hidden"
-              style={{ padding: 0 }}
+              onChange={setColor1}
             />
             <input
               type="text"
@@ -64,14 +54,10 @@ export default function GradientColorInput() {
 
           {/* Color 2 */}
           <div className="flex items-center gap-2">
-            <input
-              type="color"
+            <ColorPicker
+              id="gradient-color-2"
               value={color2}
-              onChange={(e) =>
-                handleColorChange(e, setColor2)
-              }
-              className="w-8 h-8 border-0 cursor-pointer rounded overflow-hidden"
-              style={{ padding: 0 }}
+              onChange={setColor2}
             />
             <input
               type="text"

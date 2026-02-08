@@ -1,20 +1,20 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 import {
   RiCloseLine,
-  RiUploadCloud2Line,
   RiDeleteBinLine,
   RiLoader4Line,
+  RiUploadCloud2Line,
 } from "react-icons/ri";
-import { FontInUse } from "@/types/studio";
+import { uploadFile } from "@/lib/firebase/storage";
 import {
   AddFontInUseModalProps,
   ImagePreview,
 } from "@/types/components";
+import { FontInUse } from "@/types/studio";
 import { generateUUID } from "@/utils/generate-uuid";
-import { uploadFile } from "@/lib/firebase/storage";
-import Image from "next/image";
 
 export default function AddFontInUseModal({
   isOpen,
@@ -37,8 +37,9 @@ export default function AddFontInUseModal({
     description: "",
   });
 
-  // Prefill form when editing
+  // Prefill form when editing, re-run when modal opens
   useEffect(() => {
+    if (!isOpen) return;
     if (editingFontInUse) {
       setFormData({
         projectName: editingFontInUse.projectName,
@@ -54,9 +55,25 @@ export default function AddFontInUseModal({
         }))
       );
     } else {
-      resetForm();
+      setFormData({
+        projectName: "",
+        designerName: "",
+        typefaceId: "",
+        description: "",
+      });
+      setImages((prev) => {
+        for (const img of prev) {
+          if (
+            img.file &&
+            img.previewUrl.startsWith("blob:")
+          ) {
+            URL.revokeObjectURL(img.previewUrl);
+          }
+        }
+        return [];
+      });
+      setError(null);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editingFontInUse, isOpen]);
 
   const handleInputChange = (
@@ -216,14 +233,16 @@ export default function AddFontInUseModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center">
+    <div className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden">
+      {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop dismiss */}
+      {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop dismiss */}
       <div
         className="absolute inset-0 bg-black/50"
         onClick={handleClose}
       />
 
-      <div className="relative bg-white rounded-lg w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between p-6 border-b border-neutral-200">
+      <div className="relative bg-white rounded-lg w-full max-w-lg mx-4 max-h-[90vh] flex flex-col">
+        <div className="flex items-center justify-between p-6 border-b border-neutral-200 shrink-0">
           <h2 className="font-ortank text-xl font-bold">
             {editingFontInUse
               ? "Edit Font In Use"
@@ -240,7 +259,7 @@ export default function AddFontInUseModal({
 
         <form
           onSubmit={handleSubmit}
-          className="p-6 space-y-4"
+          className="flex-1 min-h-0 p-6 space-y-4 overflow-y-auto overscroll-contain"
         >
           {error && (
             <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">
@@ -250,9 +269,14 @@ export default function AddFontInUseModal({
 
           {/* Images Drop Zone */}
           <div>
-            <label className="block text-sm font-medium text-neutral-700 mb-1">
+            <label
+              htmlFor="images"
+              className="block text-sm font-medium text-neutral-700 mb-1"
+            >
               Images <span className="text-red-500">*</span>
             </label>
+            {/* biome-ignore lint/a11y/noStaticElementInteractions: drop zone triggers file input */}
+            {/* biome-ignore lint/a11y/useKeyWithClickEvents: drop zone triggers file input */}
             <div
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}

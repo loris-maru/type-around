@@ -76,7 +76,7 @@ export default function FontCard({
 
       {/* Delete Confirmation Modal */}
       {showConfirm && (
-        <div className="fixed inset-0 z-100 flex items-center justify-center">
+        <div className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden">
           {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop click to dismiss */}
           {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop click to dismiss */}
           <div
