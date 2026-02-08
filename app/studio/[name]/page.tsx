@@ -1,12 +1,12 @@
+import Footer from "@/components/global/footer";
+import FontsInUseList from "@/components/segments/studio/fonts-in-use-list";
 import StudioHeader from "@/components/segments/studio/header";
 import StudioProfile from "@/components/segments/studio/profile";
-import TypeTester from "@/components/segments/type-tester";
 import TypefacesList from "@/components/segments/studio/typefaces-list";
-import FontsInUseList from "@/components/segments/studio/fonts-in-use-list";
+import TypeTester from "@/components/segments/type-tester";
 import STUDIOS from "@/mock-data/studios";
+import type { Studio } from "@/types/typefaces";
 import { slugify } from "@/utils/slugify";
-import Footer from "@/components/global/footer";
-import { Studio } from "@/types/typefaces";
 
 export default async function StudioPage({
   params,

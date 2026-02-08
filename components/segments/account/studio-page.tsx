@@ -1,5 +1,8 @@
 "use client";
 
+import { useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { RiEyeLine, RiSaveLine } from "react-icons/ri";
 import { useStudio } from "@/hooks/use-studio";
 import type { LayoutItem } from "@/types/layout";
 import AccountForm from "./form";
@@ -9,6 +12,7 @@ import STUDIO_PAGE_FORM_FIELDS from "./studio-page/STUDIO_PAGE_FORM_FIELDS";
 export default function AccountStudioPage() {
   const { studio, isLoading, updateStudioPageSettings } =
     useStudio();
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleSubmit = async (
     values: Record<string, string>
@@ -29,6 +33,23 @@ export default function AccountStudioPage() {
     layout: LayoutItem[]
   ) => {
     await updateStudioPageSettings({ pageLayout: layout });
+  };
+
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      await updateStudioPageSettings({
+        pageLayout:
+          (studio?.pageLayout as LayoutItem[]) || [],
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handlePreview = () => {
+    if (!studio?.id) return;
+    window.open(`/preview/${studio.id}`, "_blank");
   };
 
   const initialValues = studio
@@ -63,6 +84,41 @@ export default function AccountStudioPage() {
           />
         </div>
       )}
+
+      {/* Fixed bottom-right Save & Preview buttons */}
+      <AnimatePresence>
+        {studio?.id && (
+          <motion.div
+            className="fixed bottom-6 right-6 z-50 flex items-center gap-3"
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 25,
+            }}
+          >
+            <button
+              type="button"
+              onClick={handlePreview}
+              className="flex items-center justify-center gap-2 w-40 py-3 bg-white text-black border border-black rounded-lg hover:bg-neutral-100 transition-colors shadow-lg cursor-pointer"
+            >
+              <RiEyeLine className="w-5 h-5" />
+              Preview
+            </button>
+            <button
+              type="button"
+              onClick={handleSave}
+              disabled={isSaving}
+              className="flex items-center justify-center gap-2 w-40 py-3 bg-black text-white rounded-lg hover:bg-neutral-800 disabled:bg-neutral-400 disabled:cursor-not-allowed transition-colors shadow-lg cursor-pointer"
+            >
+              <RiSaveLine className="w-5 h-5" />
+              {isSaving ? "Saving..." : "Save"}
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

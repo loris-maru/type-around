@@ -22,11 +22,13 @@ export default function TypeTester() {
           <div>Typefaces</div>
           <div>Settings here</div>
         </header>
+        {/* biome-ignore lint/a11y/useSemanticElements: contentEditable div requires textbox role */}
         <div
           className="relative w-full h-full p-10 focus:outline-none"
           contentEditable="true"
           suppressContentEditableWarning
           role="textbox"
+          tabIndex={0}
           id="editable-content"
           lang="ko"
           spellCheck="false"

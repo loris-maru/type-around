@@ -2,6 +2,7 @@ export type LayoutBlockId =
   | "about"
   | "type-tester"
   | "typeface-list"
+  | "fonts-in-use"
   | "gallery"
   | "image"
   | "video"

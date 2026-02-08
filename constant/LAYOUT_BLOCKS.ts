@@ -8,6 +8,11 @@ export const LAYOUT_BLOCKS: LayoutBlock[] = [
     label: "Typeface list",
     unique: true,
   },
+  {
+    id: "fonts-in-use",
+    label: "Fonts in use",
+    unique: true,
+  },
   { id: "gallery", label: "Gallery", unique: false },
   { id: "image", label: "Image", unique: false },
   { id: "video", label: "Video", unique: false },
