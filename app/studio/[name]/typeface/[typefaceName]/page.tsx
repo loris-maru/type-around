@@ -73,6 +73,10 @@ export default async function TypefacePage({
     ...rawTypeface,
     id: hash + typefaceIndex,
     hangeulName,
+    icon:
+      rawTypeface.heroLetter ||
+      rawTypeface.headerImage ||
+      "",
     gradient:
       typeof rawTypeface.gradient === "string"
         ? rawTypeface.gradient
@@ -154,7 +158,10 @@ export default async function TypefacePage({
       <DownloadButtons />
       <TypefaceStatus />
       <TypefaceUpdates />
-      <TypefaceShop fonts={typeface.fonts} />
+      <TypefaceShop
+        fonts={typeface.fonts}
+        typefaceName={typeface.name}
+      />
       <MoreContent studio={studioWithTypefaces} />
       <Footer />
     </div>

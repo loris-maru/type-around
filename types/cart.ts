@@ -1,8 +1,12 @@
-import { Font } from "./typefaces";
+import type { Font } from "./typefaces";
+
+export type CartItem = Font & {
+  typefaceName?: string;
+};
 
 export type Cart = {
-  cart: Font[];
-  addToCart: (item: Font) => void;
-  removeFromCart: (item: Font) => void;
+  cart: CartItem[];
+  addToCart: (item: CartItem) => void;
+  removeFromCart: (fontName: string) => void;
   clearCart: () => void;
 };

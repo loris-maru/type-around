@@ -213,7 +213,7 @@ export default function TypetesterParameters({
   };
 
   return (
-    <div className="flex w-full items-center gap-8 py-4 pr-16 pl-5">
+    <div className="flex w-full items-center gap-6">
       {/* Font Size */}
       <div className="flex flex-1 items-center gap-3">
         <label

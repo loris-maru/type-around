@@ -1,14 +1,22 @@
 import { create } from "zustand";
-import type { Cart } from "@/types/cart";
-import type { Font } from "@/types/typefaces";
+import type { Cart, CartItem } from "@/types/cart";
 
-export const useCartStore = create<Cart>((set) => ({
+export const useCartStore = create<Cart>((set, get) => ({
   cart: [],
-  addToCart: (item: Font) =>
-    set((state) => ({ cart: [...state.cart, item] })),
-  removeFromCart: (item: Font) =>
+  addToCart: (item: CartItem) => {
+    const exists = get().cart.some(
+      (i) =>
+        i.name === item.name &&
+        i.weight === item.weight &&
+        i.style === item.style
+    );
+    if (!exists) {
+      set((state) => ({ cart: [...state.cart, item] }));
+    }
+  },
+  removeFromCart: (fontName: string) =>
     set((state) => ({
-      cart: state.cart.filter((i) => i !== item),
+      cart: state.cart.filter((i) => i.name !== fontName),
     })),
   clearCart: () => set({ cart: [] }),
 }));

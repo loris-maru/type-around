@@ -10,6 +10,7 @@ import {
   RiShoppingCart2Line,
   RiUser3Line,
 } from "react-icons/ri";
+import CartPanel from "@/components/global/cart-panel";
 import SearchPanel from "@/components/molecules/search";
 import { GLOBAL_NAV_ITEMS } from "@/constant/GLOBAL_NAV_ITEMS";
 import { useCartStore } from "@/stores/cart";
@@ -19,6 +20,7 @@ export default function Navigation() {
   const pathname = usePathname();
   const { isSignedIn, isLoaded } = useAuth();
   const [searchOpen, setSearchOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -36,10 +38,20 @@ export default function Navigation() {
 
   const toggleSearch = useCallback(() => {
     setSearchOpen((prev) => !prev);
+    setCartOpen(false);
   }, []);
 
   const closeSearch = useCallback(() => {
     setSearchOpen(false);
+  }, []);
+
+  const toggleCart = useCallback(() => {
+    setCartOpen((prev) => !prev);
+    setSearchOpen(false);
+  }, []);
+
+  const closeCart = useCallback(() => {
+    setCartOpen(false);
   }, []);
 
   const buttonStyleInactive =
@@ -47,12 +59,7 @@ export default function Navigation() {
 
   return (
     <>
-      <nav
-        className={cn(
-          "fixed top-5 left-0 z-40 grid w-full gap-x-0.5 px-5",
-          cartCount > 0 ? "grid-cols-7" : "grid-cols-6"
-        )}
-      >
+      <nav className="fixed top-5 left-0 z-40 grid w-full grid-cols-7 gap-x-0.5 px-5">
         <Link
           href="/"
           className={cn(
@@ -131,26 +138,38 @@ export default function Navigation() {
             <span>Account</span>
           </Link>
         )}
-        {cartCount > 0 && (
-          <Link
-            href="/cart"
-            className={cn(
-              buttonStyleInactive,
-              "bg-white text-black",
-              "hover:bg-black hover:text-white"
+
+        {/* Cart button — always visible */}
+        <button
+          type="button"
+          onClick={toggleCart}
+          aria-label={cartOpen ? "Close cart" : "Open cart"}
+          className={cn(
+            buttonStyleInactive,
+            "justify-center",
+            cartOpen
+              ? "bg-black text-white"
+              : "bg-white text-black hover:bg-black hover:text-white"
+          )}
+        >
+          <span className="relative">
+            <RiShoppingCart2Line size={18} />
+            {cartCount > 0 && (
+              <span className="absolute -top-1.5 -right-2.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 font-bold font-whisper text-[10px] text-white leading-none">
+                {cartCount}
+              </span>
             )}
-          >
-            <RiShoppingCart2Line
-              size={20}
-              color="black"
-            />
-          </Link>
-        )}
+          </span>
+        </button>
       </nav>
 
       <SearchPanel
         isOpen={searchOpen}
         onClose={closeSearch}
+      />
+      <CartPanel
+        isOpen={cartOpen}
+        onClose={closeCart}
       />
     </>
   );

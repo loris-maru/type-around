@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useEffect } from "react";
-import { Typeface } from "@/types/typefaces";
+import { useEffect, useRef } from "react";
+import type { Typeface } from "@/types/typefaces";
 
 class Particle {
   x: number;
@@ -75,6 +75,37 @@ class Particle {
 
 const scaleFactor = 0.9;
 
+/**
+ * Load an image as a blob URL to avoid cross-origin canvas tainting.
+ * Falls back to direct src assignment if fetch fails.
+ */
+function loadImage(src: string): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+
+    img.onload = () => resolve(img);
+    img.onerror = () =>
+      reject(new Error(`Failed to load image: ${src}`));
+
+    // Try fetching as blob first (avoids CORS tainted canvas)
+    fetch(src)
+      .then((res) => res.blob())
+      .then((blob) => {
+        const url = URL.createObjectURL(blob);
+        // Store for cleanup
+        (
+          img as HTMLImageElement & { _blobUrl?: string }
+        )._blobUrl = url;
+        img.src = url;
+      })
+      .catch(() => {
+        // Fallback: load directly
+        img.crossOrigin = "anonymous";
+        img.src = src;
+      });
+  });
+}
+
 export default function SingleTypefaceLetter({
   typeface,
 }: {
@@ -97,90 +128,87 @@ export default function SingleTypefaceLetter({
     let particles: Particle[] = [];
     const mouse = { x: -1000, y: -1000, radius: 200 };
     let animationFrameId: number;
+    let cancelled = false;
 
-    const init = () => {
-      if (!container) return;
+    const init = async () => {
+      if (!container || cancelled) return;
 
       const containerRect =
         container.getBoundingClientRect();
       const w = containerRect.width;
       const h = containerRect.height;
 
-      if (w === 0 || h === 0) {
+      if (w === 0 || h === 0) return;
+      if (!typeface.icon) return;
+
+      let img: HTMLImageElement;
+      try {
+        img = await loadImage(typeface.icon);
+      } catch (err) {
+        console.error(err);
         return;
       }
 
-      const img = new Image();
-      img.src = typeface.icon;
-      img.crossOrigin = "anonymous";
+      if (cancelled || !container) return;
 
-      img.onload = () => {
-        if (!container) return;
+      // Clean up blob URL
+      const blobUrl = (
+        img as HTMLImageElement & { _blobUrl?: string }
+      )._blobUrl;
+      if (blobUrl) URL.revokeObjectURL(blobUrl);
 
-        const currentRect =
-          container.getBoundingClientRect();
-        const currentW = currentRect.width;
-        const currentH = currentRect.height;
+      const currentRect = container.getBoundingClientRect();
+      const currentW = currentRect.width;
+      const currentH = currentRect.height;
 
-        if (currentW === 0 || currentH === 0) {
-          return;
-        }
+      if (currentW === 0 || currentH === 0) return;
 
-        canvas.width = currentW;
-        canvas.height = currentH;
+      canvas.width = currentW;
+      canvas.height = currentH;
 
-        const scale =
-          Math.min(
-            currentW / img.width,
-            currentH / img.height
-          ) * scaleFactor;
-        const xPos = (currentW - img.width * scale) / 2;
-        const yPos = (currentH - img.height * scale) / 2;
+      const scale =
+        Math.min(
+          currentW / img.width,
+          currentH / img.height
+        ) * scaleFactor;
+      const xPos = (currentW - img.width * scale) / 2;
+      const yPos = (currentH - img.height * scale) / 2;
 
-        ctx.drawImage(
-          img,
-          xPos,
-          yPos,
-          img.width * scale,
-          img.height * scale
-        );
+      ctx.drawImage(
+        img,
+        xPos,
+        yPos,
+        img.width * scale,
+        img.height * scale
+      );
 
-        const data = ctx.getImageData(
-          0,
-          0,
-          currentW,
-          currentH
-        );
-        ctx.clearRect(0, 0, currentW, currentH);
+      const data = ctx.getImageData(
+        0,
+        0,
+        currentW,
+        currentH
+      );
+      ctx.clearRect(0, 0, currentW, currentH);
 
-        particles = [];
-        for (let y = 0; y < data.height; y += 4) {
-          for (let x = 0; x < data.width; x += 4) {
-            if (
-              data.data[y * 4 * data.width + x * 4 + 3] >
-              128
-            ) {
-              particles.push(new Particle(x, y));
-            }
+      particles = [];
+      for (let y = 0; y < data.height; y += 4) {
+        for (let x = 0; x < data.width; x += 4) {
+          if (
+            data.data[y * 4 * data.width + x * 4 + 3] > 128
+          ) {
+            particles.push(new Particle(x, y));
           }
         }
-      };
-
-      img.onerror = () => {
-        console.error(
-          "Failed to load image:",
-          typeface.icon
-        );
-      };
+      }
     };
 
     function animate() {
-      if (!ctx || !canvas) return;
+      if (!ctx || !canvas || cancelled) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach((p) => {
+      for (const p of particles) {
         p.update(mouse);
         p.draw(ctx);
-      });
+      }
       animationFrameId = requestAnimationFrame(animate);
     }
 
@@ -201,12 +229,14 @@ export default function SingleTypefaceLetter({
       handleMouseMove
     );
 
-    const timeoutId = setTimeout(() => {
-      init();
-      animate();
+    // Start: init must finish before animate starts
+    const timeoutId = setTimeout(async () => {
+      await init();
+      if (!cancelled) animate();
     }, 100);
 
     return () => {
+      cancelled = true;
       clearTimeout(timeoutId);
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
@@ -222,11 +252,11 @@ export default function SingleTypefaceLetter({
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full"
+      className="relative h-full w-full"
     >
       <canvas
         ref={canvasRef}
-        className="absolute top-0 left-0 w-full h-full pointer-events-none"
+        className="pointer-events-none absolute top-0 left-0 h-full w-full"
         style={{ background: "transparent" }}
       />
     </div>

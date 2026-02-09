@@ -1,6 +1,5 @@
 "use client";
 
-import { AnimatePresence, motion } from "motion/react";
 import {
   useCallback,
   useEffect,
@@ -115,21 +114,36 @@ export default function GlobalTypetesterBlock({
         color: params.fontColor,
       }}
     >
-      {/* Top bar: font selector + info (always visible) + action buttons */}
-      <div className="relative z-10 flex items-center justify-between px-5 pt-4">
-        <div className="flex items-center gap-2">
-          {typefaces.length > 0 && (
-            <GroupedFontDropdown
-              typefaces={typefaces}
-              selectedId={params.fontId}
-              onChange={updateFontId}
+      {/* Top bar */}
+      <div className="relative z-10 flex items-center gap-4 px-5 pt-4">
+        {/* When params closed: font selector + size */}
+        {!showParams && (
+          <div className="flex flex-1 items-center gap-2">
+            {typefaces.length > 0 && (
+              <GroupedFontDropdown
+                typefaces={typefaces}
+                selectedId={params.fontId}
+                onChange={updateFontId}
+              />
+            )}
+            <span className="font-normal font-whisper text-neutral-500 text-xs">
+              — {params.fontSize}px
+            </span>
+          </div>
+        )}
+
+        {/* When params open: inline parameter controls */}
+        {showParams && (
+          <div className="flex-1">
+            <TypetesterParameters
+              params={params}
+              onChange={setParams}
             />
-          )}
-          <span className="font-normal font-whisper text-neutral-500 text-xs">
-            — {params.fontSize}px
-          </span>
-        </div>
-        <div className="flex items-center gap-1">
+          </div>
+        )}
+
+        {/* Action buttons */}
+        <div className="flex shrink-0 items-center gap-1">
           {!showParams && canDelete && onDelete && (
             <button
               type="button"
@@ -160,35 +174,26 @@ export default function GlobalTypetesterBlock({
         </div>
       </div>
 
-      {/* Parameters panel - slides in from top */}
-      <AnimatePresence>
-        {showParams && (
-          <motion.div
-            initial={{ y: "-100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "-100%" }}
-            transition={{
-              type: "spring",
-              stiffness: 400,
-              damping: 30,
-            }}
-            className="absolute top-0 right-0 left-0 z-5 border-neutral-200 border-b bg-white/95 backdrop-blur-sm"
-          >
-            <TypetesterParameters
-              params={params}
-              onChange={setParams}
+      {/* Font selector + info bar — visible below params when open */}
+      {showParams && (
+        <div className="flex items-center gap-2 px-5 pt-3">
+          {typefaces.length > 0 && (
+            <GroupedFontDropdown
+              typefaces={typefaces}
+              selectedId={params.fontId}
+              onChange={updateFontId}
             />
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+          <span className="font-normal font-whisper text-neutral-500 text-xs">
+            — {params.fontSize}px
+          </span>
+        </div>
+      )}
 
       {/* Editable text area */}
       {/* biome-ignore lint/a11y/useSemanticElements: contentEditable div is required for rich inline editing */}
       <div
-        className={cn(
-          "h-full w-full px-8 pb-14 outline-none transition-[padding-top] duration-300",
-          showParams ? "pt-[calc(2rem+60px)]" : "pt-8"
-        )}
+        className="h-full w-full px-8 pt-4 pb-14 outline-none"
         contentEditable
         role="textbox"
         tabIndex={0}

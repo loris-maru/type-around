@@ -38,6 +38,7 @@ export type GalleryImage = {
 };
 
 export type GalleryBlockData = {
+  title?: string;
   gap: number;
   images: GalleryImage[];
   backgroundColor: string;

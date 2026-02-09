@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
 
 export default function UpdateCard({
   title,
@@ -11,30 +14,42 @@ export default function UpdateCard({
   date: Date;
   description: string;
 }) {
+  const [isHovered, setIsHovered] = useState(false);
   return (
-    <div className="relative w-full h-[400px] flex flex-col ">
-      <div className="relative w-full overflow-hidden mb-3">
+    <button
+      type="button"
+      aria-label="View udpate details"
+      onMouseOver={() => setIsHovered(true)}
+      onMouseOut={() => setIsHovered(false)}
+      onFocus={() => setIsHovered(true)}
+      onBlur={() => setIsHovered(false)}
+      className="relative flex h-[400px] w-full flex-col"
+    >
+      <div className="relative mb-4 w-full overflow-hidden">
         <Image
           src={image}
           alt={title}
-          width={100}
-          height={100}
-          className="w-full h-auto object-cover"
+          width={800}
+          height={800}
+          className="h-auto w-full object-cover"
         />
       </div>
-      <div className="relative w-full flex flex-row flex-nowrap text-black">
-        <div className="relative w-1/3 flex flex-col">
-          <div className="font-ortank text-2xl font-black mb-2 leading-tight">
+      <div
+        className="relative flex w-full flex-col rounded-lg border border-neutral-300 p-4 text-black transition-opacity duration-300 ease-linear"
+        style={{ opacity: isHovered ? 1 : 0.3 }}
+      >
+        <div className="relative flex w-full flex-row items-baseline justify-between">
+          <div className="mb-2 hyphens-auto font-black font-ortank text-lg leading-tight">
             {title}
           </div>
-          <div className="font-whisper text-sm font-normal">
+          <div className="font-normal font-whisper text-xs">
             {date.toLocaleDateString()}
           </div>
         </div>
-        <div className="relative w-2/3 font-whisper text-sm font-normal hyphens-auto">
+        <div className="relative w-full hyphens-auto text-left font-normal font-whisper text-sm">
           {description}
         </div>
       </div>
-    </div>
+    </button>
   );
 }

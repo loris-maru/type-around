@@ -1,17 +1,17 @@
 "use client";
 
-import {
-  useEffect,
-  useCallback,
-  useState,
-  useRef,
-} from "react";
 import EmblaCarousel, {
-  EmblaCarouselType,
+  type EmblaCarouselType,
 } from "embla-carousel";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import UpdateCard from "@/components/molecules/cards/update";
-import { TYPE_UPDATES } from "@/mock-data/type-status";
 import GalleryNavigator from "@/components/molecules/gallery/navigator";
+import { TYPE_UPDATES } from "@/mock-data/type-status";
 
 export default function TypefaceUpdates() {
   const [emblaRef, setEmblaRef] =
@@ -80,9 +80,9 @@ export default function TypefaceUpdates() {
   }, []);
 
   return (
-    <div className="relative w-full px-10 my-[20vh]">
-      <header className="relative mb-10 w-full flex flex-row justify-between items-center">
-        <h3 className="font-ortank text-2xl font-black text-black">
+    <div className="relative my-[20vh] w-full px-10">
+      <header className="relative mb-10 flex w-full flex-row items-center justify-between">
+        <h3 className="font-black font-ortank text-2xl text-black">
           Updates
         </h3>
         <GalleryNavigator
@@ -99,11 +99,11 @@ export default function TypefaceUpdates() {
         className="relative w-full overflow-hidden"
         ref={setEmblaRef}
       >
-        <div className="relative w-full flex">
-          {TYPE_UPDATES.map((update, index) => (
+        <div className="relative flex w-full gap-4">
+          {TYPE_UPDATES.map((update) => (
             <div
-              key={index}
-              className="relative flex-[0_0_28.57%] min-w-0 pr-4 first:pl-0"
+              key={update.title}
+              className="relative min-w-0 flex-[0_0_28.57%] pr-4 first:pl-0"
             >
               <UpdateCard
                 title={update.title}
