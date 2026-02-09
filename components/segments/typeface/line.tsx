@@ -1,24 +1,68 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { motion, useAnimation } from "motion/react";
-import IconDownload from "@/components/icons/icon-download";
 import Link from "next/link";
+import { useEffect, useId, useState } from "react";
+import IconDownload from "@/components/icons/icon-download";
 import { slugify } from "@/utils/slugify";
+
+const DEFAULT_TEXT =
+  "획의 굵기 차이가 극적으로 드러나는 이 산세리프 서체는 날카롭고 정제된 수직 스트로크와 섬세하게 얇아지는 연결부를 통해 강한 리듬과 긴장감을 형성하며";
 
 export default function TypefaceLine({
   studioName,
   familyName,
   styles,
   fonts,
+  fontFileUrl,
+  displayText,
 }: {
   studioName: string;
   familyName: string;
   styles: number;
   fonts: number;
+  fontFileUrl?: string;
+  displayText?: string;
 }) {
   const [isHovered, setIsHovered] = useState(false);
+  const [fontLoaded, setFontLoaded] = useState(false);
   const controls = useAnimation();
+  const uniqueId = useId();
+  const fontFamily = `TypefaceLine-${uniqueId.replace(/:/g, "")}`;
+
+  // Load the woff2 font dynamically
+  useEffect(() => {
+    if (!fontFileUrl) return;
+
+    let cancelled = false;
+    const face = new FontFace(
+      fontFamily,
+      `url(${fontFileUrl})`,
+      {
+        weight: "400 900",
+      }
+    );
+
+    face
+      .load()
+      .then((loadedFace) => {
+        if (cancelled) return;
+        document.fonts.add(loadedFace);
+        setFontLoaded(true);
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        console.error(
+          `Failed to load font for ${familyName}:`,
+          err
+        );
+      });
+
+    return () => {
+      cancelled = true;
+      setFontLoaded(false);
+    };
+  }, [fontFileUrl, fontFamily, familyName]);
 
   useEffect(() => {
     if (isHovered) {
@@ -27,7 +71,7 @@ export default function TypefaceLine({
         transition: {
           duration: 5,
           ease: "linear",
-          repeat: Infinity,
+          repeat: Number.POSITIVE_INFINITY,
         },
       });
     } else {
@@ -41,11 +85,15 @@ export default function TypefaceLine({
     }
   }, [isHovered, controls]);
 
+  const text = displayText || DEFAULT_TEXT;
+
   return (
     <div className="relative w-full">
-      <header className="px-10 relative flex flex-row justify-between items-center font-whisper text-sm">
-        <div className="relative flex flex-row gap-x-4">
-          <div>{familyName}</div>
+      <header className="relative mb-3 flex flex-row items-center justify-between px-10 font-whisper text-sm">
+        <div className="relative flex flex-row items-baseline gap-x-4">
+          <div className="font-bold font-ortank text-xl">
+            {familyName}
+          </div>
           <div>{styles} styles</div>
           <div>{fonts} fonts</div>
         </div>
@@ -54,17 +102,17 @@ export default function TypefaceLine({
             type="button"
             aria-label="Download trial font"
             name="download-trial-font"
-            className="flex flex-row gap-x-2 font-whisper text-sm text-black font-medium"
+            className="flex flex-row gap-x-2 font-medium font-whisper text-black text-sm"
           >
-            <IconDownload className="w-3 h-3" /> Trial font
+            <IconDownload className="h-3 w-3" /> Trial font
           </button>
           <button
             type="button"
             aria-label="Download specimen"
             name="download-specimen"
-            className="flex flex-row gap-x-2 font-whisper text-sm text-black font-medium"
+            className="flex flex-row gap-x-2 font-medium font-whisper text-black text-sm"
           >
-            <IconDownload className="w-3 h-3" /> Specimen
+            <IconDownload className="h-3 w-3" /> Specimen
           </button>
         </div>
       </header>
@@ -75,14 +123,17 @@ export default function TypefaceLine({
         onMouseLeave={() => setIsHovered(false)}
       >
         <motion.div
-          className="relative w-full text-black text-[120px] font-ortank font-black leading-[1.3] whitespace-nowrap"
+          className="relative w-full whitespace-nowrap pl-10 font-black text-[120px] text-black leading-[1.3]"
+          style={{
+            fontFamily:
+              fontLoaded && fontFileUrl
+                ? `"${fontFamily}", var(--font-ortank)`
+                : "var(--font-ortank)",
+          }}
           animate={controls}
           initial={{ x: 0 }}
         >
-          획의 굵기 차이가 극적으로 드러나는 이 산세리프
-          서체는 날카롭고 정제된 수직 스트로크와 섬세하게
-          얇아지는 연결부를 통해 강한 리듬과 긴장감을
-          형성하며
+          {text}
         </motion.div>
       </Link>
     </div>

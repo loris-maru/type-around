@@ -49,6 +49,7 @@ export default function TypefaceDetail({
           typeface.supportedLanguages || [],
         designerIds: typeface.designerIds || [],
         fontLineText: typeface.fontLineText || "",
+        displayFontId: typeface.displayFontId || "",
         fonts: typeface.fonts || [],
         headerImage: typeface.headerImage || "",
         heroLetter: typeface.heroLetter || "",
@@ -150,6 +151,17 @@ export default function TypefaceDetail({
     setHasChanges(true);
   }, []);
 
+  const handleDisplayFontChange = useCallback(
+    (fontId: string) => {
+      setFormData((prev) => ({
+        ...prev,
+        displayFontId: fontId,
+      }));
+      setHasChanges(true);
+    },
+    []
+  );
+
   const handleCloseFontModal = useCallback(() => {
     setIsFontModalOpen(false);
     setEditingFont(null);
@@ -237,7 +249,7 @@ export default function TypefaceDetail({
   }
 
   return (
-    <div className="relative w-full pb-20 flex flex-col gap-y-2">
+    <div className="relative flex w-full flex-col gap-y-2 pb-20">
       <TypefaceDetailHeader
         typefaceName={typeface.name}
         status={currentStatus}
@@ -261,7 +273,6 @@ export default function TypefaceDetail({
         }
         designerIds={formData.designerIds || []}
         studioDesigners={studio?.designers || []}
-        fontLineText={formData.fontLineText || ""}
         onInputChange={handleInputChange}
         onCategoriesChange={handleCategoriesChange}
         onLanguagesChange={handleLanguagesChange}
@@ -270,9 +281,13 @@ export default function TypefaceDetail({
 
       <FontsListSection
         fonts={formData.fonts || []}
+        displayFontId={formData.displayFontId || ""}
+        fontLineText={formData.fontLineText || ""}
         onRemoveFont={handleRemoveFont}
         onEditFont={handleEditFont}
         onAddFontClick={() => setIsFontModalOpen(true)}
+        onDisplayFontChange={handleDisplayFontChange}
+        onInputChange={handleInputChange}
       />
 
       <FilesAssetsSection

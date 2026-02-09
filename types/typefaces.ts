@@ -25,6 +25,7 @@ export type Typeface = {
 export type Studio = {
   id: string;
   name: string;
+  slug?: string;
   description: string;
   image: string;
   website: string;

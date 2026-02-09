@@ -3,7 +3,7 @@ import TYPE_FAMILIES from "../type-families";
 const STUDIOS = [
   {
     id: "655ff073-cc90-48ff-a8c8-808e8418888d",
-    name: "lo-ol Studio",
+    name: "lo-ol type",
     description:
       "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
     gradient: ["#FFF8E8", "#F2F2F2"],
@@ -33,7 +33,7 @@ const STUDIOS = [
         characters: 1456,
         releaseDate: "2024-01-01",
         category: ["sans-serif"],
-        studio: "lo-ol Studio",
+        studio: "lo-ol type",
         fonts:
           TYPE_FAMILIES.find((tf) => tf.slug === "giparan")
             ?.fonts || [],
@@ -47,7 +47,7 @@ const STUDIOS = [
         characters: 1024,
         releaseDate: "2024-01-01",
         category: ["serif"],
-        studio: "lo-ol Studio",
+        studio: "lo-ol type",
         fonts:
           TYPE_FAMILIES.find((tf) => tf.slug === "arvana")
             ?.fonts || [],
@@ -61,7 +61,7 @@ const STUDIOS = [
         characters: 2800,
         releaseDate: "2024-01-01",
         category: ["sans-serif"],
-        studio: "lo-ol Studio",
+        studio: "lo-ol type",
         fonts:
           TYPE_FAMILIES.find((tf) => tf.slug === "ortank")
             ?.fonts || [],
@@ -75,7 +75,7 @@ const STUDIOS = [
         characters: 1456,
         releaseDate: "2024-01-01",
         category: ["serif"],
-        studio: "lo-ol Studio",
+        studio: "lo-ol type",
         fonts:
           TYPE_FAMILIES.find(
             (tf) => tf.slug === "banya-mist"

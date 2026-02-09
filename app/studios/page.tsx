@@ -1,10 +1,11 @@
-import HomeClient from "@/components/segments/home/home-client";
+import Footer from "@/components/global/footer";
+import StudiosGrid from "@/components/segments/studios/studios-grid";
 import { getAllStudiosForDisplay } from "@/lib/firebase/studios";
 import type { Studio } from "@/types/typefaces";
 
 export const dynamic = "force-dynamic";
 
-export default async function Home() {
+export default async function StudiosPage() {
   const rawStudios = await getAllStudiosForDisplay();
 
   const studios: Studio[] = rawStudios.map((s, index) => ({
@@ -40,5 +41,20 @@ export default async function Home() {
     })),
   }));
 
-  return <HomeClient studios={studios} />;
+  return (
+    <div className="relative w-full px-10 py-32">
+      <header className="relative mb-24 flex w-full flex-row items-baseline justify-between">
+        <h3 className="font-bold font-ortank text-lg uppercase tracking-[2px]">
+          The Studios
+        </h3>
+        <div className="font-whisper text-black text-sm">
+          Total of {studios.length} studios
+        </div>
+      </header>
+
+      <StudiosGrid studios={studios} />
+
+      <Footer />
+    </div>
+  );
 }

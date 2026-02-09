@@ -1,5 +1,4 @@
-import DesignersInput from "./designers-input";
-import { FormField } from "@/types/forms";
+import type { FormField } from "@/types/forms";
 
 const FORM_FIELDS: FormField[] = [
   {
@@ -25,13 +24,6 @@ const FORM_FIELDS: FormField[] = [
     slug: "email",
     type: "email",
     placeholder: "Enter your contact email...",
-  },
-  {
-    label: "Designers",
-    slug: "designers",
-    type: "custom",
-    placeholder: "",
-    customComponent: DesignersInput,
   },
   {
     label: "Website",

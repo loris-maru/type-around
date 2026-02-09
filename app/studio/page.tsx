@@ -1,67 +1,58 @@
-import StudioCard from "@/components/molecules/cards/studios";
-import STUDIOS from "@/mock-data/studios";
-import { Studio, Typeface } from "@/types/typefaces";
+import Footer from "@/components/global/footer";
+import StudiosGrid from "@/components/segments/studios/studios-grid";
+import { getAllStudiosForDisplay } from "@/lib/firebase/studios";
+import type { Studio } from "@/types/typefaces";
 
-export default function AllStudiosPage() {
-  const studiosWithIds: Studio[] = STUDIOS.map(
-    (studio) => ({
-      ...studio,
-      typefaces: studio.typefaces.map((typeface, index) => {
-        const hash = studio.id
-          .split("")
-          .reduce(
-            (acc, char) => acc + char.charCodeAt(0),
-            0
-          );
-        return {
-          ...typeface,
-          id: hash + index,
-          category: typeface.category || [],
-          hangeulName:
-            "hangeulName" in typeface &&
-            typeof typeface.hangeulName === "string"
-              ? typeface.hangeulName
-              : "오흐탕크",
-          gradient:
-            "gradient" in typeface &&
-            typeof typeface.gradient === "string"
-              ? typeface.gradient
-              : Array.isArray(studio.gradient)
-                ? studio.gradient[0]
-                : studio.gradient,
-          fonts: typeface.fonts.map((font) => ({
-            ...font,
-            price:
-              "price" in font
-                ? (font as { price: number }).price
-                : 0,
-            text:
-              "text" in font
-                ? (font as { text: string }).text
-                : font.fullName,
-          })),
-        };
-      }) as Typeface[],
-    })
-  );
+export const dynamic = "force-dynamic";
+
+export default async function AllStudiosPage() {
+  const rawStudios = await getAllStudiosForDisplay();
+
+  const studios: Studio[] = rawStudios.map((s, index) => ({
+    id: s.id,
+    name: s.name,
+    slug: s.slug,
+    description: "",
+    image: s.image,
+    website: "",
+    email: "",
+    imageCover: "",
+    gradient: [],
+    socialMedia: [],
+    typefaces: s.typefaces.map((t, tIndex) => ({
+      id: index * 1000 + tIndex,
+      name: t.name,
+      hangeulName: "",
+      slug: "",
+      description: "",
+      icon: "",
+      category: [],
+      characters: 0,
+      releaseDate: "",
+      studio: s.name,
+      fonts: t.fonts.map((f) => ({
+        fullName: f.name,
+        name: f.name,
+        weight: 400,
+        style: "normal",
+        price: 0,
+        text: "",
+      })),
+    })),
+  }));
 
   return (
-    <div className="relative w-full">
-      <header className="relative w-full flex flex-row justify-between items-center mb-12">
+    <div className="relative w-full px-10 py-32">
+      <header className="relative mb-24 flex w-full flex-row items-baseline justify-between">
         <h3 className="section-title">The Studios</h3>
-        <div className="font-whisper text-sm text-black">
-          Total of {studiosWithIds.length} studios
+        <div className="font-whisper text-black text-sm">
+          Total of {studios.length} studios
         </div>
       </header>
 
-      <div className="relative w-full grid grid-cols-3 gap-12">
-        {studiosWithIds.map((studio) => (
-          <StudioCard
-            key={studio.id}
-            studio={studio}
-          />
-        ))}
-      </div>
+      <StudiosGrid studios={studios} />
+
+      <Footer />
     </div>
   );
 }

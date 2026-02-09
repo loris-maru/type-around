@@ -22,7 +22,6 @@ export default function BasicInformationSection({
   supportedLanguages,
   designerIds,
   studioDesigners,
-  fontLineText,
   onInputChange,
   onCategoriesChange,
   onLanguagesChange,
@@ -142,17 +141,17 @@ export default function BasicInformationSection({
 
         {/* Designers */}
         <div>
-          <span className="block font-whisper text-sm font-normal text-black mb-2">
+          <span className="mb-2 block font-normal font-whisper text-black text-sm">
             Designers
           </span>
 
           {/* Selected designers */}
           {selectedDesigners.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-3">
+            <div className="mb-3 flex flex-wrap gap-2">
               {selectedDesigners.map((designer) => (
                 <span
                   key={designer?.id}
-                  className="inline-flex items-center gap-2 px-4 py-2 text-sm rounded-3xl bg-transparent text-black border border-black"
+                  className="inline-flex items-center gap-2 rounded-3xl border border-black bg-transparent px-4 py-2 text-black text-sm"
                 >
                   {designer?.firstName} {designer?.lastName}
                   <button
@@ -162,9 +161,9 @@ export default function BasicInformationSection({
                         designer?.id || ""
                       )
                     }
-                    className="p-0.5 rounded transition-colors hover:bg-neutral-100 cursor-pointer"
+                    className="cursor-pointer rounded p-0.5 transition-colors hover:bg-neutral-100"
                   >
-                    <RiCloseLine className="w-3.5 h-3.5 text-neutral-400 hover:text-black" />
+                    <RiCloseLine className="h-3.5 w-3.5 text-neutral-400 hover:text-black" />
                   </button>
                 </span>
               ))}
@@ -182,19 +181,19 @@ export default function BasicInformationSection({
                 onClick={() =>
                   setIsDesignerDropdownOpen((prev) => !prev)
                 }
-                className="w-full flex items-center justify-between px-4 py-3 border border-neutral-300 rounded-lg bg-white text-sm font-whisper text-neutral-500 hover:border-neutral-400 transition-colors cursor-pointer"
+                className="flex w-full cursor-pointer items-center justify-between rounded-lg border border-neutral-300 bg-white px-4 py-3 font-whisper text-neutral-500 text-sm transition-colors hover:border-neutral-400"
               >
                 <span className="flex items-center gap-2">
-                  <RiAddFill className="w-4 h-4" />
+                  <RiAddFill className="h-4 w-4" />
                   Add a designer...
                 </span>
                 <RiArrowDropDownLine
-                  className={`w-5 h-5 transition-transform ${isDesignerDropdownOpen ? "rotate-180" : ""}`}
+                  className={`h-5 w-5 transition-transform ${isDesignerDropdownOpen ? "rotate-180" : ""}`}
                 />
               </button>
 
               {isDesignerDropdownOpen && (
-                <div className="absolute z-50 left-0 right-0 mt-1 bg-white border border-neutral-200 rounded-lg shadow-lg overflow-hidden">
+                <div className="absolute right-0 left-0 z-50 mt-1 overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-lg">
                   {availableDesigners.map((designer) => (
                     <button
                       key={designer.id}
@@ -202,7 +201,7 @@ export default function BasicInformationSection({
                       onClick={() =>
                         handleAddDesigner(designer.id || "")
                       }
-                      className="w-full px-4 py-2.5 text-left text-sm font-whisper text-neutral-700 hover:bg-neutral-50 transition-colors cursor-pointer"
+                      className="w-full cursor-pointer px-4 py-2.5 text-left font-whisper text-neutral-700 text-sm transition-colors hover:bg-neutral-50"
                     >
                       {designer.firstName}{" "}
                       {designer.lastName}
@@ -212,38 +211,15 @@ export default function BasicInformationSection({
               )}
             </div>
           ) : studioDesigners.length === 0 ? (
-            <p className="text-xs text-neutral-500">
+            <p className="text-neutral-500 text-xs">
               No designers in your studio yet. Add designers
               from the Designers section.
             </p>
           ) : (
-            <p className="text-xs text-neutral-500">
+            <p className="text-neutral-500 text-xs">
               All studio designers are assigned.
             </p>
           )}
-        </div>
-
-        {/* Font line text */}
-        <div>
-          <label
-            htmlFor="fontLineText"
-            className="block font-whisper text-sm font-normal text-black"
-          >
-            Font line text
-          </label>
-          <p className="text-xs text-neutral-400 mb-2">
-            This is the text that will be used when showing
-            your typeface or its fonts
-          </p>
-          <input
-            type="text"
-            id="fontLineText"
-            name="fontLineText"
-            value={fontLineText}
-            onChange={onInputChange}
-            className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
-            placeholder="e.g., The quick brown fox jumps over the lazy dog"
-          />
         </div>
       </div>
     </CollapsibleSection>

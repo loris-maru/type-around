@@ -20,6 +20,7 @@ import {
   UpdateStudioInfoSchema,
   UpdateStudioPageSchema,
 } from "@/types/studio";
+import { slugify } from "@/utils/slugify";
 import { db } from "./config";
 
 const COLLECTION_NAME = "studios";
@@ -427,10 +428,7 @@ export async function getAllPublishedTypefaces(): Promise<
   for (const docData of snapshot.docs) {
     const rawData = docData.data();
     const studioName = rawData.name || "Unknown Studio";
-    const studioSlug = studioName
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-|-$/g, "");
+    const studioSlug = slugify(studioName);
 
     const typefaces = rawData.typefaces
       ? normalizeTypefaces(rawData.typefaces)
@@ -450,4 +448,88 @@ export async function getAllPublishedTypefaces(): Promise<
   }
 
   return allTypefaces;
+}
+
+/**
+ * Get a studio by its slug (for public display pages)
+ */
+export async function getStudioBySlug(
+  slug: string
+): Promise<Studio | null> {
+  const allStudiosQuery = query(
+    collection(db, COLLECTION_NAME)
+  );
+  const snapshot = await getDocs(allStudiosQuery);
+
+  for (const docData of snapshot.docs) {
+    const rawData = docData.data();
+    const name = rawData.name || "";
+    const studioSlug = slugify(name);
+
+    if (studioSlug === slug) {
+      const data = {
+        ...rawData,
+        id: docData.id,
+        typefaces: rawData.typefaces
+          ? normalizeTypefaces(rawData.typefaces)
+          : [],
+      };
+      const result = StudioSchema.safeParse(data);
+      if (result.success) {
+        return result.data;
+      }
+      return data as Studio;
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Get all studios for public display (studio cards)
+ */
+export async function getAllStudiosForDisplay(): Promise<
+  Array<{
+    id: string;
+    name: string;
+    slug: string;
+    image: string;
+    typefaces: Array<{
+      name: string;
+      fonts: Array<{ name: string }>;
+    }>;
+  }>
+> {
+  const allStudiosQuery = query(
+    collection(db, COLLECTION_NAME)
+  );
+  const snapshot = await getDocs(allStudiosQuery);
+
+  return snapshot.docs.map((docData) => {
+    const rawData = docData.data();
+    const studioName = rawData.name || "Unknown Studio";
+    const typefaces = rawData.typefaces
+      ? normalizeTypefaces(rawData.typefaces)
+      : [];
+
+    return {
+      id: docData.id,
+      name: studioName,
+      slug: slugify(studioName),
+      image:
+        rawData.thumbnail ||
+        rawData.avatar ||
+        "/placeholders/studio_image_placeholder.webp",
+      typefaces: (typefaces as StudioTypeface[]).map(
+        (t) => ({
+          name: t.name,
+          fonts: Array.isArray(t.fonts)
+            ? t.fonts.map((f) => ({
+                name: f.styleName || f.name || "",
+              }))
+            : [],
+        })
+      ),
+    };
+  });
 }

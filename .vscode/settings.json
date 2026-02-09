@@ -7,10 +7,9 @@
   "prettier.useEditorConfig": false,
   "prettier.configPath": ".prettierrc",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
-    "source.organizeImports.biome": "explicit"
+    "source.fixAll.biome": "explicit"
   },
-  "biome.lspBin": "./node_modules/@biomejs/biome/bin/biome",
+  "biome.lsp.bin": "./node_modules/@biomejs/biome/bin/biome",
   "[javascript]": {
     "editor.formatOnSave": true
   },

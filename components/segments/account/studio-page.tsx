@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useRef, useState } from "react";
 import { RiEyeLine, RiSaveLine } from "react-icons/ri";
+import { DEFAULT_PAGE_LAYOUT } from "@/constant/DEFAULT_PAGE_LAYOUT";
 import { useStudio } from "@/hooks/use-studio";
 import type { LayoutItem } from "@/types/layout";
 import AccountForm from "./form";
@@ -58,8 +59,11 @@ export default function AccountStudioPage() {
       if (layout) {
         payload.pageLayout = layout;
       } else {
-        payload.pageLayout =
-          (studio?.pageLayout as LayoutItem[]) || [];
+        payload.pageLayout = (
+          studio?.pageLayout as LayoutItem[] | undefined
+        )?.length
+          ? (studio?.pageLayout as LayoutItem[])
+          : DEFAULT_PAGE_LAYOUT;
       }
 
       await updateStudioPageSettings(payload);
@@ -89,7 +93,7 @@ export default function AccountStudioPage() {
       : undefined);
 
   return (
-    <div className="relative w-full flex flex-col gap-y-10">
+    <div className="relative flex w-full flex-col gap-y-10">
       <AccountForm
         title="Design"
         FORM_FIELDS={STUDIO_PAGE_FORM_FIELDS}
@@ -99,13 +103,15 @@ export default function AccountStudioPage() {
       />
 
       {studio?.id && (
-        <div className="relative w-full flex flex-col gap-y-4">
-          <h2 className="text-xl font-ortank font-bold">
+        <div className="relative flex w-full flex-col gap-y-4">
+          <h2 className="font-bold font-ortank text-xl">
             Layout
           </h2>
           <LayoutBuilder
             value={
-              (studio.pageLayout as LayoutItem[]) || []
+              (studio.pageLayout as LayoutItem[])?.length
+                ? (studio.pageLayout as LayoutItem[])
+                : DEFAULT_PAGE_LAYOUT
             }
             onChange={handleLayoutChange}
             studioId={studio.id}
@@ -115,14 +121,14 @@ export default function AccountStudioPage() {
 
       {/* Fixed bottom-right buttons */}
       {studio?.id && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3">
+        <div className="fixed right-6 bottom-6 z-50 flex items-center gap-3">
           {/* Preview — always visible */}
           <button
             type="button"
             onClick={handlePreview}
-            className="flex items-center justify-center gap-2 w-40 py-3 bg-white text-black border border-black rounded-lg hover:bg-neutral-100 transition-colors shadow-lg cursor-pointer"
+            className="flex w-40 cursor-pointer items-center justify-center gap-2 rounded-lg border border-black bg-white py-3 text-black shadow-lg transition-colors hover:bg-neutral-100"
           >
-            <RiEyeLine className="w-5 h-5" />
+            <RiEyeLine className="h-5 w-5" />
             Preview
           </button>
 
@@ -133,7 +139,7 @@ export default function AccountStudioPage() {
                 type="button"
                 onClick={handleSave}
                 disabled={isSaving}
-                className="flex items-center justify-center gap-2 w-40 py-3 bg-black text-white rounded-lg hover:bg-neutral-800 disabled:bg-neutral-400 disabled:cursor-not-allowed transition-colors shadow-lg cursor-pointer"
+                className="flex w-40 cursor-pointer items-center justify-center gap-2 rounded-lg bg-black py-3 text-white shadow-lg transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-400"
                 initial={{ x: 60, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: 60, opacity: 0 }}
@@ -143,7 +149,7 @@ export default function AccountStudioPage() {
                   damping: 25,
                 }}
               >
-                <RiSaveLine className="w-5 h-5" />
+                <RiSaveLine className="h-5 w-5" />
                 {isSaving ? "Saving..." : "Save"}
               </motion.button>
             )}

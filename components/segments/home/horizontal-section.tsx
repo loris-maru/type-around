@@ -93,7 +93,7 @@ export default function HorizontalSection() {
   }, [allTypefaces]);
 
   const numColumns = columns.length;
-  const columnWidth = 300 + 60;
+  const columnWidth = 340 + 50;
   const totalWidth = numColumns * columnWidth + 64;
   const viewportWidth =
     typeof window !== "undefined"
@@ -127,7 +127,7 @@ export default function HorizontalSection() {
           className="h-full w-max pt-10"
           style={{ x }}
         >
-          <div className="flex h-full flex-row items-start gap-x-[60px] px-8">
+          <div className="flex h-full flex-row items-center gap-x-10 px-8">
             {columns.map((columnTypefaces, columnIndex) => {
               const isOddColumn = columnIndex % 2 === 1;
 
@@ -136,7 +136,7 @@ export default function HorizontalSection() {
                   key={
                     columnTypefaces[0]?.id ?? columnIndex
                   }
-                  className="flex flex-col gap-y-[80px]"
+                  className="flex w-[340px] flex-col gap-y-[40px]"
                 >
                   {columnTypefaces
                     .slice(0, 2)
@@ -145,7 +145,7 @@ export default function HorizontalSection() {
                         key={typeface.id}
                         className={
                           isOddColumn && cardIndex === 0
-                            ? "pt-[120px]"
+                            ? "pt-[60px]"
                             : ""
                         }
                       >

@@ -1,65 +1,98 @@
 "use client";
 
+import { useCallback, useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  RiMapPinUserFill,
+  RiCloseLine,
   RiSearchLine,
+  RiShoppingCart2Line,
+  RiUser3Line,
 } from "react-icons/ri";
 import { GLOBAL_NAV_ITEMS } from "@/constant/GLOBAL_NAV_ITEMS";
+import SearchPanel from "@/components/molecules/search";
+import { useCartStore } from "@/stores/cart";
+import { cn } from "@/utils/class-names";
 
 export default function Navigation() {
-  const sectionStyle = {
-    borderRight: "1px solid #000000",
-    borderBottom: "1px solid #000000",
-    borderLeft: "1px solid #000000",
-    borderRadius: "0 0 8px 8px",
-  };
-
   const pathname = usePathname();
   const { isSignedIn, isLoaded } = useAuth();
+  const [searchOpen, setSearchOpen] = useState(false);
 
   const isSignedInPage = pathname === "/sign-in";
 
+  const cartCount = useCartStore(
+    (state) => state.cart.length
+  );
+
+  const toggleSearch = useCallback(() => {
+    setSearchOpen((prev) => !prev);
+  }, []);
+
+  const closeSearch = useCallback(() => {
+    setSearchOpen(false);
+  }, []);
+
+  const buttonStyleInactive =
+    "relative flex flex-row items-center gap-x-2 rounded-lg w-full px-3.5 py-1 font-whisper text-sm font-light transition-all duration-300 ease-in-out";
+
   return (
-    <nav className="fixed left-0 top-0 z-40 flex w-full flex-row items-center justify-between pl-4 pr-10">
-      <Link
-        href="/"
-        className="font-ortank flex flex-col gap-y-2 pt-2 text-4xl font-black text-black"
+    <>
+      <nav
+        className={cn(
+          "fixed top-5 left-0 z-40 grid w-full gap-x-0.5 px-5",
+          cartCount > 0 ? "grid-cols-7" : "grid-cols-6"
+        )}
       >
-        글자곁
-      </Link>
-      <div className="flex flex-row gap-x-1">
-        <section
-          className="bg-light-gray font-whisper flex flex-row gap-x-6 px-6 pb-2 pt-5 text-base font-normal text-black"
-          style={sectionStyle}
+        <Link
+          href="/"
+          className={cn(
+            buttonStyleInactive,
+            "bg-transparent font-bold font-ortank text-xl"
+          )}
         >
-          {GLOBAL_NAV_ITEMS.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="transition-colors duration-300 hover:text-gray-500 capitalize"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </section>
-        <section
-          className="bg-light-gray font-whisper flex flex-row gap-x-14 px-5 pb-2 pt-5 text-lg font-normal"
-          style={sectionStyle}
-        >
-          <button
-            type="button"
-            aria-label="Search"
-            className="transition-colors duration-300 hover:text-gray-500"
+          글자곁
+        </Link>
+        {GLOBAL_NAV_ITEMS.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className={cn(
+              buttonStyleInactive,
+              "bg-white text-black",
+              "hover:bg-black hover:text-white"
+            )}
           >
-            <RiSearchLine
-              size={20}
-              color="black"
+            {item.label}
+          </Link>
+        ))}
+        <button
+          type="button"
+          aria-label={
+            searchOpen ? "Close search" : "Search"
+          }
+          onClick={toggleSearch}
+          className={cn(
+            buttonStyleInactive,
+            searchOpen
+              ? "bg-black text-white"
+              : "bg-white text-black hover:bg-black hover:text-white"
+          )}
+        >
+          {searchOpen ? (
+            <RiCloseLine
+              size={16}
+              color="currentColor"
             />
-          </button>
-        </section>
+          ) : (
+            <RiSearchLine
+              size={16}
+              color="currentColor"
+            />
+          )}
+          <span>{searchOpen ? "Close" : "Search"}</span>
+        </button>
 
         {/* Auth buttons - only render after Clerk is loaded to prevent hydration mismatch */}
         {isLoaded && (
@@ -67,8 +100,11 @@ export default function Navigation() {
             {!isSignedIn && !isSignedInPage && (
               <Link
                 href="/sign-in"
-                className="font-whisper text-base font-normal text-black px-5 pb-2 pt-5 bg-light-gray"
-                style={sectionStyle}
+                className={cn(
+                  buttonStyleInactive,
+                  "bg-white text-black",
+                  "hover:bg-black hover:text-white"
+                )}
                 aria-label="Login"
               >
                 Login
@@ -79,15 +115,39 @@ export default function Navigation() {
               <Link
                 href="/account"
                 aria-label="to Account"
-                className="relative font-whisper text-base font-normal text-black px-5 pb-2 pt-5 bg-light-gray"
-                style={sectionStyle}
+                className={cn(
+                  buttonStyleInactive,
+                  "bg-white text-black",
+                  "hover:bg-black hover:text-white"
+                )}
               >
-                <RiMapPinUserFill className="relative -top-1 w-6 h-6" />
+                <RiUser3Line size={16} />
+                <span>Account</span>
               </Link>
             )}
           </>
         )}
-      </div>
-    </nav>
+        {cartCount > 0 && (
+          <Link
+            href="/cart"
+            className={cn(
+              buttonStyleInactive,
+              "bg-white text-black",
+              "hover:bg-black hover:text-white"
+            )}
+          >
+            <RiShoppingCart2Line
+              size={20}
+              color="black"
+            />
+          </Link>
+        )}
+      </nav>
+
+      <SearchPanel
+        isOpen={searchOpen}
+        onClose={closeSearch}
+      />
+    </>
   );
 }

@@ -2,6 +2,7 @@
 
 import Footer from "@/components/global/footer";
 import StudioHeader from "@/components/segments/studio/header";
+import { DEFAULT_PAGE_LAYOUT } from "@/constant/DEFAULT_PAGE_LAYOUT";
 import { useStudio } from "@/hooks/use-studio";
 import type { LayoutItem } from "@/types/layout";
 import PreviewBlockRenderer from "./block-renderer";
@@ -11,8 +12,8 @@ export default function StudioPreview() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-neutral-500 font-whisper">
+      <div className="flex min-h-screen items-center justify-center">
+        <p className="font-whisper text-neutral-500">
           Loading preview…
         </p>
       </div>
@@ -21,18 +22,21 @@ export default function StudioPreview() {
 
   if (!studio) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-neutral-500 font-whisper">
+      <div className="flex min-h-screen items-center justify-center">
+        <p className="font-whisper text-neutral-500">
           Studio not found.
         </p>
       </div>
     );
   }
 
-  const blocks = (studio.pageLayout as LayoutItem[]) || [];
+  const storedLayout = studio.pageLayout as LayoutItem[];
+  const blocks = storedLayout?.length
+    ? storedLayout
+    : DEFAULT_PAGE_LAYOUT;
 
   return (
-    <div className="relative w-full min-h-screen flex flex-col">
+    <div className="relative flex min-h-screen w-full flex-col">
       <StudioHeader
         gradient={[
           studio.gradient?.from || "#FFF8E8",
@@ -40,14 +44,6 @@ export default function StudioPreview() {
         ]}
       />
       <div className="flex-1">
-        {blocks.length === 0 && (
-          <div className="flex items-center justify-center py-24">
-            <p className="text-neutral-400 font-whisper">
-              No blocks added yet. Go back and build your
-              page layout.
-            </p>
-          </div>
-        )}
         {blocks.map((block) => (
           <PreviewBlockRenderer
             key={block.key}

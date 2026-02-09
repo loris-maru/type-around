@@ -3,14 +3,23 @@
 import { RiAddFill } from "react-icons/ri";
 import CollapsibleSection from "@/components/global/collapsible-section";
 import { FontCard } from "@/components/molecules/cards/account";
+import FontSelector from "@/components/segments/account/typefaces/font-selector";
 import type { FontsListSectionProps } from "@/types/components";
+import FontLineText from "./font-line-text";
 
 export default function FontsListSection({
   fonts,
+  displayFontId,
   onRemoveFont,
   onEditFont,
   onAddFontClick,
+  onDisplayFontChange,
+  fontLineText,
+  onInputChange,
 }: FontsListSectionProps) {
+  const selectedFont =
+    fonts.find((f) => f.id === displayFontId) ?? null;
+
   return (
     <CollapsibleSection
       id="fonts"
@@ -32,14 +41,40 @@ export default function FontsListSection({
         <button
           type="button"
           onClick={onAddFontClick}
-          className="flex flex-col items-center justify-center gap-2 p-4 border-2 border-dashed border-neutral-300 rounded-lg hover:border-black hover:bg-neutral-50 transition-all duration-300 ease-in-out min-h-[140px]"
+          className="flex min-h-[140px] flex-col items-center justify-center gap-2 rounded-lg border-2 border-neutral-300 border-dashed p-4 transition-all duration-300 ease-in-out hover:border-black hover:bg-neutral-50"
         >
-          <RiAddFill className="w-8 h-8 text-neutral-400" />
-          <span className="text-neutral-500 font-medium">
+          <RiAddFill className="h-8 w-8 text-neutral-400" />
+          <span className="font-medium text-neutral-500">
             Add Font
           </span>
         </button>
       </div>
+
+      {/* Display font selector */}
+      {fonts.length > 0 && (
+        <div className="mt-8 flex flex-col gap-4 rounded-lg border border-neutral-300 p-8">
+          <div className="text-black">
+            <div className="font-bold font-ortank text-xl">
+              Font line
+            </div>
+            <p className="font-whisper text-neutral-500 text-sm">
+              Setup the font line that will serve as a
+              presentation text for your typeface.
+            </p>
+          </div>
+          <FontSelector
+            fonts={fonts}
+            displayFontId={displayFontId}
+            onDisplayFontChange={onDisplayFontChange}
+            selectedFont={selectedFont}
+          />
+          {/* Font line text */}
+          <FontLineText
+            fontLineText={fontLineText}
+            onInputChange={onInputChange}
+          />
+        </div>
+      )}
     </CollapsibleSection>
   );
 }

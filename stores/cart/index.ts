@@ -1,6 +1,6 @@
-import { Cart } from "@/types/cart";
-import { Font } from "@/types/typefaces";
 import { create } from "zustand";
+import type { Cart } from "@/types/cart";
+import type { Font } from "@/types/typefaces";
 
 export const useCartStore = create<Cart>((set) => ({
   cart: [],

@@ -16,12 +16,4 @@ export const GLOBAL_NAV_ITEMS: NavigationItem[] = [
     label: "About",
     href: "/about",
   },
-  {
-    label: "FAQ",
-    href: "/faq",
-  },
-  {
-    label: "Contact",
-    href: "/contact",
-  },
 ];

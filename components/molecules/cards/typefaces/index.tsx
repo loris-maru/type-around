@@ -49,8 +49,8 @@ export default function TypefaceCard({
     <Link
       href={`studio/${slugify(studioName)}/typeface/${slugify(typeface.name)}`}
       className={cn(
-        "relative flex h-[450px] w-full flex-col items-center justify-between overflow-hidden rounded-lg p-5 transition-all duration-300 ease-in-out",
-        "bg-light-gray hover:bg-white ",
+        "relative flex h-[340px] w-full flex-col items-center justify-between overflow-hidden rounded-lg p-4 transition-all duration-300 ease-in-out",
+        "bg-light-gray hover:bg-white",
         "border border-neutral-300 hover:border-black",
         "transparent hover:shadow-button-hover",
         "hover:scale-105"
@@ -61,7 +61,7 @@ export default function TypefaceCard({
       onMouseOut={() => setIsHovered(false)}
       onBlur={() => setIsHovered(false)}
     >
-      <div className="relative flex flex-1 items-center justify-center w-full">
+      <div className="relative flex w-full flex-1 items-center justify-center">
         <AnimatePresence mode="wait">
           {!isHovered ? (
             <motion.div
@@ -72,7 +72,7 @@ export default function TypefaceCard({
                 duration: 0.3,
                 ease: "easeInOut",
               }}
-              className="w-[270px]"
+              className="w-[200px]"
             >
               <Image
                 src={typeface.icon}
@@ -91,7 +91,7 @@ export default function TypefaceCard({
               transition={{ duration: 0.2 }}
               className="absolute top-0 w-full text-left"
             >
-              <p className="font-ortank text-4xl font-black leading-[1.3] text-black whitespace-pre-line">
+              <p className="whitespace-pre-line font-black font-ortank text-4xl text-black leading-[1.3]">
                 {displayedText}
                 {isHovered &&
                   displayedText.length <
@@ -112,12 +112,18 @@ export default function TypefaceCard({
           )}
         </AnimatePresence>
       </div>
-      <div className="flex w-full flex-row items-baseline justify-between">
-        <h3 className="font-ortank text-2xl font-black">
+      <div className="flex w-full flex-col gap-1">
+        <h3 className="font-black font-ortank text-2xl">
           {typeface.name}
         </h3>
-        <div className="font-whisper text-sm text-black">
-          {typeface.studio}
+        <div className="flex w-full flex-row items-baseline justify-between">
+          <span className="font-whisper text-neutral-500 text-sm">
+            {typeface.studio}
+          </span>
+          <span className="font-whisper text-neutral-500 text-sm">
+            {typeface.fonts.length} font
+            {typeface.fonts.length !== 1 ? "s" : ""}
+          </span>
         </div>
       </div>
     </Link>

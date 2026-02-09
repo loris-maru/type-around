@@ -1,3 +1,4 @@
+import Footer from "@/components/global/footer";
 import TypefaceCard from "@/components/molecules/cards/typefaces";
 import { getAllPublishedTypefaces } from "@/lib/firebase/studios";
 import type { Typeface } from "@/types/typefaces";
@@ -39,12 +40,12 @@ export default async function FontsPage() {
 
   if (mappedTypefaces.length === 0) {
     return (
-      <div className="relative w-full min-h-screen flex items-center justify-center px-10 py-32">
+      <div className="relative flex min-h-screen w-full items-center justify-center px-10 py-32">
         <div className="text-center">
-          <h1 className="text-3xl font-ortank font-bold mb-4">
+          <h1 className="mb-4 font-bold font-ortank text-3xl">
             Fonts
           </h1>
-          <p className="text-neutral-500 font-whisper">
+          <p className="font-whisper text-neutral-500">
             No published typefaces yet. Check back soon!
           </p>
         </div>
@@ -55,17 +56,17 @@ export default async function FontsPage() {
   return (
     <div className="relative w-full px-10 py-32">
       <div className="mb-12">
-        <h1 className="text-4xl font-ortank font-bold mb-4">
+        <h1 className="mb-4 font-bold font-ortank text-4xl">
           All Fonts
         </h1>
-        <p className="text-neutral-500 font-whisper">
+        <p className="font-whisper text-neutral-500">
           Discover {mappedTypefaces.length} typeface
           {mappedTypefaces.length !== 1 ? "s" : ""} from our
           community of designers.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {mappedTypefaces.map(({ studioName, typeface }) => (
           <TypefaceCard
             key={`${studioName}-${typeface.slug}`}
@@ -74,6 +75,7 @@ export default async function FontsPage() {
           />
         ))}
       </div>
+      <Footer />
     </div>
   );
 }

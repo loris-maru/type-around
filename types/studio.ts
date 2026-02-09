@@ -108,6 +108,8 @@ export const StudioTypefaceSchema = z.object({
   // Designer IDs (references to studio.designers[].id)
   designerIds: z.array(z.string()).default([]),
   fontLineText: z.string().default(""),
+  // Font used for display in studio page typeface list
+  displayFontId: z.string().default(""),
   // New fields
   supportedLanguages: z.array(z.string()).default([]),
   headerImage: z.string().default(""),
@@ -240,6 +242,8 @@ export type UpdateStudioPage = z.infer<
 >;
 
 // Default values for creating a new studio
+import { DEFAULT_PAGE_LAYOUT } from "@/constant/DEFAULT_PAGE_LAYOUT";
+
 export const DEFAULT_STUDIO: Omit<
   Studio,
   "id" | "ownerEmail"
@@ -259,7 +263,7 @@ export const DEFAULT_STUDIO: Omit<
     from: "#FFF8E8",
     to: "#F2F2F2",
   },
-  pageLayout: [],
+  pageLayout: DEFAULT_PAGE_LAYOUT,
   typefaces: [],
   fontsInUse: [],
   stripeAccountId: "",

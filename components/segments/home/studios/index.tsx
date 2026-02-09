@@ -5,14 +5,17 @@ import {
   useScroll,
   useTransform,
 } from "motion/react";
-import { useMemo, useRef } from "react";
+import { useRef } from "react";
 import StudioCard from "@/components/molecules/cards/studios";
-import STUDIOS from "@/mock-data/studios";
-import type { Studio, Typeface } from "@/types/typefaces";
+import type { Studio } from "@/types/typefaces";
 
 const PARALLAX_SPEEDS = [-70, -400, -20];
 
-export default function Studios() {
+export default function Studios({
+  studios,
+}: {
+  studios: Studio[];
+}) {
   const sectionRef = useRef<HTMLElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -38,25 +41,6 @@ export default function Studios() {
 
   const columnY = [y0, y1, y2];
 
-  const studiosWithIds: Studio[] = useMemo(() => {
-    return STUDIOS.map((studio) => ({
-      ...studio,
-      typefaces: studio.typefaces.map((typeface, index) => {
-        const hash = studio.id
-          .split("")
-          .reduce(
-            (acc, char) => acc + char.charCodeAt(0),
-            0
-          );
-        return {
-          ...typeface,
-          id: hash + index,
-          category: typeface.category || null,
-        };
-      }) as Typeface[],
-    }));
-  }, []);
-
   return (
     <section
       ref={sectionRef}
@@ -65,7 +49,7 @@ export default function Studios() {
       <header className="relative mb-12 flex w-full flex-row items-center justify-between">
         <h3 className="section-title">The Studios</h3>
         <div className="font-whisper text-black text-sm">
-          Total of {studiosWithIds.length} studios
+          Total of {studios.length} studios
         </div>
       </header>
 
@@ -76,7 +60,7 @@ export default function Studios() {
             className={`flex flex-1 flex-col gap-12 ${colIndex === 1 ? "mt-[200px]" : ""}`}
             style={{ y: columnY[colIndex] }}
           >
-            {studiosWithIds
+            {studios
               .filter((_, i) => i % 3 === colIndex)
               .map((studio) => (
                 <StudioCard

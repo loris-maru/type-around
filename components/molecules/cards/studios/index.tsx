@@ -17,10 +17,10 @@ export default function StudioCard({
 
   return (
     <Link
-      href={`/studio/${slugify(studio.name)}`}
+      href={`/studio/${studio.slug || slugify(studio.name)}`}
       className={cn(
         "relative flex w-full flex-col justify-between rounded-lg border border-neutral-300 bg-light-gray p-5 shadow-medium-gray transition-all duration-300 ease-in-out",
-        "hover:-translate-x-1 hover:-translate-y-1 hover:bg-white hover:shadow-button hover:border-black"
+        "hover:-translate-x-1 hover:-translate-y-1 hover:bg-white hover:shadow-button"
       )}
       prefetch={false}
       onMouseOver={() => setIsHovered(true)}
@@ -29,24 +29,27 @@ export default function StudioCard({
       onBlur={() => setIsHovered(false)}
     >
       <header className="relative flex flex-col gap-2">
-        <h3 className="font-black font-ortank text-4xl">
+        <h3 className="font-black font-ortank text-3xl">
           {studio.name}
         </h3>
       </header>
       <div
         className="relative my-3 h-[220px] w-full overflow-hidden transition-all duration-300 ease-in-out"
-        style={{ borderRadius: isHovered ? "24px" : "0px" }}
+        style={{ borderRadius: isHovered ? "12px" : "0px" }}
       >
         <Image
-          src={studio.image}
+          src={
+            studio.image ||
+            "/placeholders/studio_image_placeholder.webp"
+          }
           alt={studio.name}
-          width={100}
-          height={100}
-          className="h-auto w-full scale-100 object-cover transition-all duration-300 ease-in-out"
+          fill
+          sizes="(max-width: 768px) 100vw, 33vw"
+          className="scale-100 object-cover transition-all duration-300 ease-in-out"
           style={{
             transform: isHovered
-              ? "scale(1.2)"
-              : "scale(1)",
+              ? "scale(1.2) rotate(4deg)"
+              : "scale(1) rotate(0deg)",
           }}
         />
       </div>

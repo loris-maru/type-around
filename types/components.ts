@@ -181,7 +181,6 @@ export type BasicInformationSectionProps = {
   supportedLanguages: string[];
   designerIds: string[];
   studioDesigners: Designer[];
-  fontLineText: string;
   onInputChange: (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement
@@ -194,9 +193,15 @@ export type BasicInformationSectionProps = {
 
 export type FontsListSectionProps = {
   fonts: Font[];
+  displayFontId: string;
+  fontLineText: string;
   onRemoveFont: (fontId: string) => void;
   onEditFont: (font: Font) => void;
   onAddFontClick: () => void;
+  onDisplayFontChange: (fontId: string) => void;
+  onInputChange: (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => void;
 };
 
 export type FilesAssetsSectionProps = {

@@ -1,12 +1,11 @@
 import Footer from "@/components/global/footer";
-import FontsInUseList from "@/components/segments/studio/fonts-in-use-list";
 import StudioHeader from "@/components/segments/studio/header";
-import StudioProfile from "@/components/segments/studio/profile";
-import TypefacesList from "@/components/segments/studio/typefaces-list";
-import TypeTester from "@/components/segments/type-tester";
-import STUDIOS from "@/mock-data/studios";
-import type { Studio } from "@/types/typefaces";
-import { slugify } from "@/utils/slugify";
+import StudioPageBlocks from "@/components/segments/studio/page-blocks";
+import { DEFAULT_PAGE_LAYOUT } from "@/constant/DEFAULT_PAGE_LAYOUT";
+import { getStudioBySlug } from "@/lib/firebase/studios";
+import type { LayoutItem } from "@/types/layout";
+
+export const dynamic = "force-dynamic";
 
 export default async function StudioPage({
   params,
@@ -14,58 +13,68 @@ export default async function StudioPage({
   params: Promise<{ name: string }>;
 }) {
   const { name } = await params;
-  const studio = STUDIOS.find(
-    (s) => slugify(s.name) === name
-  );
+  const firebaseStudio = await getStudioBySlug(name);
 
-  if (!studio) {
-    return <div>Studio not found</div>;
+  if (!firebaseStudio) {
+    return (
+      <div className="flex min-h-screen w-full items-center justify-center">
+        <div className="text-center">
+          <h1 className="mb-4 font-bold font-ortank text-3xl">
+            Studio not found
+          </h1>
+          <p className="font-whisper text-neutral-500">
+            The studio you&apos;re looking for doesn&apos;t
+            exist.
+          </p>
+        </div>
+      </div>
+    );
   }
 
-  const studioWithIds = {
-    ...studio,
-    typefaces: studio.typefaces.map((typeface, index) => {
-      const hash = studio.id
-        .split("")
-        .reduce((acc, char) => acc + char.charCodeAt(0), 0);
-      return {
-        ...typeface,
-        id: hash + index,
-        category: typeface.category || [],
-        hangeulName:
-          "hangeulName" in typeface &&
-          typeof typeface.hangeulName === "string"
-            ? typeface.hangeulName
-            : "오흐탕크",
-        gradient:
-          "gradient" in typeface &&
-          typeof typeface.gradient === "string"
-            ? typeface.gradient
-            : Array.isArray(studio.gradient)
-              ? studio.gradient[0]
-              : studio.gradient,
-        fonts: typeface.fonts.map((font) => ({
-          ...font,
-          price:
-            "price" in font
-              ? (font as { price: number }).price
-              : 0,
-          text:
-            "text" in font
-              ? (font as { text: string }).text
-              : "",
-        })),
-      };
-    }),
-  } as unknown as Studio;
+  const gradient =
+    firebaseStudio.gradient &&
+    typeof firebaseStudio.gradient === "object" &&
+    "from" in firebaseStudio.gradient &&
+    "to" in firebaseStudio.gradient
+      ? [
+          firebaseStudio.gradient.from,
+          firebaseStudio.gradient.to,
+        ]
+      : ["#FFF8E8", "#F2F2F2"];
+
+  const storedLayout =
+    firebaseStudio.pageLayout as LayoutItem[];
+  const blocks = storedLayout?.length
+    ? storedLayout
+    : DEFAULT_PAGE_LAYOUT;
+
+  // Build metadata for each typeface (display font file + font line text)
+  const typefaceMeta = firebaseStudio.typefaces.map((t) => {
+    const displayFont = t.displayFontId
+      ? (t.fonts || []).find(
+          (f) => f.id === t.displayFontId
+        )
+      : null;
+    return {
+      slug: t.slug,
+      displayFontFile: displayFont?.file || "",
+      fontLineText: t.fontLineText || "",
+    };
+  });
+
+  // Serialize the studio data for the client component
+  const studioData = JSON.parse(
+    JSON.stringify(firebaseStudio)
+  );
 
   return (
     <div className="relative w-full">
-      <StudioHeader gradient={studio.gradient} />
-      <StudioProfile />
-      <TypeTester />
-      <TypefacesList studio={studioWithIds} />
-      <FontsInUseList />
+      <StudioHeader gradient={gradient} />
+      <StudioPageBlocks
+        blocks={blocks}
+        studio={studioData}
+        typefaceMeta={typefaceMeta}
+      />
       <Footer />
     </div>
   );
