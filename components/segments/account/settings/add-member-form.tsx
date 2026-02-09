@@ -5,17 +5,17 @@ import {
   RiLoaderLine,
   RiUserAddLine,
 } from "react-icons/ri";
-import MemberAvatar from "./member-avatar";
-import { ROLE_DESCRIPTIONS } from "@/constant/MEMBER_ROLES";
 import {
-  lookupUserByEmail,
   addStudioMember,
+  lookupUserByEmail,
 } from "@/actions/members";
+import { ROLE_DESCRIPTIONS } from "@/constant/MEMBER_ROLES";
 import type { AddMemberFormProps } from "@/types/components";
 import type {
-  StudioMember,
   MemberRole,
+  StudioMember,
 } from "@/types/studio";
+import MemberAvatar from "./member-avatar";
 
 export default function AddMemberForm({
   studio,
@@ -97,8 +97,8 @@ export default function AddMemberForm({
       : lookupResult?.email || "";
 
   return (
-    <div className="border border-neutral-200 rounded-lg p-6">
-      <h3 className="font-ortank font-bold text-sm mb-4">
+    <div className="rounded-lg border border-neutral-200 p-6">
+      <h3 className="mb-4 font-bold font-ortank text-sm">
         Invite a new member
       </h3>
 
@@ -110,7 +110,8 @@ export default function AddMemberForm({
             value={inviteEmail}
             onChange={(e) => setInviteEmail(e.target.value)}
             placeholder="Enter email address..."
-            className="flex-1 px-4 py-3 border border-neutral-300 rounded-lg font-whisper placeholder:text-neutral-400"
+            aria-label="Email address to invite member"
+            className="flex-1 rounded-lg border border-neutral-300 px-4 py-3 font-whisper placeholder:text-neutral-400"
             onKeyDown={(e) =>
               e.key === "Enter" && handleLookupUser()
             }
@@ -119,11 +120,11 @@ export default function AddMemberForm({
             type="button"
             onClick={handleLookupUser}
             disabled={isLookingUp || !inviteEmail.trim()}
-            className="px-6 py-3 bg-black text-white rounded-lg hover:bg-neutral-800 disabled:bg-neutral-300 disabled:cursor-not-allowed font-whisper font-medium flex items-center gap-2"
+            className="flex items-center gap-2 rounded-lg bg-black px-6 py-3 font-medium font-whisper text-white hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-300"
           >
             {isLookingUp ? (
               <>
-                <RiLoaderLine className="w-4 h-4 animate-spin" />
+                <RiLoaderLine className="h-4 w-4 animate-spin" />
                 Looking up...
               </>
             ) : (
@@ -133,7 +134,7 @@ export default function AddMemberForm({
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-3 border border-neutral-300 rounded-lg hover:bg-neutral-50 font-whisper"
+            className="rounded-lg border border-neutral-300 px-4 py-3 font-whisper hover:bg-neutral-50"
           >
             Cancel
           </button>
@@ -143,17 +144,17 @@ export default function AddMemberForm({
       {/* Step 2: Confirm user */}
       {lookupResult && (
         <div className="space-y-4">
-          <div className="flex items-center gap-4 p-4 bg-neutral-50 rounded-lg">
+          <div className="flex items-center gap-4 rounded-lg bg-neutral-50 p-4">
             <MemberAvatar
               imageUrl={lookupResult.imageUrl}
               name={displayName}
               size="lg"
             />
             <div>
-              <p className="font-whisper font-medium">
+              <p className="font-medium font-whisper">
                 {displayName}
               </p>
-              <p className="text-sm text-neutral-500 font-whisper">
+              <p className="font-whisper text-neutral-500 text-sm">
                 {lookupResult.email}
               </p>
             </div>
@@ -167,7 +168,7 @@ export default function AddMemberForm({
                   e.target.value as MemberRole
                 )
               }
-              className="px-4 py-3 border border-neutral-300 rounded-lg font-whisper"
+              className="rounded-lg border border-neutral-300 px-4 py-3 font-whisper"
             >
               <option value="editor">
                 Editor - {ROLE_DESCRIPTIONS.editor}
@@ -183,16 +184,16 @@ export default function AddMemberForm({
               type="button"
               onClick={handleAddMember}
               disabled={isSubmitting}
-              className="px-6 py-3 bg-black text-white rounded-lg hover:bg-neutral-800 disabled:bg-neutral-300 disabled:cursor-not-allowed font-whisper font-medium flex items-center gap-2"
+              className="flex items-center gap-2 rounded-lg bg-black px-6 py-3 font-medium font-whisper text-white hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-300"
             >
               {isSubmitting ? (
                 <>
-                  <RiLoaderLine className="w-4 h-4 animate-spin" />
+                  <RiLoaderLine className="h-4 w-4 animate-spin" />
                   Adding...
                 </>
               ) : (
                 <>
-                  <RiUserAddLine className="w-4 h-4" />
+                  <RiUserAddLine className="h-4 w-4" />
                   Add Member
                 </>
               )}
@@ -200,7 +201,7 @@ export default function AddMemberForm({
             <button
               type="button"
               onClick={onCancel}
-              className="px-4 py-3 border border-neutral-300 rounded-lg hover:bg-neutral-50 font-whisper"
+              className="rounded-lg border border-neutral-300 px-4 py-3 font-whisper hover:bg-neutral-50"
             >
               Cancel
             </button>
@@ -208,7 +209,7 @@ export default function AddMemberForm({
         </div>
       )}
 
-      <p className="mt-4 text-sm text-neutral-500 font-whisper">
+      <p className="mt-4 font-whisper text-neutral-500 text-sm">
         The user must have an existing account to be added
         as a member.
       </p>

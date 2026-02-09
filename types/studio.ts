@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { LayoutItem } from "./layout";
 
 // Zod Schemas
 export const DesignerSocialMediaSchema = z.object({
@@ -240,6 +241,53 @@ export const UpdateStudioPageSchema = z.object({
 export type UpdateStudioPage = z.infer<
   typeof UpdateStudioPageSchema
 >;
+
+// ===========================================
+// Studio Context Types
+// ===========================================
+
+export type StudioContextValue = {
+  studio: Studio | null;
+  isLoading: boolean;
+  error: Error | null;
+  updateInformation: (data: {
+    name?: string;
+    location?: string;
+    foundedIn?: string;
+    contactEmail?: string;
+    designers?: {
+      id?: string;
+      firstName: string;
+      lastName: string;
+      email?: string;
+      biography?: string;
+      avatar?: string;
+      website?: string;
+      socialMedia?: { name: string; url: string }[];
+    }[];
+    website?: string;
+    thumbnail?: string;
+    avatar?: string;
+  }) => Promise<void>;
+  updateSocialMedia: (
+    socialMedia: SocialMedia[]
+  ) => Promise<void>;
+  updateStudioPageSettings: (data: {
+    headerFont?: string;
+    heroCharacter?: string;
+    gradient?: { from: string; to: string };
+    pageLayout?: LayoutItem[];
+  }) => Promise<void>;
+  addTypeface: (typeface: StudioTypeface) => Promise<void>;
+  removeTypeface: (typefaceId: string) => Promise<void>;
+  updateTypeface: (
+    typefaceId: string,
+    updates: Partial<StudioTypeface>
+  ) => Promise<void>;
+  updateStudio: (
+    data: Partial<Omit<Studio, "id" | "ownerEmail">>
+  ) => Promise<void>;
+};
 
 // Default values for creating a new studio
 import { DEFAULT_PAGE_LAYOUT } from "@/constant/DEFAULT_PAGE_LAYOUT";

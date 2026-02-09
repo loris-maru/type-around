@@ -94,12 +94,12 @@ export default function BlockBuilder({
 
   return (
     <div className="col-span-3">
-      <h3 className="text-sm font-whisper font-normal text-neutral-500 mb-3">
+      <h3 className="mb-3 font-normal font-whisper text-neutral-500 text-sm">
         Page content blocks
       </h3>
       {activeItems.length === 0 ? (
-        <div className="flex items-center justify-center h-32 border border-dashed border-neutral-300 rounded-lg">
-          <p className="text-sm text-neutral-400 font-whisper">
+        <div className="flex h-32 items-center justify-center rounded-lg border border-neutral-300 border-dashed">
+          <p className="font-whisper text-neutral-400 text-sm">
             Click a block to add it here
           </p>
         </div>
@@ -108,7 +108,7 @@ export default function BlockBuilder({
           axis="y"
           values={activeItems}
           onReorder={handleReorder}
-          className="flex flex-col gap-2 p-6 rounded-lg bg-white border border-neutral-300"
+          className="flex flex-col gap-2 rounded-lg border border-neutral-300 bg-white p-6"
         >
           {activeItems.map((item) => {
             // Blog block gets special inline rendering
@@ -117,7 +117,7 @@ export default function BlockBuilder({
                 <Reorder.Item
                   key={item.key}
                   value={item}
-                  className="cursor-grab active:cursor-grabbing active:shadow-md transition-shadow"
+                  className="cursor-grab transition-shadow active:cursor-grabbing active:shadow-md"
                 >
                   <BlogBlockInline
                     data={
@@ -144,14 +144,14 @@ export default function BlockBuilder({
                 key={item.key}
                 value={item}
                 className={cn(
-                  "flex items-center gap-2 bg-white rounded-lg cursor-grab active:cursor-grabbing active:shadow-md transition-shadow border",
+                  "flex cursor-grab items-center gap-2 rounded-lg border bg-white transition-shadow active:cursor-grabbing active:shadow-md",
                   isSpacer
                     ? "border-blue-400 active:border-blue-600"
                     : "border-neutral-300 active:border-black"
                 )}
               >
-                <div className="pl-3 py-3 shrink-0 cursor-grab">
-                  <RiDraggable className="w-4 h-4 text-neutral-400" />
+                <div className="shrink-0 cursor-grab py-3 pl-3">
+                  <RiDraggable className="h-4 w-4 text-neutral-400" />
                 </div>
 
                 {repeatable ||
@@ -161,11 +161,11 @@ export default function BlockBuilder({
                   <button
                     type="button"
                     onClick={() => handleBlockClick(item)}
-                    className="flex-1 flex items-center gap-2 py-3 text-left cursor-pointer hover:text-black transition-colors"
+                    className="flex flex-1 cursor-pointer items-center gap-2 py-3 text-left transition-colors hover:text-black"
                   >
                     <span
                       className={cn(
-                        "text-sm font-whisper font-medium",
+                        "font-medium font-whisper text-sm",
                         isSpacer && "text-blue-500"
                       )}
                     >
@@ -174,7 +174,7 @@ export default function BlockBuilder({
                     {summary && (
                       <span
                         className={cn(
-                          "text-sm font-whisper",
+                          "font-whisper text-sm",
                           isSpacer
                             ? "text-blue-400"
                             : "text-neutral-500"
@@ -185,7 +185,7 @@ export default function BlockBuilder({
                     )}
                   </button>
                 ) : (
-                  <span className="flex-1 text-sm font-whisper font-medium py-3">
+                  <span className="flex-1 py-3 font-medium font-whisper text-sm">
                     {getLabelForId(item.blockId)}
                   </span>
                 )}
@@ -193,9 +193,10 @@ export default function BlockBuilder({
                 <button
                   type="button"
                   onClick={() => handleRemove(item.key)}
-                  className="p-1 mr-3 hover:bg-neutral-100 rounded transition-colors cursor-pointer"
+                  aria-label={`Remove ${getLabelForId(item.blockId)} block`}
+                  className="mr-3 cursor-pointer rounded p-1 transition-colors hover:bg-neutral-100"
                 >
-                  <RiCloseLine className="w-4 h-4 text-neutral-400 hover:text-black" />
+                  <RiCloseLine className="h-4 w-4 text-neutral-400 hover:text-black" />
                 </button>
               </Reorder.Item>
             );

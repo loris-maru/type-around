@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { Reorder } from "motion/react";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import {
   RiCloseLine,
@@ -157,29 +157,30 @@ export default function GalleryBlockModal({
         onClick={onClose}
       />
 
-      <div className="relative bg-white rounded-lg w-full max-w-2xl mx-4 flex flex-col max-h-[90vh]">
+      <div className="relative mx-4 flex max-h-[90vh] w-full max-w-2xl flex-col rounded-lg bg-white">
         {/* Header - fixed */}
-        <div className="flex items-center justify-between p-6 border-b border-neutral-200 shrink-0">
-          <h2 className="font-ortank text-xl font-bold">
+        <div className="flex shrink-0 items-center justify-between border-neutral-200 border-b p-6">
+          <h2 className="font-bold font-ortank text-xl">
             Gallery Block
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="p-1 hover:bg-neutral-100 rounded-lg transition-colors"
+            aria-label="Close modal"
+            className="rounded-lg p-1 transition-colors hover:bg-neutral-100"
           >
-            <RiCloseLine className="w-6 h-6" />
+            <RiCloseLine className="h-6 w-6" />
           </button>
         </div>
 
         {/* Scrollable content */}
-        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-6 space-y-6">
+        <div className="min-h-0 flex-1 space-y-6 overflow-y-auto overscroll-contain p-6">
           {/* Gap + Colors */}
           <div className="grid grid-cols-3 gap-4">
             <div>
               <label
                 htmlFor="gallery-gap"
-                className="block text-sm font-semibold text-black mb-1"
+                className="mb-1 block font-semibold text-black text-sm"
               >
                 Gap
               </label>
@@ -194,15 +195,15 @@ export default function GalleryBlockModal({
                     )
                   }
                   min={0}
-                  className="w-full px-3 py-2 pr-10 text-sm border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                  className="w-full rounded-lg border border-neutral-300 px-3 py-2 pr-10 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-neutral-400 pointer-events-none">
+                <span className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-neutral-400 text-sm">
                   px
                 </span>
               </div>
             </div>
             <div>
-              <span className="block text-sm font-semibold text-black mb-1">
+              <span className="mb-1 block font-semibold text-black text-sm">
                 Background color
               </span>
               <div className="flex items-center gap-2">
@@ -218,12 +219,13 @@ export default function GalleryBlockModal({
                     setBackgroundColor(e.target.value)
                   }
                   placeholder="#ffffff"
-                  className="w-20 px-2 py-2 text-sm border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                  aria-label="Gallery background color hex value"
+                  className="w-20 rounded-lg border border-neutral-300 px-2 py-2 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                 />
               </div>
             </div>
             <div>
-              <span className="block text-sm font-semibold text-black mb-1">
+              <span className="mb-1 block font-semibold text-black text-sm">
                 Font color
               </span>
               <div className="flex items-center gap-2">
@@ -239,7 +241,8 @@ export default function GalleryBlockModal({
                     setFontColor(e.target.value)
                   }
                   placeholder="#000000"
-                  className="w-20 px-2 py-2 text-sm border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                  aria-label="Gallery font color hex value"
+                  className="w-20 rounded-lg border border-neutral-300 px-2 py-2 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                 />
               </div>
             </div>
@@ -254,6 +257,7 @@ export default function GalleryBlockModal({
               multiple
               onChange={handleFileChange}
               className="hidden"
+              aria-label="Upload gallery images"
             />
             <button
               type="button"
@@ -261,22 +265,22 @@ export default function GalleryBlockModal({
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploading}
-              className="w-full p-6 border-2 border-dashed border-neutral-300 rounded-lg cursor-pointer hover:border-neutral-400 transition-colors disabled:cursor-wait disabled:border-neutral-200"
+              className="w-full cursor-pointer rounded-lg border-2 border-neutral-300 border-dashed p-6 transition-colors hover:border-neutral-400 disabled:cursor-wait disabled:border-neutral-200"
             >
               {isUploading ? (
                 <div className="flex flex-col items-center gap-2">
-                  <RiLoader4Line className="w-8 h-8 text-neutral-400 animate-spin" />
-                  <span className="text-sm text-neutral-500">
+                  <RiLoader4Line className="h-8 w-8 animate-spin text-neutral-400" />
+                  <span className="text-neutral-500 text-sm">
                     Uploading...
                   </span>
                 </div>
               ) : (
                 <div className="flex flex-col items-center gap-2">
-                  <RiUploadCloud2Line className="w-8 h-8 text-neutral-400" />
-                  <span className="text-sm text-neutral-500">
+                  <RiUploadCloud2Line className="h-8 w-8 text-neutral-400" />
+                  <span className="text-neutral-500 text-sm">
                     Drop images or click to browse
                   </span>
-                  <span className="text-xs text-neutral-400">
+                  <span className="text-neutral-400 text-xs">
                     You can upload multiple images
                   </span>
                 </div>
@@ -296,31 +300,31 @@ export default function GalleryBlockModal({
                 <Reorder.Item
                   key={img.key}
                   value={img}
-                  className="flex gap-3 p-3 border border-neutral-200 rounded-lg bg-white cursor-grab active:cursor-grabbing active:shadow-md active:border-black transition-shadow"
+                  className="flex cursor-grab gap-3 rounded-lg border border-neutral-200 bg-white p-3 transition-shadow active:cursor-grabbing active:border-black active:shadow-md"
                 >
                   {/* Drag handle */}
-                  <div className="flex items-start pt-1 shrink-0">
-                    <RiDraggable className="w-4 h-4 text-neutral-400" />
+                  <div className="flex shrink-0 items-start pt-1">
+                    <RiDraggable className="h-4 w-4 text-neutral-400" />
                   </div>
 
                   {/* Thumbnail */}
-                  <div className="w-16 h-16 rounded-lg bg-neutral-100 overflow-hidden shrink-0 flex items-center justify-center">
+                  <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-neutral-100">
                     {img.url ? (
                       <Image
                         src={img.url}
                         alt={img.title || "Gallery image"}
                         width={64}
                         height={64}
-                        className="w-full h-full object-cover"
+                        className="h-full w-full object-cover"
                         unoptimized
                       />
                     ) : (
-                      <RiImageLine className="w-5 h-5 text-neutral-400" />
+                      <RiImageLine className="h-5 w-5 text-neutral-400" />
                     )}
                   </div>
 
                   {/* Fields */}
-                  <div className="flex-1 space-y-2 min-w-0">
+                  <div className="min-w-0 flex-1 space-y-2">
                     {/* Title toggle */}
                     <div className="flex items-center gap-2">
                       <input
@@ -333,11 +337,11 @@ export default function GalleryBlockModal({
                             "showTitle"
                           )
                         }
-                        className="w-3.5 h-3.5 rounded border-neutral-300 text-black focus:ring-black cursor-pointer"
+                        className="h-3.5 w-3.5 cursor-pointer rounded border-neutral-300 text-black focus:ring-black"
                       />
                       <label
                         htmlFor={`title-${img.key}`}
-                        className="text-xs text-neutral-500 cursor-pointer select-none"
+                        className="cursor-pointer select-none text-neutral-500 text-xs"
                       >
                         Title
                       </label>
@@ -355,7 +359,7 @@ export default function GalleryBlockModal({
                             )
                           }
                           placeholder="Enter title"
-                          className="flex-1 px-3 py-1.5 text-sm border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                          className="flex-1 rounded-lg border border-neutral-300 px-3 py-1.5 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                         />
                         <button
                           type="button"
@@ -365,9 +369,10 @@ export default function GalleryBlockModal({
                               "showTitle"
                             )
                           }
-                          className="p-1 hover:bg-neutral-100 rounded transition-colors cursor-pointer shrink-0"
+                          aria-label="Remove title"
+                          className="shrink-0 cursor-pointer rounded p-1 transition-colors hover:bg-neutral-100"
                         >
-                          <RiCloseLine className="w-3.5 h-3.5 text-neutral-400 hover:text-black" />
+                          <RiCloseLine className="h-3.5 w-3.5 text-neutral-400 hover:text-black" />
                         </button>
                       </div>
                     )}
@@ -384,11 +389,11 @@ export default function GalleryBlockModal({
                             "showDescription"
                           )
                         }
-                        className="w-3.5 h-3.5 rounded border-neutral-300 text-black focus:ring-black cursor-pointer"
+                        className="h-3.5 w-3.5 cursor-pointer rounded border-neutral-300 text-black focus:ring-black"
                       />
                       <label
                         htmlFor={`desc-${img.key}`}
-                        className="text-xs text-neutral-500 cursor-pointer select-none"
+                        className="cursor-pointer select-none text-neutral-500 text-xs"
                       >
                         Description
                       </label>
@@ -406,7 +411,7 @@ export default function GalleryBlockModal({
                             )
                           }
                           placeholder="Enter description"
-                          className="flex-1 px-3 py-1.5 text-sm border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                          className="flex-1 rounded-lg border border-neutral-300 px-3 py-1.5 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                         />
                         <button
                           type="button"
@@ -416,9 +421,10 @@ export default function GalleryBlockModal({
                               "showDescription"
                             )
                           }
-                          className="p-1 hover:bg-neutral-100 rounded transition-colors cursor-pointer shrink-0"
+                          aria-label="Remove description"
+                          className="shrink-0 cursor-pointer rounded p-1 transition-colors hover:bg-neutral-100"
                         >
-                          <RiCloseLine className="w-3.5 h-3.5 text-neutral-400 hover:text-black" />
+                          <RiCloseLine className="h-3.5 w-3.5 text-neutral-400 hover:text-black" />
                         </button>
                       </div>
                     )}
@@ -430,9 +436,10 @@ export default function GalleryBlockModal({
                     onClick={() =>
                       handleRemoveImage(img.key)
                     }
-                    className="p-1 h-fit hover:bg-neutral-100 rounded transition-colors cursor-pointer shrink-0"
+                    aria-label="Remove image"
+                    className="h-fit shrink-0 cursor-pointer rounded p-1 transition-colors hover:bg-neutral-100"
                   >
-                    <RiDeleteBinLine className="w-4 h-4 text-neutral-400 hover:text-red-500" />
+                    <RiDeleteBinLine className="h-4 w-4 text-neutral-400 hover:text-red-500" />
                   </button>
                 </Reorder.Item>
               ))}
@@ -441,11 +448,11 @@ export default function GalleryBlockModal({
         </div>
 
         {/* Footer - fixed save button */}
-        <div className="p-6 border-t border-neutral-200 shrink-0">
+        <div className="shrink-0 border-neutral-200 border-t p-6">
           <button
             type="button"
             onClick={handleSave}
-            className="w-full py-3 bg-black text-white font-whisper font-medium rounded-lg hover:bg-neutral-800 transition-colors"
+            className="w-full rounded-lg bg-black py-3 font-medium font-whisper text-white transition-colors hover:bg-neutral-800"
           >
             Save Gallery
           </button>

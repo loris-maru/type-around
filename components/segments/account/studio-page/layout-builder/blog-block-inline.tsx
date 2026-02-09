@@ -58,29 +58,31 @@ export default function BlogBlockInline({
   };
 
   return (
-    <div className="bg-white border border-neutral-300 rounded-lg overflow-hidden">
+    <div className="overflow-hidden rounded-lg border border-neutral-300 bg-white">
       {/* Header with drag handle, title input, and remove */}
-      <div className="flex items-center gap-2 px-3 py-3 border-b border-neutral-200">
+      <div className="flex items-center gap-2 border-neutral-200 border-b px-3 py-3">
         <div className="shrink-0 cursor-grab">
-          <RiDraggable className="w-4 h-4 text-neutral-400" />
+          <RiDraggable className="h-4 w-4 text-neutral-400" />
         </div>
-        <span className="text-sm font-whisper font-medium shrink-0">
+        <span className="shrink-0 font-medium font-whisper text-sm">
           Blog
         </span>
-        <span className="text-neutral-300 shrink-0">—</span>
+        <span className="shrink-0 text-neutral-300">—</span>
         <input
           type="text"
           value={data.title || ""}
           onChange={handleTitleChange}
           placeholder="Section title..."
-          className="flex-1 text-sm font-whisper px-2 py-1 border border-transparent rounded hover:border-neutral-200 focus:border-neutral-300 focus:outline-none transition-colors"
+          aria-label="Blog section title"
+          className="flex-1 rounded border border-transparent px-2 py-1 font-whisper text-sm transition-colors hover:border-neutral-200 focus:border-neutral-300 focus:outline-none"
         />
         <button
           type="button"
           onClick={onRemove}
-          className="p-1 hover:bg-neutral-100 rounded transition-colors cursor-pointer shrink-0"
+          aria-label="Remove blog block"
+          className="shrink-0 cursor-pointer rounded p-1 transition-colors hover:bg-neutral-100"
         >
-          <RiCloseLine className="w-4 h-4 text-neutral-400 hover:text-black" />
+          <RiCloseLine className="h-4 w-4 text-neutral-400 hover:text-black" />
         </button>
       </div>
 
@@ -91,9 +93,10 @@ export default function BlogBlockInline({
             <button
               type="button"
               onClick={() => setIsCreating(true)}
-              className="aspect-square flex flex-col items-center justify-center gap-1 border-2 border-dashed border-neutral-300 rounded-lg hover:border-neutral-400 transition-colors cursor-pointer"
+              className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-neutral-300 border-dashed transition-colors hover:border-neutral-400"
             >
-              <RiAddLine className="w-5 h-5 text-neutral-400" />
+              <RiAddLine className="h-5 w-5 text-neutral-400" />
+              <span className="sr-only">Add article</span>
             </button>
           </div>
         ) : (
@@ -109,17 +112,17 @@ export default function BlogBlockInline({
                 <Reorder.Item
                   key={article.key}
                   value={article}
-                  className="relative group aspect-square flex flex-col items-center justify-center p-2 bg-neutral-50 border border-neutral-200 rounded-lg cursor-grab active:cursor-grabbing active:shadow-md active:border-black transition-shadow"
+                  className="group relative flex aspect-square cursor-grab flex-col items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50 p-2 transition-shadow active:cursor-grabbing active:border-black active:shadow-md"
                 >
                   <button
                     type="button"
                     onClick={() =>
                       setEditingArticle(article)
                     }
-                    className="flex flex-col items-center gap-1 w-full h-full justify-center cursor-pointer"
+                    className="flex h-full w-full cursor-pointer flex-col items-center justify-center gap-1"
                   >
-                    <RiArticleLine className="w-5 h-5 text-neutral-500" />
-                    <span className="text-[10px] text-neutral-600 font-whisper text-center leading-tight truncate w-full">
+                    <RiArticleLine className="h-5 w-5 text-neutral-500" />
+                    <span className="w-full truncate text-center font-whisper text-[10px] text-neutral-600 leading-tight">
                       {article.name || "Untitled"}
                     </span>
                   </button>
@@ -128,9 +131,10 @@ export default function BlogBlockInline({
                     onClick={() =>
                       handleRemoveArticle(article.key)
                     }
-                    className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-white border border-neutral-300 rounded-full items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hidden group-hover:flex"
+                    aria-label={`Remove article ${article.name || "Untitled"}`}
+                    className="absolute -top-1.5 -right-1.5 hidden h-5 w-5 cursor-pointer items-center justify-center rounded-full border border-neutral-300 bg-white opacity-0 transition-opacity group-hover:flex group-hover:opacity-100"
                   >
-                    <RiDeleteBinLine className="w-3 h-3 text-red-500" />
+                    <RiDeleteBinLine className="h-3 w-3 text-red-500" />
                   </button>
                 </Reorder.Item>
               ))}
@@ -140,9 +144,9 @@ export default function BlogBlockInline({
                 <button
                   type="button"
                   onClick={() => setIsCreating(true)}
-                  className="aspect-square flex flex-col items-center justify-center gap-1 border-2 border-dashed border-neutral-300 rounded-lg hover:border-neutral-400 transition-colors cursor-pointer"
+                  className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-neutral-300 border-dashed transition-colors hover:border-neutral-400"
                 >
-                  <RiAddLine className="w-5 h-5 text-neutral-400" />
+                  <RiAddLine className="h-5 w-5 text-neutral-400" />
                 </button>
               )}
             </Reorder.Group>

@@ -127,11 +127,11 @@ export default function FileDropZone({
   return (
     <div>
       <div className="flex flex-row gap-x-2">
-        <span className="block text-sm font-semibold text-black mb-1">
+        <span className="mb-1 block font-semibold text-black text-sm">
           {label}
         </span>
         {!instruction && (
-          <span className="text-xs text-neutral-400">
+          <span className="text-neutral-400 text-xs">
             {instruction}
           </span>
         )}
@@ -144,6 +144,7 @@ export default function FileDropZone({
         onChange={handleFileChange}
         className="hidden"
         disabled={isUploading}
+        aria-label={`Upload ${label}`}
       />
 
       {/* Uploaded state with preview */}
@@ -151,7 +152,7 @@ export default function FileDropZone({
         <div className="flex flex-col gap-3">
           {/* Image preview */}
           {showPreview ? (
-            <div className="relative w-full rounded-lg border border-neutral-200 bg-neutral-50 p-4 flex items-center justify-center min-h-[120px]">
+            <div className="relative flex min-h-[120px] w-full items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50 p-4">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={value}
@@ -161,8 +162,8 @@ export default function FileDropZone({
             </div>
           ) : (
             <div className="flex items-center gap-2 rounded-lg border border-neutral-200 bg-neutral-50 p-4">
-              <IconComponent className="w-5 h-5 text-neutral-600 shrink-0" />
-              <span className="text-sm text-neutral-700 truncate">
+              <IconComponent className="h-5 w-5 shrink-0 text-neutral-600" />
+              <span className="truncate text-neutral-700 text-sm">
                 {displayValue}
               </span>
             </div>
@@ -173,17 +174,17 @@ export default function FileDropZone({
             <button
               type="button"
               onClick={handleReplace}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 text-sm font-whisper font-medium border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-colors"
+              className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-neutral-300 px-4 py-2 font-medium font-whisper text-sm transition-colors hover:bg-neutral-50"
             >
-              <RiRefreshLine className="w-4 h-4" />
+              <RiRefreshLine className="h-4 w-4" />
               Replace
             </button>
             <button
               type="button"
               onClick={handleDelete}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 text-sm font-whisper font-medium text-red-600 border border-red-200 rounded-lg hover:bg-red-50 transition-colors"
+              className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-red-200 px-4 py-2 font-medium font-whisper text-red-600 text-sm transition-colors hover:bg-red-50"
             >
-              <RiDeleteBinLine className="w-4 h-4" />
+              <RiDeleteBinLine className="h-4 w-4" />
               Delete
             </button>
           </div>
@@ -198,7 +199,7 @@ export default function FileDropZone({
           onClick={() =>
             !isUploading && fileInputRef.current?.click()
           }
-          className={`relative w-full p-6 border-2 border-dashed rounded-lg transition-colors ${
+          className={`relative w-full rounded-lg border-2 border-dashed p-6 transition-colors ${
             isUploading
               ? "cursor-wait border-neutral-300 bg-neutral-50"
               : isDragging
@@ -208,19 +209,19 @@ export default function FileDropZone({
         >
           {isUploading ? (
             <div className="flex flex-col items-center gap-2">
-              <RiLoader4Line className="w-8 h-8 text-neutral-400 animate-spin" />
-              <span className="text-sm text-neutral-500">
+              <RiLoader4Line className="h-8 w-8 animate-spin text-neutral-400" />
+              <span className="text-neutral-500 text-sm">
                 Uploading...
               </span>
             </div>
           ) : (
             <div className="flex flex-col items-center gap-2">
-              <RiUploadCloud2Line className="w-8 h-8 text-neutral-400" />
-              <span className="text-sm text-neutral-500">
+              <RiUploadCloud2Line className="h-8 w-8 text-neutral-400" />
+              <span className="text-neutral-500 text-sm">
                 Drop file or click to browse
               </span>
               {description && (
-                <span className="text-xs text-neutral-400">
+                <span className="text-neutral-400 text-xs">
                   {description}
                 </span>
               )}
@@ -230,7 +231,7 @@ export default function FileDropZone({
       )}
 
       {error && (
-        <p className="mt-1 text-sm text-red-500">{error}</p>
+        <p className="mt-1 text-red-500 text-sm">{error}</p>
       )}
     </div>
   );

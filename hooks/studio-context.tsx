@@ -25,46 +25,9 @@ import type { LayoutItem } from "@/types/layout";
 import type {
   SocialMedia,
   Studio,
+  StudioContextValue,
   StudioTypeface,
 } from "@/types/studio";
-
-type StudioContextValue = {
-  studio: Studio | null;
-  isLoading: boolean;
-  error: Error | null;
-  updateInformation: (data: {
-    name?: string;
-    location?: string;
-    foundedIn?: string;
-    contactEmail?: string;
-    designers?: {
-      id: string;
-      firstName: string;
-      lastName: string;
-    }[];
-    website?: string;
-    thumbnail?: string;
-    avatar?: string;
-  }) => Promise<void>;
-  updateSocialMedia: (
-    socialMedia: SocialMedia[]
-  ) => Promise<void>;
-  updateStudioPageSettings: (data: {
-    headerFont?: string;
-    heroCharacter?: string;
-    gradient?: { from: string; to: string };
-    pageLayout?: LayoutItem[];
-  }) => Promise<void>;
-  addTypeface: (typeface: StudioTypeface) => Promise<void>;
-  removeTypeface: (typefaceId: string) => Promise<void>;
-  updateTypeface: (
-    typefaceId: string,
-    updates: Partial<StudioTypeface>
-  ) => Promise<void>;
-  updateStudio: (
-    data: Partial<Omit<Studio, "id" | "ownerEmail">>
-  ) => Promise<void>;
-};
 
 const StudioContext =
   createContext<StudioContextValue | null>(null);

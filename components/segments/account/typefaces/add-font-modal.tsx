@@ -302,26 +302,27 @@ export default function AddFontModal({
         onClick={handleClose}
       />
 
-      <div className="relative bg-white rounded-lg w-full max-w-lg mx-4 max-h-[90vh] flex flex-col">
-        <div className="flex items-center justify-between p-6 border-b border-neutral-200 shrink-0">
-          <h2 className="font-ortank text-xl font-bold">
+      <div className="relative mx-4 flex max-h-[90vh] w-full max-w-lg flex-col rounded-lg bg-white">
+        <div className="flex shrink-0 items-center justify-between border-neutral-200 border-b p-6">
+          <h2 className="font-bold font-ortank text-xl">
             {editingFont ? "Edit Font" : "Add New Font"}
           </h2>
           <button
             type="button"
             onClick={handleClose}
-            className="p-1 hover:bg-neutral-100 rounded-lg transition-colors"
+            aria-label="Close modal"
+            className="rounded-lg p-1 transition-colors hover:bg-neutral-100"
           >
-            <RiCloseLine className="w-6 h-6" />
+            <RiCloseLine className="h-6 w-6" />
           </button>
         </div>
 
         <form
           onSubmit={handleSubmit}
-          className="flex-1 min-h-0 p-6 space-y-4 overflow-y-auto overscroll-contain"
+          className="min-h-0 flex-1 space-y-4 overflow-y-auto overscroll-contain p-6"
         >
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">
+            <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-red-600 text-sm">
               {error}
             </div>
           )}
@@ -330,7 +331,7 @@ export default function AddFontModal({
           <div>
             <label
               htmlFor="styleName"
-              className="block font-whisper text-sm font-normal text-black mb-2"
+              className="mb-2 block font-normal font-whisper text-black text-sm"
             >
               Style Name{" "}
               <span className="text-red-500">*</span>
@@ -342,7 +343,7 @@ export default function AddFontModal({
               value={formData.styleName}
               onChange={handleInputChange}
               required
-              className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+              className="w-full rounded-lg border border-neutral-300 px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
               placeholder="e.g., Regular, Bold, Light Italic"
             />
           </div>
@@ -352,7 +353,7 @@ export default function AddFontModal({
             <div>
               <label
                 htmlFor="weight"
-                className="block font-whisper text-sm font-normal text-black mb-2"
+                className="mb-2 block font-normal font-whisper text-black text-sm"
               >
                 Weight Value
               </label>
@@ -365,14 +366,14 @@ export default function AddFontModal({
                 min="100"
                 max="900"
                 step="100"
-                className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                className="w-full rounded-lg border border-neutral-300 px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                 placeholder="400"
               />
             </div>
             <div>
               <label
                 htmlFor="width"
-                className="block font-whisper text-sm font-normal text-black mb-2"
+                className="mb-2 block font-normal font-whisper text-black text-sm"
               >
                 Width Value
               </label>
@@ -384,7 +385,7 @@ export default function AddFontModal({
                 onChange={handleInputChange}
                 min="50"
                 max="200"
-                className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                className="w-full rounded-lg border border-neutral-300 px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                 placeholder="100"
               />
             </div>
@@ -398,11 +399,11 @@ export default function AddFontModal({
               name="isItalic"
               checked={formData.isItalic}
               onChange={handleInputChange}
-              className="w-4 h-4 rounded border-neutral-300 text-black focus:ring-black"
+              className="h-4 w-4 rounded border-neutral-300 text-black focus:ring-black"
             />
             <label
               htmlFor="isItalic"
-              className="font-whisper text-sm font-normal text-black"
+              className="font-normal font-whisper text-black text-sm"
             >
               Is Italic?
             </label>
@@ -413,7 +414,7 @@ export default function AddFontModal({
             <div>
               <label
                 htmlFor="printPrice"
-                className="block font-whisper text-sm font-normal text-black mb-2"
+                className="mb-2 block font-normal font-whisper text-black text-sm"
               >
                 Print Price ($)
               </label>
@@ -425,14 +426,14 @@ export default function AddFontModal({
                 onChange={handleInputChange}
                 min="0"
                 step="0.01"
-                className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                className="w-full rounded-lg border border-neutral-300 px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                 placeholder="0.00"
               />
             </div>
             <div>
               <label
                 htmlFor="webPrice"
-                className="block font-whisper text-sm font-normal text-black mb-2"
+                className="mb-2 block font-normal font-whisper text-black text-sm"
               >
                 Web Price ($)
               </label>
@@ -444,7 +445,7 @@ export default function AddFontModal({
                 onChange={handleInputChange}
                 min="0"
                 step="0.01"
-                className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                className="w-full rounded-lg border border-neutral-300 px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                 placeholder="0.00"
               />
             </div>
@@ -454,7 +455,7 @@ export default function AddFontModal({
           <div>
             <label
               htmlFor="fontFile"
-              className="block font-whisper text-sm font-normal text-black mb-2"
+              className="mb-2 block font-normal font-whisper text-black text-sm"
             >
               Font file for type tester (woff2)
             </label>
@@ -464,7 +465,7 @@ export default function AddFontModal({
               onDragOver={(e) => e.preventDefault()}
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
-              className="w-full p-6 border-2 border-dashed border-neutral-300 rounded-lg cursor-pointer hover:border-neutral-400 transition-colors"
+              className="w-full cursor-pointer rounded-lg border-2 border-neutral-300 border-dashed p-6 transition-colors hover:border-neutral-400"
             >
               <input
                 ref={fileInputRef}
@@ -472,21 +473,22 @@ export default function AddFontModal({
                 accept=".woff2"
                 onChange={handleFileChange}
                 className="hidden"
+                aria-label="Upload woff2 font file for type tester"
               />
               {fileName ? (
                 <div className="flex items-center justify-center gap-2">
-                  <RiFileTextLine className="w-5 h-5 text-neutral-600" />
-                  <span className="text-sm text-neutral-700">
+                  <RiFileTextLine className="h-5 w-5 text-neutral-600" />
+                  <span className="text-neutral-700 text-sm">
                     {fileName}
                   </span>
                 </div>
               ) : (
                 <div className="flex flex-col items-center gap-2">
-                  <RiUploadCloud2Line className="w-8 h-8 text-neutral-400" />
-                  <span className="text-sm text-neutral-500">
+                  <RiUploadCloud2Line className="h-8 w-8 text-neutral-400" />
+                  <span className="text-neutral-500 text-sm">
                     Drop woff2 file or click to browse
                   </span>
-                  <span className="text-xs text-neutral-400">
+                  <span className="text-neutral-400 text-xs">
                     .woff2
                   </span>
                 </div>
@@ -498,11 +500,11 @@ export default function AddFontModal({
           <div>
             <label
               htmlFor="salesFiles"
-              className="block font-whisper text-sm font-normal text-black mb-2"
+              className="mb-2 block font-normal font-whisper text-black text-sm"
             >
               Fonts for sales
             </label>
-            <p className="text-sm font-whisper font-normal text-neutral-500 mb-2">
+            <p className="mb-2 font-normal font-whisper text-neutral-500 text-sm">
               Add here the font package that the user will
               get when buying this font. Put all the fonts
               for print and web (woff2, woff, ttf and otf).
@@ -515,7 +517,7 @@ export default function AddFontModal({
               onClick={() =>
                 salesFilesInputRef.current?.click()
               }
-              className="w-full p-6 border-2 border-dashed border-neutral-300 rounded-lg cursor-pointer hover:border-neutral-400 transition-colors"
+              className="w-full cursor-pointer rounded-lg border-2 border-neutral-300 border-dashed p-6 transition-colors hover:border-neutral-400"
             >
               <input
                 ref={salesFilesInputRef}
@@ -524,13 +526,14 @@ export default function AddFontModal({
                 multiple
                 onChange={handleSalesFilesChange}
                 className="hidden"
+                aria-label="Upload font files for sales"
               />
               <div className="flex flex-col items-center gap-2">
-                <RiUploadCloud2Line className="w-8 h-8 text-neutral-400" />
-                <span className="text-sm text-neutral-500">
+                <RiUploadCloud2Line className="h-8 w-8 text-neutral-400" />
+                <span className="text-neutral-500 text-sm">
                   Drop font files or click to browse
                 </span>
-                <span className="text-xs text-neutral-400">
+                <span className="text-neutral-400 text-xs">
                   .woff2, .woff, .ttf, .otf (multiple files
                   allowed)
                 </span>
@@ -543,15 +546,15 @@ export default function AddFontModal({
                 {salesFiles.map((sf) => (
                   <div
                     key={sf.id}
-                    className="flex items-center justify-between px-3 py-2 bg-neutral-50 rounded-lg"
+                    className="flex items-center justify-between rounded-lg bg-neutral-50 px-3 py-2"
                   >
                     <div className="flex items-center gap-2">
-                      <RiFileTextLine className="w-4 h-4 text-neutral-500" />
-                      <span className="text-sm text-neutral-700 truncate max-w-[200px]">
+                      <RiFileTextLine className="h-4 w-4 text-neutral-500" />
+                      <span className="max-w-[200px] truncate text-neutral-700 text-sm">
                         {sf.name}
                       </span>
                       {sf.url && (
-                        <span className="text-xs text-green-600">
+                        <span className="text-green-600 text-xs">
                           (uploaded)
                         </span>
                       )}
@@ -562,9 +565,9 @@ export default function AddFontModal({
                         e.stopPropagation();
                         handleRemoveSalesFile(sf.id);
                       }}
-                      className="p-1 hover:bg-neutral-200 rounded transition-colors"
+                      className="rounded p-1 transition-colors hover:bg-neutral-200"
                     >
-                      <RiDeleteBinLine className="w-4 h-4 text-neutral-500 hover:text-red-500" />
+                      <RiDeleteBinLine className="h-4 w-4 text-neutral-500 hover:text-red-500" />
                     </button>
                   </div>
                 ))}
@@ -577,10 +580,10 @@ export default function AddFontModal({
             <button
               type="submit"
               disabled={isSubmitting || !formData.styleName}
-              className="w-full py-3 bg-black text-white font-whisper font-medium rounded-lg hover:bg-neutral-800 disabled:bg-neutral-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-black py-3 font-medium font-whisper text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-400"
             >
               {isSubmitting && (
-                <RiLoader4Line className="w-5 h-5 animate-spin" />
+                <RiLoader4Line className="h-5 w-5 animate-spin" />
               )}
               {isSubmitting
                 ? pendingFile

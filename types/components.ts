@@ -498,3 +498,19 @@ export type ImagePreview = {
 };
 
 export type FormValues = Record<string, string>;
+
+// ===========================================
+// Rich Text Editor Component Props
+// ===========================================
+
+export type RichTextEditorProps = {
+  content: string;
+  onChange: (html: string) => void;
+};
+
+export type ToolbarButtonProps = {
+  active: boolean;
+  onClick: () => void;
+  title: string;
+  children: React.ReactNode;
+};

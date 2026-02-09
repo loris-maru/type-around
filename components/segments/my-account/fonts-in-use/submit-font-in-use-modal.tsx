@@ -9,9 +9,11 @@ import {
   RiUploadCloud2Line,
 } from "react-icons/ri";
 import { uploadFile } from "@/lib/firebase/storage";
-import type { SubmitFontInUseModalProps } from "@/types/components";
+import type {
+  ImagePreview,
+  SubmitFontInUseModalProps,
+} from "@/types/components";
 import type { StudioSummary } from "@/types/my-account";
-import type { ImagePreview } from "@/types/components";
 import { generateUUID } from "@/utils/generate-uuid";
 
 export default function SubmitFontInUseModal({
@@ -247,26 +249,27 @@ export default function SubmitFontInUseModal({
         onClick={handleClose}
       />
 
-      <div className="relative bg-white rounded-lg w-full max-w-lg mx-4 max-h-[90vh] flex flex-col">
-        <div className="flex items-center justify-between p-6 border-b border-neutral-200 shrink-0">
-          <h2 className="font-ortank text-xl font-bold">
+      <div className="relative mx-4 flex max-h-[90vh] w-full max-w-lg flex-col rounded-lg bg-white">
+        <div className="flex shrink-0 items-center justify-between border-neutral-200 border-b p-6">
+          <h2 className="font-bold font-ortank text-xl">
             Submit a Font In Use
           </h2>
           <button
             type="button"
             onClick={handleClose}
-            className="p-1 hover:bg-neutral-100 rounded-lg transition-colors cursor-pointer"
+            aria-label="Close modal"
+            className="cursor-pointer rounded-lg p-1 transition-colors hover:bg-neutral-100"
           >
-            <RiCloseLine className="w-6 h-6" />
+            <RiCloseLine className="h-6 w-6" />
           </button>
         </div>
 
         <form
           onSubmit={handleSubmit}
-          className="flex-1 min-h-0 p-6 space-y-4 overflow-y-auto overscroll-contain"
+          className="min-h-0 flex-1 space-y-4 overflow-y-auto overscroll-contain p-6"
         >
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">
+            <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-red-600 text-sm">
               {error}
             </div>
           )}
@@ -275,7 +278,7 @@ export default function SubmitFontInUseModal({
           <div>
             <label
               htmlFor="studioId"
-              className="block font-whisper text-sm font-normal text-black mb-2"
+              className="mb-2 block font-normal font-whisper text-black text-sm"
             >
               Studio <span className="text-red-500">*</span>
             </label>
@@ -285,7 +288,7 @@ export default function SubmitFontInUseModal({
               value={formData.studioId}
               onChange={handleInputChange}
               required
-              className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent bg-white"
+              className="w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
             >
               <option value="">Select a studio</option>
               {studios.map((studio) => (
@@ -303,7 +306,7 @@ export default function SubmitFontInUseModal({
           <div>
             <label
               htmlFor="typefaceId"
-              className="block font-whisper text-sm font-normal text-black mb-2"
+              className="mb-2 block font-normal font-whisper text-black text-sm"
             >
               Typeface{" "}
               <span className="text-red-500">*</span>
@@ -315,7 +318,7 @@ export default function SubmitFontInUseModal({
               onChange={handleInputChange}
               required
               disabled={!selectedStudio}
-              className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent bg-white disabled:bg-neutral-100 disabled:text-neutral-400"
+              className="w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black disabled:bg-neutral-100 disabled:text-neutral-400"
             >
               <option value="">
                 {selectedStudio
@@ -333,7 +336,7 @@ export default function SubmitFontInUseModal({
             </select>
             {selectedStudio &&
               selectedStudio.typefaces.length === 0 && (
-                <p className="text-xs text-neutral-500 mt-1">
+                <p className="mt-1 text-neutral-500 text-xs">
                   This studio has no typefaces.
                 </p>
               )}
@@ -343,7 +346,7 @@ export default function SubmitFontInUseModal({
           <div>
             <label
               htmlFor="images"
-              className="block font-whisper text-sm font-normal text-black mb-2"
+              className="mb-2 block font-normal font-whisper text-black text-sm"
             >
               Images <span className="text-red-500">*</span>
             </label>
@@ -354,7 +357,7 @@ export default function SubmitFontInUseModal({
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
-              className={`w-full p-6 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${
+              className={`w-full cursor-pointer rounded-lg border-2 border-dashed p-6 transition-colors ${
                 isDragging
                   ? "border-black bg-neutral-50"
                   : "border-neutral-300 hover:border-neutral-400"
@@ -367,24 +370,25 @@ export default function SubmitFontInUseModal({
                 multiple
                 onChange={handleFileChange}
                 className="hidden"
+                aria-label="Upload images for font in use submission"
               />
               <div className="flex flex-col items-center gap-2">
-                <RiUploadCloud2Line className="w-8 h-8 text-neutral-400" />
-                <span className="text-sm text-neutral-500">
+                <RiUploadCloud2Line className="h-8 w-8 text-neutral-400" />
+                <span className="text-neutral-500 text-sm">
                   Drop images or click to browse
                 </span>
-                <span className="text-xs text-neutral-400">
+                <span className="text-neutral-400 text-xs">
                   PNG, JPG, WebP (max 10MB each)
                 </span>
               </div>
             </div>
 
             {images.length > 0 && (
-              <div className="grid grid-cols-4 gap-2 mt-3">
+              <div className="mt-3 grid grid-cols-4 gap-2">
                 {images.map((img) => (
                   <div
                     key={img.id}
-                    className="relative aspect-square rounded-lg overflow-hidden bg-neutral-100 group"
+                    className="group relative aspect-square overflow-hidden rounded-lg bg-neutral-100"
                   >
                     <Image
                       src={img.previewUrl}
@@ -399,9 +403,9 @@ export default function SubmitFontInUseModal({
                         e.stopPropagation();
                         handleRemoveImage(img.id);
                       }}
-                      className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                      className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity group-hover:opacity-100"
                     >
-                      <RiDeleteBinLine className="w-5 h-5 text-white" />
+                      <RiDeleteBinLine className="h-5 w-5 text-white" />
                     </button>
                   </div>
                 ))}
@@ -413,7 +417,7 @@ export default function SubmitFontInUseModal({
           <div>
             <label
               htmlFor="projectName"
-              className="block font-whisper text-sm font-normal text-black mb-2"
+              className="mb-2 block font-normal font-whisper text-black text-sm"
             >
               Project Name{" "}
               <span className="text-red-500">*</span>
@@ -425,7 +429,7 @@ export default function SubmitFontInUseModal({
               value={formData.projectName}
               onChange={handleInputChange}
               required
-              className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+              className="w-full rounded-lg border border-neutral-300 px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
               placeholder="e.g., Brand Identity for XYZ"
             />
           </div>
@@ -434,7 +438,7 @@ export default function SubmitFontInUseModal({
           <div>
             <label
               htmlFor="designerName"
-              className="block font-whisper text-sm font-normal text-black mb-2"
+              className="mb-2 block font-normal font-whisper text-black text-sm"
             >
               Designer Name{" "}
               <span className="text-red-500">*</span>
@@ -446,7 +450,7 @@ export default function SubmitFontInUseModal({
               value={formData.designerName}
               onChange={handleInputChange}
               required
-              className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+              className="w-full rounded-lg border border-neutral-300 px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
               placeholder="e.g., John Doe"
             />
           </div>
@@ -455,7 +459,7 @@ export default function SubmitFontInUseModal({
           <div>
             <label
               htmlFor="description"
-              className="block font-whisper text-sm font-normal text-black mb-2"
+              className="mb-2 block font-normal font-whisper text-black text-sm"
             >
               Description
             </label>
@@ -465,7 +469,7 @@ export default function SubmitFontInUseModal({
               value={formData.description}
               onChange={handleInputChange}
               rows={3}
-              className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent resize-none"
+              className="w-full resize-none rounded-lg border border-neutral-300 px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
               placeholder="Brief description of the project..."
             />
           </div>
@@ -482,10 +486,10 @@ export default function SubmitFontInUseModal({
                 !formData.typefaceId ||
                 images.length === 0
               }
-              className="w-full py-3 bg-black text-white font-whisper font-medium rounded-lg hover:bg-neutral-800 disabled:bg-neutral-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 cursor-pointer"
+              className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-black py-3 font-medium font-whisper text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-400"
             >
               {isSubmitting && (
-                <RiLoader4Line className="w-5 h-5 animate-spin" />
+                <RiLoader4Line className="h-5 w-5 animate-spin" />
               )}
               {isSubmitting
                 ? "Submitting..."

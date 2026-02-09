@@ -150,7 +150,7 @@ export default function HeaderFontInput() {
 
   return (
     <div className="relative w-full">
-      <span className="block font-whisper text-sm font-normal text-black mb-2">
+      <span className="mb-2 block font-normal font-whisper text-black text-sm">
         Header Font
       </span>
 
@@ -160,21 +160,22 @@ export default function HeaderFontInput() {
         accept={ACCEPTED_FONT_FORMATS_STRING}
         onChange={handleInputChange}
         className="hidden"
+        aria-label="Upload header font file"
       />
 
       {isUploading ? (
-        <div className="w-full px-6 py-8 border-2 border-dashed rounded-lg border-neutral-300 bg-neutral-50 flex flex-col items-center justify-center gap-3">
-          <RiLoader4Line className="w-10 h-10 text-neutral-400 animate-spin" />
-          <p className="text-sm text-neutral-500">
+        <div className="flex w-full flex-col items-center justify-center gap-3 rounded-lg border-2 border-neutral-300 border-dashed bg-neutral-50 px-6 py-8">
+          <RiLoader4Line className="h-10 w-10 animate-spin text-neutral-400" />
+          <p className="text-neutral-500 text-sm">
             Uploading...
           </p>
         </div>
       ) : currentValue ? (
         <div className="flex flex-col gap-3">
           {/* Preview zone with icon and filename */}
-          <div className="relative w-full rounded-lg border border-neutral-200 bg-neutral-50 p-6 flex flex-col items-center justify-center min-h-[120px] gap-3">
-            <RiFontSize className="w-24 h-24 text-black" />
-            <p className="text-sm font-whisper font-medium text-neutral-700 truncate max-w-full">
+          <div className="relative flex min-h-[120px] w-full flex-col items-center justify-center gap-3 rounded-lg border border-neutral-200 bg-neutral-50 p-6">
+            <RiFontSize className="h-24 w-24 text-black" />
+            <p className="max-w-full truncate font-medium font-whisper text-neutral-700 text-sm">
               {displayName}
             </p>
           </div>
@@ -184,17 +185,17 @@ export default function HeaderFontInput() {
             <button
               type="button"
               onClick={handleReplace}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 text-sm font-whisper font-medium border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-colors"
+              className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-neutral-300 px-4 py-2 font-medium font-whisper text-sm transition-colors hover:bg-neutral-50"
             >
-              <RiRefreshLine className="w-4 h-4" />
+              <RiRefreshLine className="h-4 w-4" />
               Replace
             </button>
             <button
               type="button"
               onClick={handleDelete}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 text-sm font-whisper font-medium text-red-600 border border-red-200 rounded-lg hover:bg-red-50 transition-colors"
+              className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-red-200 px-4 py-2 font-medium font-whisper text-red-600 text-sm transition-colors hover:bg-red-50"
             >
-              <RiDeleteBinLine className="w-4 h-4" />
+              <RiDeleteBinLine className="h-4 w-4" />
               Delete
             </button>
           </div>
@@ -207,8 +208,8 @@ export default function HeaderFontInput() {
           onDrop={handleDrop}
           onClick={() => inputRef.current?.click()}
           className={cn(
-            "w-full px-6 py-8 border-2 border-dashed rounded-lg cursor-pointer",
-            "transition-colors flex flex-col items-center justify-center gap-3",
+            "w-full cursor-pointer rounded-lg border-2 border-dashed px-6 py-8",
+            "flex flex-col items-center justify-center gap-3 transition-colors",
             isDragging
               ? "border-neutral-300 bg-neutral-100"
               : "bg-transparent"
@@ -216,17 +217,17 @@ export default function HeaderFontInput() {
         >
           <RiUploadCloud2Line
             className={cn(
-              "w-10 h-10",
+              "h-10 w-10",
               isDragging ? "text-black" : "text-neutral-400"
             )}
           />
           <div className="text-center">
-            <p className="font-whisper font-medium text-black">
+            <p className="font-medium font-whisper text-black">
               {isDragging
                 ? "Drop your font file here"
                 : "Drag & drop your font file"}
             </p>
-            <p className="text-sm text-neutral-500 mt-1">
+            <p className="mt-1 text-neutral-500 text-sm">
               or{" "}
               <span className="text-black underline">
                 browse
@@ -234,14 +235,14 @@ export default function HeaderFontInput() {
               to upload
             </p>
           </div>
-          <p className="text-xs text-neutral-400">
+          <p className="text-neutral-400 text-xs">
             {ACCEPTED_FONT_FORMATS.join(", ")} (max 5MB)
           </p>
         </button>
       )}
 
       {error && (
-        <p className="mt-2 text-sm text-red-500 font-whisper">
+        <p className="mt-2 font-whisper text-red-500 text-sm">
           {error}
         </p>
       )}

@@ -20,12 +20,8 @@ import {
   RiStrikethrough,
   RiUnderline,
 } from "react-icons/ri";
+import type { RichTextEditorProps } from "@/types/components";
 import { cn } from "@/utils/class-names";
-
-type RichTextEditorProps = {
-  content: string;
-  onChange: (html: string) => void;
-};
 
 export default function RichTextEditor({
   content,
@@ -103,9 +99,9 @@ export default function RichTextEditor({
   };
 
   return (
-    <div className="border border-neutral-300 rounded-lg overflow-hidden">
+    <div className="overflow-hidden rounded-lg border border-neutral-300">
       {/* Toolbar */}
-      <div className="flex flex-wrap gap-0.5 p-2 border-b border-neutral-200 bg-neutral-50">
+      <div className="flex flex-wrap gap-0.5 border-neutral-200 border-b bg-neutral-50 p-2">
         <ToolbarButton
           active={editor.isActive("bold")}
           onClick={() =>
@@ -113,7 +109,7 @@ export default function RichTextEditor({
           }
           title="Bold"
         >
-          <RiBold className="w-4 h-4" />
+          <RiBold className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton
           active={editor.isActive("italic")}
@@ -122,7 +118,7 @@ export default function RichTextEditor({
           }
           title="Italic"
         >
-          <RiItalic className="w-4 h-4" />
+          <RiItalic className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton
           active={editor.isActive("underline")}
@@ -131,7 +127,7 @@ export default function RichTextEditor({
           }
           title="Underline"
         >
-          <RiUnderline className="w-4 h-4" />
+          <RiUnderline className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton
           active={editor.isActive("strike")}
@@ -140,10 +136,10 @@ export default function RichTextEditor({
           }
           title="Strikethrough"
         >
-          <RiStrikethrough className="w-4 h-4" />
+          <RiStrikethrough className="h-4 w-4" />
         </ToolbarButton>
 
-        <div className="w-px h-6 bg-neutral-300 mx-1 self-center" />
+        <div className="mx-1 h-6 w-px self-center bg-neutral-300" />
 
         <ToolbarButton
           active={editor.isActive({ textAlign: "left" })}
@@ -156,7 +152,7 @@ export default function RichTextEditor({
           }
           title="Align left"
         >
-          <RiAlignLeft className="w-4 h-4" />
+          <RiAlignLeft className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton
           active={editor.isActive({ textAlign: "center" })}
@@ -169,7 +165,7 @@ export default function RichTextEditor({
           }
           title="Align center"
         >
-          <RiAlignCenter className="w-4 h-4" />
+          <RiAlignCenter className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton
           active={editor.isActive({ textAlign: "right" })}
@@ -182,10 +178,10 @@ export default function RichTextEditor({
           }
           title="Align right"
         >
-          <RiAlignRight className="w-4 h-4" />
+          <RiAlignRight className="h-4 w-4" />
         </ToolbarButton>
 
-        <div className="w-px h-6 bg-neutral-300 mx-1 self-center" />
+        <div className="mx-1 h-6 w-px self-center bg-neutral-300" />
 
         <ToolbarButton
           active={editor.isActive("bulletList")}
@@ -194,28 +190,28 @@ export default function RichTextEditor({
           }
           title="Bullet list"
         >
-          <RiListUnordered className="w-4 h-4" />
+          <RiListUnordered className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton
           active={editor.isActive("link")}
           onClick={toggleLink}
           title="Link"
         >
-          <RiLink className="w-4 h-4" />
+          <RiLink className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton
           active={false}
           onClick={setFontSize}
           title="Font size"
         >
-          <RiFontSize className="w-4 h-4" />
+          <RiFontSize className="h-4 w-4" />
         </ToolbarButton>
         <ToolbarButton
           active={false}
           onClick={setColor}
           title="Text color"
         >
-          <RiPaletteLine className="w-4 h-4" />
+          <RiPaletteLine className="h-4 w-4" />
         </ToolbarButton>
       </div>
 
@@ -241,8 +237,10 @@ function ToolbarButton({
       type="button"
       onClick={onClick}
       title={title}
+      aria-label={title}
+      aria-pressed={active}
       className={cn(
-        "p-1.5 rounded transition-colors cursor-pointer",
+        "cursor-pointer rounded p-1.5 transition-colors",
         active
           ? "bg-black text-white"
           : "text-neutral-600 hover:bg-neutral-200"

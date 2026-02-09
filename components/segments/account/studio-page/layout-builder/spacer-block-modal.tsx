@@ -41,24 +41,25 @@ export default function SpacerBlockModal({
         onClick={onClose}
       />
 
-      <div className="relative bg-white rounded-lg w-full max-w-sm mx-4 max-h-[90vh] flex flex-col">
-        <div className="flex items-center justify-between p-6 border-b border-neutral-200 shrink-0">
-          <h2 className="font-ortank text-xl font-bold">
+      <div className="relative mx-4 flex max-h-[90vh] w-full max-w-sm flex-col rounded-lg bg-white">
+        <div className="flex shrink-0 items-center justify-between border-neutral-200 border-b p-6">
+          <h2 className="font-bold font-ortank text-xl">
             Spacer Block
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="p-1 hover:bg-neutral-100 rounded-lg transition-colors"
+            aria-label="Close modal"
+            className="rounded-lg p-1 transition-colors hover:bg-neutral-100"
           >
-            <RiCloseLine className="w-6 h-6" />
+            <RiCloseLine className="h-6 w-6" />
           </button>
         </div>
 
-        <div className="flex-1 min-h-0 p-6 space-y-5 overflow-y-auto overscroll-contain">
+        <div className="min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain p-6">
           {/* Size */}
           <div>
-            <span className="block text-sm font-semibold text-black mb-2">
+            <span className="mb-2 block font-semibold text-black text-sm">
               Size
             </span>
             <div className="flex gap-2">
@@ -68,10 +69,10 @@ export default function SpacerBlockModal({
                   type="button"
                   onClick={() => setSize(opt.value)}
                   className={cn(
-                    "flex-1 py-2 text-sm font-whisper font-medium rounded-lg border transition-colors cursor-pointer",
+                    "flex-1 cursor-pointer rounded-lg border py-2 font-medium font-whisper text-sm transition-colors",
                     size === opt.value
-                      ? "bg-black text-white border-black"
-                      : "bg-white text-neutral-700 border-neutral-300 hover:border-neutral-400"
+                      ? "border-black bg-black text-white"
+                      : "border-neutral-300 bg-white text-neutral-700 hover:border-neutral-400"
                   )}
                 >
                   {opt.label}
@@ -85,7 +86,7 @@ export default function SpacerBlockModal({
             <button
               type="button"
               onClick={handleSave}
-              className="w-full py-3 bg-black text-white font-whisper font-medium rounded-lg hover:bg-neutral-800 transition-colors cursor-pointer"
+              className="w-full cursor-pointer rounded-lg bg-black py-3 font-medium font-whisper text-white transition-colors hover:bg-neutral-800"
             >
               Save Spacer
             </button>

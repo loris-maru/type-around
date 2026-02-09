@@ -42,25 +42,26 @@ export default function TypefaceListBlockModal({
         onClick={onClose}
       />
 
-      <div className="relative bg-white rounded-lg w-full max-w-lg mx-4 max-h-[90vh] flex flex-col">
-        <div className="flex items-center justify-between p-6 border-b border-neutral-200 shrink-0">
-          <h2 className="font-ortank text-xl font-bold">
+      <div className="relative mx-4 flex max-h-[90vh] w-full max-w-lg flex-col rounded-lg bg-white">
+        <div className="flex shrink-0 items-center justify-between border-neutral-200 border-b p-6">
+          <h2 className="font-bold font-ortank text-xl">
             Typeface List Block
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="p-1 hover:bg-neutral-100 rounded-lg transition-colors cursor-pointer"
+            aria-label="Close modal"
+            className="cursor-pointer rounded-lg p-1 transition-colors hover:bg-neutral-100"
           >
-            <RiCloseLine className="w-6 h-6" />
+            <RiCloseLine className="h-6 w-6" />
           </button>
         </div>
 
-        <div className="flex-1 min-h-0 p-6 space-y-5 overflow-y-auto overscroll-contain">
+        <div className="min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain p-6">
           {/* Colors */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <span className="block text-sm font-semibold text-black mb-1">
+              <span className="mb-1 block font-semibold text-black text-sm">
                 Background color
               </span>
               <div className="flex items-center gap-2">
@@ -76,12 +77,13 @@ export default function TypefaceListBlockModal({
                     setBackgroundColor(e.target.value)
                   }
                   placeholder="#ffffff"
-                  className="w-20 px-2 py-2 text-sm border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                  aria-label="Typeface list background color hex value"
+                  className="w-20 rounded-lg border border-neutral-300 px-2 py-2 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                 />
               </div>
             </div>
             <div>
-              <span className="block text-sm font-semibold text-black mb-1">
+              <span className="mb-1 block font-semibold text-black text-sm">
                 Font color
               </span>
               <div className="flex items-center gap-2">
@@ -97,7 +99,8 @@ export default function TypefaceListBlockModal({
                     setFontColor(e.target.value)
                   }
                   placeholder="#000000"
-                  className="w-20 px-2 py-2 text-sm border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                  aria-label="Typeface list font color hex value"
+                  className="w-20 rounded-lg border border-neutral-300 px-2 py-2 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                 />
               </div>
             </div>
@@ -108,7 +111,7 @@ export default function TypefaceListBlockModal({
             <button
               type="button"
               onClick={handleSave}
-              className="w-full py-3 bg-black text-white font-whisper font-medium rounded-lg hover:bg-neutral-800 transition-colors cursor-pointer"
+              className="w-full cursor-pointer rounded-lg bg-black py-3 font-medium font-whisper text-white transition-colors hover:bg-neutral-800"
             >
               Save Typeface List
             </button>

@@ -4,25 +4,25 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import {
   RiAddFill,
+  RiBehanceLine,
+  RiBlueskyLine,
   RiCloseLine,
   RiDeleteBinLine,
+  RiDribbbleLine,
+  RiFacebookCircleLine,
+  RiGithubLine,
   RiGlobalLine,
   RiInstagramLine,
-  RiTwitterXLine,
   RiLinkedinLine,
-  RiFacebookCircleLine,
-  RiBehanceLine,
-  RiDribbbleLine,
-  RiGithubLine,
-  RiYoutubeLine,
-  RiTiktokLine,
+  RiLoader4Line,
+  RiMastodonLine,
   RiPinterestLine,
   RiThreadsLine,
-  RiMastodonLine,
-  RiBlueskyLine,
-  RiLoader4Line,
+  RiTiktokLine,
+  RiTwitterXLine,
   RiUploadCloud2Line,
   RiUserLine,
+  RiYoutubeLine,
 } from "react-icons/ri";
 import { uploadFile } from "@/lib/firebase/storage";
 import type { AddDesignerModalProps } from "@/types/components";
@@ -314,10 +314,10 @@ export default function AddDesignerModal({
         onClick={handleClose}
       />
 
-      <div className="relative bg-white rounded-lg w-full max-w-lg mx-4 max-h-[90vh] flex flex-col">
+      <div className="relative mx-4 flex max-h-[90vh] w-full max-w-lg flex-col rounded-lg bg-white">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-neutral-200 shrink-0">
-          <h2 className="font-ortank text-xl font-bold">
+        <div className="flex shrink-0 items-center justify-between border-neutral-200 border-b p-6">
+          <h2 className="font-bold font-ortank text-xl">
             {editingDesigner
               ? "Edit Designer"
               : "Add Designer"}
@@ -325,33 +325,34 @@ export default function AddDesignerModal({
           <button
             type="button"
             onClick={handleClose}
-            className="p-1 hover:bg-neutral-100 rounded-lg transition-colors cursor-pointer"
+            aria-label="Close modal"
+            className="cursor-pointer rounded-lg p-1 transition-colors hover:bg-neutral-100"
           >
-            <RiCloseLine className="w-6 h-6" />
+            <RiCloseLine className="h-6 w-6" />
           </button>
         </div>
 
         {/* Body */}
         <form
           onSubmit={handleSubmit}
-          className="flex-1 min-h-0 overflow-y-auto overscroll-contain"
+          className="min-h-0 flex-1 overflow-y-auto overscroll-contain"
         >
-          <div className="p-6 space-y-4">
+          <div className="space-y-4 p-6">
             {error && (
-              <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">
+              <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-red-600 text-sm">
                 {error}
               </div>
             )}
 
             {/* Avatar */}
             <div>
-              <span className="block font-whisper text-sm font-normal text-black mb-2">
+              <span className="mb-2 block font-normal font-whisper text-black text-sm">
                 Avatar
               </span>
 
               {avatarPreview ? (
                 <div className="flex items-center gap-4">
-                  <div className="relative w-20 h-20 rounded-full overflow-hidden bg-neutral-100 shrink-0">
+                  <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full bg-neutral-100">
                     <Image
                       src={avatarPreview}
                       alt="Avatar preview"
@@ -364,14 +365,14 @@ export default function AddDesignerModal({
                     <button
                       type="button"
                       onClick={handleChangeAvatar}
-                      className="text-sm font-whisper font-medium text-black hover:text-neutral-600 transition-colors cursor-pointer"
+                      className="cursor-pointer font-medium font-whisper text-black text-sm transition-colors hover:text-neutral-600"
                     >
                       Change
                     </button>
                     <button
                       type="button"
                       onClick={handleDeleteAvatar}
-                      className="text-sm font-whisper font-medium text-red-500 hover:text-red-700 transition-colors cursor-pointer"
+                      className="cursor-pointer font-medium font-whisper text-red-500 text-sm transition-colors hover:text-red-700"
                     >
                       Delete
                     </button>
@@ -387,21 +388,21 @@ export default function AddDesignerModal({
                   onClick={() =>
                     fileInputRef.current?.click()
                   }
-                  className={`flex items-center gap-4 p-4 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${
+                  className={`flex cursor-pointer items-center gap-4 rounded-lg border-2 border-dashed p-4 transition-colors ${
                     isDragging
                       ? "border-black bg-neutral-50"
                       : "border-neutral-300 hover:border-neutral-400"
                   }`}
                 >
-                  <div className="w-16 h-16 rounded-full bg-neutral-100 flex items-center justify-center shrink-0">
-                    <RiUserLine className="w-7 h-7 text-neutral-300" />
+                  <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-neutral-100">
+                    <RiUserLine className="h-7 w-7 text-neutral-300" />
                   </div>
                   <div className="flex flex-col">
-                    <RiUploadCloud2Line className="w-5 h-5 text-neutral-400 mb-1" />
-                    <span className="text-sm text-neutral-500">
+                    <RiUploadCloud2Line className="mb-1 h-5 w-5 text-neutral-400" />
+                    <span className="text-neutral-500 text-sm">
                       Drop image or click to browse
                     </span>
-                    <span className="text-xs text-neutral-400">
+                    <span className="text-neutral-400 text-xs">
                       PNG, JPG, WebP (max 10MB)
                     </span>
                   </div>
@@ -414,6 +415,7 @@ export default function AddDesignerModal({
                 accept="image/*"
                 onChange={handleAvatarFileChange}
                 className="hidden"
+                aria-label="Upload designer avatar image"
               />
             </div>
 
@@ -422,7 +424,7 @@ export default function AddDesignerModal({
               <div>
                 <label
                   htmlFor="firstName"
-                  className="block font-whisper text-sm font-normal text-black mb-2"
+                  className="mb-2 block font-normal font-whisper text-black text-sm"
                 >
                   First name{" "}
                   <span className="text-red-500">*</span>
@@ -434,14 +436,14 @@ export default function AddDesignerModal({
                   value={formData.firstName}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                  className="w-full rounded-lg border border-neutral-300 px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                   placeholder="John"
                 />
               </div>
               <div>
                 <label
                   htmlFor="lastName"
-                  className="block font-whisper text-sm font-normal text-black mb-2"
+                  className="mb-2 block font-normal font-whisper text-black text-sm"
                 >
                   Last name{" "}
                   <span className="text-red-500">*</span>
@@ -453,7 +455,7 @@ export default function AddDesignerModal({
                   value={formData.lastName}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                  className="w-full rounded-lg border border-neutral-300 px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                   placeholder="Doe"
                 />
               </div>
@@ -463,7 +465,7 @@ export default function AddDesignerModal({
             <div>
               <label
                 htmlFor="email"
-                className="block font-whisper text-sm font-normal text-black mb-2"
+                className="mb-2 block font-normal font-whisper text-black text-sm"
               >
                 Email address
               </label>
@@ -473,7 +475,7 @@ export default function AddDesignerModal({
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                className="w-full rounded-lg border border-neutral-300 px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                 placeholder="john@example.com"
               />
             </div>
@@ -482,7 +484,7 @@ export default function AddDesignerModal({
             <div>
               <label
                 htmlFor="biography"
-                className="block font-whisper text-sm font-normal text-black mb-2"
+                className="mb-2 block font-normal font-whisper text-black text-sm"
               >
                 Biography
               </label>
@@ -492,7 +494,7 @@ export default function AddDesignerModal({
                 value={formData.biography}
                 onChange={handleInputChange}
                 rows={3}
-                className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent resize-none"
+                className="w-full resize-none rounded-lg border border-neutral-300 px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                 placeholder="A short bio about the designer..."
               />
             </div>
@@ -501,7 +503,7 @@ export default function AddDesignerModal({
             <div>
               <label
                 htmlFor="website"
-                className="block font-whisper text-sm font-normal text-black mb-2"
+                className="mb-2 block font-normal font-whisper text-black text-sm"
               >
                 Website
               </label>
@@ -511,32 +513,32 @@ export default function AddDesignerModal({
                 name="website"
                 value={formData.website}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                className="w-full rounded-lg border border-neutral-300 px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                 placeholder="https://example.com"
               />
             </div>
 
             {/* Social media */}
             <div>
-              <span className="block font-whisper text-sm font-normal text-black mb-2">
+              <span className="mb-2 block font-normal font-whisper text-black text-sm">
                 Social media
               </span>
 
               {/* Existing social media */}
               {socialMedia.length > 0 && (
-                <div className="space-y-2 mb-3">
+                <div className="mb-3 space-y-2">
                   {socialMedia.map((social, index) => {
                     const Icon = getSocialIcon(social.name);
                     return (
                       <div
                         key={`${social.name}-${social.url}`}
-                        className="flex items-center gap-3 px-3 py-2 bg-neutral-50 border border-neutral-200 rounded-lg"
+                        className="flex items-center gap-3 rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2"
                       >
-                        <Icon className="w-4 h-4 text-neutral-500 shrink-0" />
-                        <span className="text-sm font-medium text-black">
+                        <Icon className="h-4 w-4 shrink-0 text-neutral-500" />
+                        <span className="font-medium text-black text-sm">
                           {social.name}
                         </span>
-                        <span className="text-sm text-neutral-400 truncate flex-1">
+                        <span className="flex-1 truncate text-neutral-400 text-sm">
                           {social.url}
                         </span>
                         <button
@@ -544,9 +546,10 @@ export default function AddDesignerModal({
                           onClick={() =>
                             handleRemoveSocialMedia(index)
                           }
-                          className="p-1 text-neutral-400 hover:text-red-500 transition-colors cursor-pointer shrink-0"
+                          aria-label={`Remove ${social.name} social media`}
+                          className="shrink-0 cursor-pointer p-1 text-neutral-400 transition-colors hover:text-red-500"
                         >
-                          <RiDeleteBinLine className="w-4 h-4" />
+                          <RiDeleteBinLine className="h-4 w-4" />
                         </button>
                       </div>
                     );
@@ -563,7 +566,8 @@ export default function AddDesignerModal({
                     onChange={(e) =>
                       setNewSocialName(e.target.value)
                     }
-                    className="w-full px-3 py-2 text-sm border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                    aria-label="Social media platform name"
+                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                     placeholder="Platform name"
                   />
                 </div>
@@ -574,7 +578,8 @@ export default function AddDesignerModal({
                     onChange={(e) =>
                       setNewSocialUrl(e.target.value)
                     }
-                    className="w-full px-3 py-2 text-sm border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                    aria-label="Social media profile URL"
+                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                     placeholder="Profile URL"
                   />
                 </div>
@@ -585,16 +590,17 @@ export default function AddDesignerModal({
                     !newSocialName.trim() ||
                     !newSocialUrl.trim()
                   }
-                  className="p-2 bg-black text-white rounded-lg hover:bg-neutral-800 disabled:bg-neutral-300 disabled:cursor-not-allowed transition-colors cursor-pointer shrink-0"
+                  aria-label="Add social media"
+                  className="shrink-0 cursor-pointer rounded-lg bg-black p-2 text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-300"
                 >
-                  <RiAddFill className="w-5 h-5" />
+                  <RiAddFill className="h-5 w-5" />
                 </button>
               </div>
             </div>
           </div>
 
           {/* Footer */}
-          <div className="p-6 border-t border-neutral-200 shrink-0">
+          <div className="shrink-0 border-neutral-200 border-t p-6">
             <button
               type="submit"
               disabled={
@@ -602,10 +608,10 @@ export default function AddDesignerModal({
                 !formData.firstName ||
                 !formData.lastName
               }
-              className="w-full py-3 bg-black text-white font-whisper font-medium rounded-lg hover:bg-neutral-800 disabled:bg-neutral-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 cursor-pointer"
+              className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-black py-3 font-medium font-whisper text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-400"
             >
               {isSubmitting && (
-                <RiLoader4Line className="w-5 h-5 animate-spin" />
+                <RiLoader4Line className="h-5 w-5 animate-spin" />
               )}
               {isSubmitting
                 ? "Saving..."

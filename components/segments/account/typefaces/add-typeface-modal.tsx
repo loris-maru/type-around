@@ -131,28 +131,29 @@ export default function AddTypefaceModal({
       />
 
       {/* Modal Content */}
-      <div className="relative bg-white rounded-lg w-full max-w-lg mx-4 max-h-[90vh] flex flex-col">
+      <div className="relative mx-4 flex max-h-[90vh] w-full max-w-lg flex-col rounded-lg bg-white">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-neutral-200 shrink-0">
-          <h2 className="font-ortank text-xl font-bold">
+        <div className="flex shrink-0 items-center justify-between border-neutral-200 border-b p-6">
+          <h2 className="font-bold font-ortank text-xl">
             Add New Typeface
           </h2>
           <button
             type="button"
             onClick={handleClose}
-            className="p-1 hover:bg-neutral-100 rounded-lg transition-colors"
+            aria-label="Close modal"
+            className="rounded-lg p-1 transition-colors hover:bg-neutral-100"
           >
-            <RiCloseLine className="w-6 h-6" />
+            <RiCloseLine className="h-6 w-6" />
           </button>
         </div>
 
         {/* Form */}
         <form
           onSubmit={handleSubmit}
-          className="flex-1 min-h-0 p-6 space-y-4 overflow-y-auto overscroll-contain"
+          className="min-h-0 flex-1 space-y-4 overflow-y-auto overscroll-contain p-6"
         >
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">
+            <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-red-600 text-sm">
               {error}
             </div>
           )}
@@ -161,7 +162,7 @@ export default function AddTypefaceModal({
           <div>
             <label
               htmlFor="name"
-              className="block font-whisper text-sm font-normal text-black mb-2"
+              className="mb-2 block font-normal font-whisper text-black text-sm"
             >
               Name <span className="text-red-500">*</span>
             </label>
@@ -172,7 +173,7 @@ export default function AddTypefaceModal({
               value={formData.name}
               onChange={handleInputChange}
               required
-              className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+              className="w-full rounded-lg border border-neutral-300 px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
               placeholder="e.g., Arvana"
             />
           </div>
@@ -181,7 +182,7 @@ export default function AddTypefaceModal({
           <div>
             <label
               htmlFor="hangeulName"
-              className="block font-whisper text-sm font-normal text-black mb-2"
+              className="mb-2 block font-normal font-whisper text-black text-sm"
             >
               Hangeul Name
             </label>
@@ -191,7 +192,7 @@ export default function AddTypefaceModal({
               name="hangeulName"
               value={formData.hangeulName}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+              className="w-full rounded-lg border border-neutral-300 px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
               placeholder="e.g., 아르바나"
             />
           </div>
@@ -200,7 +201,7 @@ export default function AddTypefaceModal({
           <div>
             <label
               htmlFor="description"
-              className="block font-whisper text-sm font-normal text-black mb-2"
+              className="mb-2 block font-normal font-whisper text-black text-sm"
             >
               Description
             </label>
@@ -210,7 +211,7 @@ export default function AddTypefaceModal({
               value={formData.description}
               onChange={handleInputChange}
               rows={3}
-              className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent resize-none"
+              className="w-full resize-none rounded-lg border border-neutral-300 px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
               placeholder="Brief description of the typeface..."
             />
           </div>
@@ -227,7 +228,7 @@ export default function AddTypefaceModal({
           <div>
             <label
               htmlFor="releaseDate"
-              className="block font-whisper text-sm font-normal text-black mb-2"
+              className="mb-2 block font-normal font-whisper text-black text-sm"
             >
               Release Date
             </label>
@@ -237,7 +238,7 @@ export default function AddTypefaceModal({
               name="releaseDate"
               value={formData.releaseDate}
               onChange={handleInputChange}
-              className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+              className="w-full rounded-lg border border-neutral-300 px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
             />
           </div>
 
@@ -246,7 +247,7 @@ export default function AddTypefaceModal({
             <button
               type="submit"
               disabled={isSubmitting || !formData.name}
-              className="w-full py-3 bg-black text-white font-whisper font-medium rounded-lg hover:bg-neutral-800 disabled:bg-neutral-400 disabled:cursor-not-allowed transition-colors"
+              className="w-full rounded-lg bg-black py-3 font-medium font-whisper text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-400"
             >
               {isSubmitting ? "Adding..." : "Add Typeface"}
             </button>

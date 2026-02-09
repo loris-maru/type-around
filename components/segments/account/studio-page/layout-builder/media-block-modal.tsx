@@ -133,34 +133,35 @@ export default function MediaBlockModal({
         onClick={handleClose}
       />
 
-      <div className="relative bg-white rounded-lg w-full max-w-3xl mx-4 max-h-[90vh] flex flex-col">
+      <div className="relative mx-4 flex max-h-[90vh] w-full max-w-3xl flex-col rounded-lg bg-white">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-neutral-200 shrink-0">
-          <h2 className="font-ortank text-xl font-bold">
+        <div className="flex shrink-0 items-center justify-between border-neutral-200 border-b p-6">
+          <h2 className="font-bold font-ortank text-xl">
             {label} Block
           </h2>
           <button
             type="button"
             onClick={handleClose}
-            className="p-1 hover:bg-neutral-100 rounded-lg transition-colors cursor-pointer"
+            aria-label="Close modal"
+            className="cursor-pointer rounded-lg p-1 transition-colors hover:bg-neutral-100"
           >
-            <RiCloseLine className="w-6 h-6" />
+            <RiCloseLine className="h-6 w-6" />
           </button>
         </div>
 
         {/* Two-column body */}
-        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
           <div className="grid grid-cols-2 gap-6 p-6">
             {/* ---- Left column: Content ---- */}
             <div className="space-y-5">
-              <h3 className="uppercase tracking-wide font-normal text-sm text-neutral-500">
+              <h3 className="font-normal text-neutral-500 text-sm uppercase tracking-wide">
                 Content
               </h3>
 
               {isImage ? (
                 /* Image: Drop zone / Preview */
                 <div>
-                  <span className="block text-sm font-semibold text-black mb-2">
+                  <span className="mb-2 block font-semibold text-black text-sm">
                     {label} file
                   </span>
                   <input
@@ -169,11 +170,12 @@ export default function MediaBlockModal({
                     accept={acceptTypes}
                     onChange={handleFileChange}
                     className="hidden"
+                    aria-label={`Upload ${label} file`}
                   />
 
                   {url && !isUploading ? (
                     <div className="space-y-3">
-                      <div className="relative w-full rounded-lg border border-neutral-200 bg-neutral-50 p-4 flex items-center justify-center min-h-[120px]">
+                      <div className="relative flex min-h-[120px] w-full items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50 p-4">
                         <Image
                           src={url}
                           alt={title || label}
@@ -188,9 +190,9 @@ export default function MediaBlockModal({
                         onClick={() =>
                           fileInputRef.current?.click()
                         }
-                        className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-whisper font-medium border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-colors w-full cursor-pointer"
+                        className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-neutral-300 px-4 py-2 font-medium font-whisper text-sm transition-colors hover:bg-neutral-50"
                       >
-                        <RiRefreshLine className="w-4 h-4" />
+                        <RiRefreshLine className="h-4 w-4" />
                         Replace
                       </button>
                     </div>
@@ -203,19 +205,19 @@ export default function MediaBlockModal({
                         fileInputRef.current?.click()
                       }
                       disabled={isUploading}
-                      className="w-full p-6 border-2 border-dashed border-neutral-300 rounded-lg cursor-pointer hover:border-neutral-400 transition-colors disabled:cursor-wait"
+                      className="w-full cursor-pointer rounded-lg border-2 border-neutral-300 border-dashed p-6 transition-colors hover:border-neutral-400 disabled:cursor-wait"
                     >
                       {isUploading ? (
                         <div className="flex flex-col items-center gap-2">
-                          <RiLoader4Line className="w-8 h-8 text-neutral-400 animate-spin" />
-                          <span className="text-sm text-neutral-500">
+                          <RiLoader4Line className="h-8 w-8 animate-spin text-neutral-400" />
+                          <span className="text-neutral-500 text-sm">
                             Uploading...
                           </span>
                         </div>
                       ) : (
                         <div className="flex flex-col items-center gap-2">
-                          <RiUploadCloud2Line className="w-8 h-8 text-neutral-400" />
-                          <span className="text-sm text-neutral-500">
+                          <RiUploadCloud2Line className="h-8 w-8 text-neutral-400" />
+                          <span className="text-neutral-500 text-sm">
                             Drop image or click to browse
                           </span>
                         </div>
@@ -228,7 +230,7 @@ export default function MediaBlockModal({
                 <div>
                   <label
                     htmlFor="video-url"
-                    className="block text-sm font-semibold text-black mb-1"
+                    className="mb-1 block font-semibold text-black text-sm"
                   >
                     Video URL
                   </label>
@@ -238,13 +240,13 @@ export default function MediaBlockModal({
                     value={url}
                     onChange={(e) => setUrl(e.target.value)}
                     placeholder="https://..."
-                    className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-sm"
+                    className="w-full rounded-lg border border-neutral-300 px-4 py-3 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                   />
                 </div>
               )}
 
               {/* Add title checkbox */}
-              <label className="flex items-center gap-2 cursor-pointer select-none">
+              <label className="flex cursor-pointer select-none items-center gap-2">
                 <input
                   type="checkbox"
                   checked={showTitle}
@@ -252,9 +254,9 @@ export default function MediaBlockModal({
                     setShowTitle(e.target.checked);
                     if (!e.target.checked) setTitle("");
                   }}
-                  className="w-4 h-4 rounded border-neutral-300 accent-black cursor-pointer"
+                  className="h-4 w-4 cursor-pointer rounded border-neutral-300 accent-black"
                 />
-                <span className="text-sm font-medium text-black">
+                <span className="font-medium text-black text-sm">
                   Add title?
                 </span>
               </label>
@@ -263,7 +265,7 @@ export default function MediaBlockModal({
                 <div>
                   <label
                     htmlFor={`${type}-title`}
-                    className="block text-sm font-semibold text-black mb-1"
+                    className="mb-1 block font-semibold text-black text-sm"
                   >
                     Title
                   </label>
@@ -275,13 +277,13 @@ export default function MediaBlockModal({
                       setTitle(e.target.value)
                     }
                     placeholder="Enter a title"
-                    className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-sm"
+                    className="w-full rounded-lg border border-neutral-300 px-4 py-3 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                   />
                 </div>
               )}
 
               {/* Add description checkbox */}
-              <label className="flex items-center gap-2 cursor-pointer select-none">
+              <label className="flex cursor-pointer select-none items-center gap-2">
                 <input
                   type="checkbox"
                   checked={showDescription}
@@ -290,9 +292,9 @@ export default function MediaBlockModal({
                     if (!e.target.checked)
                       setDescription("");
                   }}
-                  className="w-4 h-4 rounded border-neutral-300 accent-black cursor-pointer"
+                  className="h-4 w-4 cursor-pointer rounded border-neutral-300 accent-black"
                 />
-                <span className="text-sm font-medium text-black">
+                <span className="font-medium text-black text-sm">
                   Add description?
                 </span>
               </label>
@@ -301,7 +303,7 @@ export default function MediaBlockModal({
                 <div>
                   <label
                     htmlFor={`${type}-description`}
-                    className="block text-sm font-semibold text-black mb-1"
+                    className="mb-1 block font-semibold text-black text-sm"
                   >
                     Description
                   </label>
@@ -313,21 +315,21 @@ export default function MediaBlockModal({
                     }
                     placeholder="Enter a description"
                     rows={3}
-                    className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-sm resize-none"
+                    className="w-full resize-none rounded-lg border border-neutral-300 px-4 py-3 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                   />
                 </div>
               )}
             </div>
 
             {/* ---- Right column: Settings ---- */}
-            <div className="flex flex-col space-y-5 border border-neutral-300 bg-neutral-100 rounded-xl p-5">
-              <h3 className="uppercase tracking-wide font-normal text-sm text-neutral-500">
+            <div className="flex flex-col space-y-5 rounded-xl border border-neutral-300 bg-neutral-100 p-5">
+              <h3 className="font-normal text-neutral-500 text-sm uppercase tracking-wide">
                 Settings
               </h3>
 
               {/* Alignment */}
               <div>
-                <span className="block text-sm font-semibold text-black mb-2">
+                <span className="mb-2 block font-semibold text-black text-sm">
                   Alignment
                 </span>
                 <div className="flex gap-2">
@@ -339,10 +341,10 @@ export default function MediaBlockModal({
                         setAlignment(opt.value)
                       }
                       className={cn(
-                        "flex-1 py-2 text-sm font-whisper font-medium rounded-lg border transition-colors cursor-pointer",
+                        "flex-1 cursor-pointer rounded-lg border py-2 font-medium font-whisper text-sm transition-colors",
                         alignment === opt.value
-                          ? "bg-black text-white border-black"
-                          : "bg-white text-neutral-700 border-neutral-300 hover:border-neutral-400"
+                          ? "border-black bg-black text-white"
+                          : "border-neutral-300 bg-white text-neutral-700 hover:border-neutral-400"
                       )}
                     >
                       {opt.label}
@@ -353,7 +355,7 @@ export default function MediaBlockModal({
 
               {/* Margin */}
               <div>
-                <span className="block text-sm font-semibold text-black mb-2">
+                <span className="mb-2 block font-semibold text-black text-sm">
                   Margin
                 </span>
                 <div className="flex gap-2">
@@ -363,10 +365,10 @@ export default function MediaBlockModal({
                       type="button"
                       onClick={() => setMargin(opt.value)}
                       className={cn(
-                        "flex-1 py-2 text-sm font-whisper font-medium rounded-lg border transition-colors cursor-pointer",
+                        "flex-1 cursor-pointer rounded-lg border py-2 font-medium font-whisper text-sm transition-colors",
                         margin === opt.value
-                          ? "bg-black text-white border-black"
-                          : "bg-white text-neutral-700 border-neutral-300 hover:border-neutral-400"
+                          ? "border-black bg-black text-white"
+                          : "border-neutral-300 bg-white text-neutral-700 hover:border-neutral-400"
                       )}
                     >
                       {opt.label}
@@ -377,20 +379,20 @@ export default function MediaBlockModal({
 
               {/* Size */}
               <div>
-                <span className="block text-sm font-semibold text-black mb-2">
+                <span className="mb-2 block font-semibold text-black text-sm">
                   Size
                 </span>
-                <div className="flex gap-2 flex-wrap">
+                <div className="flex flex-wrap gap-2">
                   {SIZE_OPTIONS.map((opt) => (
                     <button
                       key={opt.value}
                       type="button"
                       onClick={() => setSize(opt.value)}
                       className={cn(
-                        "px-3 py-2 text-sm font-whisper font-medium rounded-lg border transition-colors cursor-pointer",
+                        "cursor-pointer rounded-lg border px-3 py-2 font-medium font-whisper text-sm transition-colors",
                         size === opt.value
-                          ? "bg-black text-white border-black"
-                          : "bg-white text-neutral-700 border-neutral-300 hover:border-neutral-400"
+                          ? "border-black bg-black text-white"
+                          : "border-neutral-300 bg-white text-neutral-700 hover:border-neutral-400"
                       )}
                     >
                       {opt.label}
@@ -402,7 +404,7 @@ export default function MediaBlockModal({
               {/* Colors */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <span className="block text-sm font-semibold text-black mb-1">
+                  <span className="mb-1 block font-semibold text-black text-sm">
                     Background color
                   </span>
                   <div className="flex items-center gap-2">
@@ -418,12 +420,12 @@ export default function MediaBlockModal({
                         setBackgroundColor(e.target.value)
                       }
                       placeholder="#ffffff"
-                      className="w-20 px-2 py-2 text-sm border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                      className="w-20 rounded-lg border border-neutral-300 px-2 py-2 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                     />
                   </div>
                 </div>
                 <div>
-                  <span className="block text-sm font-semibold text-black mb-1">
+                  <span className="mb-1 block font-semibold text-black text-sm">
                     Font color
                   </span>
                   <div className="flex items-center gap-2">
@@ -439,7 +441,7 @@ export default function MediaBlockModal({
                         setFontColor(e.target.value)
                       }
                       placeholder="#000000"
-                      className="w-20 px-2 py-2 text-sm border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                      className="w-20 rounded-lg border border-neutral-300 px-2 py-2 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                     />
                   </div>
                 </div>
@@ -450,7 +452,7 @@ export default function MediaBlockModal({
                 <button
                   type="button"
                   onClick={handleSave}
-                  className="w-full py-3 bg-black text-white font-whisper font-medium rounded-lg hover:bg-neutral-800 transition-colors cursor-pointer"
+                  className="w-full cursor-pointer rounded-lg bg-black py-3 font-medium font-whisper text-white transition-colors hover:bg-neutral-800"
                 >
                   Save {label}
                 </button>

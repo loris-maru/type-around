@@ -70,7 +70,7 @@ export default function TagInput({
     <div className={className}>
       <label
         htmlFor={label}
-        className="block font-whisper text-sm font-normal text-black mb-2"
+        className="mb-2 block font-normal font-whisper text-black text-sm"
       >
         {label}
       </label>
@@ -79,8 +79,8 @@ export default function TagInput({
       <div
         onClick={handleContainerClick}
         className={cn(
-          "w-full min-h-[48px] px-3 py-2 border rounded-lg cursor-text transition-colors",
-          "flex flex-wrap gap-2 items-center",
+          "min-h-[48px] w-full cursor-text rounded-lg border px-3 py-2 transition-colors",
+          "flex flex-wrap items-center gap-2",
           isFocused
             ? "border-black ring-2 ring-black ring-opacity-20"
             : "border-neutral-300 hover:border-neutral-400"
@@ -91,10 +91,10 @@ export default function TagInput({
           <span
             key={`${tag}`}
             className={cn(
-              "inline-flex items-center gap-1 px-5 py-2 text-sm rounded-3xl group",
+              "group inline-flex items-center gap-1 rounded-3xl px-5 py-2 text-sm",
               theme === "dark"
                 ? "bg-black text-white"
-                : "bg-transparent text-black border border-black"
+                : "border border-black bg-transparent text-black"
             )}
           >
             {tag}
@@ -104,8 +104,9 @@ export default function TagInput({
                 e.stopPropagation();
                 handleRemoveTag(index);
               }}
+              aria-label={`Remove ${tag}`}
               className={cn(
-                "p-0.5 rounded transition-colors",
+                "rounded p-0.5 transition-colors",
                 theme === "dark"
                   ? "hover:bg-neutral-200"
                   : "hover:bg-neutral-100"
@@ -113,7 +114,7 @@ export default function TagInput({
             >
               <RiCloseLine
                 className={cn(
-                  "w-3.5 h-3.5",
+                  "h-3.5 w-3.5",
                   theme === "dark"
                     ? "text-neutral-500 group-hover:text-neutral-700"
                     : "text-neutral-400 group-hover:text-black"
@@ -126,6 +127,7 @@ export default function TagInput({
         {/* Input */}
         <input
           ref={inputRef}
+          id={`tag-input-${label}`}
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
@@ -135,10 +137,11 @@ export default function TagInput({
           placeholder={
             value.length === 0 ? placeholder : ""
           }
-          className="flex-1 min-w-[120px] py-1 bg-transparent outline-none text-sm placeholder:text-neutral-400"
+          aria-label={label}
+          className="min-w-[120px] flex-1 bg-transparent py-1 text-sm outline-none placeholder:text-neutral-400"
         />
       </div>
-      <p className="mt-1 text-xs text-neutral-500">
+      <p className="mt-1 text-neutral-500 text-xs">
         Press Enter or comma to add a category
       </p>
     </div>

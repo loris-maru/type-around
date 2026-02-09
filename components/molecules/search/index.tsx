@@ -154,10 +154,11 @@ export default function SearchPanel({
             />
             <input
               ref={inputRef}
-              type="text"
+              type="search"
               value={queryStr}
               onChange={(e) => setQueryStr(e.target.value)}
               placeholder="Search typefaces, studios, designers…"
+              aria-label="Search typefaces, studios, and designers"
               className="w-full bg-transparent font-whisper text-base text-black outline-none placeholder:text-medium-gray"
             />
             {queryStr && (

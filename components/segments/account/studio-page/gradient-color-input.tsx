@@ -26,7 +26,7 @@ export default function GradientColorInput() {
 
   return (
     <div className="relative w-full">
-      <span className="block font-whisper text-sm font-normal text-black mb-2">
+      <span className="mb-2 block font-normal font-whisper text-black text-sm">
         Gradient Color
       </span>
 
@@ -47,7 +47,8 @@ export default function GradientColorInput() {
                 handleHexChange(e, setColor1)
               }
               maxLength={7}
-              className="w-24 px-3 py-2 border border-neutral-300 font-whisper text-sm uppercase"
+              aria-label="Gradient color 1 hex value"
+              className="w-24 border border-neutral-300 px-3 py-2 font-whisper text-sm uppercase"
               placeholder="#000000"
             />
           </div>
@@ -66,7 +67,8 @@ export default function GradientColorInput() {
                 handleHexChange(e, setColor2)
               }
               maxLength={7}
-              className="w-24 px-3 py-2 border border-neutral-300 font-whisper text-sm uppercase"
+              aria-label="Gradient color 2 hex value"
+              className="w-24 border border-neutral-300 px-3 py-2 font-whisper text-sm uppercase"
               placeholder="#FFFFFF"
             />
           </div>
@@ -74,7 +76,7 @@ export default function GradientColorInput() {
 
         {/* Gradient preview */}
         <div
-          className="flex-1 h-auto min-h-12 border border-neutral-200"
+          className="h-auto min-h-12 flex-1 border border-neutral-200"
           style={{
             background: `linear-gradient(180deg, ${color1} 0%, ${color2} 100%)`,
           }}

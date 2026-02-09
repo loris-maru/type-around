@@ -6,12 +6,12 @@ import { MOCK_PURCHASES } from "@/constant/MOCK_PURCHASES";
 export default function MyAccountPurchases() {
   return (
     <div className="relative w-full">
-      <h1 className="font-ortank text-3xl font-bold mb-8">
+      <h1 className="mb-8 font-bold font-ortank text-3xl">
         My Purchases
       </h1>
 
       {MOCK_PURCHASES.length === 0 ? (
-        <p className="text-neutral-500 font-whisper">
+        <p className="font-whisper text-neutral-500">
           No purchases yet.
         </p>
       ) : (
@@ -22,16 +22,16 @@ export default function MyAccountPurchases() {
               className="flex items-center justify-between py-4"
             >
               <div className="flex flex-col gap-1">
-                <span className="text-xs font-whisper font-medium uppercase tracking-wide text-neutral-500">
+                <span className="font-medium font-whisper text-neutral-500 text-xs uppercase tracking-wide">
                   {purchase.category}
                 </span>
-                <span className="font-ortank font-bold">
+                <span className="font-bold font-ortank">
                   {purchase.title}
                 </span>
               </div>
 
               <div className="flex items-center gap-6">
-                <span className="text-sm text-neutral-500 font-whisper">
+                <span className="font-whisper text-neutral-500 text-sm">
                   {new Date(
                     purchase.date
                   ).toLocaleDateString("en-US", {
@@ -40,16 +40,17 @@ export default function MyAccountPurchases() {
                     day: "numeric",
                   })}
                 </span>
-                <span className="text-base font-ortank font-bold min-w-12 text-right">
+                <span className="min-w-12 text-right font-bold font-ortank text-base">
                   ${purchase.cost}
                 </span>
                 {purchase.category === "fonts" && (
                   <button
                     type="button"
-                    className="p-2 rounded-lg hover:bg-neutral-100 transition-colors cursor-pointer"
+                    className="cursor-pointer rounded-lg p-2 transition-colors hover:bg-neutral-100"
                     title="Download again"
+                    aria-label="Download again"
                   >
-                    <RiDownloadLine className="w-5 h-5 text-black" />
+                    <RiDownloadLine className="h-5 w-5 text-black" />
                   </button>
                 )}
               </div>

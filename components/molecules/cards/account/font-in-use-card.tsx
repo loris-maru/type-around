@@ -1,11 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import {
   RiDeleteBinLine,
   RiImageLine,
 } from "react-icons/ri";
-import Image from "next/image";
-import { FontInUseCardProps } from "@/types/components";
+import type { FontInUseCardProps } from "@/types/components";
 
 // Check if URL is valid for display (not a blob URL)
 const isValidImageUrl = (url: string) => {
@@ -32,15 +32,26 @@ export default function FontInUseCard({
     fontInUse.images.filter(isValidImageUrl).length;
 
   return (
+    // biome-ignore lint/a11y/useSemanticElements: div required because card contains nested interactive elements (delete button)
     <div
+      role="button"
+      tabIndex={0}
       onClick={handleCardClick}
-      className="relative flex flex-col p-4 border border-black bg-white shadow-button transition-all duration-300 ease-in-out hover:-translate-x-1 hover:-translate-y-1 hover:shadow-button-hover rounded-lg cursor-pointer"
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onEdit(fontInUse);
+        }
+      }}
+      className="relative flex cursor-pointer flex-col rounded-lg border border-black bg-white p-4 shadow-button transition-all duration-300 ease-in-out hover:-translate-x-1 hover:-translate-y-1 hover:shadow-button-hover"
     >
       {/* Thumbnail */}
-      <div className="relative w-full aspect-video mb-3 rounded-md overflow-hidden bg-neutral-100">
+      <div className="relative mb-3 aspect-video w-full overflow-hidden rounded-md bg-neutral-100">
         {firstValidImage ? (
           <>
             <Image
+              width={800}
+              height={800}
               src={firstValidImage}
               alt={fontInUse.projectName}
               fill
@@ -51,27 +62,27 @@ export default function FontInUseCard({
               }
             />
             {validImagesCount > 1 && (
-              <div className="absolute bottom-2 right-2 px-2 py-1 bg-black/70 text-white text-xs rounded">
+              <div className="absolute right-2 bottom-2 rounded bg-black/70 px-2 py-1 text-white text-xs">
                 +{validImagesCount - 1}
               </div>
             )}
           </>
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
-            <RiImageLine className="w-10 h-10 text-neutral-300" />
+            <RiImageLine className="h-10 w-10 text-neutral-300" />
           </div>
         )}
       </div>
 
       {/* Content */}
       <div className="flex-1">
-        <div className="font-ortank text-lg font-bold mb-1">
+        <div className="mb-1 font-bold font-ortank text-lg">
           {fontInUse.projectName}
         </div>
-        <div className="text-sm text-neutral-600 mb-1">
+        <div className="mb-1 text-neutral-600 text-sm">
           by {fontInUse.designerName}
         </div>
-        <div className="text-sm text-neutral-500">
+        <div className="text-neutral-500 text-sm">
           {fontInUse.typefaceName}
         </div>
       </div>
@@ -83,10 +94,10 @@ export default function FontInUseCard({
           e.stopPropagation();
           onRemove(fontInUse.id);
         }}
-        className="absolute top-2 right-2 p-2 text-neutral-400 hover:text-red-500 transition-colors"
+        className="absolute top-2 right-2 p-2 text-neutral-400 transition-colors hover:text-red-500"
         title="Remove"
       >
-        <RiDeleteBinLine className="w-5 h-5" />
+        <RiDeleteBinLine className="h-5 w-5" />
       </button>
     </div>
   );

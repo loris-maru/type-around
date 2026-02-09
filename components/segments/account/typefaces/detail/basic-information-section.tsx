@@ -161,6 +161,7 @@ export default function BasicInformationSection({
                         designer?.id || ""
                       )
                     }
+                    aria-label={`Remove designer ${designer?.firstName} ${designer?.lastName}`}
                     className="cursor-pointer rounded p-0.5 transition-colors hover:bg-neutral-100"
                   >
                     <RiCloseLine className="h-3.5 w-3.5 text-neutral-400 hover:text-black" />

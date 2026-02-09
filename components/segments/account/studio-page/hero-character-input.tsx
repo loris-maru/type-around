@@ -1,23 +1,23 @@
 "use client";
 
-import { cn } from "@/utils/class-names";
 import {
-  useState,
+  type ChangeEvent,
+  type DragEvent,
   useRef,
-  DragEvent,
-  ChangeEvent,
+  useState,
 } from "react";
 import {
-  RiUploadCloud2Line,
   RiCloseLine,
   RiLoader4Line,
+  RiUploadCloud2Line,
 } from "react-icons/ri";
-import { uploadFile } from "@/lib/firebase/storage";
-import { useStudio } from "@/hooks/use-studio";
 import {
-  MAX_SVG_FILE_SIZE,
   ACCEPTED_SVG_FORMATS,
+  MAX_SVG_FILE_SIZE,
 } from "@/constant/FILE_UPLOAD_LIMITS";
+import { useStudio } from "@/hooks/use-studio";
+import { uploadFile } from "@/lib/firebase/storage";
+import { cn } from "@/utils/class-names";
 
 export default function HeroCharacterInput() {
   const { studio, updateStudioPageSettings } = useStudio();
@@ -126,26 +126,36 @@ export default function HeroCharacterInput() {
 
   return (
     <div className="relative w-full">
-      <label className="block font-whisper text-sm font-normal text-black mb-2">
+      <span className="mb-2 block font-normal font-whisper text-black text-sm">
         Single Character
-      </label>
+      </span>
 
       {isUploading ? (
-        <div className="w-full px-6 py-8 border-2 border-dashed rounded-lg border-neutral-300 bg-neutral-50 flex flex-col items-center justify-center gap-3">
-          <RiLoader4Line className="w-10 h-10 text-neutral-400 animate-spin" />
-          <p className="text-sm text-neutral-500">
+        <div className="flex w-full flex-col items-center justify-center gap-3 rounded-lg border-2 border-neutral-300 border-dashed bg-neutral-50 px-6 py-8">
+          <RiLoader4Line className="h-10 w-10 animate-spin text-neutral-400" />
+          <p className="text-neutral-500 text-sm">
             Uploading...
           </p>
         </div>
       ) : !currentValue ? (
+        // biome-ignore lint/a11y/useSemanticElements: div required for drag-and-drop support
         <div
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           onClick={() => inputRef.current?.click()}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              inputRef.current?.click();
+            }
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label="Upload SVG hero character file"
           className={cn(
-            "w-full px-6 py-8 border-2 border-dashed rounded-lg cursor-pointer",
-            "transition-colors flex flex-col items-center justify-center gap-3",
+            "w-full cursor-pointer rounded-lg border-2 border-dashed px-6 py-8",
+            "flex flex-col items-center justify-center gap-3 transition-colors",
             isDragging
               ? "border-neutral-300 bg-neutral-100"
               : "bg-transparent"
@@ -153,17 +163,17 @@ export default function HeroCharacterInput() {
         >
           <RiUploadCloud2Line
             className={cn(
-              "w-10 h-10",
+              "h-10 w-10",
               isDragging ? "text-black" : "text-neutral-400"
             )}
           />
           <div className="text-center">
-            <p className="font-whisper font-medium text-black">
+            <p className="font-medium font-whisper text-black">
               {isDragging
                 ? "Drop your SVG file here"
                 : "Drag & drop your SVG file"}
             </p>
-            <p className="text-sm text-neutral-500 mt-1">
+            <p className="mt-1 text-neutral-500 text-sm">
               or{" "}
               <span className="text-black underline">
                 browse
@@ -171,23 +181,23 @@ export default function HeroCharacterInput() {
               to upload
             </p>
           </div>
-          <p className="text-xs text-neutral-400">
+          <p className="text-neutral-400 text-xs">
             Upload a SVG with your hero character (max 2MB)
           </p>
         </div>
       ) : (
-        <div className="w-full px-4 py-4 border border-neutral-300 bg-white rounded-lg flex items-center justify-between">
+        <div className="flex w-full items-center justify-between rounded-lg border border-neutral-300 bg-white px-4 py-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-neutral-100 rounded-lg flex items-center justify-center overflow-hidden">
+            <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg bg-neutral-100">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={currentValue}
                 alt="Preview"
-                className="w-8 h-8 object-contain"
+                className="h-8 w-8 object-contain"
               />
             </div>
             <div>
-              <p className="font-whisper font-medium text-black text-sm truncate max-w-[200px]">
+              <p className="max-w-[200px] truncate font-medium font-whisper text-black text-sm">
                 {displayName}
               </p>
             </div>
@@ -195,15 +205,15 @@ export default function HeroCharacterInput() {
           <button
             type="button"
             onClick={handleRemoveFile}
-            className="p-2 hover:bg-neutral-100 rounded-lg transition-colors"
+            className="rounded-lg p-2 transition-colors hover:bg-neutral-100"
           >
-            <RiCloseLine className="w-5 h-5 text-neutral-500 hover:text-red-500" />
+            <RiCloseLine className="h-5 w-5 text-neutral-500 hover:text-red-500" />
           </button>
         </div>
       )}
 
       {error && (
-        <p className="mt-2 text-sm text-red-500 font-whisper">
+        <p className="mt-2 font-whisper text-red-500 text-sm">
           {error}
         </p>
       )}
@@ -214,6 +224,7 @@ export default function HeroCharacterInput() {
         accept=".svg"
         onChange={handleInputChange}
         className="hidden"
+        aria-label="Upload hero character SVG file"
       />
     </div>
   );

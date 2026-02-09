@@ -26,10 +26,10 @@ export default function DesignerCard({
     // biome-ignore lint/a11y/useKeyWithClickEvents: card click to edit
     <div
       onClick={handleCardClick}
-      className="relative flex flex-col p-4 justify-between border border-black bg-white shadow-button transition-all duration-300 ease-in-out hover:-translate-x-1 hover:-translate-y-1 hover:shadow-button-hover rounded-lg cursor-pointer"
+      className="relative flex cursor-pointer flex-col justify-between rounded-lg border border-black bg-white p-4 shadow-button transition-all duration-300 ease-in-out hover:-translate-x-1 hover:-translate-y-1 hover:shadow-button-hover"
     >
       {/* Avatar */}
-      <div className="relative w-24 h-24 mb-3 rounded-full overflow-hidden bg-neutral-100 shrink-0">
+      <div className="relative mb-3 h-24 w-24 shrink-0 overflow-hidden rounded-full bg-neutral-100">
         {designer.avatar ? (
           <Image
             src={designer.avatar}
@@ -43,20 +43,20 @@ export default function DesignerCard({
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
-            <RiUserLine className="w-7 h-7 text-neutral-300" />
+            <RiUserLine className="h-7 w-7 text-neutral-300" />
           </div>
         )}
       </div>
 
       <div>
         {/* Name */}
-        <h3 className="font-ortank text-lg font-bold mb-0.5">
+        <h3 className="mb-0.5 font-bold font-ortank text-lg">
           {fullName}
         </h3>
 
         {/* Email */}
         {designer.email && (
-          <p className="text-sm text-neutral-500 mb-1 truncate">
+          <p className="mb-1 truncate text-neutral-500 text-sm">
             {designer.email}
           </p>
         )}
@@ -69,10 +69,11 @@ export default function DesignerCard({
           e.stopPropagation();
           if (designer.id) onRemove(designer.id);
         }}
-        className="absolute top-2 right-2 p-2 text-neutral-400 hover:text-red-500 transition-colors cursor-pointer"
+        className="absolute top-2 right-2 cursor-pointer p-2 text-neutral-400 transition-colors hover:text-red-500"
         title="Remove designer"
+        aria-label="Remove designer"
       >
-        <RiDeleteBinLine className="w-5 h-5" />
+        <RiDeleteBinLine className="h-5 w-5" />
       </button>
     </div>
   );

@@ -39,3 +39,14 @@ export type Studio = {
     service: string;
   }[];
 };
+
+export type TypefaceWithMeta = Typeface & {
+  displayFontFile?: string;
+  fontLineText?: string;
+};
+
+export type TypefaceMeta = {
+  slug: string;
+  displayFontFile: string;
+  fontLineText: string;
+};

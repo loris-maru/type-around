@@ -78,17 +78,17 @@ export default function DesignersInput() {
 
   return (
     <div className="relative w-full">
-      <span className="font-whisper text-sm font-normal text-black mb-2">
+      <span className="mb-2 font-normal font-whisper text-black text-sm">
         Designers
       </span>
 
       {/* Selected designers tags */}
       {selectedDesigners.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-2">
+        <div className="mb-2 flex flex-wrap gap-2">
           {selectedDesigners.map((designer) => (
             <span
               key={designer.id}
-              className="inline-flex items-center gap-4 px-6 py-3 bg-transparent border border-neutral-300 rounded-full text-base font-medium font-whisper"
+              className="inline-flex items-center gap-4 rounded-full border border-neutral-300 bg-transparent px-6 py-3 font-medium font-whisper text-base"
             >
               {designer.firstName} {designer.lastName}
               <button
@@ -96,9 +96,10 @@ export default function DesignersInput() {
                 onClick={() =>
                   handleRemoveSelected(designer.id)
                 }
-                className="hover:text-red-500 transition-colors"
+                aria-label={`Remove ${designer.firstName} ${designer.lastName}`}
+                className="transition-colors hover:text-red-500"
               >
-                <RiCloseLine className="w-5 h-5" />
+                <RiCloseLine className="h-5 w-5" />
               </button>
             </span>
           ))}
@@ -111,9 +112,9 @@ export default function DesignersInput() {
         <button
           type="button"
           onClick={() => setIsFormOpen(true)}
-          className="w-full px-6 py-5 border border-neutral-300 rounded-4xl transition-colors flex items-center justify-center gap-2 text-black font-whisper cursor-pointer"
+          className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-4xl border border-neutral-300 px-6 py-5 font-whisper text-black transition-colors"
         >
-          <RiAddFill className="w-5 h-5" />
+          <RiAddFill className="h-5 w-5" />
           Add a designer
         </button>
       ) : hasDesigners && !isFormOpen ? (
@@ -124,7 +125,7 @@ export default function DesignersInput() {
             onClick={() =>
               setIsDropdownOpen(!isDropdownOpen)
             }
-            className="w-full px-6 py-5 border border-neutral-300 bg-transparent flex items-center justify-between text-black font-whisper font-medium rounded-[80px]"
+            className="flex w-full items-center justify-between rounded-[80px] border border-neutral-300 bg-transparent px-6 py-5 font-medium font-whisper text-black"
           >
             <span>
               {selectedDesigners.length > 0
@@ -132,12 +133,12 @@ export default function DesignersInput() {
                 : "Select designers..."}
             </span>
             <RiArrowDownSLine
-              className={`w-5 h-5 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`}
+              className={`h-5 w-5 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`}
             />
           </button>
 
           {isDropdownOpen && (
-            <div className="absolute top-full left-0 right-0 z-10 mt-1 bg-white border border-neutral-300 shadow-lg max-h-60 overflow-y-auto">
+            <div className="absolute top-full right-0 left-0 z-10 mt-1 max-h-60 overflow-y-auto border border-neutral-300 bg-white shadow-lg">
               {availableDesigners.map((designer) => (
                 <button
                   key={designer.id}
@@ -145,7 +146,7 @@ export default function DesignersInput() {
                   onClick={() =>
                     handleSelectDesigner(designer)
                   }
-                  className="w-full px-6 py-3 text-left hover:bg-neutral-50 transition-colors font-whisper border-b border-neutral-100 last:border-b-0"
+                  className="w-full border-neutral-100 border-b px-6 py-3 text-left font-whisper transition-colors last:border-b-0 hover:bg-neutral-50"
                 >
                   {designer.firstName} {designer.lastName}
                 </button>
@@ -156,9 +157,9 @@ export default function DesignersInput() {
                   setIsFormOpen(true);
                   setIsDropdownOpen(false);
                 }}
-                className="w-full px-6 py-3 text-left hover:bg-neutral-50 transition-colors font-whisper flex items-center gap-2 text-neutral-600 border-t border-neutral-200"
+                className="flex w-full items-center gap-2 border-neutral-200 border-t px-6 py-3 text-left font-whisper text-neutral-600 transition-colors hover:bg-neutral-50"
               >
-                <RiAddFill className="w-4 h-4" />
+                <RiAddFill className="h-4 w-4" />
                 Add new designer
               </button>
             </div>
@@ -168,9 +169,9 @@ export default function DesignersInput() {
 
       {/* Add designer form */}
       {isFormOpen && (
-        <div className="mt-2 p-4 border border-neutral-300 bg-neutral-50 rounded-lg">
-          <div className="flex items-center justify-between mb-4">
-            <span className="font-whisper font-medium text-sm">
+        <div className="mt-2 rounded-lg border border-neutral-300 bg-neutral-50 p-4">
+          <div className="mb-4 flex items-center justify-between">
+            <span className="font-medium font-whisper text-sm">
               New designer
             </span>
             <button
@@ -180,16 +181,17 @@ export default function DesignersInput() {
                 setFirstName("");
                 setLastName("");
               }}
-              className="text-neutral-400 hover:text-neutral-600 transition-colors"
+              aria-label="Close add designer form"
+              className="text-neutral-400 transition-colors hover:text-neutral-600"
             >
-              <RiCloseLine className="w-5 h-5" />
+              <RiCloseLine className="h-5 w-5" />
             </button>
           </div>
-          <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="mb-4 grid grid-cols-2 gap-4">
             <div>
               <label
                 htmlFor="designer-first-name"
-                className="block font-whisper text-sm font-normal text-black mb-2"
+                className="mb-2 block font-normal font-whisper text-black text-sm"
               >
                 First name
               </label>
@@ -201,13 +203,13 @@ export default function DesignersInput() {
                   setFirstName(e.target.value)
                 }
                 placeholder="First name..."
-                className="w-full px-4 py-3 border border-neutral-300 placeholder:text-neutral-400 placeholder:text-sm font-whisper"
+                className="w-full border border-neutral-300 px-4 py-3 font-whisper placeholder:text-neutral-400 placeholder:text-sm"
               />
             </div>
             <div>
               <label
                 htmlFor="designer-last-name"
-                className="block font-whisper text-sm font-normal text-black mb-2"
+                className="mb-2 block font-normal font-whisper text-black text-sm"
               >
                 Last name
               </label>
@@ -219,7 +221,7 @@ export default function DesignersInput() {
                   setLastName(e.target.value)
                 }
                 placeholder="Last name..."
-                className="w-full px-4 py-3 border border-neutral-300 placeholder:text-neutral-400 placeholder:text-sm font-whisper"
+                className="w-full border border-neutral-300 px-4 py-3 font-whisper placeholder:text-neutral-400 placeholder:text-sm"
               />
             </div>
           </div>
@@ -227,7 +229,7 @@ export default function DesignersInput() {
             type="button"
             onClick={handleAddDesigner}
             disabled={!firstName.trim() || !lastName.trim()}
-            className="w-full py-3 bg-black text-white font-whisper font-medium hover:bg-neutral-800 transition-colors disabled:bg-neutral-300 disabled:cursor-not-allowed"
+            className="w-full bg-black py-3 font-medium font-whisper text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-300"
           >
             Add designer
           </button>

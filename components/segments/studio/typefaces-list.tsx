@@ -1,25 +1,22 @@
 "use client";
 
 import { useMemo } from "react";
-import type { Studio, Typeface } from "@/types/typefaces";
+import type {
+  Studio,
+  TypefaceMeta,
+  TypefaceWithMeta,
+} from "@/types/typefaces";
 import TypefaceLine from "../typeface/line";
 
-type TypefaceWithMeta = Typeface & {
-  displayFontFile?: string;
-  fontLineText?: string;
+export type TypefacesListProps = {
+  studio: Studio;
+  typefaceMeta?: TypefaceMeta[];
 };
 
 export default function TypefacesList({
   studio,
   typefaceMeta,
-}: {
-  studio: Studio;
-  typefaceMeta?: Array<{
-    slug: string;
-    displayFontFile: string;
-    fontLineText: string;
-  }>;
-}) {
+}: TypefacesListProps) {
   const typefacesWithIds: TypefaceWithMeta[] =
     useMemo(() => {
       return studio.typefaces.map((typeface, index) => {

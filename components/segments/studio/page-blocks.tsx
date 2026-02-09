@@ -1,5 +1,7 @@
 "use client";
 
+import { useMemo } from "react";
+import GlobalTypetester from "@/components/global/typetester/global";
 import StudioBlogBlock from "@/components/segments/studio/blog-block";
 import FontsInUseList from "@/components/segments/studio/fonts-in-use-list";
 import StudioGallery from "@/components/segments/studio/gallery";
@@ -9,7 +11,6 @@ import StudioSpacerBlock from "@/components/segments/studio/spacer-block";
 import StudioStoreBlock from "@/components/segments/studio/store-block";
 import TypefacesList from "@/components/segments/studio/typefaces-list";
 import StudioVideoBlock from "@/components/segments/studio/video-block";
-import TypeTester from "@/components/segments/type-tester";
 import type {
   BlogBlockData,
   GalleryBlockData,
@@ -21,15 +22,13 @@ import type {
   VideoBlockData,
 } from "@/types/layout";
 import type { Studio } from "@/types/studio";
-import type { Studio as DisplayStudio } from "@/types/typefaces";
+import type {
+  Studio as DisplayStudio,
+  TypefaceMeta,
+} from "@/types/typefaces";
+import type { TypetesterTypeface } from "@/types/typetester";
 
-type TypefaceMeta = {
-  slug: string;
-  displayFontFile: string;
-  fontLineText: string;
-};
-
-type StudioPageBlocksProps = {
+export type StudioPageBlocksProps = {
   blocks: LayoutItem[];
   studio: Studio;
   typefaceMeta: TypefaceMeta[];
@@ -88,6 +87,27 @@ export default function StudioPageBlocks({
 }: StudioPageBlocksProps) {
   const displayStudio = toDisplayStudio(studio);
 
+  // Group fonts by typeface for the global type tester
+  const typetesterTypefaces: TypetesterTypeface[] =
+    useMemo(() => {
+      return studio.typefaces
+        .filter((tf) => tf.published)
+        .map((tf) => ({
+          id: tf.id,
+          name: tf.name,
+          fonts: tf.fonts
+            .filter((f) => f.file)
+            .map((f) => ({
+              id: f.id,
+              styleName: f.styleName,
+              weight: f.weight,
+              isItalic: f.isItalic,
+              file: f.file,
+            })),
+        }))
+        .filter((tf) => tf.fonts.length > 0);
+    }, [studio.typefaces]);
+
   return (
     <>
       {blocks.map((block) => {
@@ -96,7 +116,12 @@ export default function StudioPageBlocks({
             return <StudioProfile key={block.key} />;
 
           case "type-tester":
-            return <TypeTester key={block.key} />;
+            return (
+              <GlobalTypetester
+                key={block.key}
+                typefaces={typetesterTypefaces}
+              />
+            );
 
           case "typeface-list": {
             const tfData = block.data as
