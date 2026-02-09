@@ -35,7 +35,7 @@ export default function MemberListItem({
               {displayName}
             </span>
             {isCurrentUser && (
-              <span className="text-xs bg-neutral-100 px-2 py-0.5 rounded text-neutral-600">
+              <span className="text-xs bg-white px-4 py-2 rounded-2xl text-black">
                 You
               </span>
             )}

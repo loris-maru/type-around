@@ -1,10 +1,11 @@
 "use client";
 
-import { Studio } from "@/types/typefaces";
-import { slugify } from "@/utils/slugify";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import type { Studio } from "@/types/typefaces";
+import { cn } from "@/utils/class-names";
+import { slugify } from "@/utils/slugify";
 
 export default function StudioCard({
   studio,
@@ -17,7 +18,10 @@ export default function StudioCard({
   return (
     <Link
       href={`/studio/${slugify(studio.name)}`}
-      className="relative flex w-full flex-col justify-between rounded-lg border border-black bg-white p-5 shadow-button transition-all duration-300 ease-in-out hover:-translate-x-1 hover:-translate-y-1 hover:shadow-button-hover"
+      className={cn(
+        "relative flex w-full flex-col justify-between rounded-lg border border-neutral-300 bg-light-gray p-5 shadow-medium-gray transition-all duration-300 ease-in-out",
+        "hover:-translate-x-1 hover:-translate-y-1 hover:bg-white hover:shadow-button hover:border-black"
+      )}
       prefetch={false}
       onMouseOver={() => setIsHovered(true)}
       onFocus={() => setIsHovered(true)}
@@ -25,21 +29,9 @@ export default function StudioCard({
       onBlur={() => setIsHovered(false)}
     >
       <header className="relative flex flex-col gap-2">
-        <div className="font-ortank text-2xl font-black">
+        <h3 className="font-black font-ortank text-4xl">
           {studio.name}
-        </div>
-        <div className="block h-px w-full bg-neutral-300" />
-        <div className="flex flex-row gap-4 text-sm">
-          <div>{studio.typefaces.length} type families</div>
-          <div>
-            {studio.typefaces.reduce(
-              (acc, typeface) =>
-                acc + typeface.fonts.length,
-              0
-            )}{" "}
-            fonts
-          </div>
-        </div>
+        </h3>
       </header>
       <div
         className="relative my-3 h-[220px] w-full overflow-hidden transition-all duration-300 ease-in-out"
@@ -58,9 +50,16 @@ export default function StudioCard({
           }}
         />
       </div>
-      <p className="text-base font-normal leading-normal">
-        {studio.description}
-      </p>
+      <div className="flex flex-row gap-4 text-sm">
+        <div>{studio.typefaces.length} type families</div>
+        <div>
+          {studio.typefaces.reduce(
+            (acc, typeface) => acc + typeface.fonts.length,
+            0
+          )}{" "}
+          fonts
+        </div>
+      </div>
     </Link>
   );
 }

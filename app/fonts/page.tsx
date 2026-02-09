@@ -1,6 +1,8 @@
-import { getAllPublishedTypefaces } from "@/lib/firebase/studios";
 import TypefaceCard from "@/components/molecules/cards/typefaces";
+import { getAllPublishedTypefaces } from "@/lib/firebase/studios";
 import type { Typeface } from "@/types/typefaces";
+
+export const dynamic = "force-dynamic";
 
 export default async function FontsPage() {
   const typefaces = await getAllPublishedTypefaces();

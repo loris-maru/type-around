@@ -15,57 +15,38 @@ export default function MyAccountInvoices() {
           No invoices yet.
         </p>
       ) : (
-        <div className="w-full border border-neutral-300 rounded-xl overflow-hidden bg-white">
-          {/* Table header */}
-          <div className="grid grid-cols-4 gap-4 px-5 py-3 bg-neutral-100 border-b border-neutral-300">
-            <span className="text-xs uppercase tracking-wide font-whisper text-neutral-500">
-              Invoice #
-            </span>
-            <span className="text-xs uppercase tracking-wide font-whisper text-neutral-500">
-              Date
-            </span>
-            <span className="text-xs uppercase tracking-wide font-whisper text-neutral-500">
-              Amount
-            </span>
-            <span className="text-xs uppercase tracking-wide font-whisper text-neutral-500 text-right">
-              Download
-            </span>
-          </div>
-
-          {/* Table rows */}
-          {MOCK_INVOICES.map((invoice, index) => (
+        <div className="flex flex-col divide-y divide-neutral-200">
+          {MOCK_INVOICES.map((invoice) => (
             <div
               key={invoice.id}
-              className={`grid grid-cols-4 gap-4 px-5 py-4 items-center ${
-                index < MOCK_INVOICES.length - 1
-                  ? "border-b border-neutral-200"
-                  : ""
-              }`}
+              className="flex items-center justify-between py-4"
             >
-              <span className="text-sm font-whisper font-medium text-black">
-                {invoice.invoiceNumber}
-              </span>
-              <span className="text-sm font-whisper text-neutral-600">
-                {new Date(invoice.date).toLocaleDateString(
-                  "en-US",
-                  {
+              <div className="flex flex-col gap-1">
+                <span className="text-xs font-whisper font-medium uppercase tracking-wide text-neutral-500">
+                  {invoice.invoiceNumber}
+                </span>
+                <span className="font-ortank font-bold">
+                  ${invoice.amount}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-6">
+                <span className="text-sm text-neutral-500 font-whisper">
+                  {new Date(
+                    invoice.date
+                  ).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "short",
                     day: "numeric",
-                  }
-                )}
-              </span>
-              <span className="text-sm font-ortank font-bold">
-                ${invoice.amount}
-              </span>
-              <div className="flex justify-end">
+                  })}
+                </span>
                 <a
                   href={invoice.downloadUrl}
-                  className="inline-flex items-center gap-1 text-sm font-whisper text-black hover:text-neutral-600 transition-colors"
+                  className="p-2 rounded-lg hover:bg-neutral-100 transition-colors cursor-pointer"
+                  title="Download invoice"
                   download
                 >
-                  <RiDownloadLine className="w-4 h-4" />
-                  PDF
+                  <RiDownloadLine className="w-5 h-5 text-black" />
                 </a>
               </div>
             </div>

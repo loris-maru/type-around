@@ -1,13 +1,13 @@
 "use client";
 
+import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import { slugify } from "@/utils/slugify";
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { cn } from "@/utils/class-names";
+import { useEffect, useState } from "react";
 import { TYPEFACE_CARD_DESCRIPTION_TEXT } from "@/constant/TYPEFACE_CARD_TEXT";
 import type { PublicTypefaceCardProps } from "@/types/components";
+import { cn } from "@/utils/class-names";
+import { slugify } from "@/utils/slugify";
 
 export default function TypefaceCard({
   studioName,
@@ -49,7 +49,7 @@ export default function TypefaceCard({
     <Link
       href={`studio/${slugify(studioName)}/typeface/${slugify(typeface.name)}`}
       className={cn(
-        "relative flex h-[350px] w-full flex-col items-center justify-between overflow-hidden rounded-lg p-5 transition-all duration-300 ease-in-out",
+        "relative flex h-[450px] w-full flex-col items-center justify-between overflow-hidden rounded-lg p-5 transition-all duration-300 ease-in-out",
         "bg-light-gray hover:bg-white ",
         "border border-neutral-300 hover:border-black",
         "transparent hover:shadow-button-hover",

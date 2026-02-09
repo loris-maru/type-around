@@ -1,24 +1,20 @@
 "use client";
 
-import { useRef, useMemo, useState } from "react";
 import {
-  useScroll,
-  useTransform,
   motion,
   useInView,
+  useScroll,
+  useTransform,
 } from "motion/react";
-import STUDIOS from "@/mock-data/studios";
-import { Typeface } from "@/types/typefaces";
-import HeaderAllFonts from "@/components/segments/home/all-fonts/header";
+import { useMemo, useRef } from "react";
 import TypefaceCard from "@/components/molecules/cards/typefaces";
+import HeaderAllFonts from "@/components/segments/home/all-fonts/header";
+import STUDIOS from "@/mock-data/studios";
+import type { Typeface } from "@/types/typefaces";
 
 export default function HorizontalSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
-  const [hoveredCardId, setHoveredCardId] = useState<
-    number | null
-  >(null);
-
   const allTypefaces: Typeface[] = useMemo(() => {
     return STUDIOS.flatMap((studio) =>
       studio.typefaces.map((typeface, index) => {
@@ -130,21 +126,16 @@ export default function HorizontalSection() {
         <motion.div
           className="h-full w-max pt-10"
           style={{ x }}
-          animate={{
-            scale: hoveredCardId !== null ? 1.1 : 1,
-          }}
-          transition={{
-            duration: 0.3,
-            ease: "easeInOut",
-          }}
         >
-          <div className="flex flex-row gap-x-[60px] px-8 h-full items-start">
+          <div className="flex h-full flex-row items-start gap-x-[60px] px-8">
             {columns.map((columnTypefaces, columnIndex) => {
               const isOddColumn = columnIndex % 2 === 1;
 
               return (
                 <div
-                  key={columnIndex}
+                  key={
+                    columnTypefaces[0]?.id ?? columnIndex
+                  }
                   className="flex flex-col gap-y-[80px]"
                 >
                   {columnTypefaces
@@ -156,12 +147,6 @@ export default function HorizontalSection() {
                           isOddColumn && cardIndex === 0
                             ? "pt-[120px]"
                             : ""
-                        }
-                        onMouseEnter={() =>
-                          setHoveredCardId(typeface.id)
-                        }
-                        onMouseLeave={() =>
-                          setHoveredCardId(null)
                         }
                       >
                         <TypefaceCard
