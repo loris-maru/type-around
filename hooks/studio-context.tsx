@@ -105,6 +105,7 @@ export function StudioProvider({
       location?: string;
       foundedIn?: string;
       contactEmail?: string;
+      description?: string;
       designers?: {
         id?: string;
         firstName: string;

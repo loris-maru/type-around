@@ -1,17 +1,17 @@
 "use client";
 
-import {
-  useEffect,
-  useCallback,
-  useState,
-  useRef,
-} from "react";
 import EmblaCarousel, {
-  EmblaCarouselType,
+  type EmblaCarouselType,
 } from "embla-carousel";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import FontsInUseCard from "@/components/molecules/cards/fonts-in-use";
-import { FONTS_IN_USE } from "@/mock-data/fonts-in-use";
 import { FONTS_IN_USE_CARDS_PER_VIEW } from "@/constant/UI_LAYOUT";
+import { FONTS_IN_USE } from "@/mock-data/fonts-in-use";
 
 export default function FontsInUseList() {
   const [emblaRef, setEmblaRef] =
@@ -58,19 +58,22 @@ export default function FontsInUseList() {
 
   return (
     <div className="relative w-full px-10 py-24">
-      <div className="relative p-5 border border-neutral-300 rounded-2xl">
-        <header className="relative mb-10">
+      <div className="relative rounded-2xl">
+        <header className="relative mb-2 flex flex-row items-center justify-between">
           <h3 className="section-title">Fonts in use</h3>
+          <div className="font-whisper text-black text-sm">
+            Total of {FONTS_IN_USE.length} fonts in use
+          </div>
         </header>
         <div
-          className="relative w-full overflow-hidden"
+          className="relative w-full overflow-hidden rounded-lg border border-neutral-300 p-4"
           ref={setEmblaRef}
         >
-          <div className="relative w-full flex py-2">
+          <div className="relative flex w-full">
             {FONTS_IN_USE.map((font) => (
               <div
                 key={font.id}
-                className="relative flex-[0_0_33.333%] min-w-0 h-full pl-4 first:pl-0 px-2"
+                className="relative h-full min-w-0 flex-[0_0_33.333%] px-2 pl-4 first:pl-0"
               >
                 <FontsInUseCard
                   name={font.name}
@@ -83,18 +86,18 @@ export default function FontsInUseList() {
           </div>
         </div>
         {totalPages > 1 && (
-          <div className="relative w-full flex flex-row justify-center items-center gap-2 mt-8">
+          <div className="relative mt-8 flex w-full flex-row items-center justify-center gap-2">
             {Array.from({ length: totalPages }).map(
               (_, index) => {
                 const slideIndex =
                   index * FONTS_IN_USE_CARDS_PER_VIEW;
                 return (
                   <button
-                    key={index}
+                    key={slideIndex}
                     type="button"
                     onClick={() => scrollTo(slideIndex)}
                     aria-label={`Go to page ${index + 1}`}
-                    className={`w-8 h-2 rounded-lg transition-all duration-300 ${
+                    className={`h-2 w-8 rounded-lg transition-all duration-300 ${
                       selectedIndex >= slideIndex &&
                       selectedIndex <
                         slideIndex +

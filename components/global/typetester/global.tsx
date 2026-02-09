@@ -24,7 +24,10 @@ export default function GlobalTypetester({
   const canDelete = blockIds.length > 1;
 
   return (
-    <div className="relative my-[20vh] flex w-full flex-col gap-4 px-16">
+    <div className="relative my-40 flex w-full flex-col gap-4 px-16">
+      <div className="relative mb-10 font-bold font-ortank text-xl">
+        Test our fonts!
+      </div>
       <div className="relative flex flex-col gap-1">
         {blockIds.map((id) => (
           <GlobalTypetesterBlock

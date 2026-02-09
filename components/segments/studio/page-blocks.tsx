@@ -112,8 +112,26 @@ export default function StudioPageBlocks({
     <>
       {blocks.map((block) => {
         switch (block.blockId) {
-          case "about":
-            return <StudioProfile key={block.key} />;
+          case "about": {
+            const totalFonts = studio.typefaces.reduce(
+              (sum, tf) => sum + tf.fonts.length,
+              0
+            );
+            return (
+              <StudioProfile
+                key={block.key}
+                image={
+                  studio.thumbnail ||
+                  studio.avatar ||
+                  "/placeholders/studio_image_placeholder.webp"
+                }
+                families={studio.typefaces.length}
+                fonts={totalFonts}
+                description={studio.description || ""}
+                designers={studio.designers}
+              />
+            );
+          }
 
           case "type-tester":
             return (

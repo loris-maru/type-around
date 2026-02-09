@@ -1,15 +1,15 @@
 "use client";
 
-import StudioProfile from "@/components/segments/studio/profile";
-import TypeTester from "@/components/segments/type-tester";
-import TypefacesList from "@/components/segments/studio/typefaces-list";
+import StudioBlogBlock from "@/components/segments/studio/blog-block";
 import FontsInUseList from "@/components/segments/studio/fonts-in-use-list";
 import StudioGallery from "@/components/segments/studio/gallery";
 import StudioImageBlock from "@/components/segments/studio/image-block";
-import StudioVideoBlock from "@/components/segments/studio/video-block";
+import StudioProfile from "@/components/segments/studio/profile";
 import StudioSpacerBlock from "@/components/segments/studio/spacer-block";
 import StudioStoreBlock from "@/components/segments/studio/store-block";
-import StudioBlogBlock from "@/components/segments/studio/blog-block";
+import TypefacesList from "@/components/segments/studio/typefaces-list";
+import StudioVideoBlock from "@/components/segments/studio/video-block";
+import TypeTester from "@/components/segments/type-tester";
 import type { PreviewBlockRendererProps } from "@/types/components";
 import type {
   BlogBlockData,
@@ -71,8 +71,25 @@ export default function PreviewBlockRenderer({
   studio,
 }: PreviewBlockRendererProps) {
   switch (block.blockId) {
-    case "about":
-      return <StudioProfile />;
+    case "about": {
+      const totalFonts = studio.typefaces.reduce(
+        (sum, tf) => sum + tf.fonts.length,
+        0
+      );
+      return (
+        <StudioProfile
+          image={
+            studio.thumbnail ||
+            studio.avatar ||
+            "/placeholders/studio_image_placeholder.webp"
+          }
+          families={studio.typefaces.length}
+          fonts={totalFonts}
+          description={studio.description || ""}
+          designers={studio.designers}
+        />
+      );
+    }
 
     case "type-tester":
       return <TypeTester />;
@@ -89,7 +106,7 @@ export default function PreviewBlockRenderer({
       return (
         <div style={tfStyle}>
           <h3
-            className="text-2xl font-ortank font-bold px-10 pt-12"
+            className="px-10 pt-12 font-bold font-ortank text-2xl"
             style={
               tfData?.fontColor
                 ? { color: tfData.fontColor }

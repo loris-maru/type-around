@@ -151,6 +151,7 @@ export const StudioSchema = z.object({
     .string()
     .url("Must be a valid URL")
     .or(z.literal("")),
+  description: z.string().default(""),
   thumbnail: z.string().default(""),
   avatar: z.string().default(""),
   socialMedia: z.array(SocialMediaSchema),
@@ -203,6 +204,7 @@ export const UpdateStudioInfoSchema = z.object({
     .email()
     .or(z.literal(""))
     .optional(),
+  description: z.string().optional(),
   designers: z
     .array(
       DesignerSchema.partial().extend({
@@ -255,6 +257,7 @@ export type StudioContextValue = {
     location?: string;
     foundedIn?: string;
     contactEmail?: string;
+    description?: string;
     designers?: {
       id?: string;
       firstName: string;
@@ -302,6 +305,7 @@ export const DEFAULT_STUDIO: Omit<
   contactEmail: "",
   designers: [],
   website: "",
+  description: "",
   thumbnail: "",
   avatar: "",
   socialMedia: [],

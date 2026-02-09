@@ -31,6 +31,12 @@ const FORM_FIELDS: FormField[] = [
     type: "url",
     placeholder: "Enter your website...",
   },
+  {
+    label: "Description",
+    slug: "description",
+    type: "textarea",
+    placeholder: "Describe your studio...",
+  },
 ];
 
 export default FORM_FIELDS;

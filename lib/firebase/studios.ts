@@ -186,6 +186,7 @@ export async function updateStudioInformation(
     location?: string;
     foundedIn?: string;
     contactEmail?: string;
+    description?: string;
     designers?: {
       id?: string;
       firstName: string;

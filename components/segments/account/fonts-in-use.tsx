@@ -152,7 +152,7 @@ export default function AccountFontsInUse() {
 
   return (
     <div className="relative w-full">
-      <h1 className="font-ortank text-3xl font-bold mb-8">
+      <h1 className="mb-8 font-bold font-ortank text-3xl">
         Fonts In Use
       </h1>
 
@@ -160,7 +160,7 @@ export default function AccountFontsInUse() {
       {/* My fonts in use */}
       {/* ============================== */}
       <section className="mb-12">
-        <h2 className="font-ortank text-xl font-bold mb-4">
+        <h2 className="mb-4 font-bold font-ortank text-xl">
           My fonts in use
         </h2>
         <div className="grid grid-cols-4 gap-4">
@@ -176,10 +176,10 @@ export default function AccountFontsInUse() {
           <button
             type="button"
             onClick={() => setIsModalOpen(true)}
-            className="flex flex-col items-center justify-center gap-2 p-4 border-2 border-dashed border-neutral-300 rounded-lg hover:border-black hover:bg-neutral-50 transition-all duration-300 ease-in-out min-h-[200px] cursor-pointer"
+            className="flex min-h-[200px] cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-neutral-300 border-dashed p-4 transition-all duration-300 ease-in-out hover:border-black hover:bg-neutral-50"
           >
-            <RiAddFill className="w-8 h-8 text-neutral-400" />
-            <span className="text-neutral-500 font-medium">
+            <RiAddFill className="h-8 w-8 text-neutral-400" />
+            <span className="font-medium text-neutral-500">
               Add Font In Use
             </span>
           </button>
@@ -190,12 +190,12 @@ export default function AccountFontsInUse() {
       {/* Submitted cases */}
       {/* ============================== */}
       <section>
-        <div className="flex items-center gap-3 mb-4">
-          <h2 className="font-ortank text-xl font-bold">
+        <div className="mb-4 flex items-center gap-3">
+          <h2 className="font-bold font-ortank text-xl">
             Submitted cases
           </h2>
           {submissions.length > 0 && (
-            <span className="px-2.5 py-0.5 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">
+            <span className="rounded-full bg-yellow-100 px-2.5 py-0.5 font-medium text-xs text-yellow-800">
               {submissions.length}
             </span>
           )}
@@ -203,10 +203,10 @@ export default function AccountFontsInUse() {
 
         {isLoadingSubmissions ? (
           <div className="flex items-center justify-center py-10">
-            <RiLoader4Line className="w-6 h-6 animate-spin text-neutral-400" />
+            <RiLoader4Line className="h-6 w-6 animate-spin text-neutral-400" />
           </div>
         ) : submissions.length === 0 ? (
-          <p className="text-neutral-500 font-whisper">
+          <p className="font-whisper text-neutral-500">
             No submitted cases at the moment.
           </p>
         ) : (

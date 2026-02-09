@@ -1,17 +1,17 @@
 "use client";
 
-import { useCallback, useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import {
   RiCloseLine,
   RiSearchLine,
   RiShoppingCart2Line,
   RiUser3Line,
 } from "react-icons/ri";
-import { GLOBAL_NAV_ITEMS } from "@/constant/GLOBAL_NAV_ITEMS";
 import SearchPanel from "@/components/molecules/search";
+import { GLOBAL_NAV_ITEMS } from "@/constant/GLOBAL_NAV_ITEMS";
 import { useCartStore } from "@/stores/cart";
 import { cn } from "@/utils/class-names";
 
@@ -19,8 +19,16 @@ export default function Navigation() {
   const pathname = usePathname();
   const { isSignedIn, isLoaded } = useAuth();
   const [searchOpen, setSearchOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setMounted(true);
+    }, 100);
+  }, []);
 
   const isSignedInPage = pathname === "/sign-in";
+  const showAuth = mounted && isLoaded;
 
   const cartCount = useCartStore(
     (state) => state.cart.length
@@ -94,38 +102,34 @@ export default function Navigation() {
           <span>{searchOpen ? "Close" : "Search"}</span>
         </button>
 
-        {/* Auth buttons - only render after Clerk is loaded to prevent hydration mismatch */}
-        {isLoaded && (
-          <>
-            {!isSignedIn && !isSignedInPage && (
-              <Link
-                href="/sign-in"
-                className={cn(
-                  buttonStyleInactive,
-                  "bg-white text-black",
-                  "hover:bg-black hover:text-white"
-                )}
-                aria-label="Login"
-              >
-                Login
-              </Link>
+        {/* Auth buttons - only render after mount + Clerk load to prevent hydration mismatch */}
+        {showAuth && !isSignedIn && !isSignedInPage && (
+          <Link
+            href="/sign-in"
+            className={cn(
+              buttonStyleInactive,
+              "bg-white text-black",
+              "hover:bg-black hover:text-white"
             )}
+            aria-label="Login"
+          >
+            Login
+          </Link>
+        )}
 
-            {isSignedIn && (
-              <Link
-                href="/account"
-                aria-label="to Account"
-                className={cn(
-                  buttonStyleInactive,
-                  "bg-white text-black",
-                  "hover:bg-black hover:text-white"
-                )}
-              >
-                <RiUser3Line size={16} />
-                <span>Account</span>
-              </Link>
+        {showAuth && isSignedIn && (
+          <Link
+            href="/account"
+            aria-label="to Account"
+            className={cn(
+              buttonStyleInactive,
+              "bg-white text-black",
+              "hover:bg-black hover:text-white"
             )}
-          </>
+          >
+            <RiUser3Line size={16} />
+            <span>Account</span>
+          </Link>
         )}
         {cartCount > 0 && (
           <Link

@@ -29,9 +29,9 @@ export default function SingleTypetester({
 
   return (
     <div className="relative my-[30vh] flex w-full flex-col gap-4 px-16">
-      <h2 className="font-ortank font-semibold text-lgl">
-        Typetester
-      </h2>
+      <div className="relative mb-10 px-10 font-bold font-ortank text-xl">
+        Test our fonts!
+      </div>
       <div className="relative flex flex-col gap-1">
         {blockIds.map((id) => (
           <SingleTypetesterBlock

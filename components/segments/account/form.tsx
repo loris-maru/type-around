@@ -32,8 +32,8 @@ export default function AccountForm({
   );
 
   return (
-    <div className="relative w-full flex flex-col gap-y-4">
-      <h2 className="text-xl font-ortank font-bold">
+    <div className="relative flex w-full flex-col gap-y-4">
+      <h2 className="font-bold font-ortank text-xl">
         {title}
       </h2>
       <div className="grid grid-cols-2 gap-12">
@@ -58,6 +58,35 @@ export default function AccountForm({
             );
           }
 
+          if (field.type === "textarea") {
+            return (
+              <div
+                key={field.slug}
+                className="relative col-span-2 w-full"
+              >
+                <label
+                  htmlFor={field.slug}
+                  className="mb-2 block font-normal font-whisper text-black text-sm"
+                >
+                  {field.label}
+                </label>
+                <textarea
+                  id={field.slug}
+                  name={field.slug}
+                  placeholder={field.placeholder}
+                  value={values[field.slug] || ""}
+                  onChange={(e) =>
+                    handleChange(field.slug, e.target.value)
+                  }
+                  disabled={isLoading}
+                  rows={4}
+                  aria-label={field.label}
+                  className="w-full resize-y border border-neutral-300 px-6 py-5 font-whisper text-base placeholder:font-medium placeholder:font-whisper placeholder:text-base placeholder:text-black disabled:cursor-not-allowed disabled:bg-neutral-100"
+                />
+              </div>
+            );
+          }
+
           return (
             <div
               key={field.slug}
@@ -65,13 +94,13 @@ export default function AccountForm({
             >
               <label
                 htmlFor={field.slug}
-                className="block font-whisper text-sm font-normal text-black mb-2"
+                className="mb-2 block font-normal font-whisper text-black text-sm"
               >
                 {field.label}
               </label>
               <div className="relative w-full">
                 {Icon && (
-                  <Icon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-black" />
+                  <Icon className="absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-black" />
                 )}
                 <input
                   type={field.type}
@@ -83,7 +112,7 @@ export default function AccountForm({
                     handleChange(field.slug, e.target.value)
                   }
                   disabled={isLoading}
-                  className={`w-full pr-6 py-5 border border-neutral-300 placeholder:text-black placeholder:text-base placeholder:font-whisper placeholder:font-medium disabled:bg-neutral-100 disabled:cursor-not-allowed ${Icon ? "pl-12" : "pl-6"}`}
+                  className={`w-full border border-neutral-300 py-5 pr-6 placeholder:font-medium placeholder:font-whisper placeholder:text-base placeholder:text-black disabled:cursor-not-allowed disabled:bg-neutral-100 ${Icon ? "pl-12" : "pl-6"}`}
                 />
               </div>
             </div>

@@ -1,5 +1,5 @@
-import { cn } from "@/utils/class-names";
 import Image from "next/image";
+import { cn } from "@/utils/class-names";
 
 export default function FontsInUseCard({
   name,
@@ -18,34 +18,34 @@ export default function FontsInUseCard({
       aria-label="Fonts in use card"
       name="fonts-in-use-card"
       className={cn(
-        "relative w-full h-[480px] flex flex-col justify-between bg-white border p-5 rounded-lg transition-all duration-300 ease-in-out",
+        "relative flex h-[420px] w-full cursor-pointer flex-col justify-between overflow-hidden rounded-lg border bg-white transition-all duration-300 ease-in-out",
         "hover:-translate-x-1 hover:-translate-y-1 hover:shadow-button-hover",
-        "shadow-transparent hover:shadow-button",
-        "border-neutral-300 hover:border-black"
+        "shadow-medium-gray hover:shadow-button-hover",
+        "border-neutral-300"
       )}
     >
-      <div className="relative w-full h-[300px] overflow-hidden mb-2 rounded-md">
+      <div className="relative mb-2 h-[300px] w-full overflow-hidden">
         <Image
           src={image}
           alt={name}
-          width={100}
-          height={100}
-          className="w-full h-auto object-cover"
+          width={900}
+          height={900}
+          className="h-auto w-full object-cover"
         />
       </div>
 
-      <div className="relative flex flex-col gap-2">
-        <div className="font-black text-2xl font-ortank text-left">
+      <div className="relative flex flex-col gap-2 p-8">
+        <div className="text-left font-black font-ortank text-2xl">
           {name}
         </div>
 
-        <div className="block w-full h-px bg-neutral-300 my-1" />
+        <div className="my-1 block h-px w-full bg-neutral-200" />
 
         <div className="flex flex-row justify-between">
-          <div className="font-whisper text-base font-bold">
+          <div className="font-medium font-whisper text-base">
             {typeface}
           </div>
-          <div className="px-3 py-1 border border-neutral-300 rounded-3xl font-whisper text-sm">
+          <div className="rounded-3xl border border-neutral-300 px-3 py-1 font-whisper text-sm">
             {category}
           </div>
         </div>

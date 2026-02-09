@@ -1,14 +1,14 @@
 "use client";
 
+import { AnimatePresence, motion } from "motion/react";
 import {
-  useState,
   useCallback,
-  useMemo,
   useEffect,
+  useMemo,
+  useState,
 } from "react";
-import { useStudio } from "@/hooks/use-studio";
 import { RiSaveLine } from "react-icons/ri";
-import { motion, AnimatePresence } from "motion/react";
+import { useStudio } from "@/hooks/use-studio";
 import AccountForm from "./form";
 import ACCOUNT_FORM from "./information/ACCOUNT_FORM";
 import SOCIAL_FORM from "./information/SOCIAL_FORM";
@@ -43,6 +43,7 @@ export default function AccountInformation() {
       foundedIn: studio.foundedIn || "",
       email: studio.contactEmail || "",
       website: studio.website || "",
+      description: studio.description || "",
     };
   }, [studio]);
 
@@ -89,7 +90,13 @@ export default function AccountInformation() {
       setStudioValues(studioInitialValues);
       setSocialValues(socialInitialValues);
     }
-  }, [studio]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [
+    studio,
+    isInitialized,
+    isSaving,
+    studioInitialValues,
+    socialInitialValues,
+  ]);
 
   // Check if there are unsaved changes
   const hasChanges = useMemo(() => {
@@ -138,6 +145,7 @@ export default function AccountInformation() {
         foundedIn: studioValues.foundedIn,
         contactEmail: studioValues.email,
         website: studioValues.website,
+        description: studioValues.description,
       });
 
       // Save social media
@@ -164,7 +172,7 @@ export default function AccountInformation() {
   };
 
   return (
-    <div className="relative w-full flex flex-col gap-y-12">
+    <div className="relative flex w-full flex-col gap-y-12">
       <AccountForm
         title="Studio Information"
         FORM_FIELDS={ACCOUNT_FORM}
@@ -185,7 +193,7 @@ export default function AccountInformation() {
       <AnimatePresence>
         {hasChanges && (
           <motion.div
-            className="fixed bottom-6 right-6 z-50"
+            className="fixed right-6 bottom-6 z-50"
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
@@ -199,9 +207,9 @@ export default function AccountInformation() {
               type="button"
               onClick={handleSaveAll}
               disabled={isSaving}
-              className="flex items-center gap-2 px-6 py-3 bg-black text-white rounded-lg hover:bg-neutral-800 disabled:bg-neutral-400 disabled:cursor-not-allowed transition-colors shadow-lg"
+              className="flex items-center gap-2 rounded-lg bg-black px-6 py-3 text-white shadow-lg transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-400"
             >
-              <RiSaveLine className="w-5 h-5" />
+              <RiSaveLine className="h-5 w-5" />
               {isSaving ? "Saving..." : "Save Changes"}
             </button>
           </motion.div>
