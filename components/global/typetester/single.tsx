@@ -28,7 +28,7 @@ export default function SingleTypetester({
   const canDelete = blockIds.length > 1;
 
   return (
-    <div className="relative my-[30vh] flex w-full flex-col gap-4 px-16">
+    <div className="relative my-[20vh] flex w-full flex-col gap-4 px-16">
       <div className="relative mb-10 px-10 font-bold font-ortank text-xl">
         Test our fonts!
       </div>

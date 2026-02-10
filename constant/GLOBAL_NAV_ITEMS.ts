@@ -5,7 +5,7 @@ export interface NavigationItem {
 
 export const GLOBAL_NAV_ITEMS: NavigationItem[] = [
   {
-    label: "fonts",
+    label: "Fonts",
     href: "/fonts",
   },
   {

@@ -35,8 +35,10 @@ export default function VersionCard({
 
   useEffect(() => {
     if (!showConfirm) return;
+    document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
     return () => {
+      document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
     };
   }, [showConfirm]);

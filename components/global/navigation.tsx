@@ -74,19 +74,23 @@ export default function Navigation() {
         >
           글자곁
         </Link>
-        {GLOBAL_NAV_ITEMS.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={cn(
-              buttonStyleInactive,
-              "bg-white text-black",
-              "hover:bg-black hover:text-white"
-            )}
-          >
-            {item.label}
-          </Link>
-        ))}
+        {GLOBAL_NAV_ITEMS.map((item) => {
+          const isActive = pathname.startsWith(item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                buttonStyleInactive,
+                isActive
+                  ? "bg-black text-white"
+                  : "bg-white text-black hover:bg-black hover:text-white"
+              )}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
         <button
           type="button"
           aria-label={
@@ -120,8 +124,9 @@ export default function Navigation() {
             href="/sign-in"
             className={cn(
               buttonStyleInactive,
-              "bg-white text-black",
-              "hover:bg-black hover:text-white"
+              pathname.startsWith("/sign-in")
+                ? "bg-black text-white"
+                : "bg-white text-black hover:bg-black hover:text-white"
             )}
             aria-label="Login"
           >
@@ -135,8 +140,9 @@ export default function Navigation() {
             aria-label="to Account"
             className={cn(
               buttonStyleInactive,
-              "bg-white text-black",
-              "hover:bg-black hover:text-white"
+              pathname.startsWith("/account")
+                ? "bg-black text-white"
+                : "bg-white text-black hover:bg-black hover:text-white"
             )}
           >
             <RiUser3Line size={16} />

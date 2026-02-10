@@ -122,6 +122,18 @@ export function StudioProvider({
     }) => {
       if (!studio) throw new Error("No studio loaded");
       await updateStudioInformation(studio.id, data);
+
+      // Create/update Mailchimp segment when studio name is set or changed
+      if (data.name && data.name !== studio.name) {
+        fetch("/api/newsletter/create-studio-segment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ studioName: data.name }),
+        }).catch(() => {
+          // Silently fail — Mailchimp sync is non-critical
+        });
+      }
+
       setStudio((prev) =>
         prev ? ({ ...prev, ...data } as typeof prev) : null
       );

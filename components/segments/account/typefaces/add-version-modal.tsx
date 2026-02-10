@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 import { RiCloseLine } from "react-icons/ri";
+import FileDropZone from "@/components/global/file-drop-zone";
 import type {
   AddVersionModalProps,
   TypefaceVersion,
@@ -22,8 +23,10 @@ type OptionalToggles = {
 };
 
 const EMPTY_FORM: FormData = {
+  title: "",
   versionNumber: "",
   description: "",
+  coverImage: "",
   glyphSetCurrent: 0,
   glyphSetFinal: 0,
   features: "",
@@ -46,13 +49,16 @@ export default function AddVersionModal({
   onClose,
   onSave,
   editingVersion,
+  studioId,
 }: AddVersionModalProps) {
   const initialForm = useMemo<FormData>(() => {
     if (!isOpen) return EMPTY_FORM;
     if (editingVersion) {
       return {
+        title: editingVersion.title,
         versionNumber: editingVersion.versionNumber,
         description: editingVersion.description,
+        coverImage: editingVersion.coverImage,
         glyphSetCurrent: editingVersion.glyphSetCurrent,
         glyphSetFinal: editingVersion.glyphSetFinal,
         features: editingVersion.features,
@@ -110,9 +116,11 @@ export default function AddVersionModal({
 
   useEffect(() => {
     if (isOpen) {
+      document.documentElement.style.overflow = "hidden";
       document.body.style.overflow = "hidden";
     }
     return () => {
+      document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
     };
   }, [isOpen]);
@@ -196,14 +204,14 @@ export default function AddVersionModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden">
+    <div className="fixed inset-0 z-100 flex items-center justify-center">
       {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop click to dismiss */}
       {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop click to dismiss */}
       <div
         className="absolute inset-0 bg-black/50"
         onClick={onClose}
       />
-      <div className="relative mx-4 flex max-h-[90vh] w-full max-w-lg flex-col rounded-lg bg-white shadow-xl">
+      <div className="pointer-events-auto relative mx-4 flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden rounded-lg bg-white shadow-xl">
         {/* Header */}
         <div className="flex shrink-0 items-center justify-between border-neutral-200 border-b px-6 py-4">
           <h2 className="font-bold font-ortank text-xl">
@@ -224,8 +232,27 @@ export default function AddVersionModal({
         {/* Body */}
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col gap-y-5 overflow-y-auto px-6 py-5"
+          className="flex min-h-0 flex-1 flex-col gap-y-5 overflow-y-auto overscroll-contain px-6 py-5"
         >
+          {/* Title */}
+          <div className="flex flex-col gap-y-2">
+            <label
+              htmlFor="versionTitle"
+              className={labelClass}
+            >
+              Title
+            </label>
+            <input
+              id="versionTitle"
+              name="title"
+              type="text"
+              value={form.title}
+              onChange={handleChange}
+              placeholder="e.g. Initial release"
+              className={inputClass}
+            />
+          </div>
+
           {/* Version Number */}
           <div className="flex flex-col gap-y-2">
             <label
@@ -264,6 +291,23 @@ export default function AddVersionModal({
               className={`resize-y ${inputClass}`}
             />
           </div>
+
+          {/* Cover Image */}
+          <FileDropZone
+            label="Cover image"
+            accept="image/*"
+            value={form.coverImage}
+            onChange={(url) =>
+              setForm((prev) => ({
+                ...prev,
+                coverImage: url,
+              }))
+            }
+            instruction="Drop an image or click to upload"
+            icon="image"
+            studioId={studioId}
+            folder="images"
+          />
 
           {/* Glyph Set */}
           <CurrentFinalField

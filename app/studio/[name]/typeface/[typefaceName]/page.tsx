@@ -1,6 +1,7 @@
 import Footer from "@/components/global/footer";
 import SingleTypetester from "@/components/global/typetester/single";
 import DownloadButtons from "@/components/segments/typeface/download-buttons";
+import TypefaceGallery from "@/components/segments/typeface/gallery";
 import TypefaceHeader from "@/components/segments/typeface/header";
 import MoreContent from "@/components/segments/typeface/more-content";
 import TypefaceShop from "@/components/segments/typeface/shop";
@@ -10,6 +11,14 @@ import { getStudioBySlug } from "@/lib/firebase/studios";
 import type { Studio, Typeface } from "@/types/typefaces";
 import type { TypetesterFont } from "@/types/typetester";
 import { slugify } from "@/utils/slugify";
+
+const MOCK_GALLERY_IMAGES = Array.from(
+  { length: 12 },
+  (_, i) => ({
+    src: `/mock/gallery/gallery_mock_image-${i + 1}.webp`,
+    alt: `Gallery image ${i + 1}`,
+  })
+);
 
 export const dynamic = "force-dynamic";
 
@@ -155,7 +164,17 @@ export default async function TypefacePage({
         hangeulName={hangeulName}
       />
       <SingleTypetester fonts={typetesterFonts} />
-      <DownloadButtons />
+      <TypefaceGallery images={MOCK_GALLERY_IMAGES} />
+      <DownloadButtons
+        typefaceName={typeface.name}
+        specimenUrl={rawTypeface.specimen || undefined}
+        trialFontUrls={rawTypeface.fonts
+          .filter((f) => f.file)
+          .map((f) => ({
+            styleName: f.styleName,
+            file: f.file,
+          }))}
+      />
       <TypefaceStatus />
       <TypefaceUpdates />
       <TypefaceShop

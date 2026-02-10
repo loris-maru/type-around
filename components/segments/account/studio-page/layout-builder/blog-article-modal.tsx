@@ -51,8 +51,10 @@ export default function BlogArticleModal({
 
   useEffect(() => {
     if (!isOpen) return;
+    document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
     return () => {
+      document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
     };
   }, [isOpen]);
@@ -68,10 +70,10 @@ export default function BlogArticleModal({
         onClick={onClose}
       />
 
-      <div className="relative bg-white rounded-lg w-full max-w-3xl mx-4 flex flex-col max-h-[90vh] overflow-hidden">
+      <div className="relative mx-4 flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-lg bg-white">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-neutral-200 shrink-0">
-          <h2 className="font-ortank text-xl font-bold">
+        <div className="flex shrink-0 items-center justify-between border-neutral-200 border-b p-6">
+          <h2 className="font-bold font-ortank text-xl">
             {initialArticle
               ? "Edit Article"
               : "New Article"}
@@ -79,19 +81,19 @@ export default function BlogArticleModal({
           <button
             type="button"
             onClick={onClose}
-            className="p-1 hover:bg-neutral-100 rounded-lg transition-colors"
+            className="rounded-lg p-1 transition-colors hover:bg-neutral-100"
           >
-            <RiCloseLine className="w-6 h-6" />
+            <RiCloseLine className="h-6 w-6" />
           </button>
         </div>
 
         {/* Scrollable content */}
-        <div className="flex-1 min-h-0 overflow-y-auto p-6 space-y-5">
+        <div className="min-h-0 flex-1 space-y-5 overflow-y-auto p-6">
           {/* Article name */}
           <div>
             <label
               htmlFor="article-name"
-              className="block text-sm font-semibold text-black mb-1"
+              className="mb-1 block font-semibold text-black text-sm"
             >
               Article name
             </label>
@@ -101,7 +103,7 @@ export default function BlogArticleModal({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter article name"
-              className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-sm"
+              className="w-full rounded-lg border border-neutral-300 px-4 py-3 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
             />
           </div>
 
@@ -109,7 +111,7 @@ export default function BlogArticleModal({
           <div>
             <label
               htmlFor="article-introduction"
-              className="block text-sm font-semibold text-black mb-1"
+              className="mb-1 block font-semibold text-black text-sm"
             >
               Introduction
             </label>
@@ -121,13 +123,13 @@ export default function BlogArticleModal({
               }
               placeholder="Brief introduction to the article"
               rows={3}
-              className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-sm resize-none"
+              className="w-full resize-none rounded-lg border border-neutral-300 px-4 py-3 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
             />
           </div>
 
           {/* Content (rich text) */}
           <div>
-            <span className="block text-sm font-semibold text-black mb-1">
+            <span className="mb-1 block font-semibold text-black text-sm">
               Content
             </span>
             <RichTextEditor
@@ -140,7 +142,7 @@ export default function BlogArticleModal({
           <div>
             <label
               htmlFor="article-authors"
-              className="block text-sm font-semibold text-black mb-1"
+              className="mb-1 block font-semibold text-black text-sm"
             >
               Authors
             </label>
@@ -152,9 +154,9 @@ export default function BlogArticleModal({
                 setAuthorsInput(e.target.value)
               }
               placeholder="Author 1, Author 2, ..."
-              className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-sm"
+              className="w-full rounded-lg border border-neutral-300 px-4 py-3 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
             />
-            <p className="text-xs text-neutral-400 mt-1">
+            <p className="mt-1 text-neutral-400 text-xs">
               Separate multiple authors with commas
             </p>
           </div>
@@ -163,7 +165,7 @@ export default function BlogArticleModal({
           <div>
             <label
               htmlFor="article-keywords"
-              className="block text-sm font-semibold text-black mb-1"
+              className="mb-1 block font-semibold text-black text-sm"
             >
               Keywords
             </label>
@@ -175,20 +177,20 @@ export default function BlogArticleModal({
                 setKeywordsInput(e.target.value)
               }
               placeholder="keyword1, keyword2, ..."
-              className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-sm"
+              className="w-full rounded-lg border border-neutral-300 px-4 py-3 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
             />
-            <p className="text-xs text-neutral-400 mt-1">
+            <p className="mt-1 text-neutral-400 text-xs">
               Separate multiple keywords with commas
             </p>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="p-6 border-t border-neutral-200 shrink-0">
+        <div className="shrink-0 border-neutral-200 border-t p-6">
           <button
             type="button"
             onClick={handleSave}
-            className="w-full py-3 bg-black text-white font-whisper font-medium rounded-lg hover:bg-neutral-800 transition-colors cursor-pointer"
+            className="w-full cursor-pointer rounded-lg bg-black py-3 font-medium font-whisper text-white transition-colors hover:bg-neutral-800"
           >
             Save Article
           </button>

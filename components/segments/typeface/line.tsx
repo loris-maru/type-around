@@ -2,8 +2,14 @@
 
 import { motion, useAnimation } from "motion/react";
 import Link from "next/link";
-import { useEffect, useId, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useState,
+} from "react";
 import IconDownload from "@/components/icons/icon-download";
+import { downloadFile } from "@/utils/download-file";
 import { slugify } from "@/utils/slugify";
 
 const DEFAULT_TEXT =
@@ -16,6 +22,8 @@ export default function TypefaceLine({
   fonts,
   fontFileUrl,
   displayText,
+  specimenUrl,
+  trialFontUrl,
 }: {
   studioName: string;
   familyName: string;
@@ -23,6 +31,8 @@ export default function TypefaceLine({
   fonts: number;
   fontFileUrl?: string;
   displayText?: string;
+  specimenUrl?: string;
+  trialFontUrl?: string;
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -85,6 +95,22 @@ export default function TypefaceLine({
     }
   }, [isHovered, controls]);
 
+  const handleDownloadTrial = useCallback(async () => {
+    if (!trialFontUrl) return;
+    await downloadFile(
+      trialFontUrl,
+      `${slugify(familyName)}-trial.woff2`
+    );
+  }, [trialFontUrl, familyName]);
+
+  const handleDownloadSpecimen = useCallback(async () => {
+    if (!specimenUrl) return;
+    await downloadFile(
+      specimenUrl,
+      `${slugify(familyName)}-specimen.pdf`
+    );
+  }, [specimenUrl, familyName]);
+
   const text = displayText || DEFAULT_TEXT;
 
   return (
@@ -98,22 +124,27 @@ export default function TypefaceLine({
           <div>{fonts} fonts</div>
         </div>
         <div className="relative flex flex-row gap-x-4">
-          <button
-            type="button"
-            aria-label="Download trial font"
-            name="download-trial-font"
-            className="flex flex-row gap-x-2 font-medium font-whisper text-black text-sm"
-          >
-            <IconDownload className="h-3 w-3" /> Trial font
-          </button>
-          <button
-            type="button"
-            aria-label="Download specimen"
-            name="download-specimen"
-            className="flex flex-row gap-x-2 font-medium font-whisper text-black text-sm"
-          >
-            <IconDownload className="h-3 w-3" /> Specimen
-          </button>
+          {trialFontUrl && (
+            <button
+              type="button"
+              aria-label={`Download trial font for ${familyName}`}
+              onClick={handleDownloadTrial}
+              className="flex cursor-pointer flex-row gap-x-2 font-medium font-whisper text-black text-sm transition-opacity hover:opacity-60"
+            >
+              <IconDownload className="h-3 w-3" /> Trial
+              font
+            </button>
+          )}
+          {specimenUrl && (
+            <button
+              type="button"
+              aria-label={`Download specimen for ${familyName}`}
+              onClick={handleDownloadSpecimen}
+              className="flex cursor-pointer flex-row gap-x-2 font-medium font-whisper text-black text-sm transition-opacity hover:opacity-60"
+            >
+              <IconDownload className="h-3 w-3" /> Specimen
+            </button>
+          )}
         </div>
       </header>
       <Link

@@ -118,6 +118,7 @@ export const StudioTypefaceSchema = z.object({
   specimen: z.string().default(""),
   eula: z.string().default(""),
   variableFontFile: z.string().default(""),
+  galleryImages: z.array(z.string()).default([]),
 });
 
 export const FontInUseSchema = z.object({

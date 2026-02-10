@@ -35,6 +35,7 @@ export default function TypefacesList({
           category: typeface.category || null,
           displayFontFile: meta?.displayFontFile || "",
           fontLineText: meta?.fontLineText || "",
+          specimenUrl: meta?.specimenUrl || "",
         };
       }) as TypefaceWithMeta[];
     }, [studio, typefaceMeta]);
@@ -58,6 +59,8 @@ export default function TypefacesList({
                 fonts={typeface.fonts.length}
                 fontFileUrl={typeface.displayFontFile}
                 displayText={typeface.fontLineText}
+                specimenUrl={typeface.specimenUrl}
+                trialFontUrl={typeface.displayFontFile}
               />
               {index !== typefacesWithIds.length - 1 && (
                 <div className="relative h-px w-full bg-neutral-300" />

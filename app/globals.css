@@ -91,6 +91,25 @@
   display: none;
 }
 
+/* Gallery slide transition */
+@keyframes coverUp {
+  from {
+    height: 0;
+  }
+  to {
+    height: 100%;
+  }
+}
+
+@keyframes uncoverUp {
+  from {
+    height: 100%;
+  }
+  to {
+    height: 0;
+  }
+}
+
 body {
   background: var(--color-light-gray);
   color: #000000;

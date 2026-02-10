@@ -59,6 +59,7 @@ export default async function StudioPage({
       slug: t.slug,
       displayFontFile: displayFont?.file || "",
       fontLineText: t.fontLineText || "",
+      specimenUrl: t.specimen || "",
     };
   });
 

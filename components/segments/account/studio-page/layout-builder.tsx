@@ -39,6 +39,7 @@ export default function LayoutBuilder({
     const newItem: LayoutItem = {
       blockId,
       key: generateUUID(),
+      ...(blockId === "spacer" && { data: { size: "m" } }),
     };
     const updated = [...activeItems, newItem];
     setActiveItems(updated);

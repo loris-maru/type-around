@@ -43,10 +43,12 @@ export type Studio = {
 export type TypefaceWithMeta = Typeface & {
   displayFontFile?: string;
   fontLineText?: string;
+  specimenUrl?: string;
 };
 
 export type TypefaceMeta = {
   slug: string;
   displayFontFile: string;
   fontLineText: string;
+  specimenUrl: string;
 };

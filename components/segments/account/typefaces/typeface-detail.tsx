@@ -41,8 +41,10 @@ export default function TypefaceDetail({
   >([
     {
       id: "version-1",
+      title: "",
       versionNumber: "1",
       description: "",
+      coverImage: "",
       glyphSetCurrent: 0,
       glyphSetFinal: 0,
       features: "",
@@ -83,6 +85,7 @@ export default function TypefaceDetail({
         specimen: typeface.specimen || "",
         eula: typeface.eula || "",
         variableFontFile: typeface.variableFontFile || "",
+        galleryImages: typeface.galleryImages || [],
         published: typeface.published ?? false,
       });
       setHasChanges(false);
@@ -138,6 +141,17 @@ export default function TypefaceDetail({
   const handleFileChange = useCallback(
     (field: string) => (value: string) => {
       setFormData((prev) => ({ ...prev, [field]: value }));
+      setHasChanges(true);
+    },
+    []
+  );
+
+  const handleGalleryImagesChange = useCallback(
+    (images: string[]) => {
+      setFormData((prev) => ({
+        ...prev,
+        galleryImages: images,
+      }));
       setHasChanges(true);
     },
     []
@@ -376,7 +390,9 @@ export default function TypefaceDetail({
         specimen={formData.specimen || ""}
         eula={formData.eula || ""}
         variableFontFile={formData.variableFontFile || ""}
+        galleryImages={formData.galleryImages || []}
         onFileChange={handleFileChange}
+        onGalleryImagesChange={handleGalleryImagesChange}
       />
 
       <AddFontModal
@@ -392,6 +408,7 @@ export default function TypefaceDetail({
         onClose={handleCloseVersionModal}
         onSave={handleSaveVersion}
         editingVersion={editingVersion}
+        studioId={studio?.id || ""}
       />
     </div>
   );

@@ -20,7 +20,7 @@ export default function StudioCard({
       href={`/studio/${studio.slug || slugify(studio.name)}`}
       className={cn(
         "relative flex w-full flex-col justify-between rounded-lg border border-neutral-300 bg-light-gray p-5 shadow-medium-gray transition-all duration-300 ease-in-out",
-        "hover:-translate-x-1 hover:-translate-y-1 hover:bg-white hover:shadow-button"
+        "hover:-translate-x-1 hover:-translate-y-1 hover:bg-white hover:shadow-button-hover"
       )}
       prefetch={false}
       onMouseOver={() => setIsHovered(true)}
@@ -51,6 +51,7 @@ export default function StudioCard({
               ? "scale(1.2) rotate(4deg)"
               : "scale(1) rotate(0deg)",
           }}
+          loading="eager"
         />
       </div>
       <div className="flex flex-row gap-4 text-sm">

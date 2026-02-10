@@ -90,6 +90,7 @@ export default function AddTypefaceModal({
         specimen: "",
         eula: "",
         variableFontFile: "",
+        galleryImages: [],
       };
 
       await onAddTypeface(newTypeface);
@@ -113,8 +114,10 @@ export default function AddTypefaceModal({
 
   useEffect(() => {
     if (!isOpen) return;
+    document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
     return () => {
+      document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
     };
   }, [isOpen]);

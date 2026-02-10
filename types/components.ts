@@ -198,8 +198,10 @@ export type BasicInformationSectionProps = {
 
 export type TypefaceVersion = {
   id: string;
+  title: string;
   versionNumber: string;
   description: string;
+  coverImage: string;
   glyphSetCurrent: number;
   glyphSetFinal: number;
   features: string;
@@ -222,6 +224,7 @@ export type AddVersionModalProps = {
   onClose: () => void;
   onSave: (version: TypefaceVersion) => void;
   editingVersion: TypefaceVersion | null;
+  studioId: string;
 };
 
 export type VersionCardProps = {
@@ -251,7 +254,9 @@ export type FilesAssetsSectionProps = {
   specimen: string;
   eula: string;
   variableFontFile: string;
+  galleryImages: string[];
   onFileChange: (field: string) => (value: string) => void;
+  onGalleryImagesChange: (images: string[]) => void;
 };
 
 export type AddFontModalProps = {

@@ -27,7 +27,7 @@ export default function RootLayout({
         >
           <SmoothScrollProvider>
             <Navigation />
-            <div className="relative z-20 w-screen min-h-screen">
+            <div className="relative z-20 min-h-screen w-screen">
               {children}
             </div>
           </SmoothScrollProvider>

@@ -129,17 +129,10 @@ export default function HeaderFontInput() {
     if (!currentValue) return "";
     if (originalFileName) return originalFileName;
 
-    console.log(
-      "Header font URL from Firestore:",
-      currentValue
-    );
-
     const urlFileName = decodeURIComponent(
       currentValue.split("/").pop()?.split("?")[0] ||
         currentValue
     );
-
-    console.log("Extracted filename:", urlFileName);
 
     const uuidPrefixPattern = /^[a-f0-9-]{36}_/;
     if (uuidPrefixPattern.test(urlFileName)) {
