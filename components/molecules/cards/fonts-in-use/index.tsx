@@ -18,7 +18,7 @@ export default function FontsInUseCard({
       aria-label="Fonts in use card"
       name="fonts-in-use-card"
       className={cn(
-        "relative flex h-[420px] w-full cursor-pointer flex-col justify-between overflow-hidden rounded-lg border bg-white transition-all duration-300 ease-in-out",
+        "relative flex h-[320px] w-full cursor-pointer flex-col justify-between overflow-hidden rounded-lg border bg-white transition-all duration-300 ease-in-out",
         "hover:-translate-x-1 hover:-translate-y-1 hover:shadow-button-hover",
         "shadow-medium-gray hover:shadow-button-hover",
         "border-neutral-300"
@@ -34,8 +34,8 @@ export default function FontsInUseCard({
         />
       </div>
 
-      <div className="relative flex flex-col gap-2 p-8">
-        <div className="text-left font-black font-ortank text-2xl">
+      <div className="relative flex flex-col gap-2 p-4">
+        <div className="text-left font-black font-ortank text-xl">
           {name}
         </div>
 

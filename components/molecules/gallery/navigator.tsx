@@ -1,6 +1,7 @@
 import IconChevronLeft from "@/components/icons/icon-chevron-left";
 import IconChevronRight from "@/components/icons/icon-chevron-right";
 import { cn } from "@/utils/class-names";
+import { generateUUID } from "@/utils/generate-uuid";
 
 export default function GalleryNavigator({
   scrollPrev,
@@ -20,25 +21,25 @@ export default function GalleryNavigator({
   scrollTo: (index: number) => void;
 }) {
   return (
-    <div className="relative flex flex-row gap-x-4 items-center">
+    <div className="relative flex flex-row items-center gap-x-4">
       <button
         type="button"
         onClick={scrollPrev}
         disabled={!canScrollPrev}
         aria-label="Previous slide"
-        className="flex items-center justify-center w-10 h-10"
+        className="flex h-8 w-8 items-center justify-center"
       >
-        <IconChevronLeft className="w-4 h-4" />
+        <IconChevronLeft className="h-4 w-4" />
       </button>
-      <div className="flex flex-row gap-2 items-center">
+      <div className="flex flex-row items-center gap-2">
         {scrollSnaps.map((_, index) => (
           <button
-            key={index}
+            key={generateUUID() as string}
             type="button"
             onClick={() => scrollTo(index)}
             aria-label={`Go to slide ${index + 1}`}
             className={cn(
-              "w-8 h-2 rounded-lg transition-all duration-300",
+              "h-1 w-6 rounded-lg transition-all duration-300",
               selectedIndex === index
                 ? "bg-black"
                 : "bg-neutral-300 hover:bg-neutral-400"
@@ -51,9 +52,9 @@ export default function GalleryNavigator({
         onClick={scrollNext}
         disabled={!canScrollNext}
         aria-label="Next slide"
-        className="flex items-center justify-center w-10 h-10"
+        className="flex h-8 w-8 items-center justify-center"
       >
-        <IconChevronRight className="w-4 h-4" />
+        <IconChevronRight className="h-4 w-4" />
       </button>
     </div>
   );

@@ -1,116 +1,77 @@
 "use client";
 
-import EmblaCarousel, {
-  type EmblaCarouselType,
-} from "embla-carousel";
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useState } from "react";
 import FontsInUseCard from "@/components/molecules/cards/fonts-in-use";
-import { FONTS_IN_USE_CARDS_PER_VIEW } from "@/constant/UI_LAYOUT";
+import Pagination from "@/components/molecules/pagination";
 import { FONTS_IN_USE } from "@/mock-data/fonts-in-use";
 
+const PER_PAGE = 6;
+
 export default function FontsInUseList() {
-  const [emblaRef, setEmblaRef] =
-    useState<HTMLDivElement | null>(null);
-  const emblaApiRef = useRef<EmblaCarouselType | null>(
-    null
+  const [page, setPage] = useState(0);
+
+  const totalItems = FONTS_IN_USE.length;
+  const totalPages = Math.ceil(totalItems / PER_PAGE);
+
+  const startIndex = page * PER_PAGE;
+  const endIndex = Math.min(
+    startIndex + PER_PAGE,
+    totalItems
   );
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const visibleItems = FONTS_IN_USE.slice(
+    startIndex,
+    endIndex
+  );
 
-  useEffect(() => {
-    if (!emblaRef) return;
+  const canPrev = page > 0;
+  const canNext = page < totalPages - 1;
 
-    const embla = EmblaCarousel(emblaRef, {
-      slidesToScroll: FONTS_IN_USE_CARDS_PER_VIEW,
-      align: "start",
-      containScroll: "trimSnaps",
-    });
-
-    emblaApiRef.current = embla;
-
-    const onSelect = () => {
-      setSelectedIndex(embla.selectedScrollSnap());
-    };
-
-    onSelect();
-    embla.on("select", onSelect);
-
-    return () => {
-      embla.off("select", onSelect);
-      embla.destroy();
-      emblaApiRef.current = null;
-    };
-  }, [emblaRef]);
-
-  const scrollTo = useCallback((index: number) => {
-    if (emblaApiRef.current) {
-      emblaApiRef.current.scrollTo(index);
-    }
+  const goToPrev = useCallback(() => {
+    setPage((p) => Math.max(0, p - 1));
   }, []);
 
-  const totalPages = Math.ceil(
-    FONTS_IN_USE.length / FONTS_IN_USE_CARDS_PER_VIEW
-  );
+  const goToNext = useCallback(() => {
+    setPage((p) => Math.min(totalPages - 1, p + 1));
+  }, [totalPages]);
 
   return (
-    <div className="relative w-full px-10 py-24">
-      <div className="relative rounded-2xl">
-        <header className="relative mb-2 flex flex-row items-center justify-between">
-          <h3 className="section-title">Fonts in use</h3>
-          <div className="font-whisper text-black text-sm">
-            Total of {FONTS_IN_USE.length} fonts in use
+    <div className="relative flex w-full flex-col gap-y-8 px-10 py-24">
+      <div className="relative flex w-full flex-row items-center gap-x-12">
+        <header className="relative -top-[40px] flex w-1/3 flex-col">
+          <h3 className="font-black font-ortank text-6xl text-black">
+            Fonts in use
+          </h3>
+          <div className="mt-2 font-whisper text-black text-sm">
+            Total of {totalItems} fonts in use
           </div>
         </header>
-        <div
-          className="relative w-full overflow-hidden rounded-lg border border-neutral-300 p-4"
-          ref={setEmblaRef}
-        >
-          <div className="relative flex w-full">
-            {FONTS_IN_USE.map((font) => (
-              <div
+
+        {/* 3 cols × 2 rows grid */}
+        <div className="relative w-2/3">
+          <div className="relative mb-10 grid w-full grid-cols-3 grid-rows-2 gap-8">
+            {visibleItems.map((font) => (
+              <FontsInUseCard
                 key={font.id}
-                className="relative h-full min-w-0 flex-[0_0_33.333%] px-2 pl-4 first:pl-0"
-              >
-                <FontsInUseCard
-                  name={font.name}
-                  typeface={font.typeface}
-                  category={font.category}
-                  image={font.image}
-                />
-              </div>
+                name={font.name}
+                typeface={font.typeface}
+                category={font.category}
+                image={font.image}
+              />
             ))}
           </div>
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <Pagination
+              goToPrev={goToPrev}
+              goToNext={goToNext}
+              canPrev={canPrev}
+              canNext={canNext}
+              startIndex={startIndex}
+              endIndex={endIndex}
+              totalItems={totalItems}
+            />
+          )}
         </div>
-        {totalPages > 1 && (
-          <div className="relative mt-8 flex w-full flex-row items-center justify-center gap-2">
-            {Array.from({ length: totalPages }).map(
-              (_, index) => {
-                const slideIndex =
-                  index * FONTS_IN_USE_CARDS_PER_VIEW;
-                return (
-                  <button
-                    key={slideIndex}
-                    type="button"
-                    onClick={() => scrollTo(slideIndex)}
-                    aria-label={`Go to page ${index + 1}`}
-                    className={`h-2 w-8 rounded-lg transition-all duration-300 ${
-                      selectedIndex >= slideIndex &&
-                      selectedIndex <
-                        slideIndex +
-                          FONTS_IN_USE_CARDS_PER_VIEW
-                        ? "bg-black"
-                        : "bg-neutral-300 hover:bg-neutral-400"
-                    }`}
-                  />
-                );
-              }
-            )}
-          </div>
-        )}
       </div>
     </div>
   );

@@ -88,7 +88,7 @@ export default function TypefaceLine({
   const text = displayText || DEFAULT_TEXT;
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full bg-light-gray py-6 transition-all duration-300 ease-in-out hover:bg-white">
       <header className="relative mb-3 flex flex-row items-center justify-between px-10 font-whisper text-sm">
         <div className="relative flex flex-row items-baseline gap-x-4">
           <div className="font-bold font-ortank text-xl">

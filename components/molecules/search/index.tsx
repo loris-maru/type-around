@@ -144,7 +144,7 @@ export default function SearchPanel({
             stiffness: 400,
             damping: 30,
           }}
-          className="fixed top-[60px] right-5 left-5 z-50 mx-auto max-w-2xl overflow-hidden rounded-xl border border-medium-gray bg-white shadow-lg"
+          className="fixed top-[60px] right-5 left-5 z-50 mx-auto max-w-2xl overflow-hidden rounded-xl border border-medium-gray bg-white"
         >
           {/* Search input */}
           <div className="flex items-center gap-3 border-medium-gray border-b px-5 py-4">

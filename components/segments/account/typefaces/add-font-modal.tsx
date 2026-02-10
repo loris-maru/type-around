@@ -416,7 +416,7 @@ export default function AddFontModal({
                 htmlFor="printPrice"
                 className="mb-2 block font-normal font-whisper text-black text-sm"
               >
-                Print Price ($)
+                Print Price (₩)
               </label>
               <input
                 type="number"
@@ -435,7 +435,7 @@ export default function AddFontModal({
                 htmlFor="webPrice"
                 className="mb-2 block font-normal font-whisper text-black text-sm"
               >
-                Web Price ($)
+                Web Price (₩)
               </label>
               <input
                 type="number"

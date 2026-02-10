@@ -103,7 +103,7 @@ export default function StudioGallery({
         />
       </header>
       <div
-        className="relative w-full overflow-hidden"
+        className="relative -mx-2 w-[calc(100%+1rem)] overflow-hidden px-2 pb-4"
         ref={setEmblaRef}
       >
         <div className="relative flex w-full gap-4">

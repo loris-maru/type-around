@@ -11,6 +11,7 @@ import {
   RiFontSizeAi,
 } from "react-icons/ri";
 import ColorPicker from "@/components/molecules/color-picker";
+import Slider from "@/components/global/slider";
 import type {
   TextAlign,
   TypetesterFont,
@@ -212,96 +213,45 @@ export default function TypetesterParameters({
     onChange({ ...params, [key]: value });
   };
 
+  const fc = params.fontColor;
+
   return (
     <div className="flex w-full items-center gap-6">
       {/* Font Size */}
-      <div className="flex flex-1 items-center gap-3">
-        <label
-          htmlFor="tt-font-size"
-          className="shrink-0 font-whisper text-neutral-500 text-xs"
-        >
-          Size
-        </label>
-        <input
-          id="tt-font-size"
-          type="range"
-          min={8}
-          max={200}
-          value={params.fontSize}
-          aria-valuemin={8}
-          aria-valuemax={200}
-          aria-valuenow={params.fontSize}
-          onChange={(e) =>
-            updateParam("fontSize", Number(e.target.value))
-          }
-          className="h-1 w-full cursor-pointer accent-black"
-        />
-        <span className="w-10 shrink-0 text-right font-whisper text-black text-xs">
-          {params.fontSize}
-        </span>
-      </div>
+      <Slider
+        id="tt-font-size"
+        label="Size"
+        min={8}
+        max={200}
+        value={params.fontSize}
+        onChange={(v) => updateParam("fontSize", v)}
+        color={fc}
+      />
 
       {/* Line Height */}
-      <div className="flex flex-1 items-center gap-3">
-        <label
-          htmlFor="tt-line-height"
-          className="shrink-0 font-whisper text-neutral-500 text-xs"
-        >
-          Leading
-        </label>
-        <input
-          id="tt-line-height"
-          type="range"
-          min={0.5}
-          max={3}
-          step={0.05}
-          value={params.lineHeight}
-          aria-valuemin={0.5}
-          aria-valuemax={3}
-          aria-valuenow={params.lineHeight}
-          onChange={(e) =>
-            updateParam(
-              "lineHeight",
-              Number(e.target.value)
-            )
-          }
-          className="h-1 w-full cursor-pointer accent-black"
-        />
-        <span className="w-10 shrink-0 text-right font-whisper text-black text-xs">
-          {params.lineHeight.toFixed(2)}
-        </span>
-      </div>
+      <Slider
+        id="tt-line-height"
+        label="Leading"
+        min={0.5}
+        max={3}
+        step={0.05}
+        value={params.lineHeight}
+        onChange={(v) => updateParam("lineHeight", v)}
+        displayValue={params.lineHeight.toFixed(2)}
+        color={fc}
+      />
 
       {/* Letter Spacing */}
-      <div className="flex flex-1 items-center gap-3">
-        <label
-          htmlFor="tt-letter-spacing"
-          className="shrink-0 font-whisper text-neutral-500 text-xs"
-        >
-          Tracking
-        </label>
-        <input
-          id="tt-letter-spacing"
-          type="range"
-          min={-10}
-          max={30}
-          step={0.5}
-          value={params.letterSpacing}
-          aria-valuemin={-10}
-          aria-valuemax={30}
-          aria-valuenow={params.letterSpacing}
-          onChange={(e) =>
-            updateParam(
-              "letterSpacing",
-              Number(e.target.value)
-            )
-          }
-          className="h-1 w-full cursor-pointer accent-black"
-        />
-        <span className="w-10 shrink-0 text-right font-whisper text-black text-xs">
-          {params.letterSpacing}
-        </span>
-      </div>
+      <Slider
+        id="tt-letter-spacing"
+        label="Tracking"
+        min={-10}
+        max={30}
+        step={0.5}
+        value={params.letterSpacing}
+        onChange={(v) => updateParam("letterSpacing", v)}
+        color={fc}
+      />
 
       {/* Text Align */}
       <div className="flex items-center gap-1">
@@ -317,9 +267,10 @@ export default function TypetesterParameters({
             className={cn(
               "rounded-md p-2 transition-colors",
               params.textAlign === opt.value
-                ? "bg-black text-white"
-                : "text-neutral-400 hover:bg-neutral-100 hover:text-black"
+                ? "opacity-100"
+                : "opacity-30 hover:opacity-70"
             )}
+            style={{ color: fc }}
           >
             {opt.icon}
           </button>
@@ -330,7 +281,8 @@ export default function TypetesterParameters({
       <div className="flex items-center gap-1.5">
         <RiFile2Fill
           size={16}
-          className="shrink-0 text-neutral-400"
+          className="shrink-0 opacity-50"
+          style={{ color: fc }}
         />
         <ColorPicker
           id="tt-bg-color"
@@ -345,7 +297,8 @@ export default function TypetesterParameters({
       <div className="flex items-center gap-1.5">
         <RiFontSizeAi
           size={16}
-          className="shrink-0 text-neutral-400"
+          className="shrink-0 opacity-50"
+          style={{ color: fc }}
         />
         <ColorPicker
           id="tt-font-color"

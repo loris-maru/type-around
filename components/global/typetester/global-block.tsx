@@ -16,8 +16,9 @@ import type {
   TypetesterParams,
 } from "@/types/typetester";
 import { cn } from "@/utils/class-names";
-import { GroupedFontDropdown } from "./parameters";
-import TypetesterParameters from "./parameters";
+import TypetesterParameters, {
+  GroupedFontDropdown,
+} from "./parameters";
 
 export default function GlobalTypetesterBlock({
   placeholder = "가을 하늘 공활한데 높고 구름 없이 밝은 달은 우리 가슴 일편단심일세.",
@@ -161,7 +162,7 @@ export default function GlobalTypetesterBlock({
               "rounded-md p-2 transition-colors",
               showParams
                 ? "bg-black text-white"
-                : "text-neutral-400 hover:bg-neutral-100 hover:text-black"
+                : "text-black hover:bg-neutral-100 hover:text-black"
             )}
             aria-label="Toggle type settings"
           >

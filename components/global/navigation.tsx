@@ -59,7 +59,12 @@ export default function Navigation() {
 
   return (
     <>
-      <nav className="fixed top-5 left-0 z-40 grid w-full grid-cols-7 gap-x-0.5 px-5">
+      <nav
+        className={cn(
+          "fixed top-5 left-0 z-40 grid w-full gap-x-0.5 px-5",
+          cartCount > 0 ? "grid-cols-7" : "grid-cols-6"
+        )}
+      >
         <Link
           href="/"
           className={cn(
@@ -139,28 +144,32 @@ export default function Navigation() {
           </Link>
         )}
 
-        {/* Cart button — always visible */}
-        <button
-          type="button"
-          onClick={toggleCart}
-          aria-label={cartOpen ? "Close cart" : "Open cart"}
-          className={cn(
-            buttonStyleInactive,
-            "justify-center",
-            cartOpen
-              ? "bg-black text-white"
-              : "bg-white text-black hover:bg-black hover:text-white"
-          )}
-        >
-          <span className="relative">
-            <RiShoppingCart2Line size={18} />
-            {cartCount > 0 && (
-              <span className="absolute -top-1.5 -right-2.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 font-bold font-whisper text-[10px] text-white leading-none">
-                {cartCount}
-              </span>
+        {/* Cart button — only visible when items in cart */}
+        {cartCount > 0 && (
+          <button
+            type="button"
+            onClick={toggleCart}
+            aria-label={
+              cartOpen ? "Close cart" : "Open cart"
+            }
+            className={cn(
+              buttonStyleInactive,
+              "justify-center",
+              cartOpen
+                ? "bg-black text-white"
+                : "bg-white text-black hover:bg-black hover:text-white"
             )}
-          </span>
-        </button>
+          >
+            <span className="relative">
+              <RiShoppingCart2Line size={18} />
+              {cartCount > 0 && (
+                <span className="absolute -top-1.5 -right-2.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 font-bold font-whisper text-[10px] text-white leading-none">
+                  {cartCount}
+                </span>
+              )}
+            </span>
+          </button>
+        )}
       </nav>
 
       <SearchPanel

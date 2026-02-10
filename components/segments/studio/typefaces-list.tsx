@@ -47,7 +47,7 @@ export default function TypefacesList({
       <div className="relative mb-10 px-10 font-bold font-ortank text-xl">
         The Studio&lsquo;s Typefaces
       </div>
-      <div className="relative flex w-full flex-col gap-y-3 border-neutral-300 border-y py-10">
+      <div className="relative flex w-full flex-col border-neutral-300 border-y">
         {typefacesWithIds.map((typeface, index) => {
           return (
             <div key={typeface.id}>
@@ -60,7 +60,7 @@ export default function TypefacesList({
                 displayText={typeface.fontLineText}
               />
               {index !== typefacesWithIds.length - 1 && (
-                <div className="relative my-4 h-px w-full bg-neutral-300" />
+                <div className="relative h-px w-full bg-neutral-300" />
               )}
             </div>
           );

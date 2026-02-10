@@ -1,6 +1,6 @@
 "use client";
 
-import { FormTextareaProps } from "@/types/components";
+import type { FormTextareaProps } from "@/types/components";
 
 export default function FormTextarea({
   label,
@@ -15,7 +15,7 @@ export default function FormTextarea({
     <div>
       <label
         htmlFor={name}
-        className="block font-whisper text-sm font-normal text-black mb-2"
+        className="mb-2 block font-normal font-whisper text-black text-sm"
       >
         {label}
         {required && (
@@ -30,7 +30,10 @@ export default function FormTextarea({
         rows={rows}
         required={required}
         placeholder={placeholder}
-        className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent resize-none"
+        className="min-h-[300px] w-full resize-y rounded-lg border border-neutral-300 bg-transparent px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
+        style={
+          { fieldSizing: "content" } as React.CSSProperties
+        }
       />
     </div>
   );

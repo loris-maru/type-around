@@ -5,7 +5,7 @@ export const MARGIN_CLASS_MAP: Record<string, string> = {
   s: "py-4",
   m: "py-8",
   l: "py-16",
-  xl: "py-24",
+  xl: "py-32",
 };
 
 export const ALIGNMENT_CLASS_MAP: Record<string, string> = {
