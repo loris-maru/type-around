@@ -7,14 +7,20 @@ import {
   useState,
 } from "react";
 import { useStudio } from "@/hooks/use-studio";
-import type { TypefaceDetailProps } from "@/types/components";
+import type {
+  TypefaceDetailProps,
+  TypefaceVersion,
+} from "@/types/components";
 import type { Font, StudioTypeface } from "@/types/studio";
+import { slugify } from "@/utils/slugify";
 import AddFontModal from "./add-font-modal";
+import AddVersionModal from "./add-version-modal";
 import {
   BasicInformationSection,
   FilesAssetsSection,
   FontsListSection,
   TypefaceDetailHeader,
+  VersionsListSection,
 } from "./detail";
 
 export default function TypefaceDetail({
@@ -26,6 +32,27 @@ export default function TypefaceDetail({
     useState(false);
   const [editingFont, setEditingFont] =
     useState<Font | null>(null);
+  const [isVersionModalOpen, setIsVersionModalOpen] =
+    useState(false);
+  const [editingVersion, setEditingVersion] =
+    useState<TypefaceVersion | null>(null);
+  const [versions, setVersions] = useState<
+    TypefaceVersion[]
+  >([
+    {
+      id: "version-1",
+      versionNumber: "1",
+      description: "",
+      glyphSetCurrent: 0,
+      glyphSetFinal: 0,
+      features: "",
+      newWeightCurrent: 0,
+      newWeightFinal: 0,
+      newStyleCurrent: 0,
+      newStyleFinal: 0,
+      corrections: "",
+    },
+  ]);
   const [formData, setFormData] = useState<
     Partial<StudioTypeface>
   >({});
@@ -167,6 +194,48 @@ export default function TypefaceDetail({
     setEditingFont(null);
   }, []);
 
+  // ── Version handlers ──
+  const handleSaveVersion = useCallback(
+    (version: TypefaceVersion) => {
+      setVersions((prev) => {
+        const idx = prev.findIndex(
+          (v) => v.id === version.id
+        );
+        if (idx >= 0) {
+          const updated = [...prev];
+          updated[idx] = version;
+          return updated;
+        }
+        return [...prev, version];
+      });
+      setHasChanges(true);
+    },
+    []
+  );
+
+  const handleEditVersion = useCallback(
+    (version: TypefaceVersion) => {
+      setEditingVersion(version);
+      setIsVersionModalOpen(true);
+    },
+    []
+  );
+
+  const handleRemoveVersion = useCallback(
+    (versionId: string) => {
+      setVersions((prev) =>
+        prev.filter((v) => v.id !== versionId)
+      );
+      setHasChanges(true);
+    },
+    []
+  );
+
+  const handleCloseVersionModal = useCallback(() => {
+    setIsVersionModalOpen(false);
+    setEditingVersion(null);
+  }, []);
+
   const handleStatusChange = useCallback(
     (status: string) => {
       setFormData((prev) => ({
@@ -249,13 +318,14 @@ export default function TypefaceDetail({
   }
 
   return (
-    <div className="relative flex w-full flex-col gap-y-2 pb-20">
+    <div className="relative flex w-full flex-col gap-y-28 pb-20">
       <TypefaceDetailHeader
         typefaceName={typeface.name}
         status={currentStatus}
         hasChanges={hasChanges}
         isSaving={isSaving}
         isPublished={formData.published ?? false}
+        viewHref={`/studio/${slugify(studio?.name)}/typeface/${typeface.slug}`}
         onSave={handleSave}
         onStatusChange={handleStatusChange}
         onTogglePublish={handleTogglePublish}
@@ -277,6 +347,15 @@ export default function TypefaceDetail({
         onCategoriesChange={handleCategoriesChange}
         onLanguagesChange={handleLanguagesChange}
         onDesignerIdsChange={handleDesignerIdsChange}
+      />
+
+      <VersionsListSection
+        versions={versions}
+        onAddVersionClick={() =>
+          setIsVersionModalOpen(true)
+        }
+        onEditVersion={handleEditVersion}
+        onRemoveVersion={handleRemoveVersion}
       />
 
       <FontsListSection
@@ -306,6 +385,13 @@ export default function TypefaceDetail({
         onSave={handleSaveFont}
         editingFont={editingFont}
         studioId={studio?.id || ""}
+      />
+
+      <AddVersionModal
+        isOpen={isVersionModalOpen}
+        onClose={handleCloseVersionModal}
+        onSave={handleSaveVersion}
+        editingVersion={editingVersion}
       />
     </div>
   );

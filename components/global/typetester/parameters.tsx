@@ -10,8 +10,8 @@ import {
   RiFile2Fill,
   RiFontSizeAi,
 } from "react-icons/ri";
-import ColorPicker from "@/components/molecules/color-picker";
 import Slider from "@/components/global/slider";
+import ColorPicker from "@/components/molecules/color-picker";
 import type {
   TextAlign,
   TypetesterFont,

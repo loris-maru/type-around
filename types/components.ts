@@ -166,6 +166,7 @@ export type TypefaceDetailHeaderProps = {
   hasChanges: boolean;
   isSaving: boolean;
   isPublished: boolean;
+  viewHref: string;
   onSave: () => void;
   onStatusChange: (status: string) => void;
   onTogglePublish: () => void;
@@ -189,6 +190,45 @@ export type BasicInformationSectionProps = {
   onCategoriesChange: (values: string[]) => void;
   onLanguagesChange: (values: string[]) => void;
   onDesignerIdsChange: (ids: string[]) => void;
+};
+
+// ===========================================
+// Version types
+// ===========================================
+
+export type TypefaceVersion = {
+  id: string;
+  versionNumber: string;
+  description: string;
+  glyphSetCurrent: number;
+  glyphSetFinal: number;
+  features: string;
+  newWeightCurrent: number;
+  newWeightFinal: number;
+  newStyleCurrent: number;
+  newStyleFinal: number;
+  corrections: string;
+};
+
+export type VersionsListSectionProps = {
+  versions: TypefaceVersion[];
+  onAddVersionClick: () => void;
+  onEditVersion: (version: TypefaceVersion) => void;
+  onRemoveVersion: (versionId: string) => void;
+};
+
+export type AddVersionModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (version: TypefaceVersion) => void;
+  editingVersion: TypefaceVersion | null;
+};
+
+export type VersionCardProps = {
+  version: TypefaceVersion;
+  canDelete: boolean;
+  onRemove: (versionId: string) => void;
+  onEdit: (version: TypefaceVersion) => void;
 };
 
 export type FontsListSectionProps = {
