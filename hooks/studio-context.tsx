@@ -102,6 +102,7 @@ export function StudioProvider({
   const updateInformation = useCallback(
     async (data: {
       name?: string;
+      hangeulName?: string;
       location?: string;
       foundedIn?: string;
       contactEmail?: string;
@@ -155,6 +156,7 @@ export function StudioProvider({
   const updateStudioPageSettings = useCallback(
     async (data: {
       headerFont?: string;
+      textFont?: string;
       heroCharacter?: string;
       gradient?: { from: string; to: string };
       pageLayout?: LayoutItem[];

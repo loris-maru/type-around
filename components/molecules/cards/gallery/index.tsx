@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { RiCloseLine, RiSearch2Line } from "react-icons/ri";
+import { useStudioFonts } from "@/contexts/studio-fonts-context";
 import type { GalleryImage } from "@/types/layout";
 
 export type GalleryCardProps = {
@@ -13,6 +14,7 @@ export type GalleryCardProps = {
 export default function GalleryCard({
   image,
 }: GalleryCardProps) {
+  const { textFontFamily } = useStudioFonts();
   const [isOpen, setIsOpen] = useState(false);
 
   const open = useCallback(() => setIsOpen(true), []);
@@ -80,14 +82,17 @@ export default function GalleryCard({
 
         {(image.showTitle && image.title) ||
         (image.showDescription && image.description) ? (
-          <div className="px-4 py-3">
+          <div
+            className="px-4 py-3"
+            style={{ fontFamily: textFontFamily }}
+          >
             {image.showTitle && image.title && (
-              <h4 className="font-semibold font-whisper text-sm">
+              <h4 className="font-semibold text-sm">
                 {image.title}
               </h4>
             )}
             {image.showDescription && image.description && (
-              <p className="mt-1 font-whisper text-sm opacity-70">
+              <p className="mt-1 text-sm opacity-70">
                 {image.description}
               </p>
             )}

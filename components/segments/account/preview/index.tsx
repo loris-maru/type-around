@@ -1,6 +1,7 @@
 "use client";
 
 import Footer from "@/components/global/footer";
+import { StudioFontsProvider } from "@/contexts/studio-fonts-context";
 import StudioHeader from "@/components/segments/studio/header";
 import { DEFAULT_PAGE_LAYOUT } from "@/constant/DEFAULT_PAGE_LAYOUT";
 import { useStudio } from "@/hooks/use-studio";
@@ -36,23 +37,29 @@ export default function StudioPreview() {
     : DEFAULT_PAGE_LAYOUT;
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col">
-      <StudioHeader
-        gradient={[
-          studio.gradient?.from || "#FFF8E8",
-          studio.gradient?.to || "#F2F2F2",
-        ]}
-      />
-      <div className="flex-1">
-        {blocks.map((block) => (
-          <PreviewBlockRenderer
-            key={block.key}
-            block={block}
-            studio={studio}
-          />
-        ))}
+    <StudioFontsProvider
+      displayFontUrl={studio.headerFont || undefined}
+      textFontUrl={studio.textFont || undefined}
+    >
+      <div className="relative flex min-h-screen w-full flex-col">
+        <StudioHeader
+          gradient={[
+            studio.gradient?.from || "#FFF8E8",
+            studio.gradient?.to || "#F2F2F2",
+          ]}
+          studioName={studio.hangeulName || studio.name}
+        />
+        <div className="flex-1">
+          {blocks.map((block) => (
+            <PreviewBlockRenderer
+              key={block.key}
+              block={block}
+              studio={studio}
+            />
+          ))}
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </StudioFontsProvider>
   );
 }

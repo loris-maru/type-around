@@ -54,6 +54,7 @@ async function seedStudio() {
       },
     ],
     headerFont: "",
+    textFont: "",
     gradient: {
       from: "#FFF8E8",
       to: "#F2F2F2",

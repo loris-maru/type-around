@@ -141,6 +141,7 @@ export const StudioSchema = z.object({
   id: z.string().min(1, "ID is required"),
   ownerEmail: z.string().email("Must be a valid email"),
   name: z.string().min(1, "Studio name is required"),
+  hangeulName: z.string().default(""),
   location: z.string(),
   foundedIn: z.string(),
   contactEmail: z
@@ -157,6 +158,7 @@ export const StudioSchema = z.object({
   avatar: z.string().default(""),
   socialMedia: z.array(SocialMediaSchema),
   headerFont: z.string(),
+  textFont: z.string().default(""),
   heroCharacter: z.string().default(""),
   gradient: GradientSchema,
   pageLayout: z
@@ -198,6 +200,7 @@ export type CreateStudio = z.infer<
 // Schema for updating studio information
 export const UpdateStudioInfoSchema = z.object({
   name: z.string().min(1).optional(),
+  hangeulName: z.string().optional(),
   location: z.string().optional(),
   foundedIn: z.string().optional(),
   contactEmail: z
@@ -229,6 +232,7 @@ export type UpdateStudioInfo = z.infer<
 // Schema for updating studio page design
 export const UpdateStudioPageSchema = z.object({
   headerFont: z.string().optional(),
+  textFont: z.string().optional(),
   heroCharacter: z.string().optional(),
   gradient: GradientSchema.optional(),
   pageLayout: z
@@ -255,6 +259,7 @@ export type StudioContextValue = {
   error: Error | null;
   updateInformation: (data: {
     name?: string;
+    hangeulName?: string;
     location?: string;
     foundedIn?: string;
     contactEmail?: string;
@@ -278,6 +283,7 @@ export type StudioContextValue = {
   ) => Promise<void>;
   updateStudioPageSettings: (data: {
     headerFont?: string;
+    textFont?: string;
     heroCharacter?: string;
     gradient?: { from: string; to: string };
     pageLayout?: LayoutItem[];
@@ -301,6 +307,7 @@ export const DEFAULT_STUDIO: Omit<
   "id" | "ownerEmail"
 > = {
   name: "",
+  hangeulName: "",
   location: "",
   foundedIn: "",
   contactEmail: "",
@@ -311,6 +318,7 @@ export const DEFAULT_STUDIO: Omit<
   avatar: "",
   socialMedia: [],
   headerFont: "",
+  textFont: "",
   heroCharacter: "",
   gradient: {
     from: "#FFF8E8",

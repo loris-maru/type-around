@@ -2,6 +2,7 @@ import Footer from "@/components/global/footer";
 import StudioHeader from "@/components/segments/studio/header";
 import StudioPageBlocks from "@/components/segments/studio/page-blocks";
 import { DEFAULT_PAGE_LAYOUT } from "@/constant/DEFAULT_PAGE_LAYOUT";
+import { StudioFontsProvider } from "@/contexts/studio-fonts-context";
 import { getStudioBySlug } from "@/lib/firebase/studios";
 import type { LayoutItem } from "@/types/layout";
 
@@ -68,15 +69,31 @@ export default async function StudioPage({
     JSON.stringify(firebaseStudio)
   );
 
+  const displayFontUrl =
+    (firebaseStudio.headerFont as string) || "";
+  const textFontUrl =
+    (firebaseStudio.textFont as string) || "";
+
   return (
-    <div className="relative w-full">
-      <StudioHeader gradient={gradient} />
-      <StudioPageBlocks
-        blocks={blocks}
-        studio={studioData}
-        typefaceMeta={typefaceMeta}
-      />
-      <Footer />
-    </div>
+    <StudioFontsProvider
+      displayFontUrl={displayFontUrl || undefined}
+      textFontUrl={textFontUrl || undefined}
+    >
+      <div className="relative w-full">
+        <StudioHeader
+          gradient={gradient}
+          studioName={
+            firebaseStudio.hangeulName ||
+            firebaseStudio.name
+          }
+        />
+        <StudioPageBlocks
+          blocks={blocks}
+          studio={studioData}
+          typefaceMeta={typefaceMeta}
+        />
+        <Footer />
+      </div>
+    </StudioFontsProvider>
   );
 }

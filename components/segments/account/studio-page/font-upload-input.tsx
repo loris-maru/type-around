@@ -17,7 +17,17 @@ import { useStudio } from "@/hooks/use-studio";
 import { uploadFile } from "@/lib/firebase/storage";
 import { cn } from "@/utils/class-names";
 
-export default function HeaderFontInput() {
+type FontField = "headerFont" | "textFont";
+
+type FontUploadInputProps = {
+  field: FontField;
+  label: string;
+};
+
+export default function FontUploadInput({
+  field,
+  label,
+}: FontUploadInputProps) {
   const { studio, updateStudioPageSettings } = useStudio();
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -27,7 +37,10 @@ export default function HeaderFontInput() {
   >(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const currentValue = studio?.headerFont || "";
+  const currentValue =
+    (field === "headerFont"
+      ? studio?.headerFont
+      : studio?.textFont) || "";
 
   const validateFile = (file: File): string | null => {
     const extension = `.${file.name.split(".").pop()?.toLowerCase()}`;
@@ -62,7 +75,7 @@ export default function HeaderFontInput() {
         "fonts",
         studio.id
       );
-      await updateStudioPageSettings({ headerFont: url });
+      await updateStudioPageSettings({ [field]: url });
     } catch (err) {
       setError("Failed to upload font");
       setOriginalFileName(null);
@@ -115,7 +128,7 @@ export default function HeaderFontInput() {
     setError(null);
     setOriginalFileName(null);
     try {
-      await updateStudioPageSettings({ headerFont: "" });
+      await updateStudioPageSettings({ [field]: "" });
     } catch {
       setError("Failed to remove font");
     }
@@ -144,7 +157,7 @@ export default function HeaderFontInput() {
   return (
     <div className="relative w-full">
       <span className="mb-2 block font-normal font-whisper text-black text-sm">
-        Header Font
+        {label}
       </span>
 
       <input
@@ -153,7 +166,7 @@ export default function HeaderFontInput() {
         accept={ACCEPTED_FONT_FORMATS_STRING}
         onChange={handleInputChange}
         className="hidden"
-        aria-label="Upload header font file"
+        aria-label={`Upload ${label.toLowerCase()} file`}
       />
 
       {isUploading ? (

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { useStudioFonts } from "@/contexts/studio-fonts-context";
 import FontsInUseCard from "@/components/molecules/cards/fonts-in-use";
 import Pagination from "@/components/molecules/pagination";
 import { FONTS_IN_USE } from "@/mock-data/fonts-in-use";
@@ -8,6 +9,8 @@ import { FONTS_IN_USE } from "@/mock-data/fonts-in-use";
 const PER_PAGE = 6;
 
 export default function FontsInUseList() {
+  const { displayFontFamily, textFontFamily } =
+    useStudioFonts();
   const [page, setPage] = useState(0);
 
   const totalItems = FONTS_IN_USE.length;
@@ -38,10 +41,16 @@ export default function FontsInUseList() {
     <div className="relative flex w-full flex-col gap-y-8 px-10 py-24">
       <div className="relative flex w-full flex-row items-center gap-x-12">
         <header className="relative -top-[40px] flex w-1/3 flex-col">
-          <h3 className="font-black font-ortank text-6xl text-black">
+          <h3
+            className="text-6xl font-black text-black"
+            style={{ fontFamily: displayFontFamily }}
+          >
             Fonts in use
           </h3>
-          <div className="mt-2 font-whisper text-black text-sm">
+          <div
+            className="mt-2 text-sm text-black"
+            style={{ fontFamily: textFontFamily }}
+          >
             Total of {totalItems} fonts in use
           </div>
         </header>

@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useStudioFonts } from "@/contexts/studio-fonts-context";
 import { cn } from "@/utils/class-names";
 
 export default function FontsInUseCard({
@@ -12,6 +15,9 @@ export default function FontsInUseCard({
   category: string;
   image: string;
 }) {
+  const { displayFontFamily, textFontFamily } =
+    useStudioFonts();
+
   return (
     <button
       type="button"
@@ -35,17 +41,23 @@ export default function FontsInUseCard({
       </div>
 
       <div className="relative flex flex-col gap-2 p-4">
-        <div className="text-left font-black font-ortank text-xl">
+        <div
+          className="text-left font-black text-xl"
+          style={{ fontFamily: displayFontFamily }}
+        >
           {name}
         </div>
 
         <div className="my-1 block h-px w-full bg-neutral-200" />
 
-        <div className="flex flex-row justify-between">
-          <div className="font-medium font-whisper text-base">
+        <div
+          className="flex flex-row justify-between"
+          style={{ fontFamily: textFontFamily }}
+        >
+          <div className="font-medium text-base">
             {typeface}
           </div>
-          <div className="rounded-3xl border border-neutral-300 px-3 py-1 font-whisper text-sm">
+          <div className="rounded-3xl border border-neutral-300 px-3 py-1 text-sm">
             {category}
           </div>
         </div>

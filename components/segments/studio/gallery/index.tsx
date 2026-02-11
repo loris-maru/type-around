@@ -9,6 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { useStudioFonts } from "@/contexts/studio-fonts-context";
 import GalleryCard from "@/components/molecules/cards/gallery";
 import GalleryNavigator from "@/components/molecules/gallery/navigator";
 import type { StudioGalleryProps } from "@/types/components";
@@ -16,6 +17,7 @@ import type { StudioGalleryProps } from "@/types/components";
 export default function StudioGallery({
   data,
 }: StudioGalleryProps) {
+  const { displayFontFamily } = useStudioFonts();
   const { images, title } = data;
   const [emblaRef, setEmblaRef] =
     useState<HTMLDivElement | null>(null);
@@ -89,7 +91,10 @@ export default function StudioGallery({
       style={sectionStyle}
     >
       <header className="relative mb-10 flex w-full flex-row items-center justify-between">
-        <h3 className="font-black font-ortank text-2xl text-black">
+        <h3
+          className="text-2xl font-black text-black"
+          style={{ fontFamily: displayFontFamily }}
+        >
           {title || "Gallery"}
         </h3>
         <GalleryNavigator

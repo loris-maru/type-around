@@ -2,10 +2,16 @@ import type { FormField } from "@/types/forms";
 
 const FORM_FIELDS: FormField[] = [
   {
-    label: "Name",
+    label: "Latin name",
     slug: "name",
     type: "text",
-    placeholder: "Enter your name...",
+    placeholder: "Enter your studio name (Latin)...",
+  },
+  {
+    label: "Hangeul name",
+    slug: "hangeulName",
+    type: "text",
+    placeholder: "Enter your studio name (한글)...",
   },
   {
     label: "Location",

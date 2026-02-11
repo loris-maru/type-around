@@ -48,6 +48,7 @@ const clerk = createClerkClient({
 // Default studio values
 const DEFAULT_STUDIO = {
   name: "",
+  hangeulName: "",
   location: "",
   foundedIn: "",
   contactEmail: "",
@@ -57,6 +58,7 @@ const DEFAULT_STUDIO = {
   avatar: "",
   socialMedia: [],
   headerFont: "",
+  textFont: "",
   heroCharacter: "",
   gradient: {
     from: "#FFF8E8",

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { useStudioFonts } from "@/contexts/studio-fonts-context";
 import type {
   Studio,
   TypefaceMeta,
@@ -17,6 +18,7 @@ export default function TypefacesList({
   studio,
   typefaceMeta,
 }: TypefacesListProps) {
+  const { displayFontFamily } = useStudioFonts();
   const typefacesWithIds: TypefaceWithMeta[] =
     useMemo(() => {
       return studio.typefaces.map((typeface, index) => {
@@ -45,7 +47,10 @@ export default function TypefacesList({
       className="flex w-full flex-col py-24"
       id="families"
     >
-      <div className="relative mb-10 px-10 font-bold font-ortank text-xl">
+      <div
+        className="relative mb-10 px-10 text-xl font-bold"
+        style={{ fontFamily: displayFontFamily }}
+      >
         The Studio&lsquo;s Typefaces
       </div>
       <div className="relative flex w-full flex-col border-neutral-300 border-y">

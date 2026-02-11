@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { RiAddLine } from "react-icons/ri";
+import { useStudioFonts } from "@/contexts/studio-fonts-context";
 import type { GlobalTypetesterProps } from "@/types/typetester";
 import { generateUUID } from "@/utils/generate-uuid";
 import GlobalTypetesterBlock from "./global-block";
@@ -9,6 +10,8 @@ import GlobalTypetesterBlock from "./global-block";
 export default function GlobalTypetester({
   typefaces = [],
 }: GlobalTypetesterProps) {
+  const { displayFontFamily, textFontFamily } =
+    useStudioFonts();
   const [blockIds, setBlockIds] = useState<string[]>([
     generateUUID(),
   ]);
@@ -28,7 +31,10 @@ export default function GlobalTypetester({
       className="relative my-40 flex w-full flex-col gap-4 px-16"
       id="tester"
     >
-      <div className="relative mb-2 font-bold font-ortank text-xl">
+      <div
+        className="relative mb-2 text-xl font-bold"
+        style={{ fontFamily: displayFontFamily }}
+      >
         Test our fonts!
       </div>
       <div className="relative flex flex-col gap-1">
@@ -45,7 +51,8 @@ export default function GlobalTypetester({
         type="button"
         onClick={addBlock}
         aria-label="Add new typetester block"
-        className="flex w-full items-center justify-center gap-2 rounded-lg border border-neutral-300 border-dashed py-6 font-semibold font-whisper text-black text-lg transition-colors hover:border-black hover:text-black"
+        className="flex w-full items-center justify-center gap-2 rounded-lg border border-neutral-300 border-dashed py-6 text-lg font-semibold text-black transition-colors hover:border-black hover:text-black"
+        style={{ fontFamily: textFontFamily }}
       >
         <RiAddLine size={16} />
         Add block

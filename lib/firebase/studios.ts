@@ -183,6 +183,7 @@ export async function updateStudioInformation(
   id: string,
   data: {
     name?: string;
+    hangeulName?: string;
     location?: string;
     foundedIn?: string;
     contactEmail?: string;
@@ -235,6 +236,7 @@ export async function updateStudioPage(
   id: string,
   data: {
     headerFont?: string;
+    textFont?: string;
     heroCharacter?: string;
     gradient?: { from: string; to: string };
     pageLayout?: {

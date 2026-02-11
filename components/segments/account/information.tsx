@@ -39,6 +39,7 @@ export default function AccountInformation() {
     if (!studio) return {} as Record<string, string>;
     return {
       name: studio.name || "",
+      hangeulName: studio.hangeulName || "",
       location: studio.location || "",
       foundedIn: studio.foundedIn || "",
       email: studio.contactEmail || "",
@@ -141,6 +142,7 @@ export default function AccountInformation() {
       // Save studio information
       await updateInformation({
         name: studioValues.name,
+        hangeulName: studioValues.hangeulName,
         location: studioValues.location,
         foundedIn: studioValues.foundedIn,
         contactEmail: studioValues.email,

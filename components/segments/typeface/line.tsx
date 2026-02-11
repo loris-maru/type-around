@@ -9,6 +9,7 @@ import {
   useState,
 } from "react";
 import IconDownload from "@/components/icons/icon-download";
+import { useStudioFonts } from "@/contexts/studio-fonts-context";
 import { downloadFile } from "@/utils/download-file";
 import { slugify } from "@/utils/slugify";
 
@@ -34,6 +35,8 @@ export default function TypefaceLine({
   specimenUrl?: string;
   trialFontUrl?: string;
 }) {
+  const { displayFontFamily, textFontFamily } =
+    useStudioFonts();
   const [isHovered, setIsHovered] = useState(false);
   const [fontLoaded, setFontLoaded] = useState(false);
   const controls = useAnimation();
@@ -115,9 +118,15 @@ export default function TypefaceLine({
 
   return (
     <div className="relative w-full bg-light-gray py-6 transition-all duration-300 ease-in-out hover:bg-white">
-      <header className="relative mb-3 flex flex-row items-center justify-between px-10 font-whisper text-sm">
+      <header
+        className="relative mb-3 flex flex-row items-center justify-between px-10 text-sm"
+        style={{ fontFamily: textFontFamily }}
+      >
         <div className="relative flex flex-row items-baseline gap-x-4">
-          <div className="font-bold font-ortank text-xl">
+          <div
+            className="text-xl font-bold"
+            style={{ fontFamily: displayFontFamily }}
+          >
             {familyName}
           </div>
           <div>{styles} styles</div>
@@ -129,7 +138,7 @@ export default function TypefaceLine({
               type="button"
               aria-label={`Download trial font for ${familyName}`}
               onClick={handleDownloadTrial}
-              className="flex cursor-pointer flex-row gap-x-2 font-medium font-whisper text-black text-sm transition-opacity hover:opacity-60"
+              className="flex cursor-pointer flex-row gap-x-2 text-sm font-medium text-black transition-opacity hover:opacity-60"
             >
               <IconDownload className="h-3 w-3" /> Trial
               font
@@ -140,7 +149,7 @@ export default function TypefaceLine({
               type="button"
               aria-label={`Download specimen for ${familyName}`}
               onClick={handleDownloadSpecimen}
-              className="flex cursor-pointer flex-row gap-x-2 font-medium font-whisper text-black text-sm transition-opacity hover:opacity-60"
+              className="flex cursor-pointer flex-row gap-x-2 text-sm font-medium text-black transition-opacity hover:opacity-60"
             >
               <IconDownload className="h-3 w-3" /> Specimen
             </button>

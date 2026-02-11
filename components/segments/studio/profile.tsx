@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import DesignerCard from "@/components/molecules/cards/designers";
+import { useStudioFonts } from "@/contexts/studio-fonts-context";
 import type { Designer } from "@/types/studio";
 
 export default function StudioProfile({
@@ -15,6 +18,9 @@ export default function StudioProfile({
   description: string;
   designers?: Designer[];
 }) {
+  const { displayFontFamily, textFontFamily } =
+    useStudioFonts();
+
   return (
     <section
       className="relative my-32 flex w-full flex-col gap-y-10 px-56"
@@ -31,13 +37,19 @@ export default function StudioProfile({
           />
         </div>
         <div className="relative w-2/3">
-          <header className="relative flex flex-row items-center justify-between gap-2">
+          <header
+            className="relative flex flex-row items-center justify-between gap-2"
+            style={{ fontFamily: displayFontFamily }}
+          >
             <div>About our studio</div>
             <div>{families} familes</div>
             <div>{fonts} fonts</div>
           </header>
           <div className="relative my-4 h-px w-full bg-neutral-300" />
-          <p className="relative font-normal font-whisper text-xl leading-relaxed">
+          <p
+            className="relative font-normal text-xl leading-relaxed"
+            style={{ fontFamily: textFontFamily }}
+          >
             {description}
           </p>
         </div>

@@ -49,6 +49,7 @@ export default function AccountStudioPage() {
 
       if (formVals) {
         payload.headerFont = formVals.headerFont;
+        payload.textFont = formVals.textFont;
         const from = formVals.gradientFrom;
         const to = formVals.gradientTo;
         if (from && to) {
@@ -87,6 +88,7 @@ export default function AccountStudioPage() {
     (studio
       ? {
           headerFont: studio.headerFont,
+          textFont: studio.textFont || "",
           gradientFrom: studio.gradient?.from || "#FFF8E8",
           gradientTo: studio.gradient?.to || "#F2F2F2",
         }
