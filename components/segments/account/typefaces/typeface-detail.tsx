@@ -86,6 +86,12 @@ export default function TypefaceDetail({
         eula: typeface.eula || "",
         variableFontFile: typeface.variableFontFile || "",
         galleryImages: typeface.galleryImages || [],
+        visionUsage: typeface.visionUsage || "",
+        visionContrast: typeface.visionContrast || "",
+        visionWidth: typeface.visionWidth || "",
+        visionPlayful: typeface.visionPlayful || "",
+        visionFrame: typeface.visionFrame || "",
+        visionSerif: typeface.visionSerif || "",
         published: typeface.published ?? false,
       });
       setHasChanges(false);
@@ -121,6 +127,31 @@ export default function TypefaceDetail({
       setFormData((prev) => ({
         ...prev,
         supportedLanguages: values,
+      }));
+      setHasChanges(true);
+    },
+    []
+  );
+
+  const handleTypefaceVisionChange = useCallback(
+    (vision: {
+      usage?: string;
+      contrast?: string;
+      width?: string;
+      playful?: string;
+      frame?: string;
+      serif?: string;
+    }) => {
+      setFormData((prev) => ({
+        ...prev,
+        visionUsage: vision.usage ?? prev.visionUsage ?? "",
+        visionContrast:
+          vision.contrast ?? prev.visionContrast ?? "",
+        visionWidth: vision.width ?? prev.visionWidth ?? "",
+        visionPlayful:
+          vision.playful ?? prev.visionPlayful ?? "",
+        visionFrame: vision.frame ?? prev.visionFrame ?? "",
+        visionSerif: vision.serif ?? prev.visionSerif ?? "",
       }));
       setHasChanges(true);
     },
@@ -355,11 +386,20 @@ export default function TypefaceDetail({
         supportedLanguages={
           formData.supportedLanguages || []
         }
+        typefaceVision={{
+          usage: formData.visionUsage || "",
+          contrast: formData.visionContrast || "",
+          width: formData.visionWidth || "",
+          playful: formData.visionPlayful || "",
+          frame: formData.visionFrame || "",
+          serif: formData.visionSerif || "",
+        }}
         designerIds={formData.designerIds || []}
         studioDesigners={studio?.designers || []}
         onInputChange={handleInputChange}
         onCategoriesChange={handleCategoriesChange}
         onLanguagesChange={handleLanguagesChange}
+        onTypefaceVisionChange={handleTypefaceVisionChange}
         onDesignerIdsChange={handleDesignerIdsChange}
       />
 

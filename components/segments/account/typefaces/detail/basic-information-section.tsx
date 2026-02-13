@@ -11,6 +11,7 @@ import FormInput from "@/components/global/form-input";
 import FormTextarea from "@/components/global/form-textarea";
 import TagInput from "@/components/global/tag-input";
 import type { BasicInformationSectionProps } from "@/types/components";
+import TypefaceVisionBlock from "./typeface-vision-block";
 
 export default function BasicInformationSection({
   name,
@@ -20,11 +21,13 @@ export default function BasicInformationSection({
   releaseDate,
   description,
   supportedLanguages,
+  typefaceVision,
   designerIds,
   studioDesigners,
   onInputChange,
   onCategoriesChange,
   onLanguagesChange,
+  onTypefaceVisionChange,
   onDesignerIdsChange,
 }: BasicInformationSectionProps) {
   const [
@@ -137,6 +140,51 @@ export default function BasicInformationSection({
           onChange={onLanguagesChange}
           placeholder="Type a language and press Enter..."
           theme="light"
+        />
+
+        <TypefaceVisionBlock
+          usage={typefaceVision.usage}
+          contrast={typefaceVision.contrast}
+          width={typefaceVision.width}
+          playful={typefaceVision.playful}
+          frame={typefaceVision.frame}
+          serif={typefaceVision.serif}
+          onUsageChange={(v) =>
+            onTypefaceVisionChange({
+              ...typefaceVision,
+              usage: v,
+            })
+          }
+          onContrastChange={(v) =>
+            onTypefaceVisionChange({
+              ...typefaceVision,
+              contrast: v,
+            })
+          }
+          onWidthChange={(v) =>
+            onTypefaceVisionChange({
+              ...typefaceVision,
+              width: v,
+            })
+          }
+          onPlayfulChange={(v) =>
+            onTypefaceVisionChange({
+              ...typefaceVision,
+              playful: v,
+            })
+          }
+          onFrameChange={(v) =>
+            onTypefaceVisionChange({
+              ...typefaceVision,
+              frame: v,
+            })
+          }
+          onSerifChange={(v) =>
+            onTypefaceVisionChange({
+              ...typefaceVision,
+              serif: v,
+            })
+          }
         />
 
         {/* Designers */}

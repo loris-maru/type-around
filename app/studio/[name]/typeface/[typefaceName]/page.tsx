@@ -12,14 +12,6 @@ import type { Studio, Typeface } from "@/types/typefaces";
 import type { TypetesterFont } from "@/types/typetester";
 import { slugify } from "@/utils/slugify";
 
-const MOCK_GALLERY_IMAGES = Array.from(
-  { length: 12 },
-  (_, i) => ({
-    src: `/mock/gallery/gallery_mock_image-${i + 1}.webp`,
-    alt: `Gallery image ${i + 1}`,
-  })
-);
-
 export const dynamic = "force-dynamic";
 
 export default async function TypefacePage({
@@ -144,6 +136,14 @@ export default async function TypefacePage({
     ),
   };
 
+  // Gallery images from Account > typefaces > Gallery images
+  const galleryImages = (
+    rawTypeface.galleryImages || []
+  ).map((src, i) => ({
+    src,
+    alt: `Gallery image ${i + 1}`,
+  }));
+
   // Extract fonts for the SingleTypetester from this typeface only
   const typetesterFonts: TypetesterFont[] =
     rawTypeface.fonts
@@ -164,7 +164,7 @@ export default async function TypefacePage({
         hangeulName={hangeulName}
       />
       <SingleTypetester fonts={typetesterFonts} />
-      <TypefaceGallery images={MOCK_GALLERY_IMAGES} />
+      <TypefaceGallery images={galleryImages} />
       <DownloadButtons
         typefaceName={typeface.name}
         specimenUrl={rawTypeface.specimen || undefined}

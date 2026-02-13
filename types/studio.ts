@@ -119,6 +119,13 @@ export const StudioTypefaceSchema = z.object({
   eula: z.string().default(""),
   variableFontFile: z.string().default(""),
   galleryImages: z.array(z.string()).default([]),
+  // Typeface vision (for search & discovery)
+  visionUsage: z.string().default(""),
+  visionContrast: z.string().default(""),
+  visionWidth: z.string().default(""),
+  visionPlayful: z.string().default(""),
+  visionFrame: z.string().default(""),
+  visionSerif: z.string().default(""),
 });
 
 export const FontInUseSchema = z.object({

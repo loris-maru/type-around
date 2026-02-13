@@ -32,7 +32,7 @@ export default function GlobalTypetester({
       id="tester"
     >
       <div
-        className="relative mb-2 text-xl font-bold"
+        className="relative mb-2 font-bold text-xl"
         style={{ fontFamily: displayFontFamily }}
       >
         Test our fonts!
@@ -51,7 +51,7 @@ export default function GlobalTypetester({
         type="button"
         onClick={addBlock}
         aria-label="Add new typetester block"
-        className="flex w-full items-center justify-center gap-2 rounded-lg border border-neutral-300 border-dashed py-6 text-lg font-semibold text-black transition-colors hover:border-black hover:text-black"
+        className="flex w-full items-center justify-center gap-2 rounded-lg border border-neutral-300 border-dashed py-6 font-semibold text-black text-lg transition-colors hover:border-black hover:text-black"
         style={{ fontFamily: textFontFamily }}
       >
         <RiAddLine size={16} />

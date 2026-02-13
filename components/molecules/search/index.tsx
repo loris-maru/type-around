@@ -98,13 +98,14 @@ export default function SearchPanel({
     }
   }, [isOpen, onClose]);
 
-  // Build Fuse index
+  // Build Fuse index (name + meta + searchMeta for typeface vision)
   const fuse = useMemo(
     () =>
       new Fuse(items, {
         keys: [
           { name: "name", weight: 1 },
           { name: "meta", weight: 0.4 },
+          { name: "searchMeta", weight: 0.5 },
         ],
         threshold: 0.35,
         includeScore: true,

@@ -180,6 +180,14 @@ export type BasicInformationSectionProps = {
   releaseDate: string;
   description: string;
   supportedLanguages: string[];
+  typefaceVision: {
+    usage: string;
+    contrast: string;
+    width: string;
+    playful: string;
+    frame: string;
+    serif: string;
+  };
   designerIds: string[];
   studioDesigners: Designer[];
   onInputChange: (
@@ -189,6 +197,14 @@ export type BasicInformationSectionProps = {
   ) => void;
   onCategoriesChange: (values: string[]) => void;
   onLanguagesChange: (values: string[]) => void;
+  onTypefaceVisionChange: (vision: {
+    usage?: string;
+    contrast?: string;
+    width?: string;
+    playful?: string;
+    frame?: string;
+    serif?: string;
+  }) => void;
   onDesignerIdsChange: (ids: string[]) => void;
 };
 

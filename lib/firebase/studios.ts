@@ -65,6 +65,13 @@ function normalizeTypefaces(
         specimen: t.specimen ?? "",
         eula: t.eula ?? "",
         variableFontFile: t.variableFontFile ?? "",
+        galleryImages: t.galleryImages ?? [],
+        visionUsage: t.visionUsage ?? "",
+        visionContrast: t.visionContrast ?? "",
+        visionWidth: t.visionWidth ?? "",
+        visionPlayful: t.visionPlayful ?? "",
+        visionFrame: t.visionFrame ?? "",
+        visionSerif: t.visionSerif ?? "",
         fonts: Array.isArray(t.fonts)
           ? normalizeFonts(t.fonts)
           : [],

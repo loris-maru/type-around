@@ -4,6 +4,7 @@ import {
   query,
 } from "firebase/firestore";
 import { NextResponse } from "next/server";
+import { typefaceVisionToSearchString } from "@/constant/TYPEFACE_VISION";
 import { db } from "@/lib/firebase/config";
 import type { SearchableItem } from "@/types/search";
 import { slugify } from "@/utils/slugify";
@@ -55,6 +56,16 @@ export async function GET() {
       for (const typeface of typefaces) {
         if (typeface.published && typeface.name) {
           const typefaceSlug = slugify(typeface.name);
+          const visionSearch = typefaceVisionToSearchString(
+            {
+              usage: typeface.visionUsage,
+              contrast: typeface.visionContrast,
+              width: typeface.visionWidth,
+              playful: typeface.visionPlayful,
+              frame: typeface.visionFrame,
+              serif: typeface.visionSerif,
+            }
+          );
 
           items.push({
             id: `typeface-${typeface.id}`,
@@ -62,6 +73,7 @@ export async function GET() {
             type: "typeface",
             href: `/studio/${studioSlug}/typeface/${typefaceSlug}`,
             meta: studioName,
+            searchMeta: visionSearch || undefined,
           });
         }
       }

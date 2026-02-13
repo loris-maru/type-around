@@ -10,6 +10,8 @@ export type SearchableItem = {
   href: string;
   /** Extra context shown alongside the name */
   meta?: string;
+  /** Searchable string for typeface vision (usage, contrast, width, playful) */
+  searchMeta?: string;
 };
 
 export type SearchPanelProps = {

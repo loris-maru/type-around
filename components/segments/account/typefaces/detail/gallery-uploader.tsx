@@ -129,7 +129,7 @@ export default function GalleryUploader({
             </span>
           </div>
         ) : (
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-4 gap-2">
             {images.map((url, index) => (
               <div
                 key={url}
@@ -138,9 +138,9 @@ export default function GalleryUploader({
                 <Image
                   src={url}
                   alt={`Gallery image ${index + 1}`}
-                  fill
-                  className="object-cover"
-                  sizes="120px"
+                  width={800}
+                  height={800}
+                  className="h-full w-full object-cover"
                 />
                 <button
                   type="button"

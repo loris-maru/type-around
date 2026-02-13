@@ -91,6 +91,12 @@ export default function AddTypefaceModal({
         eula: "",
         variableFontFile: "",
         galleryImages: [],
+        visionUsage: "",
+        visionContrast: "",
+        visionWidth: "",
+        visionPlayful: "",
+        visionFrame: "",
+        visionSerif: "",
       };
 
       await onAddTypeface(newTypeface);

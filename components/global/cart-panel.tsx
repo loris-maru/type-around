@@ -70,11 +70,11 @@ export default function CartPanel({
                     >
                       <div className="flex flex-col gap-0.5">
                         {item.typefaceName && (
-                          <span className="font-whisper text-neutral-400 text-xs">
+                          <span className="font-normal font-ortank text-neutral-700 text-sm">
                             {item.typefaceName}
                           </span>
                         )}
-                        <span className="font-medium font-whisper text-black text-sm">
+                        <span className="font-bold font-ortank text-black text-xl">
                           {item.fullName}
                         </span>
                       </div>
@@ -105,7 +105,7 @@ export default function CartPanel({
                     type="button"
                     onClick={clearCart}
                     aria-label="Clear cart"
-                    className="font-whisper text-neutral-400 text-xs transition-colors hover:text-red-500"
+                    className="cursor-pointer font-whisper text-neutral-500 text-sm transition-colors hover:text-red-500"
                   >
                     Clear all
                   </button>
@@ -116,7 +116,7 @@ export default function CartPanel({
                     </span>
                     <button
                       type="button"
-                      className="rounded-lg bg-black px-6 py-2.5 font-medium font-whisper text-sm text-white transition-colors hover:bg-neutral-800"
+                      className="cursor-pointer rounded-lg bg-black px-12 py-4 font-medium font-whisper text-lg text-white transition-colors hover:bg-neutral-800"
                       aria-label="Proceed to checkout"
                     >
                       Checkout
