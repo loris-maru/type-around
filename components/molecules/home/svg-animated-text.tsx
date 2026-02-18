@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 class Particle {
   x: number;
@@ -8,15 +8,14 @@ class Particle {
   originY: number;
   vx: number = 0;
   vy: number = 0;
-  // --- UPDATED: Initial size is now 2x larger ---
-  size: number = 1.6;
-  baseSize: number = 1.6; // Increased from 0.8 to 1.6
-  maxSize: number = 4.5; // Slightly increased to maintain contrast when gathering
+  size: number = 0.75;
+  baseSize: number = 0.75;
+  maxSize: number = 1.6;
 
   angle: number = Math.random() * Math.PI * 2;
   spin: number = (Math.random() - 0.5) * 0.05;
-  distance: number = Math.random() * 45 + 10;
-  color: string = "rgba(0, 0, 0, 0.7)"; // Slightly more transparent due to larger size
+  distance: number = Math.random() * 25 + 6;
+  color: string = "rgba(0, 0, 0, 0.75)";
 
   constructor(x: number, y: number) {
     this.originX = x;
@@ -48,13 +47,12 @@ class Particle {
       const targetX = this.originX;
       const targetY = this.originY;
 
-      this.vx += (targetX - this.x) * 0.15;
-      this.vy += (targetY - this.y) * 0.15;
+      this.vx += (targetX - this.x) * 0.25;
+      this.vy += (targetY - this.y) * 0.25;
 
-      // Grow towards the maxSize
       const targetSize =
         this.baseSize + this.maxSize * force;
-      this.size += (targetSize - this.size) * 0.2;
+      this.size += (targetSize - this.size) * 0.25;
     } else {
       // --- IDLE STATE (Loose Revolution) ---
       const idleX =
@@ -69,8 +67,8 @@ class Particle {
       this.size += (this.baseSize - this.size) * 0.05;
     }
 
-    this.vx *= 0.9;
-    this.vy *= 0.9;
+    this.vx *= 0.88;
+    this.vy *= 0.88;
     this.x += this.vx;
     this.y += this.vy;
   }
@@ -94,11 +92,11 @@ export default function ParticleSVG() {
     if (!ctx) return;
 
     let particles: Particle[] = [];
-    const mouse = { x: -1000, y: -1000, radius: 200 }; // Slightly larger radius for the bigger particles
+    const mouse = { x: -1000, y: -1000, radius: 220 };
 
     const init = () => {
       const img = new Image();
-      img.src = "/svg/logo.svg";
+      img.src = "/svg/type-around_logo_v1.svg";
 
       img.onload = () => {
         const w = window.innerWidth;
@@ -123,9 +121,8 @@ export default function ParticleSVG() {
         ctx.clearRect(0, 0, w, h);
 
         particles = [];
-        // Sample every 4 pixels since particles are larger now (avoids too much overlap)
-        for (let y = 0; y < data.height; y += 4) {
-          for (let x = 0; x < data.width; x += 4) {
+        for (let y = 0; y < data.height; y += 3) {
+          for (let x = 0; x < data.width; x += 3) {
             if (
               data.data[y * 4 * data.width + x * 4 + 3] >
               128
@@ -165,12 +162,12 @@ export default function ParticleSVG() {
       );
       window.removeEventListener("resize", init);
     };
-  }, [scaleFactor]);
+  }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      className="absolute top-0 left-0 w-full h-full pointer-events-none"
+      className="pointer-events-none absolute top-0 left-0 h-full w-full"
       style={{ background: "transparent" }}
     />
   );

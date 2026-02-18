@@ -51,6 +51,11 @@
   box-shadow: var(--shadow-button-hover) !important;
 }
 
+/* Shadow button utility */
+.shadow-button {
+  box-shadow: var(--shadow-button);
+}
+
 /* Medium gray shadow class */
 .shadow-medium-gray {
   box-shadow: var(--shadow-medium-gray);

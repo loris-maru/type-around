@@ -11,6 +11,7 @@ import {
 import type {
   SocialMedia,
   Studio,
+  StudioSpecimen,
   StudioTypeface,
 } from "@/types/studio";
 import {
@@ -99,6 +100,7 @@ export async function getStudioById(
       typefaces: rawData.typefaces
         ? normalizeTypefaces(rawData.typefaces)
         : [],
+      specimens: rawData.specimens ?? [],
     };
     // Validate with Zod
     const result = StudioSchema.safeParse(data);
@@ -313,6 +315,46 @@ export async function updateStudioTypeface(
   await updateStudio(studioId, {
     typefaces: updatedTypefaces,
   });
+}
+
+/**
+ * Add a specimen to the studio
+ */
+export async function addStudioSpecimen(
+  studioId: string,
+  specimen: StudioSpecimen
+): Promise<void> {
+  const studio = await getStudioById(studioId);
+  if (!studio) throw new Error("Studio not found");
+
+  const specimens = studio.specimens ?? [];
+  if (specimens.some((s) => s.id === specimen.id)) return; // already exists
+
+  await updateStudio(studioId, {
+    specimens: [...specimens, specimen],
+  });
+}
+
+/**
+ * Update a specimen in the studio
+ */
+export async function updateStudioSpecimen(
+  studioId: string,
+  specimenId: string,
+  updates: Partial<
+    Pick<
+      StudioSpecimen,
+      "name" | "format" | "orientation" | "pages"
+    >
+  >
+): Promise<void> {
+  const studio = await getStudioById(studioId);
+  if (!studio) throw new Error("Studio not found");
+
+  const specimens = (studio.specimens ?? []).map((s) =>
+    s.id === specimenId ? { ...s, ...updates } : s
+  );
+  await updateStudio(studioId, { specimens });
 }
 
 /**

@@ -126,16 +126,18 @@ export default function FileDropZone({
 
   return (
     <div>
-      <div className="flex flex-row gap-x-2">
-        <span className="mb-1 block font-semibold text-black text-sm">
-          {label}
-        </span>
-        {!instruction && (
-          <span className="text-neutral-400 text-xs">
-            {instruction}
+      {label && (
+        <div className="flex flex-row gap-x-2">
+          <span className="mb-1 block font-semibold text-black text-sm">
+            {label}
           </span>
-        )}
-      </div>
+          {!instruction && (
+            <span className="text-neutral-400 text-xs">
+              {instruction}
+            </span>
+          )}
+        </div>
+      )}
 
       <input
         ref={fileInputRef}

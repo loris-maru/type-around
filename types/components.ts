@@ -265,6 +265,7 @@ export type FontsListSectionProps = {
 
 export type FilesAssetsSectionProps = {
   studioId: string;
+  typefaceSlug: string;
   headerImage: string;
   heroLetter: string;
   specimen: string;
@@ -273,6 +274,7 @@ export type FilesAssetsSectionProps = {
   galleryImages: string[];
   onFileChange: (field: string) => (value: string) => void;
   onGalleryImagesChange: (images: string[]) => void;
+  onOpenEulaGenerator: () => void;
 };
 
 export type AddFontModalProps = {

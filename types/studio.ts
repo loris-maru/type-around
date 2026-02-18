@@ -128,6 +128,29 @@ export const StudioTypefaceSchema = z.object({
   visionSerif: z.string().default(""),
 });
 
+export const SpecimenPageSchema = z.object({
+  id: z.string(),
+  name: z.string().min(1, "Name is required"),
+});
+export type SpecimenPage = z.infer<
+  typeof SpecimenPageSchema
+>;
+
+export const StudioSpecimenSchema = z.object({
+  id: z.string(),
+  name: z.string().min(1, "Name is required"),
+  typefaceSlug: z.string(),
+  createdAt: z.string(), // ISO date string
+  format: z.enum(["A4", "Letter"]).default("A4"),
+  orientation: z
+    .enum(["portrait", "landscape"])
+    .default("portrait"),
+  pages: z.array(SpecimenPageSchema).default([]),
+});
+export type StudioSpecimen = z.infer<
+  typeof StudioSpecimenSchema
+>;
+
 export const FontInUseSchema = z.object({
   id: z.string(),
   images: z
@@ -178,6 +201,7 @@ export const StudioSchema = z.object({
     )
     .default([]),
   typefaces: z.array(StudioTypefaceSchema),
+  specimens: z.array(StudioSpecimenSchema).default([]),
   fontsInUse: z.array(FontInUseSchema).default([]),
   // Stripe Connect
   stripeAccountId: z.string().optional().default(""),
@@ -301,6 +325,16 @@ export type StudioContextValue = {
     typefaceId: string,
     updates: Partial<StudioTypeface>
   ) => Promise<void>;
+  addSpecimen: (specimen: StudioSpecimen) => Promise<void>;
+  updateSpecimen: (
+    specimenId: string,
+    updates: Partial<
+      Pick<
+        StudioSpecimen,
+        "name" | "format" | "orientation" | "pages"
+      >
+    >
+  ) => Promise<void>;
   updateStudio: (
     data: Partial<Omit<Studio, "id" | "ownerEmail">>
   ) => Promise<void>;
@@ -333,6 +367,7 @@ export const DEFAULT_STUDIO: Omit<
   },
   pageLayout: DEFAULT_PAGE_LAYOUT,
   typefaces: [],
+  specimens: [],
   fontsInUse: [],
   stripeAccountId: "",
   members: [],

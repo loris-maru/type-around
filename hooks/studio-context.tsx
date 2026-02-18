@@ -11,6 +11,7 @@ import {
   useState,
 } from "react";
 import {
+  addStudioSpecimen,
   addStudioTypeface,
   getOrCreateStudio,
   getStudioById,
@@ -19,6 +20,7 @@ import {
   updateStudioInformation,
   updateStudioPage,
   updateStudioSocialMedia,
+  updateStudioSpecimen,
   updateStudioTypeface,
 } from "@/lib/firebase/studios";
 import type { LayoutItem } from "@/types/layout";
@@ -26,6 +28,7 @@ import type {
   SocialMedia,
   Studio,
   StudioContextValue,
+  StudioSpecimen,
   StudioTypeface,
 } from "@/types/studio";
 
@@ -244,6 +247,57 @@ export function StudioProvider({
     [studio]
   );
 
+  const addSpecimen = useCallback(
+    async (specimen: StudioSpecimen) => {
+      if (!studio) throw new Error("No studio loaded");
+      await addStudioSpecimen(studio.id, specimen);
+      setStudio((prev) =>
+        prev
+          ? {
+              ...prev,
+              specimens: [
+                ...(prev.specimens ?? []),
+                specimen,
+              ],
+            }
+          : null
+      );
+    },
+    [studio]
+  );
+
+  const updateSpecimen = useCallback(
+    async (
+      specimenId: string,
+      updates: Partial<
+        Pick<
+          StudioSpecimen,
+          "name" | "format" | "orientation" | "pages"
+        >
+      >
+    ) => {
+      if (!studio) throw new Error("No studio loaded");
+      await updateStudioSpecimen(
+        studio.id,
+        specimenId,
+        updates
+      );
+      setStudio((prev) =>
+        prev
+          ? {
+              ...prev,
+              specimens: (prev.specimens ?? []).map((s) =>
+                s.id === specimenId
+                  ? { ...s, ...updates }
+                  : s
+              ),
+            }
+          : null
+      );
+    },
+    [studio]
+  );
+
   const value = useMemo(
     () => ({
       studio,
@@ -256,6 +310,8 @@ export function StudioProvider({
       removeTypeface,
       updateTypeface,
       updateStudio,
+      addSpecimen,
+      updateSpecimen,
     }),
     [
       studio,
@@ -268,6 +324,8 @@ export function StudioProvider({
       removeTypeface,
       updateTypeface,
       updateStudio,
+      addSpecimen,
+      updateSpecimen,
     ]
   );
 

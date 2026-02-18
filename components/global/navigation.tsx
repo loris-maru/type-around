@@ -15,6 +15,7 @@ import SearchPanel from "@/components/molecules/search";
 import { GLOBAL_NAV_ITEMS } from "@/constant/GLOBAL_NAV_ITEMS";
 import { useCartStore } from "@/stores/cart";
 import { cn } from "@/utils/class-names";
+import Logo from "./logo";
 
 export default function Navigation() {
   const pathname = usePathname();
@@ -72,7 +73,7 @@ export default function Navigation() {
             "bg-transparent font-bold font-ortank text-xl"
           )}
         >
-          글자곁
+          <Logo className="h-auto w-14 text-black" />
         </Link>
         {GLOBAL_NAV_ITEMS.map((item) => {
           const isActive = pathname.startsWith(item.href);

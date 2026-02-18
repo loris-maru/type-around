@@ -1,17 +1,17 @@
 "use client";
 
-import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import type { ComponentType } from "react";
-import AccountInformation from "./information";
-import AccountStudioPage from "./studio-page";
-import AccountDesigners from "./designers";
-import AccountTypefaces from "./typefaces";
-import AccountFontsInUse from "./fonts-in-use";
-import AccountStripe from "./stripe";
-import AccountSettings from "./settings";
-import TypefaceDetail from "./typefaces/typeface-detail";
+import { Suspense } from "react";
 import { DEFAULT_ACCOUNT_NAV } from "@/constant/UI_LAYOUT";
+import AccountDesigners from "./designers";
+import AccountFontsInUse from "./fonts-in-use";
+import AccountInformation from "./information";
+import AccountSettings from "./settings";
+import AccountStripe from "./stripe";
+import AccountStudioPage from "./studio-page";
+import AccountTypefaces from "./typefaces";
+import TypefaceDetail from "./typefaces/typeface-detail";
 
 const NAV_COMPONENTS: Record<string, ComponentType> = {
   about: AccountInformation,
@@ -42,7 +42,7 @@ function AccountContent() {
 
 export default function Account() {
   return (
-    <div className="relative w-full min-h-screen">
+    <div className="relative min-h-screen w-full">
       <Suspense fallback={<div>Loading...</div>}>
         <AccountContent />
       </Suspense>

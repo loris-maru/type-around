@@ -13,6 +13,7 @@ import type {
 } from "@/types/components";
 import type { Font, StudioTypeface } from "@/types/studio";
 import { slugify } from "@/utils/slugify";
+import EulaGeneratorModal from "../eula-generator/eula-generator-modal";
 import AddFontModal from "./add-font-modal";
 import AddVersionModal from "./add-version-modal";
 import {
@@ -33,6 +34,8 @@ export default function TypefaceDetail({
   const [editingFont, setEditingFont] =
     useState<Font | null>(null);
   const [isVersionModalOpen, setIsVersionModalOpen] =
+    useState(false);
+  const [isEulaModalOpen, setIsEulaModalOpen] =
     useState(false);
   const [editingVersion, setEditingVersion] =
     useState<TypefaceVersion | null>(null);
@@ -425,6 +428,7 @@ export default function TypefaceDetail({
 
       <FilesAssetsSection
         studioId={studio?.id || ""}
+        typefaceSlug={typefaceSlug}
         headerImage={formData.headerImage || ""}
         heroLetter={formData.heroLetter || ""}
         specimen={formData.specimen || ""}
@@ -433,6 +437,7 @@ export default function TypefaceDetail({
         galleryImages={formData.galleryImages || []}
         onFileChange={handleFileChange}
         onGalleryImagesChange={handleGalleryImagesChange}
+        onOpenEulaGenerator={() => setIsEulaModalOpen(true)}
       />
 
       <AddFontModal
@@ -448,6 +453,12 @@ export default function TypefaceDetail({
         onClose={handleCloseVersionModal}
         onSave={handleSaveVersion}
         editingVersion={editingVersion}
+        studioId={studio?.id || ""}
+      />
+
+      <EulaGeneratorModal
+        isOpen={isEulaModalOpen}
+        onClose={() => setIsEulaModalOpen(false)}
         studioId={studio?.id || ""}
       />
     </div>
