@@ -38,6 +38,8 @@ export function SpecimenPageProvider({
     useState<(() => void) | null>(null);
   const [centerOnPageRequest, setCenterOnPageRequest] =
     useState<string | null>(null);
+  const [isTemplatePickerOpen, setTemplatePickerOpen] =
+    useState(false);
 
   const requestCenterOnPage = useCallback(
     (pageId: string) => {
@@ -66,6 +68,8 @@ export function SpecimenPageProvider({
     centerOnPageRequest,
     requestCenterOnPage,
     clearCenterOnPageRequest,
+    isTemplatePickerOpen,
+    setTemplatePickerOpen,
   };
 
   return (

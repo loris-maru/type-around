@@ -175,6 +175,29 @@ export async function createStudio(
 }
 
 /**
+ * Recursively remove undefined values from an object.
+ * Firebase updateDoc() does not accept undefined.
+ */
+function removeUndefined<T>(obj: T): T {
+  if (obj === undefined || obj === null) {
+    return obj;
+  }
+  if (Array.isArray(obj)) {
+    return obj.map((item) => removeUndefined(item)) as T;
+  }
+  if (typeof obj === "object") {
+    const result = {} as Record<string, unknown>;
+    for (const [key, value] of Object.entries(obj)) {
+      if (value !== undefined) {
+        result[key] = removeUndefined(value);
+      }
+    }
+    return result as T;
+  }
+  return obj;
+}
+
+/**
  * Update an existing studio
  */
 export async function updateStudio(
@@ -182,7 +205,8 @@ export async function updateStudio(
   data: Partial<Omit<Studio, "id" | "ownerEmail">>
 ): Promise<void> {
   const docRef = doc(db, COLLECTION_NAME, id);
-  await updateDoc(docRef, data);
+  const cleanData = removeUndefined(data);
+  await updateDoc(docRef, cleanData);
 }
 
 /**

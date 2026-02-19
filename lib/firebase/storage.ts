@@ -3,7 +3,8 @@ export type UploadFolder =
   | "images"
   | "documents"
   | "icons"
-  | "layout";
+  | "layout"
+  | "feedback";
 
 /**
  * Upload a file using signed URLs (secure, server-verified)

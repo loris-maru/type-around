@@ -62,6 +62,8 @@ export type SpecimenPageContextValue = {
   centerOnPageRequest: string | null;
   requestCenterOnPage: (pageId: string) => void;
   clearCenterOnPageRequest: () => void;
+  isTemplatePickerOpen: boolean;
+  setTemplatePickerOpen: (open: boolean) => void;
 };
 
 // ===========================================
@@ -114,11 +116,7 @@ export type CellSettingPanelProps = {
   cellIndex: number;
 };
 
-export type ExpandedBlockId =
-  | "margins"
-  | "background"
-  | "grid"
-  | null;
+export type ExpandedBlockId = null;
 
 // ===========================================
 // Parameter Blocks

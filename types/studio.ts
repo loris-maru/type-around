@@ -232,6 +232,7 @@ export const SpecimenPageSchema = z.object({
   background: SpecimenPageBackgroundSchema.optional(),
   grid: SpecimenPageGridSchema.optional(),
   cells: z.array(SpecimenPageCellSchema).optional(),
+  templateId: z.string().optional(),
 });
 export type SpecimenPage = z.infer<
   typeof SpecimenPageSchema
