@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { cn } from "@/utils/class-names";
 import AccountNavigation from "./navigation/account-navigation";
 
 export default function AccountLayoutContent({
@@ -12,7 +13,12 @@ export default function AccountLayoutContent({
   const isSpecimenPage = pathname?.includes("/specimen/");
 
   return (
-    <div className="relative w-full px-10 py-44">
+    <div
+      className={cn(
+        "relative w-full px-10",
+        isSpecimenPage ? "pt-24 pb-[30px]" : "py-44"
+      )}
+    >
       <div
         className="fixed inset-0 -z-10 h-screen w-screen"
         style={{
@@ -26,11 +32,10 @@ export default function AccountLayoutContent({
         </div>
       )}
       <div
-        className={
-          isSpecimenPage
-            ? "relative"
-            : "relative pl-[320px]"
-        }
+        className={cn(
+          "relative",
+          !isSpecimenPage && "pl-[320px]"
+        )}
       >
         {children}
       </div>

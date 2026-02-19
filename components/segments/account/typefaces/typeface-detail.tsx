@@ -17,9 +17,11 @@ import EulaGeneratorModal from "../eula-generator/eula-generator-modal";
 import AddFontModal from "./add-font-modal";
 import AddVersionModal from "./add-version-modal";
 import {
+  AssetsSection,
   BasicInformationSection,
-  FilesAssetsSection,
+  EulaSection,
   FontsListSection,
+  SpecimenSection,
   TypefaceDetailHeader,
   VersionsListSection,
 } from "./detail";
@@ -426,18 +428,30 @@ export default function TypefaceDetail({
         onInputChange={handleInputChange}
       />
 
-      <FilesAssetsSection
+      <EulaSection
+        studioId={studio?.id || ""}
+        eula={formData.eula || ""}
+        onEulaChange={handleFileChange("eula")}
+        onOpenEulaGenerator={() => setIsEulaModalOpen(true)}
+      />
+
+      <SpecimenSection
         studioId={studio?.id || ""}
         typefaceSlug={typefaceSlug}
-        headerImage={formData.headerImage || ""}
-        heroLetter={formData.heroLetter || ""}
         specimen={formData.specimen || ""}
-        eula={formData.eula || ""}
+        onSpecimenChange={handleFileChange("specimen")}
+      />
+
+      <AssetsSection
+        studioId={studio?.id || ""}
+        heroLetter={formData.heroLetter || ""}
         variableFontFile={formData.variableFontFile || ""}
         galleryImages={formData.galleryImages || []}
-        onFileChange={handleFileChange}
+        onHeroLetterChange={handleFileChange("heroLetter")}
+        onVariableFontFileChange={handleFileChange(
+          "variableFontFile"
+        )}
         onGalleryImagesChange={handleGalleryImagesChange}
-        onOpenEulaGenerator={() => setIsEulaModalOpen(true)}
       />
 
       <AddFontModal

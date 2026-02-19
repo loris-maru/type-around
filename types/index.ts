@@ -5,5 +5,6 @@ export * from "./cart";
 export * from "./components";
 export * from "./forms";
 export * from "./layout";
+export * from "./specimen";
 export * from "./studio";
 // typefaces.ts contains legacy types - import directly if needed to avoid conflicts with studio.ts

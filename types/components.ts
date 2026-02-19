@@ -27,6 +27,7 @@ import type {
   MemberRole,
   Studio,
   StudioMember,
+  StudioSpecimen,
   StudioTypeface,
 } from "./studio";
 import type { Typeface } from "./typefaces";
@@ -266,7 +267,6 @@ export type FontsListSectionProps = {
 export type FilesAssetsSectionProps = {
   studioId: string;
   typefaceSlug: string;
-  headerImage: string;
   heroLetter: string;
   specimen: string;
   eula: string;
@@ -275,6 +275,62 @@ export type FilesAssetsSectionProps = {
   onFileChange: (field: string) => (value: string) => void;
   onGalleryImagesChange: (images: string[]) => void;
   onOpenEulaGenerator: () => void;
+};
+
+// ===========================================
+// Typeface Detail Section Props
+// ===========================================
+
+export type HeroLetterBlockProps = {
+  value: string;
+  onChange: (value: string) => void;
+  studioId: string;
+};
+
+export type VariableFontFileBlockProps = {
+  value: string;
+  onChange: (value: string) => void;
+  studioId: string;
+};
+
+export type GalleryImagesBlockProps = {
+  studioId: string;
+  images: string[];
+  onChange: (images: string[]) => void;
+};
+
+export type AssetsSectionProps = {
+  studioId: string;
+  heroLetter: string;
+  variableFontFile: string;
+  galleryImages: string[];
+  onHeroLetterChange: (value: string) => void;
+  onVariableFontFileChange: (value: string) => void;
+  onGalleryImagesChange: (images: string[]) => void;
+};
+
+export type EulaSectionProps = {
+  studioId: string;
+  eula: string;
+  onEulaChange: (value: string) => void;
+  onOpenEulaGenerator: () => void;
+};
+
+export type SpecimenSectionProps = {
+  studioId: string;
+  typefaceSlug: string;
+  specimen: string;
+  onSpecimenChange: (value: string) => void;
+};
+
+export type SpecimenCardProps = {
+  specimen: StudioSpecimen;
+  studioId: string;
+};
+
+export type SpecimenPanelProps = {
+  specimenId: string;
+  typefaceSlug: string;
 };
 
 export type AddFontModalProps = {

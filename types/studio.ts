@@ -128,9 +128,49 @@ export const StudioTypefaceSchema = z.object({
   visionSerif: z.string().default(""),
 });
 
+export const SpecimenPageMarginsSchema = z.object({
+  left: z.number().min(0).default(0),
+  top: z.number().min(0).default(0),
+  right: z.number().min(0).default(0),
+  bottom: z.number().min(0).default(0),
+});
+export type SpecimenPageMargins = z.infer<
+  typeof SpecimenPageMarginsSchema
+>;
+
+export const SpecimenPageBackgroundSchema = z.object({
+  type: z
+    .enum(["color", "gradient", "image"])
+    .default("color"),
+  color: z.string().optional().default("#ffffff"),
+  gradient: z
+    .object({
+      from: z.string().default("#FFF8E8"),
+      to: z.string().default("#F2F2F2"),
+    })
+    .optional(),
+  image: z.string().optional().default(""),
+});
+export type SpecimenPageBackground = z.infer<
+  typeof SpecimenPageBackgroundSchema
+>;
+
+export const SpecimenPageGridSchema = z.object({
+  columns: z.number().min(1).default(2),
+  rows: z.number().min(1).default(2),
+  gap: z.number().min(0).default(8),
+  showGrid: z.boolean().default(false),
+});
+export type SpecimenPageGrid = z.infer<
+  typeof SpecimenPageGridSchema
+>;
+
 export const SpecimenPageSchema = z.object({
   id: z.string(),
   name: z.string().min(1, "Name is required"),
+  margins: SpecimenPageMarginsSchema.optional(),
+  background: SpecimenPageBackgroundSchema.optional(),
+  grid: SpecimenPageGridSchema.optional(),
 });
 export type SpecimenPage = z.infer<
   typeof SpecimenPageSchema

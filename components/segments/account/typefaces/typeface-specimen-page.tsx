@@ -1,12 +1,10 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import SpecimenPageWorkspace from "@/components/segments/account/specimen/specimen-page-workspace";
 import { useStudio } from "@/hooks/use-studio";
+import type { TypefaceSpecimenPageProps } from "@/types/specimen";
 import { generateUUID } from "@/utils/generate-uuid";
-
-type TypefaceSpecimenPageProps = {
-  specimenId: string;
-};
 
 export default function TypefaceSpecimenPage({
   specimenId,
@@ -40,11 +38,5 @@ export default function TypefaceSpecimenPage({
     addSpecimen,
   ]);
 
-  return (
-    <div className="flex min-h-[400px] flex-col rounded-lg border border-neutral-200 bg-white p-6">
-      <p className="font-whisper text-neutral-600 text-sm">
-        Specimen editor for {specimenId}
-      </p>
-    </div>
-  );
+  return <SpecimenPageWorkspace specimenId={specimenId} />;
 }

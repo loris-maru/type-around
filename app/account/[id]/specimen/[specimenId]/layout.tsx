@@ -1,11 +1,9 @@
-import Link from "next/link";
+import BackToTypefaceLink from "@/components/segments/account/specimen/back-to-typeface-link";
+import CenterOnPageButton from "@/components/segments/account/specimen/center-on-page-button";
 import PageSettingPanel from "@/components/segments/account/specimen/panels/page-setting-panel";
 import SpecimenPanel from "@/components/segments/account/specimen/panels/specimen-panel";
-
-type SpecimenLayoutProps = {
-  children: React.ReactNode;
-  params: Promise<{ id: string; specimenId: string }>;
-};
+import { SpecimenPageProvider } from "@/contexts/specimen-page-context";
+import type { SpecimenLayoutProps } from "@/types/specimen";
 
 export default async function SpecimenLayout({
   children,
@@ -15,23 +13,32 @@ export default async function SpecimenLayout({
   const typefaceSlug = specimenId.slice(0, -37);
 
   return (
-    <div className="relative flex flex-col gap-6">
-      {studioId && (
-        <Link
-          href={`/account/${studioId}?nav=typefaces&typeface=${typefaceSlug}`}
-          className="w-fit rounded-lg border border-neutral-300 px-4 py-2 font-whisper text-sm transition-colors hover:border-black hover:bg-white"
-        >
-          ← Back to typeface
-        </Link>
-      )}
-      <div className="flex w-full gap-6">
-        <SpecimenPanel
-          specimenId={specimenId}
-          typefaceSlug={typefaceSlug}
-        />
-        <div className="min-w-0 flex-1">{children}</div>
-        <PageSettingPanel />
+    <SpecimenPageProvider>
+      <div className="relative flex h-[calc(100vh-136px)] flex-col gap-6">
+        <div className="relative z-30 flex shrink-0 items-center gap-2">
+          {studioId && (
+            <BackToTypefaceLink
+              studioId={studioId}
+              typefaceSlug={typefaceSlug}
+            />
+          )}
+          <div className="flex-1" />
+          <CenterOnPageButton specimenId={specimenId} />
+        </div>
+        <div className="relative z-10 flex min-h-0 flex-1 items-stretch gap-6 overflow-hidden">
+          <SpecimenPanel
+            specimenId={specimenId}
+            typefaceSlug={typefaceSlug}
+          />
+          <div className="relative min-w-0 flex-1">
+            {children}
+          </div>
+          <PageSettingPanel
+            specimenId={specimenId}
+            studioId={studioId}
+          />
+        </div>
       </div>
-    </div>
+    </SpecimenPageProvider>
   );
 }

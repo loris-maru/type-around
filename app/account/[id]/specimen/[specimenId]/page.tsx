@@ -1,8 +1,5 @@
 import TypefaceSpecimenPage from "@/components/segments/account/typefaces/typeface-specimen-page";
-
-type SpecimenPageProps = {
-  params: Promise<{ id: string; specimenId: string }>;
-};
+import type { SpecimenPageProps } from "@/types/specimen";
 
 export default async function SpecimenPage({
   params,

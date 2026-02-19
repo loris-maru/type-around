@@ -71,6 +71,17 @@
   box-shadow: var(--shadow-button-inactive);
 }
 
+/* Card hover lift effect: border-black, shadow-button, bg-white, translate */
+.hover-card-lift {
+  transition: all 0.3s ease-in-out;
+}
+.hover-card-lift:hover {
+  border-color: black;
+  box-shadow: var(--shadow-button);
+  background-color: white;
+  transform: translate(-4px, -4px);
+}
+
 .section-title {
   font-family: var(--font-ortank);
   font-weight: 900;
