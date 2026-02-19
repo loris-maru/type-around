@@ -33,7 +33,7 @@ export default function CenterOnPageButton({
         !selectedPage
       }
       aria-label="Center workspace on selected page"
-      className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-neutral-300 bg-white transition-colors hover:border-black hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
+      className="fixed right-10 flex size-10 shrink-0 items-center justify-center rounded-lg border border-neutral-300 bg-white transition-colors hover:border-black hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
     >
       <RiFocus2Line className="h-5 w-5 text-neutral-600" />
     </button>

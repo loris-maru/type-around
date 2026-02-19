@@ -165,12 +165,73 @@ export type SpecimenPageGrid = z.infer<
   typeof SpecimenPageGridSchema
 >;
 
+export const SpecimenPageCellBackgroundSchema = z.object({
+  type: z
+    .enum(["color", "gradient", "image"])
+    .default("color"),
+  color: z.string().optional().default("#ffffff"),
+  gradient: z
+    .object({
+      from: z.string().default("#FFF8E8"),
+      to: z.string().default("#F2F2F2"),
+    })
+    .optional(),
+  image: z.string().optional().default(""),
+});
+export type SpecimenPageCellBackground = z.infer<
+  typeof SpecimenPageCellBackgroundSchema
+>;
+
+export const SpecimenPageCellPaddingSchema = z.object({
+  left: z.number().min(0).default(0),
+  top: z.number().min(0).default(0),
+  right: z.number().min(0).default(0),
+  bottom: z.number().min(0).default(0),
+});
+export type SpecimenPageCellPadding = z.infer<
+  typeof SpecimenPageCellPaddingSchema
+>;
+
+export const SpecimenPageCellSchema = z.object({
+  content: z.string().default(""),
+  fontId: z.string().optional(),
+  fontSize: z.number().min(1).optional(),
+  lineHeight: z.number().min(0.5).optional(),
+  selectionBackgroundColor: z.string().optional(),
+  textColor: z.string().default("#000000"),
+  background: SpecimenPageCellBackgroundSchema.optional(),
+  padding: SpecimenPageCellPaddingSchema.optional(),
+  textAlign: z
+    .enum(["left", "center", "right", "justify"])
+    .default("left"),
+  verticalAlign: z
+    .enum(["top", "center", "bottom"])
+    .default("top"),
+});
+export type SpecimenPageCell = z.infer<
+  typeof SpecimenPageCellSchema
+>;
+
+export const DEFAULT_SPECIMEN_PAGE_CELL: SpecimenPageCell =
+  {
+    content: "",
+    textColor: "#000000",
+    textAlign: "left",
+    verticalAlign: "top",
+    background: {
+      type: "color",
+      color: "#ffffff",
+      image: "",
+    },
+  };
+
 export const SpecimenPageSchema = z.object({
   id: z.string(),
   name: z.string().min(1, "Name is required"),
   margins: SpecimenPageMarginsSchema.optional(),
   background: SpecimenPageBackgroundSchema.optional(),
   grid: SpecimenPageGridSchema.optional(),
+  cells: z.array(SpecimenPageCellSchema).optional(),
 });
 export type SpecimenPage = z.infer<
   typeof SpecimenPageSchema

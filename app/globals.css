@@ -71,6 +71,11 @@
   box-shadow: var(--shadow-button-inactive);
 }
 
+/* Specimen cell selection color (uses --selection-bg CSS variable) */
+.specimen-cell-content::selection {
+  background-color: var(--selection-bg, #b4d5fe);
+}
+
 /* Card hover lift effect: border-black, shadow-button, bg-white, translate */
 .hover-card-lift {
   transition: all 0.3s ease-in-out;

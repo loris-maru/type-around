@@ -1,6 +1,6 @@
 import BackToTypefaceLink from "@/components/segments/account/specimen/back-to-typeface-link";
 import CenterOnPageButton from "@/components/segments/account/specimen/center-on-page-button";
-import PageSettingPanel from "@/components/segments/account/specimen/panels/page-setting-panel";
+import RightPanelContainer from "@/components/segments/account/specimen/panels/right-panel-container";
 import SpecimenPanel from "@/components/segments/account/specimen/panels/specimen-panel";
 import { SpecimenPageProvider } from "@/contexts/specimen-page-context";
 import type { SpecimenLayoutProps } from "@/types/specimen";
@@ -33,9 +33,10 @@ export default async function SpecimenLayout({
           <div className="relative min-w-0 flex-1">
             {children}
           </div>
-          <PageSettingPanel
+          <RightPanelContainer
             specimenId={specimenId}
             studioId={studioId}
+            typefaceSlug={typefaceSlug}
           />
         </div>
       </div>

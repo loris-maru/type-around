@@ -15,8 +15,10 @@ export default function AccountLayoutContent({
   return (
     <div
       className={cn(
-        "relative w-full px-10",
-        isSpecimenPage ? "pt-24 pb-[30px]" : "py-44"
+        "relative w-full",
+        isSpecimenPage
+          ? "pl-10 pr-0 pt-24 pb-[30px]"
+          : "px-10 py-44"
       )}
     >
       <div

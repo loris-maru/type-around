@@ -24,7 +24,7 @@ export default function ParameterBlock({
     : internalExpanded;
 
   const header = (
-    <div className="mb-4 font-whisper text-neutral-600 text-sm">
+    <div className="mb-2 font-whisper text-neutral-600 text-sm">
       {title}
     </div>
   );

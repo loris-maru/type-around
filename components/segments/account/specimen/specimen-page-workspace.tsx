@@ -21,8 +21,13 @@ export default function SpecimenPageWorkspace({
   specimenId,
 }: SpecimenPageWorkspaceProps) {
   const { studio } = useStudio();
-  const { centerOnPageRequest, clearCenterOnPageRequest } =
-    useSpecimenPage();
+  const {
+    centerOnPageRequest,
+    clearCenterOnPageRequest,
+    requestCenterOnPage,
+    setSelectedCell,
+  } = useSpecimenPage();
+  const initialCenterDoneRef = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const pageRefsMap = useRef<Map<string, HTMLDivElement>>(
@@ -157,6 +162,17 @@ export default function SpecimenPageWorkspace({
     clearCenterOnPageRequest();
   }, [centerOnPageRequest, clearCenterOnPageRequest]);
 
+  // Center on first page when user arrives on specimen generator
+  useEffect(() => {
+    if (initialCenterDoneRef.current || pages.length === 0)
+      return;
+    initialCenterDoneRef.current = true;
+    const raf = requestAnimationFrame(() => {
+      requestCenterOnPage(pages[0].id);
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [pages, requestCenterOnPage]);
+
   const setPageRef = useCallback(
     (pageId: string, el: HTMLDivElement | null) => {
       if (el) pageRefsMap.current.set(pageId, el);
@@ -165,7 +181,26 @@ export default function SpecimenPageWorkspace({
     []
   );
 
+  const handleContainerClick = useCallback(
+    (e: React.MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest("[data-page-id]")) return;
+      setSelectedCell(null);
+    },
+    [setSelectedCell]
+  );
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedCell(null);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () =>
+      window.removeEventListener("keydown", onKeyDown);
+  }, [setSelectedCell]);
+
   return (
+    // biome-ignore lint/a11y/useKeyWithClickEvents: Click-outside-to-deselect; Escape key handled globally
     <div
       ref={containerRef}
       role="application"
@@ -177,6 +212,7 @@ export default function SpecimenPageWorkspace({
         cursor: isPanning ? "grabbing" : "default",
       }}
       onMouseDown={handleMouseDown}
+      onClick={handleContainerClick}
     >
       <div
         ref={contentRef}
@@ -199,6 +235,9 @@ export default function SpecimenPageWorkspace({
               page={page}
               format={format}
               orientation={orientation}
+              specimenId={specimenId}
+              typefaceSlug={specimen?.typefaceSlug ?? ""}
+              workspaceScale={scale}
             />
           </div>
         ))}

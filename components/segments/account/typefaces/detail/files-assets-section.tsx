@@ -1,6 +1,6 @@
 "use client";
 
-import type { FilesAssetsSectionProps } from "@/types/components";
+import type { FilesAssetsSectionProps } from "@/types";
 import AssetsSection from "./assets-section";
 import EulaSection from "./eula-section";
 import SpecimenSection from "./specimen-section";

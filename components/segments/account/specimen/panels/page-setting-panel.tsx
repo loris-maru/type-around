@@ -102,6 +102,17 @@ export default function PageSettingPanel({
     [effectivePages, specimenId, updateSpecimen]
   );
 
+  const handleApplyMargins = useCallback(
+    (pageId: string, margins: SpecimenPageMargins) => {
+      if (pageId === "placeholder") return;
+      const updatedPages = effectivePages.map((p) =>
+        p.id === pageId ? { ...p, margins } : p
+      );
+      updateSpecimen(specimenId, { pages: updatedPages });
+    },
+    [effectivePages, specimenId, updateSpecimen]
+  );
+
   const handleBackgroundChange = useCallback(
     (
       pageId: string,
@@ -148,6 +159,7 @@ export default function PageSettingPanel({
       ) : (
         <div className="flex flex-col">
           <MarginsParameterBlock
+            key={selectedPage.id}
             page={selectedPage}
             onMarginChange={(field, value) =>
               handleMarginChange(
@@ -155,6 +167,9 @@ export default function PageSettingPanel({
                 field,
                 value
               )
+            }
+            onApply={(margins) =>
+              handleApplyMargins(selectedPage.id, margins)
             }
             expanded={expandedBlockId === "margins"}
             onToggle={() =>
