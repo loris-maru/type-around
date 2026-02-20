@@ -180,6 +180,9 @@ export default async function TypefacePage({
       <TypefaceShop
         fonts={typeface.fonts}
         typefaceName={typeface.name}
+        typefaceSlug={typefaceName}
+        studioId={firebaseStudio.id}
+        studioSlug={name}
       />
       <MoreContent studio={studioWithTypefaces} />
       <Footer />

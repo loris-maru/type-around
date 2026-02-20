@@ -3,30 +3,52 @@
 import { useState } from "react";
 import IconCart from "@/components/icons/icon-cart";
 import { useCartStore } from "@/stores/cart";
+import { getCartItemKey } from "@/types/cart";
 import type { Font } from "@/types/typefaces";
 
 export default function FontLine({
   font,
   typefaceName,
+  typefaceSlug,
+  studioId,
+  studioSlug,
   text,
 }: {
-  font: Font;
+  font: Font & { id?: string; salesFiles?: string[] };
   typefaceName: string;
+  typefaceSlug?: string;
+  studioId?: string;
+  studioSlug?: string;
   text: string;
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const addToCart = useCartStore((s) => s.addToCart);
+  const cartItemForComparison = {
+    ...font,
+    typefaceName,
+    typefaceSlug,
+    studioId,
+    studioSlug,
+    fontId: font.id,
+  };
   const isInCart = useCartStore((s) =>
     s.cart.some(
       (i) =>
-        i.name === font.name &&
-        i.weight === font.weight &&
-        i.style === font.style
+        getCartItemKey(i) ===
+        getCartItemKey(cartItemForComparison)
     )
   );
 
   const handleAddToCart = () => {
-    addToCart({ ...font, typefaceName });
+    addToCart({
+      ...font,
+      typefaceName,
+      typefaceSlug,
+      studioId,
+      studioSlug,
+      fontId: font.id,
+      salesFileUrls: font.salesFiles || [],
+    });
   };
 
   return (

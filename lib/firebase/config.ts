@@ -1,4 +1,4 @@
-import { initializeApp, getApps } from "firebase/app";
+import { getApps, initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
@@ -20,5 +20,7 @@ const app =
 
 // If using a named database "studios", pass it as second argument
 export const db = getFirestore(app, "studios");
+// Orders database (separate Firestore database)
+export const ordersDb = getFirestore(app, "orders");
 export const storage = getStorage(app);
 export default app;
