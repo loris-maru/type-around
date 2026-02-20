@@ -5,7 +5,7 @@ import HeaderAllFonts from "@/components/segments/home/all-fonts/header";
 import type { Typeface } from "@/types/typefaces";
 import type { AllFontsProps } from "@/types/components";
 import STUDIOS from "@/mock-data/studios";
-import TypefaceCard from "@/components/molecules/cards/typefaces";
+import { TypefaceCard } from "@/components/molecules/cards";
 
 export default function AllFonts({
   opacity,

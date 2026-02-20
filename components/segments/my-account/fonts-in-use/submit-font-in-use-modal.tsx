@@ -8,6 +8,7 @@ import {
   RiLoader4Line,
   RiUploadCloud2Line,
 } from "react-icons/ri";
+import { InputDropdown } from "@/components/global/inputs";
 import { uploadFile } from "@/lib/firebase/storage";
 import type {
   ImagePreview,
@@ -284,24 +285,28 @@ export default function SubmitFontInUseModal({
             >
               Studio <span className="text-red-500">*</span>
             </label>
-            <select
-              id="studioId"
-              name="studioId"
+            <InputDropdown
               value={formData.studioId}
-              onChange={handleInputChange}
-              required
-              className="w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
-            >
-              <option value="">Select a studio</option>
-              {studios.map((studio) => (
-                <option
-                  key={studio.id}
-                  value={studio.id}
-                >
-                  {studio.name}
-                </option>
-              ))}
-            </select>
+              options={[
+                { value: "", label: "Select a studio" },
+                ...studios.map((s) => ({
+                  value: s.id,
+                  label: s.name,
+                })),
+              ]}
+              onChange={(value) => {
+                const studio = studios.find(
+                  (s) => s.id === value
+                );
+                setSelectedStudio(studio || null);
+                setFormData((prev) => ({
+                  ...prev,
+                  studioId: value,
+                  typefaceId: "",
+                }));
+              }}
+              className="w-full"
+            />
           </div>
 
           {/* Typeface Select */}
@@ -313,29 +318,29 @@ export default function SubmitFontInUseModal({
               Typeface{" "}
               <span className="text-red-500">*</span>
             </label>
-            <select
-              id="typefaceId"
-              name="typefaceId"
+            <InputDropdown
               value={formData.typefaceId}
-              onChange={handleInputChange}
-              required
+              options={[
+                {
+                  value: "",
+                  label: selectedStudio
+                    ? "Select a typeface"
+                    : "Select a studio first",
+                },
+                ...(selectedStudio?.typefaces.map((t) => ({
+                  value: t.id,
+                  label: t.name,
+                })) ?? []),
+              ]}
+              onChange={(value) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  typefaceId: value,
+                }))
+              }
               disabled={!selectedStudio}
-              className="w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black disabled:bg-neutral-100 disabled:text-neutral-400"
-            >
-              <option value="">
-                {selectedStudio
-                  ? "Select a typeface"
-                  : "Select a studio first"}
-              </option>
-              {selectedStudio?.typefaces.map((typeface) => (
-                <option
-                  key={typeface.id}
-                  value={typeface.id}
-                >
-                  {typeface.name}
-                </option>
-              ))}
-            </select>
+              className="w-full"
+            />
             {selectedStudio &&
               selectedStudio.typefaces.length === 0 && (
                 <p className="mt-1 text-neutral-500 text-xs">

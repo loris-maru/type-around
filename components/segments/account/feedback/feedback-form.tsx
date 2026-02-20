@@ -5,11 +5,25 @@ import { motion } from "motion/react";
 import {
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
-import { RiArrowLeftLine } from "react-icons/ri";
 import FileDropZone from "@/components/global/file-drop-zone";
+import { InputDropdown } from "@/components/global/inputs";
+import {
+  ButtonCancelForm,
+  ButtonCloseModal,
+  ButtonGoBack,
+  ButtonSelectReviewer,
+  ButtonSelectSlot,
+  ButtonSendRequest,
+} from "@/components/molecules/buttons";
+import {
+  FEEDBACK_MOCK_DAYS,
+  FEEDBACK_MOCK_SLOTS,
+  NYLAS_SCHEDULER_API_URL,
+} from "@/constant/FEEDBACK";
 import type { FeedbackReviewer } from "@/constant/FEEDBACK_REVIEWERS";
 import {
   getDefaultNylasConfigId,
@@ -19,44 +33,24 @@ import type { StudioTypeface } from "@/types/studio";
 
 type FeedbackFormProps = {
   studioId: string;
+  studioName: string;
   typefaces: StudioTypeface[];
   reviewers: FeedbackReviewer[];
   step: number;
   onStepChange: (step: number) => void;
 };
 
-const NYLAS_SCHEDULER_API_URL =
-  process.env.NEXT_PUBLIC_NYLAS_SCHEDULER_API_URL ??
-  "https://api.us.nylas.com";
-
-const MOCK_DAYS = [
-  { date: "2025-02-15", label: "Mon, Feb 15" },
-  { date: "2025-02-16", label: "Tue, Feb 16" },
-  { date: "2025-02-17", label: "Wed, Feb 17" },
-];
-
-const MOCK_SLOTS = [
-  "09:00",
-  "10:00",
-  "11:00",
-  "14:00",
-  "15:00",
-  "16:00",
-];
-
 function ReviewerCard({
   reviewer,
+  studioName,
   onSelect,
 }: {
   reviewer: FeedbackReviewer;
+  studioName: string;
   onSelect: () => void;
 }) {
   return (
-    <button
-      type="button"
-      onClick={onSelect}
-      className="flex w-full items-center gap-4 rounded-lg border border-neutral-200 bg-white p-4 text-left transition-colors hover:border-neutral-400 hover:bg-neutral-50"
-    >
+    <ButtonSelectReviewer onSelect={onSelect}>
       <div
         className="h-12 w-12 shrink-0 rounded-full"
         style={{ background: reviewer.gradient }}
@@ -66,8 +60,13 @@ function ReviewerCard({
         <div className="font-medium font-whisper text-neutral-800 text-sm">
           {reviewer.firstName} {reviewer.lastName}
         </div>
+        {studioName && (
+          <div className="font-whisper text-neutral-500 text-xs">
+            {studioName}
+          </div>
+        )}
       </div>
-    </button>
+    </ButtonSelectReviewer>
   );
 }
 
@@ -107,6 +106,7 @@ type NylasBookedEvent = {
 
 export default function FeedbackForm({
   studioId,
+  studioName,
   typefaces,
   reviewers,
   step,
@@ -133,6 +133,17 @@ export default function FeedbackForm({
       getDefaultNylasConfigId())
     : undefined;
   const useNylas = Boolean(nylasConfigId);
+
+  const typefaceOptions = useMemo(
+    () => [
+      { value: "", label: "Select a typeface..." },
+      ...typefaces.map((tf) => ({
+        value: tf.id,
+        label: tf.name,
+      })),
+    ],
+    [typefaces]
+  );
 
   useEffect(() => {
     if (!useNylas || !nylasContainerRef.current) return;
@@ -220,8 +231,20 @@ export default function FeedbackForm({
     );
   }
 
+  if (reviewers.length === 0) {
+    return (
+      <div className="rounded-lg border border-amber-200 bg-amber-50 p-6">
+        <p className="font-whisper text-amber-800 text-sm">
+          No reviewers available. Add reviewers in Settings
+          → Team Members by enabling the
+          &quot;Reviewer&quot; checkbox for members.
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 bg-white p-6">
       {step === 1 && (
         <motion.div
           initial={{ opacity: 0, y: 8 }}
@@ -230,32 +253,22 @@ export default function FeedbackForm({
         >
           <div>
             <label
-              htmlFor="feedback-typeface"
               className="mb-2 block font-whisper text-neutral-600 text-sm"
+              htmlFor="feedback-typeface"
             >
               Typeface to give feedback on:
             </label>
-            <select
-              id="feedback-typeface"
+            <InputDropdown
               value={selectedTypeface?.id ?? ""}
-              onChange={(e) => {
+              options={typefaceOptions}
+              onChange={(value) => {
                 const tf = typefaces.find(
-                  (t) => t.id === e.target.value
+                  (t) => t.id === value
                 );
                 setSelectedTypeface(tf ?? null);
               }}
-              className="w-full rounded-lg border border-neutral-300 px-3 py-2 font-whisper text-neutral-800 text-sm outline-none focus:border-black"
-            >
-              <option value="">Select a typeface...</option>
-              {typefaces.map((tf) => (
-                <option
-                  key={tf.id}
-                  value={tf.id}
-                >
-                  {tf.name}
-                </option>
-              ))}
-            </select>
+              className="w-full"
+            />
           </div>
 
           <div>
@@ -267,6 +280,7 @@ export default function FeedbackForm({
                 <ReviewerCard
                   key={reviewer.id}
                   reviewer={reviewer}
+                  studioName={studioName}
                   onSelect={() =>
                     handleSelectReviewer(reviewer)
                   }
@@ -283,14 +297,7 @@ export default function FeedbackForm({
           animate={{ opacity: 1, y: 0 }}
           className="flex flex-col gap-4"
         >
-          <button
-            type="button"
-            onClick={handleBack}
-            className="flex w-fit items-center gap-2 font-whisper text-neutral-600 text-sm transition-colors hover:text-black"
-          >
-            <RiArrowLeftLine className="h-4 w-4" />
-            Back
-          </button>
+          <ButtonGoBack onClick={handleBack} />
           <div className="flex items-center gap-4 rounded-lg border border-neutral-200 bg-white p-3">
             <div
               className="h-10 w-10 shrink-0 rounded-full"
@@ -319,23 +326,20 @@ export default function FeedbackForm({
             </div>
           ) : (
             <div className="flex flex-col gap-4">
-              {MOCK_DAYS.map((day) => (
+              {FEEDBACK_MOCK_DAYS.map((day) => (
                 <div key={day.date}>
                   <div className="mb-2 font-whisper text-neutral-600 text-xs">
                     {day.label}
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    {MOCK_SLOTS.map((slot) => (
-                      <button
+                    {FEEDBACK_MOCK_SLOTS.map((slot) => (
+                      <ButtonSelectSlot
                         key={slot}
-                        type="button"
+                        slot={slot}
                         onClick={() =>
                           handleSelectSlot(day.date, slot)
                         }
-                        className="rounded-lg border border-neutral-300 px-3 py-2 font-whisper text-neutral-700 text-sm transition-colors hover:border-black hover:bg-neutral-50"
-                      >
-                        {slot}
-                      </button>
+                      />
                     ))}
                   </div>
                 </div>
@@ -351,14 +355,7 @@ export default function FeedbackForm({
           animate={{ opacity: 1, y: 0 }}
           className="flex flex-col gap-6"
         >
-          <button
-            type="button"
-            onClick={handleBack}
-            className="flex w-fit items-center gap-2 font-whisper text-neutral-600 text-sm transition-colors hover:text-black"
-          >
-            <RiArrowLeftLine className="h-4 w-4" />
-            Back
-          </button>
+          <ButtonGoBack onClick={handleBack} />
 
           <div className="flex items-center gap-4 rounded-lg border border-neutral-200 bg-white p-4">
             <div
@@ -387,7 +384,7 @@ export default function FeedbackForm({
           <div>
             <label
               htmlFor="feedback-comment"
-              className="mb-2 block font-whisper text-neutral-600 text-sm"
+              className="mb-1 block font-medium text-black text-sm"
             >
               Comment
             </label>
@@ -403,9 +400,6 @@ export default function FeedbackForm({
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <span className="mb-2 block font-whisper text-neutral-600 text-sm">
-                Upload your typographic proof
-              </span>
               <FileDropZone
                 label="Typographic proof"
                 accept=".pdf,.png,.jpg,.jpeg,.webp"
@@ -418,12 +412,6 @@ export default function FeedbackForm({
               />
             </div>
             <div>
-              <span className="mb-2 block font-whisper text-neutral-600 text-sm">
-                Upload your glyphs or ufo file{" "}
-                <span className="text-neutral-400">
-                  (not mandatory)
-                </span>
-              </span>
               <FileDropZone
                 label="Glyphs or UFO file"
                 accept=".glyphs,.ufo,.zip"
@@ -438,20 +426,10 @@ export default function FeedbackForm({
           </div>
 
           <div className="flex gap-4">
-            <button
-              type="button"
-              onClick={handleCancel}
-              className="rounded-lg border border-neutral-300 px-4 py-2 font-whisper text-neutral-600 text-sm transition-colors hover:border-black hover:bg-neutral-50"
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
+            <ButtonCancelForm onClick={handleCancel} />
+            <ButtonSendRequest
               onClick={handleSendRequest}
-              className="rounded-lg border border-black bg-black px-4 py-2 font-whisper text-sm text-white transition-colors hover:bg-neutral-800"
-            >
-              Send request
-            </button>
+            />
           </div>
         </motion.div>
       )}
@@ -475,13 +453,11 @@ export default function FeedbackForm({
               designer will get back to you soon.
             </p>
           </div>
-          <button
-            type="button"
+          <ButtonCloseModal
             onClick={handleCloseConfirmation}
-            className="rounded-lg border border-neutral-300 px-4 py-2 font-whisper text-neutral-600 text-sm transition-colors hover:border-black hover:bg-neutral-50"
           >
             Close
-          </button>
+          </ButtonCloseModal>
         </motion.div>
       )}
     </div>

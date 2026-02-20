@@ -1,28 +1,12 @@
 "use client";
 
-import { type ChangeEvent, useState } from "react";
+import { useState } from "react";
 import ColorPicker from "@/components/molecules/color-picker";
+import { handleHexChange } from "@/utils/color-utils";
 
 export default function GradientColorInput() {
   const [color1, setColor1] = useState("#FFF8E8");
   const [color2, setColor2] = useState("#F2F2F2");
-
-  const handleHexChange = (
-    e: ChangeEvent<HTMLInputElement>,
-    setter: (value: string) => void
-  ) => {
-    let value = e.target.value;
-
-    // Add # if not present
-    if (!value.startsWith("#")) {
-      value = `#${value}`;
-    }
-
-    // Only update if it's a valid hex format (partial or complete)
-    if (/^#[0-9A-Fa-f]{0,6}$/.test(value)) {
-      setter(value);
-    }
-  };
 
   return (
     <div className="relative w-full">
@@ -44,7 +28,7 @@ export default function GradientColorInput() {
               type="text"
               value={color1}
               onChange={(e) =>
-                handleHexChange(e, setColor1)
+                handleHexChange(e.target.value, setColor1)
               }
               maxLength={7}
               aria-label="Gradient color 1 hex value"
@@ -64,7 +48,7 @@ export default function GradientColorInput() {
               type="text"
               value={color2}
               onChange={(e) =>
-                handleHexChange(e, setColor2)
+                handleHexChange(e.target.value, setColor2)
               }
               maxLength={7}
               aria-label="Gradient color 2 hex value"

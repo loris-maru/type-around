@@ -19,59 +19,24 @@ import CustomSelect from "@/components/global/custom-select";
 import FileDropZone from "@/components/global/file-drop-zone";
 import { FontDropdown } from "@/components/global/typetester/parameters";
 import ColorPicker from "@/components/molecules/color-picker";
+import { SPECIMEN_BACKGROUND_TYPE_OPTIONS } from "@/constant/SPECIMEN_OPTIONS";
 import { useSpecimenPage } from "@/contexts/specimen-page-context";
 import { useStudio } from "@/hooks/use-studio";
 import type { CellSettingPanelProps } from "@/types/specimen";
 import {
   DEFAULT_SPECIMEN_PAGE_CELL,
   type SpecimenPage,
-  type SpecimenPageCell,
   type SpecimenPageCellBackground,
   type SpecimenPageCellPadding,
 } from "@/types/studio";
 import { cn } from "@/utils/class-names";
+import { handleHexChange } from "@/utils/color-utils";
+import { parseFontSizePx } from "@/utils/specimen-parse";
+import {
+  getCellBackground,
+  getCellPadding,
+} from "@/utils/specimen-utils";
 import ParameterBlock from "./parameter-block";
-
-const BACKGROUND_TYPE_OPTIONS = [
-  { value: "color", label: "Color" },
-  { value: "gradient", label: "Gradient" },
-  { value: "image", label: "Image" },
-];
-
-const DEFAULT_CELL_BG: SpecimenPageCellBackground = {
-  type: "color",
-  color: "#ffffff",
-  gradient: { from: "#FFF8E8", to: "#F2F2F2" },
-  image: "",
-};
-
-const DEFAULT_PADDING: SpecimenPageCellPadding = {
-  left: 0,
-  top: 0,
-  right: 0,
-  bottom: 0,
-};
-
-function getCellBackground(
-  cell: SpecimenPageCell | undefined
-): SpecimenPageCellBackground {
-  return cell?.background ?? DEFAULT_CELL_BG;
-}
-
-function getCellPadding(
-  cell: SpecimenPageCell | undefined
-): SpecimenPageCellPadding {
-  return cell?.padding ?? DEFAULT_PADDING;
-}
-
-function handleHexChange(
-  value: string,
-  setter: (v: string) => void
-): void {
-  let v = value;
-  if (!v.startsWith("#")) v = `#${v}`;
-  if (/^#[0-9A-Fa-f]{0,6}$/.test(v)) setter(v);
-}
 
 function CellPaddingBlock({
   padding,
@@ -272,14 +237,6 @@ function PaddingInput({
   );
 }
 
-function parseFontSizePx(
-  value: string | null | undefined
-): number {
-  if (!value) return 24;
-  const match = value.match(/^(\d+(?:\.\d+)?)px$/);
-  return match ? Number(match[1]) : 24;
-}
-
 export default function CellSettingPanel({
   specimenId,
   studioId,
@@ -384,7 +341,9 @@ export default function CellSettingPanel({
             setTextSelection: (r: {
               from: number;
               to: number;
-            }) => { run: () => boolean };
+            }) => {
+              run: () => boolean;
+            };
             setColor: (v: string) => { run: () => boolean };
           };
         };
@@ -448,7 +407,9 @@ export default function CellSettingPanel({
             setTextSelection: (r: {
               from: number;
               to: number;
-            }) => { run: () => boolean };
+            }) => {
+              run: () => boolean;
+            };
             setFontFamily: (v: string) => {
               run: () => boolean;
             };
@@ -515,7 +476,9 @@ export default function CellSettingPanel({
             setTextSelection: (r: {
               from: number;
               to: number;
-            }) => { run: () => boolean };
+            }) => {
+              run: () => boolean;
+            };
             setFontSize: (v: string) => {
               run: () => boolean;
             };
@@ -581,7 +544,9 @@ export default function CellSettingPanel({
             setTextSelection: (r: {
               from: number;
               to: number;
-            }) => { run: () => boolean };
+            }) => {
+              run: () => boolean;
+            };
             setLineHeight: (v: string) => {
               run: () => boolean;
             };
@@ -650,7 +615,9 @@ export default function CellSettingPanel({
             setTextSelection: (r: {
               from: number;
               to: number;
-            }) => { run: () => boolean };
+            }) => {
+              run: () => boolean;
+            };
             setBackgroundColor: (v: string) => {
               run: () => boolean;
             };
@@ -937,7 +904,7 @@ export default function CellSettingPanel({
             <div className="flex flex-col gap-3">
               <CustomSelect
                 value={background.type}
-                options={BACKGROUND_TYPE_OPTIONS}
+                options={SPECIMEN_BACKGROUND_TYPE_OPTIONS}
                 onChange={(v) =>
                   handleBackgroundChange({
                     ...background,

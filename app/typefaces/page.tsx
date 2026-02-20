@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Footer from "@/components/global/footer";
-import TypefaceCard from "@/components/molecules/cards/typefaces";
+import { TypefaceCard } from "@/components/molecules/cards";
 import STUDIOS from "@/mock-data/studios";
 import { Typeface } from "@/types/typefaces";
 import TypefaceFilter from "@/components/segments/typeface/filter";

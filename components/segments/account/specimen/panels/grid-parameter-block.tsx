@@ -1,22 +1,8 @@
 "use client";
 
 import type { GridParameterBlockProps } from "@/types/specimen";
-import type {
-  SpecimenPage,
-  SpecimenPageGrid,
-} from "@/types/studio";
+import { getPageGrid } from "@/utils/specimen-utils";
 import ParameterBlock from "./parameter-block";
-
-const DEFAULT_GRID: SpecimenPageGrid = {
-  columns: 2,
-  rows: 2,
-  gap: 8,
-  showGrid: false,
-};
-
-function getPageGrid(page: SpecimenPage): SpecimenPageGrid {
-  return page.grid ?? DEFAULT_GRID;
-}
 
 export default function GridParameterBlock({
   page,

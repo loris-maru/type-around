@@ -1,17 +1,8 @@
 "use client";
 
+import { InputDropdown } from "@/components/global/inputs";
+import { COUNTRY_OPTIONS } from "@/constant/COUNTRY_OPTIONS";
 import { useEulaStore } from "@/stores/eula-store";
-
-const COUNTRY_OPTIONS = [
-  "South Korea",
-  "United States",
-  "Japan",
-  "China",
-  "United Kingdom",
-  "Germany",
-  "France",
-  "Other",
-];
 
 export default function StepFoundryInfo() {
   const { foundryInfo, updateFoundryInfo } = useEulaStore();
@@ -156,23 +147,17 @@ export default function StepFoundryInfo() {
           >
             Country of business
           </label>
-          <select
-            id="country"
+          <InputDropdown
             value={foundryInfo.country}
-            onChange={(e) =>
-              updateFoundryInfo({ country: e.target.value })
+            options={COUNTRY_OPTIONS.map((c) => ({
+              value: c,
+              label: c,
+            }))}
+            onChange={(value) =>
+              updateFoundryInfo({ country: value })
             }
-            className="w-full border border-neutral-300 bg-white px-5 py-4 font-whisper text-sm"
-          >
-            {COUNTRY_OPTIONS.map((country) => (
-              <option
-                key={country}
-                value={country}
-              >
-                {country}
-              </option>
-            ))}
-          </select>
+            className="w-full"
+          />
         </div>
       </div>
     </div>

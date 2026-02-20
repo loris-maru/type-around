@@ -1,7 +1,11 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { RiCloseLine } from "react-icons/ri";
+import {
+  ButtonAddAvailability,
+  ButtonCancelForm,
+  ButtonCloseModal,
+} from "@/components/molecules/buttons";
 
 type AddAvailabilityModalProps = {
   isOpen: boolean;
@@ -43,14 +47,10 @@ export default function AddAvailabilityModal({
           <h2 className="font-ortank font-bold text-lg text-neutral-800">
             Add availability
           </h2>
-          <button
-            type="button"
+          <ButtonCloseModal
             onClick={onClose}
-            className="rounded p-1 transition-colors hover:bg-neutral-100"
-            aria-label="Close"
-          >
-            <RiCloseLine className="h-5 w-5" />
-          </button>
+            variant="icon"
+          />
         </div>
 
         {dateLabel && (
@@ -93,21 +93,16 @@ export default function AddAvailabilityModal({
         </div>
 
         <div className="mt-6 flex gap-3">
-          <button
-            type="button"
+          <ButtonCancelForm
             onClick={onClose}
-            className="flex-1 rounded-lg border border-neutral-300 px-4 py-2 font-whisper text-neutral-600 text-sm transition-colors hover:bg-neutral-50"
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
+            className="flex-1"
+          />
+          <ButtonAddAvailability
             onClick={handleSave}
             disabled={isSaving}
-            className="flex-1 rounded-lg border border-black bg-black px-4 py-2 font-whisper text-sm text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {isSaving ? "Adding…" : "Add"}
-          </button>
+          </ButtonAddAvailability>
         </div>
       </div>
     </div>

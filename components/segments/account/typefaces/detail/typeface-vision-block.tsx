@@ -1,6 +1,6 @@
 "use client";
 
-import { RiArrowDropDownLine } from "react-icons/ri";
+import { InputDropdown } from "@/components/global/inputs";
 import {
   TYPEFACE_VISION_CONTRAST,
   TYPEFACE_VISION_FRAME,
@@ -9,7 +9,6 @@ import {
   TYPEFACE_VISION_USAGE,
   TYPEFACE_VISION_WIDTH,
 } from "@/constant/TYPEFACE_VISION";
-import { cn } from "@/utils/class-names";
 
 type TypefaceVisionBlockProps = {
   usage: string;
@@ -47,31 +46,18 @@ function SelectDropdown({
       >
         {label}
       </label>
-      <div className="relative">
-        <select
-          id={id}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className={cn(
-            "w-full cursor-pointer appearance-none rounded-lg border border-neutral-300 bg-white px-4 py-3 pr-10 font-whisper text-neutral-700 text-sm transition-colors focus:border-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-200"
-          )}
-          aria-label={label}
-        >
-          <option value="">Select…</option>
-          {options.map((opt) => (
-            <option
-              key={opt}
-              value={opt}
-            >
-              {opt}
-            </option>
-          ))}
-        </select>
-        <RiArrowDropDownLine
-          size={20}
-          className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-neutral-400"
-        />
-      </div>
+      <InputDropdown
+        value={value}
+        options={[
+          { value: "", label: "Select…" },
+          ...options.map((opt) => ({
+            value: opt,
+            label: opt,
+          })),
+        ]}
+        onChange={onChange}
+        className="w-full"
+      />
     </div>
   );
 }

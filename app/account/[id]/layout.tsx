@@ -1,16 +1,9 @@
-import AccountLayoutContent from "@/components/layout/account-layout-content";
-import { StudioProvider } from "@/hooks/studio-context";
+import LayoutAccount from "@/components/layout/layout-account";
 
 export default function AccountLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <StudioProvider>
-      <AccountLayoutContent>
-        {children}
-      </AccountLayoutContent>
-    </StudioProvider>
-  );
+  return <LayoutAccount>{children}</LayoutAccount>;
 }

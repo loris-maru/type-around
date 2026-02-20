@@ -10,7 +10,7 @@ import {
   useState,
 } from "react";
 import { useStudioFonts } from "@/contexts/studio-fonts-context";
-import GalleryCard from "@/components/molecules/cards/gallery";
+import { GalleryCard } from "@/components/molecules/cards";
 import GalleryNavigator from "@/components/molecules/gallery/navigator";
 import type { StudioGalleryProps } from "@/types/components";
 

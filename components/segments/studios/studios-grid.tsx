@@ -6,10 +6,9 @@ import {
   useTransform,
 } from "motion/react";
 import { useRef } from "react";
-import StudioCard from "@/components/molecules/cards/studios";
+import { StudioCard } from "@/components/molecules/cards";
+import { PARALLAX_SPEEDS } from "@/constant/UI_LAYOUT";
 import type { Studio } from "@/types/typefaces";
-
-const PARALLAX_SPEEDS = [-70, -400, -20];
 
 export default function StudiosGrid({
   studios,

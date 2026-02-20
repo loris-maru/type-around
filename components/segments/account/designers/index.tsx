@@ -2,7 +2,7 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { RiAddFill } from "react-icons/ri";
-import DesignerCard from "@/components/molecules/cards/account/designer-card";
+import { DesignerCard } from "@/components/molecules/cards";
 import { useStudio } from "@/hooks/use-studio";
 import type { Designer } from "@/types/studio";
 import AddDesignerModal from "./add-designer-modal";

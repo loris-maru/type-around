@@ -8,9 +8,21 @@ import {
   useRef,
   useState,
 } from "react";
-import { RiArrowLeftLine } from "react-icons/ri";
 import CollapsibleSection from "@/components/global/collapsible-section";
 import FileDropZone from "@/components/global/file-drop-zone";
+import {
+  ButtonCancelForm,
+  ButtonCloseModal,
+  ButtonGoBack,
+  ButtonSelectReviewer,
+  ButtonSelectSlot,
+  ButtonSendRequest,
+} from "@/components/molecules/buttons";
+import {
+  FEEDBACK_MOCK_DAYS,
+  FEEDBACK_MOCK_SLOTS,
+  NYLAS_SCHEDULER_API_URL,
+} from "@/constant/FEEDBACK";
 import type { FeedbackReviewer } from "@/constant/FEEDBACK_REVIEWERS";
 import {
   FEEDBACK_REVIEWERS,
@@ -22,25 +34,6 @@ type FeedbacksSectionProps = {
   studioId: string;
 };
 
-const NYLAS_SCHEDULER_API_URL =
-  process.env.NEXT_PUBLIC_NYLAS_SCHEDULER_API_URL ??
-  "https://api.us.nylas.com";
-
-const MOCK_DAYS = [
-  { date: "2025-02-15", label: "Mon, Feb 15" },
-  { date: "2025-02-16", label: "Tue, Feb 16" },
-  { date: "2025-02-17", label: "Wed, Feb 17" },
-];
-
-const MOCK_SLOTS = [
-  "09:00",
-  "10:00",
-  "11:00",
-  "14:00",
-  "15:00",
-  "16:00",
-];
-
 function ReviewerCard({
   reviewer,
   onSelect,
@@ -49,11 +42,7 @@ function ReviewerCard({
   onSelect: () => void;
 }) {
   return (
-    <button
-      type="button"
-      onClick={onSelect}
-      className="flex w-full items-center gap-4 rounded-lg border border-neutral-200 bg-white p-4 text-left transition-colors hover:border-neutral-400 hover:bg-neutral-50"
-    >
+    <ButtonSelectReviewer onSelect={onSelect}>
       <div
         className="h-12 w-12 shrink-0 rounded-full"
         style={{ background: reviewer.gradient }}
@@ -64,7 +53,7 @@ function ReviewerCard({
           {reviewer.firstName} {reviewer.lastName}
         </div>
       </div>
-    </button>
+    </ButtonSelectReviewer>
   );
 }
 
@@ -240,14 +229,7 @@ export default function FeedbacksSection({
             animate={{ opacity: 1, y: 0 }}
             className="flex flex-col gap-4"
           >
-            <button
-              type="button"
-              onClick={handleBack}
-              className="flex w-fit items-center gap-2 font-whisper text-neutral-600 text-sm transition-colors hover:text-black"
-            >
-              <RiArrowLeftLine className="h-4 w-4" />
-              Back
-            </button>
+            <ButtonGoBack onClick={handleBack} />
             <div className="flex items-center gap-4 rounded-lg border border-neutral-200 bg-white p-3">
               <div
                 className="h-10 w-10 shrink-0 rounded-full"
@@ -276,23 +258,20 @@ export default function FeedbacksSection({
               </div>
             ) : (
               <div className="flex flex-col gap-4">
-                {MOCK_DAYS.map((day) => (
+                {FEEDBACK_MOCK_DAYS.map((day) => (
                   <div key={day.date}>
                     <div className="mb-2 font-whisper text-neutral-600 text-xs">
                       {day.label}
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      {MOCK_SLOTS.map((slot) => (
-                        <button
+                      {FEEDBACK_MOCK_SLOTS.map((slot) => (
+                        <ButtonSelectSlot
                           key={slot}
-                          type="button"
+                          slot={slot}
                           onClick={() =>
                             handleSelectSlot(day.date, slot)
                           }
-                          className="rounded-lg border border-neutral-300 px-3 py-2 font-whisper text-neutral-700 text-sm transition-colors hover:border-black hover:bg-neutral-50"
-                        >
-                          {slot}
-                        </button>
+                        />
                       ))}
                     </div>
                   </div>
@@ -308,14 +287,7 @@ export default function FeedbacksSection({
             animate={{ opacity: 1, y: 0 }}
             className="flex flex-col gap-6"
           >
-            <button
-              type="button"
-              onClick={handleBack}
-              className="flex w-fit items-center gap-2 font-whisper text-neutral-600 text-sm transition-colors hover:text-black"
-            >
-              <RiArrowLeftLine className="h-4 w-4" />
-              Back
-            </button>
+            <ButtonGoBack onClick={handleBack} />
 
             <div className="flex items-center gap-4 rounded-lg border border-neutral-200 bg-white p-4">
               <div
@@ -381,20 +353,11 @@ export default function FeedbacksSection({
             </div>
 
             <div className="flex gap-4">
-              <button
-                type="button"
-                onClick={handleCancel}
-                className="rounded-lg border border-neutral-300 px-4 py-2 font-whisper text-neutral-600 text-sm transition-colors hover:border-black hover:bg-neutral-50"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
+              <ButtonCancelForm onClick={handleCancel} />
+              <ButtonSendRequest
                 onClick={handleSendRequest}
-                className="rounded-lg border border-black bg-black px-12 py-4 font-medium font-whisper text-base text-white transition-colors hover:bg-neutral-800"
-              >
-                Send request
-              </button>
+                className="px-12 py-4 font-medium text-base"
+              />
             </div>
           </motion.div>
         )}
@@ -418,13 +381,11 @@ export default function FeedbacksSection({
                 The designer will get back to you soon.
               </p>
             </div>
-            <button
-              type="button"
+            <ButtonCloseModal
               onClick={handleCloseConfirmation}
-              className="rounded-lg border border-neutral-300 px-4 py-2 font-whisper text-neutral-600 text-sm transition-colors hover:border-black hover:bg-neutral-50"
             >
               Close
-            </button>
+            </ButtonCloseModal>
           </motion.div>
         )}
       </div>

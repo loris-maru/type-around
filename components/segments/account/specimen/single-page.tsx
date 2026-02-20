@@ -1,128 +1,29 @@
 "use client";
 
 import { useCallback, useEffect, useMemo } from "react";
+import {
+  SPECIMEN_FONT_PREFIX,
+  SPECIMEN_TEXT_ALIGN_MAP,
+  SPECIMEN_VERTICAL_ALIGN_MAP,
+} from "@/constant/SPECIMEN_OPTIONS";
 import { getPageDimensions } from "@/constant/SPECIMEN_PAGE_DIMENSIONS";
 import { useSpecimenPage } from "@/contexts/specimen-page-context";
 import { useStudio } from "@/hooks/use-studio";
 import type { SinglePageProps } from "@/types/specimen";
-import type { Font } from "@/types/studio";
 import {
   DEFAULT_SPECIMEN_PAGE_CELL,
-  type SpecimenPage,
-  type SpecimenPageBackground,
+  type Font,
   type SpecimenPageCell,
-  type SpecimenPageCellBackground,
-  type SpecimenPageGrid,
-  type SpecimenPageMargins,
 } from "@/types/studio";
 import { cn } from "@/utils/class-names";
-
-const DEFAULT_GRID: SpecimenPageGrid = {
-  columns: 2,
-  rows: 2,
-  gap: 8,
-  showGrid: false,
-};
-
-function getPageGrid(page: SpecimenPage): SpecimenPageGrid {
-  return page.grid ?? DEFAULT_GRID;
-}
-
-const DEFAULT_MARGINS: SpecimenPageMargins = {
-  left: 0,
-  top: 0,
-  right: 0,
-  bottom: 0,
-};
-
-function getPageMargins(
-  page: SpecimenPage
-): SpecimenPageMargins {
-  return page.margins ?? DEFAULT_MARGINS;
-}
-
-const DEFAULT_BACKGROUND: SpecimenPageBackground = {
-  type: "color",
-  color: "#ffffff",
-  gradient: { from: "#FFF8E8", to: "#F2F2F2" },
-  image: "",
-};
-
-function getPageBackgroundStyle(
-  page: SpecimenPage
-): React.CSSProperties {
-  const bg = page.background ?? DEFAULT_BACKGROUND;
-  if (bg.type === "color") {
-    return { backgroundColor: bg.color ?? "#ffffff" };
-  }
-  if (bg.type === "gradient") {
-    return {
-      background: `linear-gradient(180deg, ${bg.gradient?.from ?? "#FFF8E8"} 0%, ${bg.gradient?.to ?? "#F2F2F2"} 100%)`,
-    };
-  }
-  if (bg.type === "image" && bg.image) {
-    return {
-      backgroundImage: `url(${bg.image})`,
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-    };
-  }
-  return { backgroundColor: "#ffffff" };
-}
-
-const DEFAULT_CELL_BG: SpecimenPageCellBackground = {
-  type: "color",
-  color: "#ffffff",
-  gradient: { from: "#FFF8E8", to: "#F2F2F2" },
-  image: "",
-};
-
-function getCellBackgroundStyle(
-  cell: SpecimenPageCell | undefined
-): React.CSSProperties {
-  const bg = cell?.background ?? DEFAULT_CELL_BG;
-  if (bg.type === "color") {
-    return { backgroundColor: bg.color ?? "#ffffff" };
-  }
-  if (bg.type === "gradient") {
-    return {
-      background: `linear-gradient(180deg, ${bg.gradient?.from ?? "#FFF8E8"} 0%, ${bg.gradient?.to ?? "#F2F2F2"} 100%)`,
-    };
-  }
-  if (bg.type === "image" && bg.image) {
-    return {
-      backgroundImage: `url(${bg.image})`,
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-    };
-  }
-  return { backgroundColor: "#ffffff" };
-}
-
-function getCell(
-  page: SpecimenPage,
-  cellIndex: number
-): SpecimenPageCell {
-  const cells = page.cells ?? [];
-  return (
-    cells[cellIndex] ?? { ...DEFAULT_SPECIMEN_PAGE_CELL }
-  );
-}
-
-const TEXT_ALIGN_MAP = {
-  left: "flex-start",
-  center: "center",
-  right: "flex-end",
-  justify: "center",
-} as const;
-
-const VERTICAL_ALIGN_MAP = {
-  top: "flex-start",
-  center: "center",
-  bottom: "flex-end",
-} as const;
-
-const SPECIMEN_FONT_PREFIX = "specimen-font";
+import {
+  getCell,
+  getCellBackgroundStyle,
+  getCellFontFamily,
+  getPageBackgroundStyle,
+  getPageGrid,
+  getPageMargins,
+} from "@/utils/specimen-utils";
 
 function useSpecimenFont(font: Font | undefined) {
   useEffect(() => {
@@ -151,11 +52,6 @@ function useSpecimenFont(font: Font | undefined) {
       cancelled = true;
     };
   }, [font?.id, font?.file, font?.weight, font?.isItalic]);
-}
-
-function getCellFontFamily(font: Font | undefined): string {
-  if (!font?.file) return "";
-  return `${SPECIMEN_FONT_PREFIX}-${font.id}`;
 }
 
 import TiptapCellEditor from "./tiptap-cell-editor";
@@ -276,9 +172,11 @@ export default function SinglePage({
               selectedCell?.pageId === page.id &&
               selectedCell?.cellIndex === i;
             const justifyContent =
-              TEXT_ALIGN_MAP[cell.textAlign ?? "left"];
+              SPECIMEN_TEXT_ALIGN_MAP[
+                cell.textAlign ?? "left"
+              ];
             const alignItems =
-              VERTICAL_ALIGN_MAP[
+              SPECIMEN_VERTICAL_ALIGN_MAP[
                 cell.verticalAlign ?? "top"
               ];
             const padding = cell.padding ?? {

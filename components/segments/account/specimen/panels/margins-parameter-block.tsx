@@ -9,24 +9,8 @@ import {
   RiLayoutTop2Line,
 } from "react-icons/ri";
 import type { MarginsParameterBlockProps } from "@/types/specimen";
-import type {
-  SpecimenPage,
-  SpecimenPageMargins,
-} from "@/types/studio";
+import { getPageMargins } from "@/utils/specimen-utils";
 import ParameterBlock from "./parameter-block";
-
-const DEFAULT_MARGINS: SpecimenPageMargins = {
-  left: 0,
-  top: 0,
-  right: 0,
-  bottom: 0,
-};
-
-function getPageMargins(
-  page: SpecimenPage
-): SpecimenPageMargins {
-  return page.margins ?? DEFAULT_MARGINS;
-}
 
 function MarginInput({
   id,

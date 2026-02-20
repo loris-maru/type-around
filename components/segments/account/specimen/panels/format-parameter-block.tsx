@@ -2,14 +2,10 @@
 
 import { RiFile2Fill, RiFile2Line } from "react-icons/ri";
 import CustomSelect from "@/components/global/custom-select";
+import { SPECIMEN_FORMAT_OPTIONS } from "@/constant/SPECIMEN_OPTIONS";
 import type { FormatParameterBlockProps } from "@/types/specimen";
 import { cn } from "@/utils/class-names";
 import ParameterBlock from "./parameter-block";
-
-const FORMAT_OPTIONS = [
-  { value: "A4", label: "A4" },
-  { value: "Letter", label: "Letter" },
-];
 
 export default function FormatParameterBlock({
   format,
@@ -26,7 +22,7 @@ export default function FormatParameterBlock({
       <div className="flex flex-col gap-2">
         <CustomSelect
           value={format}
-          options={FORMAT_OPTIONS}
+          options={SPECIMEN_FORMAT_OPTIONS}
           onChange={onFormatChange}
         />
         <div className="flex w-full flex-row items-center justify-between gap-2">

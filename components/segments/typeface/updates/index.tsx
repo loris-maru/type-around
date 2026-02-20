@@ -9,7 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
-import UpdateCard from "@/components/molecules/cards/update";
+import { UpdateCard } from "@/components/molecules/cards";
 import GalleryNavigator from "@/components/molecules/gallery/navigator";
 import { TYPE_UPDATES } from "@/mock-data/type-status";
 

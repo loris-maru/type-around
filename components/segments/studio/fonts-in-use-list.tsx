@@ -1,12 +1,11 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { useStudioFonts } from "@/contexts/studio-fonts-context";
-import FontsInUseCard from "@/components/molecules/cards/fonts-in-use";
+import { FontsInUseCard } from "@/components/molecules/cards";
 import Pagination from "@/components/molecules/pagination";
+import { FONTS_IN_USE_PER_PAGE } from "@/constant/UI_LAYOUT";
+import { useStudioFonts } from "@/contexts/studio-fonts-context";
 import { FONTS_IN_USE } from "@/mock-data/fonts-in-use";
-
-const PER_PAGE = 6;
 
 export default function FontsInUseList() {
   const { displayFontFamily, textFontFamily } =
@@ -14,11 +13,13 @@ export default function FontsInUseList() {
   const [page, setPage] = useState(0);
 
   const totalItems = FONTS_IN_USE.length;
-  const totalPages = Math.ceil(totalItems / PER_PAGE);
+  const totalPages = Math.ceil(
+    totalItems / FONTS_IN_USE_PER_PAGE
+  );
 
-  const startIndex = page * PER_PAGE;
+  const startIndex = page * FONTS_IN_USE_PER_PAGE;
   const endIndex = Math.min(
-    startIndex + PER_PAGE,
+    startIndex + FONTS_IN_USE_PER_PAGE,
     totalItems
   );
   const visibleItems = FONTS_IN_USE.slice(
@@ -42,13 +43,13 @@ export default function FontsInUseList() {
       <div className="relative flex w-full flex-row items-center gap-x-12">
         <header className="relative -top-[40px] flex w-1/3 flex-col">
           <h3
-            className="text-6xl font-black text-black"
+            className="font-black text-6xl text-black"
             style={{ fontFamily: displayFontFamily }}
           >
             Fonts in use
           </h3>
           <div
-            className="mt-2 text-sm text-black"
+            className="mt-2 text-black text-sm"
             style={{ fontFamily: textFontFamily }}
           >
             Total of {totalItems} fonts in use

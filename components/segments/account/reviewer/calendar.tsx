@@ -2,28 +2,12 @@
 
 import { useUser } from "@clerk/nextjs";
 import { useCallback, useMemo, useState } from "react";
-import { RiAddLine } from "react-icons/ri";
+import { InputDropdown } from "@/components/global/inputs";
+import { ButtonAddAvailabilityDay } from "@/components/molecules/buttons";
+import { CALENDAR_MONTHS } from "@/constant/CALENDAR_MONTHS";
 import { useStudio } from "@/hooks/use-studio";
+import { formatDateKey } from "@/utils/format-date-key";
 import AddAvailabilityModal from "./add-availability-modal";
-
-const MONTHS = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-
-function formatDateKey(d: Date): string {
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-}
 
 export default function AccountReviewerCalendar() {
   const { user } = useUser();
@@ -111,7 +95,7 @@ export default function AccountReviewerCalendar() {
   return (
     <div className="relative flex w-full flex-col gap-y-28 pb-20">
       <div>
-        <h1 className="font-ortank font-bold text-2xl text-neutral-800">
+        <h1 className="font-bold font-ortank text-2xl text-neutral-800">
           Calendar
         </h1>
         <p className="mt-2 font-whisper text-neutral-600 text-sm">
@@ -128,23 +112,14 @@ export default function AccountReviewerCalendar() {
             >
               Month
             </label>
-            <select
-              id="calendar-month"
-              value={month}
-              onChange={(e) =>
-                setMonth(Number(e.target.value))
-              }
-              className="rounded-lg border border-neutral-300 px-3 py-2 font-whisper text-neutral-800 text-sm outline-none focus:border-black"
-            >
-              {MONTHS.map((m, i) => (
-                <option
-                  key={m}
-                  value={i}
-                >
-                  {m}
-                </option>
-              ))}
-            </select>
+            <InputDropdown
+              value={String(month)}
+              options={CALENDAR_MONTHS.map((m, i) => ({
+                value: String(i),
+                label: m,
+              }))}
+              onChange={(v) => setMonth(Number(v))}
+            />
           </div>
           <div>
             <label
@@ -153,23 +128,14 @@ export default function AccountReviewerCalendar() {
             >
               Year
             </label>
-            <select
-              id="calendar-year"
-              value={year}
-              onChange={(e) =>
-                setYear(Number(e.target.value))
-              }
-              className="rounded-lg border border-neutral-300 px-3 py-2 font-whisper text-neutral-800 text-sm outline-none focus:border-black"
-            >
-              {years.map((y) => (
-                <option
-                  key={y}
-                  value={y}
-                >
-                  {y}
-                </option>
-              ))}
-            </select>
+            <InputDropdown
+              value={String(year)}
+              options={years.map((y) => ({
+                value: String(y),
+                label: String(y),
+              }))}
+              onChange={(v) => setYear(Number(v))}
+            />
           </div>
         </div>
 
@@ -190,13 +156,21 @@ export default function AccountReviewerCalendar() {
               {day}
             </div>
           ))}
-          {Array.from({ length: firstDayOffset }).map(
-            (_, i) => (
-              <div
-                key={`empty-${year}-${month}-${i}`}
-                aria-hidden
-              />
-            )
+          {Array.from(
+            { length: firstDayOffset },
+            (_, i) => {
+              const emptyDate = new Date(
+                year,
+                month,
+                i - firstDayOffset + 1
+              );
+              return (
+                <div
+                  key={`empty-${emptyDate.toISOString().slice(0, 10)}`}
+                  aria-hidden
+                />
+              );
+            }
           )}
           {days.map((day) => {
             const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
@@ -204,23 +178,13 @@ export default function AccountReviewerCalendar() {
               studio?.reviewerAvailability?.[
                 user?.id ?? ""
               ]?.[dateStr] ?? [];
-            const hasSlots = slots.length > 0;
             return (
-              <button
-                key={day}
-                type="button"
+              <ButtonAddAvailabilityDay
+                key={dateStr}
+                day={day}
+                slotCount={slots.length}
                 onClick={() => handleCellClick(day)}
-                className="flex aspect-square flex-col items-center justify-center gap-0.5 rounded-lg border border-neutral-200 bg-white font-whisper text-neutral-800 text-sm transition-colors hover:border-neutral-400 hover:bg-neutral-50"
-              >
-                <span>{day}</span>
-                {hasSlots ? (
-                  <span className="rounded-full bg-black px-1.5 py-0.5 text-[10px] text-white">
-                    {slots.length}
-                  </span>
-                ) : (
-                  <RiAddLine className="h-3 w-3 text-neutral-400" />
-                )}
-              </button>
+              />
             );
           })}
         </div>

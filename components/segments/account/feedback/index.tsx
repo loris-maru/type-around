@@ -1,34 +1,30 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
+import {
+  FEEDBACK_DEFAULT_GRADIENT,
+  FEEDBACK_STEPS,
+} from "@/constant/FEEDBACK";
 import type { FeedbackReviewer } from "@/constant/FEEDBACK_REVIEWERS";
 import { FEEDBACK_REVIEWERS } from "@/constant/FEEDBACK_REVIEWERS";
 import { useStudio } from "@/hooks/use-studio";
-import type { Designer } from "@/types/studio";
+import type { StudioMember } from "@/types/studio";
 import { cn } from "@/utils/class-names";
 import FeedbackForm from "./feedback-form";
 
-const FEEDBACK_STEPS = [
-  { num: 1, label: "Typeface & reviewer" },
-  { num: 2, label: "Date & time" },
-  { num: 3, label: "Comment & files" },
-  { num: 4, label: "Confirmation" },
-] as const;
-
-function designersToReviewers(
-  designers: Designer[]
+function membersToReviewers(
+  members: StudioMember[]
 ): FeedbackReviewer[] {
-  const reviewers = designers.filter((d) => d.isReviewer);
-  if (reviewers.length === 0) return FEEDBACK_REVIEWERS;
-  return reviewers.map((d, i) => ({
-    id: d.id ?? `designer-${i}`,
-    firstName: d.firstName,
-    lastName: d.lastName,
-    gradient:
-      FEEDBACK_REVIEWERS[i % FEEDBACK_REVIEWERS.length]
-        ?.gradient ??
-      "linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 100%)",
-  }));
+  return members
+    .filter((m) => m.isReviewer === true)
+    .map((m, i) => ({
+      id: m.id,
+      firstName: m.firstName || "",
+      lastName: m.lastName || "",
+      gradient:
+        FEEDBACK_REVIEWERS[i % FEEDBACK_REVIEWERS.length]
+          ?.gradient ?? FEEDBACK_DEFAULT_GRADIENT,
+    }));
 }
 
 export default function AccountFeedback() {
@@ -41,8 +37,8 @@ export default function AccountFeedback() {
   );
 
   const reviewers = useMemo(
-    () => designersToReviewers(studio?.designers ?? []),
-    [studio?.designers]
+    () => membersToReviewers(studio?.members ?? []),
+    [studio?.members]
   );
 
   const onStepChange = useCallback((s: number) => {
@@ -60,11 +56,8 @@ export default function AccountFeedback() {
         </p>
 
         {typefaces.length > 0 && (
-          <div className="mt-6 rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-3">
-            <p className="mb-3 font-whisper text-xs font-medium uppercase tracking-wider text-neutral-600">
-              In progress
-            </p>
-            <div className="flex flex-wrap gap-x-6 gap-y-2">
+          <div className="mt-6 w-full rounded-lg border border-neutral-200 px-4 py-3">
+            <div className="flex w-full flex-row justify-between">
               {FEEDBACK_STEPS.map((s) => (
                 <div
                   key={s.num}
@@ -77,18 +70,6 @@ export default function AccountFeedback() {
                         : "text-neutral-400"
                   )}
                 >
-                  <span
-                    className={cn(
-                      "flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs",
-                      step === s.num
-                        ? "bg-black text-white"
-                        : step > s.num
-                          ? "bg-neutral-300 text-neutral-600"
-                          : "border border-neutral-300 bg-white text-neutral-400"
-                    )}
-                  >
-                    {s.num}
-                  </span>
                   <span>{s.label}</span>
                 </div>
               ))}
@@ -99,6 +80,7 @@ export default function AccountFeedback() {
 
       <FeedbackForm
         studioId={studio?.id ?? ""}
+        studioName={studio?.name ?? ""}
         typefaces={typefaces}
         reviewers={reviewers}
         step={step}

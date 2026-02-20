@@ -1,4 +1,4 @@
-import SmallTypefaceCard from "@/components/molecules/cards/small-typeface";
+import { SmallTypefaceCard } from "@/components/molecules/cards";
 import { Studio } from "@/types/typefaces";
 import { slugify } from "@/utils/slugify";
 import Link from "next/link";

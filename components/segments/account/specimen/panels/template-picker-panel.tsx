@@ -8,11 +8,10 @@ import {
 } from "@/constant/specimen-templates";
 import { templateToPageFields } from "@/constant/specimen-templates/apply-template";
 import type { SpecimenTemplate } from "@/constant/specimen-templates/schema";
+import { SPECIMEN_TEMPLATE_PICKER_WIDTH } from "@/constant/UI_LAYOUT";
 import { useSpecimenPage } from "@/contexts/specimen-page-context";
 import { useStudio } from "@/hooks/use-studio";
 import type { SpecimenPage } from "@/types/studio";
-
-const TEMPLATE_PICKER_WIDTH = 280;
 
 type TemplatePickerPanelProps = {
   specimenId: string;
@@ -56,7 +55,10 @@ export default function TemplatePickerPanel({
   return (
     <motion.div
       initial={{ width: 0, opacity: 0 }}
-      animate={{ width: TEMPLATE_PICKER_WIDTH, opacity: 1 }}
+      animate={{
+        width: SPECIMEN_TEMPLATE_PICKER_WIDTH,
+        opacity: 1,
+      }}
       exit={{ width: 0, opacity: 0 }}
       transition={{
         duration: 0.3,

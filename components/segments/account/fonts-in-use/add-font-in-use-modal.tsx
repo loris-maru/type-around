@@ -15,6 +15,7 @@ import type {
 } from "@/types/components";
 import type { FontInUse } from "@/types/studio";
 import { generateUUID } from "@/utils/generate-uuid";
+import { InputDropdown } from "@/components/global/inputs";
 
 export default function AddFontInUseModal({
   isOpen,
@@ -393,24 +394,23 @@ export default function AddFontInUseModal({
               Typeface{" "}
               <span className="text-red-500">*</span>
             </label>
-            <select
-              id="typefaceId"
-              name="typefaceId"
+            <InputDropdown
               value={formData.typefaceId}
-              onChange={handleInputChange}
-              required
-              className="w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
-            >
-              <option value="">Select a typeface</option>
-              {typefaces.map((typeface) => (
-                <option
-                  key={typeface.id}
-                  value={typeface.id}
-                >
-                  {typeface.name}
-                </option>
-              ))}
-            </select>
+              options={[
+                { value: "", label: "Select a typeface" },
+                ...typefaces.map((t) => ({
+                  value: t.id,
+                  label: t.name,
+                })),
+              ]}
+              onChange={(value) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  typefaceId: value,
+                }))
+              }
+              className="w-full"
+            />
             {typefaces.length === 0 && (
               <p className="mt-1 text-neutral-500 text-xs">
                 No typefaces available. Create a typeface

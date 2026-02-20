@@ -6,6 +6,7 @@ import {
   RiArrowDownSLine,
   RiCloseLine,
 } from "react-icons/ri";
+import { ButtonRemoveDesigner } from "@/components/molecules/buttons";
 import type { Designer } from "@/types/studio";
 
 // Mock data - replace with actual data from your backend
@@ -92,16 +93,14 @@ export default function DesignersInput() {
               className="inline-flex items-center gap-4 rounded-full border border-neutral-300 bg-transparent px-6 py-3 font-medium font-whisper text-base"
             >
               {designer.firstName} {designer.lastName}
-              <button
-                type="button"
+              <ButtonRemoveDesigner
                 onClick={() =>
                   handleRemoveSelected(designer.id)
                 }
-                aria-label={`Remove ${designer.firstName} ${designer.lastName}`}
-                className="transition-colors hover:text-red-500"
+                ariaLabel={`Remove ${designer.firstName} ${designer.lastName}`}
               >
                 <RiCloseLine className="h-5 w-5" />
-              </button>
+              </ButtonRemoveDesigner>
             </span>
           ))}
         </div>

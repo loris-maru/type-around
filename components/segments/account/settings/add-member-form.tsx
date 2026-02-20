@@ -9,6 +9,7 @@ import {
   addStudioMember,
   lookupUserByEmail,
 } from "@/actions/members";
+import { InputDropdown } from "@/components/global/inputs";
 import { ROLE_DESCRIPTIONS } from "@/constant/MEMBER_ROLES";
 import type { AddMemberFormProps } from "@/types/components";
 import type {
@@ -168,22 +169,22 @@ export default function AddMemberForm({
 
           <div className="flex flex-col gap-4">
             <div className="flex gap-3">
-              <select
+              <InputDropdown
                 value={lookupResult.role}
-                onChange={(e) =>
-                  handleRoleChange(
-                    e.target.value as MemberRole
-                  )
+                options={[
+                  {
+                    value: "editor",
+                    label: `Editor - ${ROLE_DESCRIPTIONS.editor}`,
+                  },
+                  {
+                    value: "admin",
+                    label: `Admin - ${ROLE_DESCRIPTIONS.admin}`,
+                  },
+                ]}
+                onChange={(v) =>
+                  handleRoleChange(v as MemberRole)
                 }
-                className="rounded-lg border border-neutral-300 px-4 py-3 font-whisper"
-              >
-                <option value="editor">
-                  Editor - {ROLE_DESCRIPTIONS.editor}
-                </option>
-                <option value="admin">
-                  Admin - {ROLE_DESCRIPTIONS.admin}
-                </option>
-              </select>
+              />
             </div>
             <label className="flex cursor-pointer items-center gap-2">
               <input

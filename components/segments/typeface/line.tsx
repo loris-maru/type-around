@@ -9,12 +9,10 @@ import {
   useState,
 } from "react";
 import IconDownload from "@/components/icons/icon-download";
+import { TYPEFACE_DEFAULT_SAMPLE_TEXT } from "@/constant/TYPEFACE_SAMPLE_TEXT";
 import { useStudioFonts } from "@/contexts/studio-fonts-context";
 import { downloadFile } from "@/utils/download-file";
 import { slugify } from "@/utils/slugify";
-
-const DEFAULT_TEXT =
-  "획의 굵기 차이가 극적으로 드러나는 이 산세리프 서체는 날카롭고 정제된 수직 스트로크와 섬세하게 얇아지는 연결부를 통해 강한 리듬과 긴장감을 형성하며";
 
 export default function TypefaceLine({
   studioName,
@@ -114,7 +112,7 @@ export default function TypefaceLine({
     );
   }, [specimenUrl, familyName]);
 
-  const text = displayText || DEFAULT_TEXT;
+  const text = displayText || TYPEFACE_DEFAULT_SAMPLE_TEXT;
 
   return (
     <div className="relative w-full bg-light-gray py-6 transition-all duration-300 ease-in-out hover:bg-white">
@@ -124,7 +122,7 @@ export default function TypefaceLine({
       >
         <div className="relative flex flex-row items-baseline gap-x-4">
           <div
-            className="text-xl font-bold"
+            className="font-bold text-xl"
             style={{ fontFamily: displayFontFamily }}
           >
             {familyName}
@@ -138,7 +136,7 @@ export default function TypefaceLine({
               type="button"
               aria-label={`Download trial font for ${familyName}`}
               onClick={handleDownloadTrial}
-              className="flex cursor-pointer flex-row gap-x-2 text-sm font-medium text-black transition-opacity hover:opacity-60"
+              className="flex cursor-pointer flex-row gap-x-2 font-medium text-black text-sm transition-opacity hover:opacity-60"
             >
               <IconDownload className="h-3 w-3" /> Trial
               font
@@ -149,7 +147,7 @@ export default function TypefaceLine({
               type="button"
               aria-label={`Download specimen for ${familyName}`}
               onClick={handleDownloadSpecimen}
-              className="flex cursor-pointer flex-row gap-x-2 text-sm font-medium text-black transition-opacity hover:opacity-60"
+              className="flex cursor-pointer flex-row gap-x-2 font-medium text-black text-sm transition-opacity hover:opacity-60"
             >
               <IconDownload className="h-3 w-3" /> Specimen
             </button>

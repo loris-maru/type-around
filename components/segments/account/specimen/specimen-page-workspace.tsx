@@ -7,15 +7,16 @@ import {
   useRef,
   useState,
 } from "react";
+import {
+  SPECIMEN_MAX_SCALE,
+  SPECIMEN_MIN_SCALE,
+  SPECIMEN_SCALE_STEP,
+} from "@/constant/UI_LAYOUT";
 import { useSpecimenPage } from "@/contexts/specimen-page-context";
 import { useStudio } from "@/hooks/use-studio";
 import type { SpecimenPageWorkspaceProps } from "@/types/specimen";
 import type { SpecimenPage } from "@/types/studio";
 import SinglePage from "./single-page";
-
-const MIN_SCALE = 0.05;
-const MAX_SCALE = 2;
-const SCALE_STEP = 0.1;
 
 export default function SpecimenPageWorkspace({
   specimenId,
@@ -117,9 +118,15 @@ export default function SpecimenPageWorkspace({
     const onWheel = (e: WheelEvent) => {
       if (!e.metaKey) return;
       e.preventDefault();
-      const delta = e.deltaY > 0 ? -SCALE_STEP : SCALE_STEP;
+      const delta =
+        e.deltaY > 0
+          ? -SPECIMEN_SCALE_STEP
+          : SPECIMEN_SCALE_STEP;
       setScale((s) =>
-        Math.min(MAX_SCALE, Math.max(MIN_SCALE, s + delta))
+        Math.min(
+          SPECIMEN_MAX_SCALE,
+          Math.max(SPECIMEN_MIN_SCALE, s + delta)
+        )
       );
     };
     el.addEventListener("wheel", onWheel, {

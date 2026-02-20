@@ -1,15 +1,16 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
+import {
+  SPECIMEN_PANEL_WIDTH,
+  SPECIMEN_TEMPLATE_PICKER_WIDTH,
+} from "@/constant/UI_LAYOUT";
 import { useSpecimenPage } from "@/contexts/specimen-page-context";
 import { useStudio } from "@/hooks/use-studio";
 import type { PageSettingPanelProps } from "@/types/specimen";
 import CellSettingPanel from "./cell-setting-panel";
 import PageSettingPanel from "./page-setting-panel";
 import TemplatePickerPanel from "./template-picker-panel";
-
-const PANEL_WIDTH = 300;
-const TEMPLATE_PICKER_WIDTH = 280;
 
 export default function RightPanelContainer({
   specimenId,
@@ -37,8 +38,8 @@ export default function RightPanelContainer({
     selectedPage.id !== "placeholder";
 
   const containerWidth = showTemplatePicker
-    ? PANEL_WIDTH + TEMPLATE_PICKER_WIDTH
-    : PANEL_WIDTH;
+    ? SPECIMEN_PANEL_WIDTH + SPECIMEN_TEMPLATE_PICKER_WIDTH
+    : SPECIMEN_PANEL_WIDTH;
 
   return (
     <div className="relative z-20 mr-10 flex h-full min-h-0 shrink-0 overflow-hidden">
@@ -68,15 +69,15 @@ export default function RightPanelContainer({
           {selectedCell ? (
             <motion.div
               key="cell-panel"
-              initial={{ x: PANEL_WIDTH }}
+              initial={{ x: SPECIMEN_PANEL_WIDTH }}
               animate={{ x: 0 }}
-              exit={{ x: -PANEL_WIDTH }}
+              exit={{ x: -SPECIMEN_PANEL_WIDTH }}
               transition={{
                 duration: 0.3,
                 ease: [0.25, 0.46, 0.45, 0.94],
               }}
               className="absolute inset-y-0 right-0 shrink-0"
-              style={{ width: PANEL_WIDTH }}
+              style={{ width: SPECIMEN_PANEL_WIDTH }}
             >
               <CellSettingPanel
                 specimenId={specimenId}
@@ -89,15 +90,15 @@ export default function RightPanelContainer({
           ) : (
             <motion.div
               key="page-panel"
-              initial={{ x: -PANEL_WIDTH }}
+              initial={{ x: -SPECIMEN_PANEL_WIDTH }}
               animate={{ x: 0 }}
-              exit={{ x: PANEL_WIDTH }}
+              exit={{ x: SPECIMEN_PANEL_WIDTH }}
               transition={{
                 duration: 0.3,
                 ease: [0.25, 0.46, 0.45, 0.94],
               }}
               className="absolute inset-y-0 right-0 shrink-0"
-              style={{ width: PANEL_WIDTH }}
+              style={{ width: SPECIMEN_PANEL_WIDTH }}
             >
               <PageSettingPanel
                 specimenId={specimenId}

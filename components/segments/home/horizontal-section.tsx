@@ -7,7 +7,7 @@ import {
   useTransform,
 } from "motion/react";
 import { useMemo, useRef } from "react";
-import TypefaceCard from "@/components/molecules/cards/typefaces";
+import { TypefaceCard } from "@/components/molecules/cards";
 import HeaderAllFonts from "@/components/segments/home/all-fonts/header";
 import STUDIOS from "@/mock-data/studios";
 import type { Typeface } from "@/types/typefaces";

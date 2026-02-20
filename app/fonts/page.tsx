@@ -1,5 +1,5 @@
 import Footer from "@/components/global/footer";
-import TypefaceCard from "@/components/molecules/cards/typefaces";
+import { TypefaceCard } from "@/components/molecules/cards";
 import { getAllPublishedTypefaces } from "@/lib/firebase/studios";
 import type { Typeface } from "@/types/typefaces";
 

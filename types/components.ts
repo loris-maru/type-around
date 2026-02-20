@@ -56,7 +56,13 @@ export type FormInputProps = {
   onChange: (
     e: React.ChangeEvent<HTMLInputElement>
   ) => void;
-  type?: "text" | "number" | "date" | "email" | "url";
+  type?:
+    | "text"
+    | "number"
+    | "date"
+    | "email"
+    | "url"
+    | "time";
   required?: boolean;
   placeholder?: string;
   min?: string | number;

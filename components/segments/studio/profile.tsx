@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import DesignerCard from "@/components/molecules/cards/designers";
+import { DesignerCardProfile } from "@/components/molecules/cards";
 import { useStudioFonts } from "@/contexts/studio-fonts-context";
 import type { Designer } from "@/types/studio";
 
@@ -59,7 +59,7 @@ export default function StudioProfile({
       {designers.length > 0 && (
         <div className="relative mb-32 grid w-full grid-cols-2 gap-6">
           {designers.map((designer) => (
-            <DesignerCard
+            <DesignerCardProfile
               key={
                 designer.id ||
                 `${designer.firstName}-${designer.lastName}`

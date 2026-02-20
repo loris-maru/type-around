@@ -1,27 +1,20 @@
 "use client";
 
+import Image from "next/image";
 import { useRef, useState } from "react";
 import {
-  RiDeleteBinLine,
   RiFileTextLine,
   RiImageLine,
   RiLoader4Line,
-  RiRefreshLine,
   RiUploadCloud2Line,
 } from "react-icons/ri";
-import { IMAGE_EXTENSIONS } from "@/constant/IMAGE_EXTENSIONS";
+import {
+  ButtonDeleteFile,
+  ButtonReplaceFile,
+} from "@/components/molecules/buttons";
 import { uploadFile } from "@/lib/firebase/storage";
 import type { FileDropZoneProps } from "@/types/components";
-
-function getExtensionFromUrl(url: string): string {
-  const path = url.split("?")[0];
-  return path.split(".").pop()?.toLowerCase() || "";
-}
-
-function isPreviewableImage(url: string): boolean {
-  const ext = getExtensionFromUrl(url);
-  return IMAGE_EXTENSIONS.includes(ext);
-}
+import { isPreviewableImage } from "@/utils/image-utils";
 
 export default function FileDropZone({
   label,
@@ -128,7 +121,7 @@ export default function FileDropZone({
     <div>
       {label && (
         <div className="flex flex-row gap-x-2">
-          <span className="mb-1 block font-semibold text-black text-sm">
+          <span className="mb-1 block font-medium text-black text-sm">
             {label}
           </span>
           {!instruction && (
@@ -155,8 +148,9 @@ export default function FileDropZone({
           {/* Image preview */}
           {showPreview ? (
             <div className="relative flex min-h-[120px] w-full items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50 p-4">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
+                width={100}
+                height={100}
                 src={value}
                 alt={label}
                 className="max-h-48 max-w-full object-contain"
@@ -173,22 +167,8 @@ export default function FileDropZone({
 
           {/* Replace & Delete buttons */}
           <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={handleReplace}
-              className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-neutral-300 px-4 py-2 font-medium font-whisper text-sm transition-colors hover:bg-neutral-50"
-            >
-              <RiRefreshLine className="h-4 w-4" />
-              Replace
-            </button>
-            <button
-              type="button"
-              onClick={handleDelete}
-              className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-red-200 px-4 py-2 font-medium font-whisper text-red-600 text-sm transition-colors hover:bg-red-50"
-            >
-              <RiDeleteBinLine className="h-4 w-4" />
-              Delete
-            </button>
+            <ButtonReplaceFile onClick={handleReplace} />
+            <ButtonDeleteFile onClick={handleDelete} />
           </div>
         </div>
       ) : (

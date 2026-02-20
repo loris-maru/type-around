@@ -22,48 +22,11 @@ import type {
   SpecimenPageGrid,
   SpecimenPageMargins,
 } from "@/types/studio";
-
-const DEFAULT_GRID: SpecimenPageGrid = {
-  columns: 2,
-  rows: 2,
-  gap: 8,
-  showGrid: false,
-};
-
-const DEFAULT_MARGINS: SpecimenPageMargins = {
-  left: 0,
-  top: 0,
-  right: 0,
-  bottom: 0,
-};
-
-function getTemplatePreviewCells(
-  template: SpecimenTemplate
-): { id: string; background: string | null }[] {
-  const cells: { id: string; background: string | null }[] =
-    [];
-  let slotIndex = 0;
-  for (const cell of template.cells) {
-    const span = (cell.colSpan ?? 1) * (cell.rowSpan ?? 1);
-    for (let i = 0; i < span; i++) {
-      cells.push({
-        id: `${cell.uuid}-${i}`,
-        background: cell.background,
-      });
-      slotIndex++;
-    }
-  }
-  const totalSlots =
-    template.grid.columns * template.grid.rows;
-  while (cells.length < totalSlots) {
-    cells.push({
-      id: `empty-${slotIndex}`,
-      background: null,
-    });
-    slotIndex++;
-  }
-  return cells;
-}
+import {
+  getPageGrid,
+  getPageMargins,
+  getTemplatePreviewCells,
+} from "@/utils/specimen-utils";
 
 export default function PageSettingPanel({
   specimenId,
@@ -280,8 +243,8 @@ function SelectedTemplateCard({
   onFontColorChange: (textColor: string) => void;
 }) {
   const gradient = getTemplateGradient(template.title);
-  const grid = page.grid ?? DEFAULT_GRID;
-  const margins = page.margins ?? DEFAULT_MARGINS;
+  const grid = getPageGrid(page);
+  const margins = getPageMargins(page);
   const background = useMemo(
     () =>
       page.background ?? {

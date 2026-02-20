@@ -2,7 +2,7 @@
 
 import { RiAddFill } from "react-icons/ri";
 import CollapsibleSection from "@/components/global/collapsible-section";
-import { VersionCard } from "@/components/molecules/cards/account";
+import { VersionCard } from "@/components/molecules/cards";
 import type { VersionsListSectionProps } from "@/types/components";
 
 export default function VersionsListSection({

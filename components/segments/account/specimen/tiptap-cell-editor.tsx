@@ -13,17 +13,7 @@ import StarterKit from "@tiptap/starter-kit";
 import { useEffect, useRef } from "react";
 import { useSpecimenPage } from "@/contexts/specimen-page-context";
 import type { SpecimenPageCell } from "@/types/studio";
-
-function ensureParagraphWrap(html: string): string {
-  if (!html || html.trim() === "") return "<p></p>";
-  const trimmed = html.trim();
-  if (
-    trimmed.startsWith("<p") ||
-    trimmed.startsWith("<div")
-  )
-    return html;
-  return `<p>${html}</p>`;
-}
+import { ensureParagraphWrap } from "@/utils/html-utils";
 
 export default function TiptapCellEditor({
   cell,

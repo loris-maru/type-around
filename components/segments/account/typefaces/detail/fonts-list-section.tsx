@@ -2,7 +2,7 @@
 
 import { RiAddFill } from "react-icons/ri";
 import CollapsibleSection from "@/components/global/collapsible-section";
-import { FontCard } from "@/components/molecules/cards/account";
+import { FontCard } from "@/components/molecules/cards";
 import FontSelector from "@/components/segments/account/typefaces/font-selector";
 import type { FontsListSectionProps } from "@/types/components";
 import FontLineText from "./font-line-text";

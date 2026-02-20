@@ -4,40 +4,11 @@ import { useCallback } from "react";
 import CustomSelect from "@/components/global/custom-select";
 import FileDropZone from "@/components/global/file-drop-zone";
 import ColorPicker from "@/components/molecules/color-picker";
+import { SPECIMEN_BACKGROUND_TYPE_OPTIONS } from "@/constant/SPECIMEN_OPTIONS";
 import type { BackgroundParameterBlockProps } from "@/types/specimen";
-import type {
-  SpecimenPage,
-  SpecimenPageBackground,
-} from "@/types/studio";
 import ParameterBlock from "./parameter-block";
-
-const BACKGROUND_TYPE_OPTIONS = [
-  { value: "color", label: "Color" },
-  { value: "gradient", label: "Gradient" },
-  { value: "image", label: "Image" },
-];
-
-const DEFAULT_BACKGROUND: SpecimenPageBackground = {
-  type: "color",
-  color: "#ffffff",
-  gradient: { from: "#FFF8E8", to: "#F2F2F2" },
-  image: "",
-};
-
-function getPageBackground(
-  page: SpecimenPage
-): SpecimenPageBackground {
-  return page.background ?? DEFAULT_BACKGROUND;
-}
-
-function handleHexChange(
-  value: string,
-  setter: (v: string) => void
-): void {
-  let v = value;
-  if (!v.startsWith("#")) v = `#${v}`;
-  if (/^#[0-9A-Fa-f]{0,6}$/.test(v)) setter(v);
-}
+import { handleHexChange } from "@/utils/color-utils";
+import { getPageBackground } from "@/utils/specimen-utils";
 
 export default function BackgroundParameterBlock({
   page,
@@ -109,7 +80,7 @@ export default function BackgroundParameterBlock({
       <div className="flex flex-col gap-3">
         <CustomSelect
           value={background.type}
-          options={BACKGROUND_TYPE_OPTIONS}
+          options={SPECIMEN_BACKGROUND_TYPE_OPTIONS}
           onChange={handleTypeChange}
         />
 

@@ -7,8 +7,12 @@ import {
   RiCloseLine,
 } from "react-icons/ri";
 import CollapsibleSection from "@/components/global/collapsible-section";
-import FormInput from "@/components/global/form-input";
-import FormTextarea from "@/components/global/form-textarea";
+import {
+  InputDate,
+  InputNumber,
+  InputText,
+  InputTextarea,
+} from "@/components/global/inputs";
 import TagInput from "@/components/global/tag-input";
 import type { BasicInformationSectionProps } from "@/types/components";
 import TypefaceVisionBlock from "./typeface-vision-block";
@@ -86,14 +90,14 @@ export default function BasicInformationSection({
     >
       <div className="flex flex-col gap-y-8">
         <div className="grid grid-cols-2 gap-4">
-          <FormInput
+          <InputText
             label="Latin Name"
             name="name"
             value={name}
             onChange={onInputChange}
             required
           />
-          <FormInput
+          <InputText
             label="Hangeul Name"
             name="hangeulName"
             value={hangeulName}
@@ -109,24 +113,22 @@ export default function BasicInformationSection({
         />
 
         <div className="grid grid-cols-2 gap-4">
-          <FormInput
+          <InputNumber
             label="Characters"
             name="characters"
-            type="number"
             value={characters}
             onChange={onInputChange}
             min={0}
           />
-          <FormInput
+          <InputDate
             label="Release Date"
             name="releaseDate"
-            type="date"
             value={releaseDate}
             onChange={onInputChange}
           />
         </div>
 
-        <FormTextarea
+        <InputTextarea
           label="Description"
           name="description"
           value={description}

@@ -1,7 +1,9 @@
+import LayoutFeedbacks from "@/components/layout/layout-feedbacks";
+
 export default function FeedbacksLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return <LayoutFeedbacks>{children}</LayoutFeedbacks>;
 }

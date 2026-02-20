@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { RiFileAddLine } from "react-icons/ri";
 import CollapsibleSection from "@/components/global/collapsible-section";
 import FileDropZone from "@/components/global/file-drop-zone";
-import SpecimenCard from "@/components/molecules/cards/account/specimen-card";
+import { SpecimenCard } from "@/components/molecules/cards";
 import { useStudio } from "@/hooks/use-studio";
 import type { SpecimenSectionProps } from "@/types/components";
 import { createSpecimenId } from "@/utils/create-specimen-id";
