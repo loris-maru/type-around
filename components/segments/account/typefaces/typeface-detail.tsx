@@ -6,21 +6,28 @@ import {
   useMemo,
   useState,
 } from "react";
+import AddFontModal from "@/components/modals/modal-add-font";
+import AddPackageModal from "@/components/modals/modal-add-package";
+import AddVersionModal from "@/components/modals/modal-add-version";
+import EulaGeneratorModal from "@/components/modals/modal-eula-generator";
 import { useStudio } from "@/hooks/use-studio";
 import type {
   TypefaceDetailProps,
   TypefaceVersion,
 } from "@/types/components";
-import type { Font, StudioTypeface } from "@/types/studio";
+import type {
+  Font,
+  Package,
+  StudioTypeface,
+} from "@/types/studio";
 import { slugify } from "@/utils/slugify";
-import EulaGeneratorModal from "../eula-generator/eula-generator-modal";
-import AddFontModal from "./add-font-modal";
-import AddVersionModal from "./add-version-modal";
 import {
   AssetsSection,
   BasicInformationSection,
   EulaSection,
   FontsListSection,
+  PackagesListSection,
+  ShopSection,
   SpecimenSection,
   TypefaceDetailHeader,
   VersionsListSection,
@@ -35,6 +42,10 @@ export default function TypefaceDetail({
     useState(false);
   const [editingFont, setEditingFont] =
     useState<Font | null>(null);
+  const [isPackageModalOpen, setIsPackageModalOpen] =
+    useState(false);
+  const [editingPackage, setEditingPackage] =
+    useState<Package | null>(null);
   const [isVersionModalOpen, setIsVersionModalOpen] =
     useState(false);
   const [isEulaModalOpen, setIsEulaModalOpen] =
@@ -98,6 +109,30 @@ export default function TypefaceDetail({
         visionFrame: typeface.visionFrame || "",
         visionSerif: typeface.visionSerif || "",
         published: typeface.published ?? false,
+        printPrice:
+          (
+            typeface as StudioTypeface & {
+              printPrice?: number;
+            }
+          ).printPrice ?? 0,
+        webPrice:
+          (
+            typeface as StudioTypeface & {
+              webPrice?: number;
+            }
+          ).webPrice ?? 0,
+        appPrice:
+          (
+            typeface as StudioTypeface & {
+              appPrice?: number;
+            }
+          ).appPrice ?? 0,
+        packages:
+          (
+            typeface as StudioTypeface & {
+              packages?: Package[];
+            }
+          ).packages ?? [],
       });
       setHasChanges(false);
     }
@@ -110,7 +145,16 @@ export default function TypefaceDetail({
       >
     ) => {
       const { name, value } = e.target;
-      setFormData((prev) => ({ ...prev, [name]: value }));
+      const numValue =
+        name === "printPrice" ||
+        name === "webPrice" ||
+        name === "appPrice"
+          ? parseFloat(value) || 0
+          : value;
+      setFormData((prev) => ({
+        ...prev,
+        [name]: numValue,
+      }));
       setHasChanges(true);
     },
     []
@@ -242,6 +286,50 @@ export default function TypefaceDetail({
   const handleCloseFontModal = useCallback(() => {
     setIsFontModalOpen(false);
     setEditingFont(null);
+  }, []);
+
+  // ── Package handlers ──
+  const handleSavePackage = useCallback((pkg: Package) => {
+    setFormData((prev) => {
+      const existing = prev.packages || [];
+      const idx = existing.findIndex(
+        (p) => p.id === pkg.id
+      );
+      const updated =
+        idx >= 0
+          ? existing.map((p) => (p.id === pkg.id ? pkg : p))
+          : [...existing, pkg];
+      return { ...prev, packages: updated };
+    });
+    setHasChanges(true);
+    setIsPackageModalOpen(false);
+    setEditingPackage(null);
+  }, []);
+
+  const handleEditPackageClick = useCallback(
+    (pkg: Package) => {
+      setEditingPackage(pkg);
+      setIsPackageModalOpen(true);
+    },
+    []
+  );
+
+  const handleRemovePackage = useCallback(
+    (packageId: string) => {
+      setFormData((prev) => ({
+        ...prev,
+        packages: (prev.packages || []).filter(
+          (p) => p.id !== packageId
+        ),
+      }));
+      setHasChanges(true);
+    },
+    []
+  );
+
+  const handleClosePackageModal = useCallback(() => {
+    setIsPackageModalOpen(false);
+    setEditingPackage(null);
   }, []);
 
   // ── Version handlers ──
@@ -417,6 +505,13 @@ export default function TypefaceDetail({
         onRemoveVersion={handleRemoveVersion}
       />
 
+      <ShopSection
+        printPrice={String(formData.printPrice ?? 0)}
+        webPrice={String(formData.webPrice ?? 0)}
+        appPrice={String(formData.appPrice ?? 0)}
+        onInputChange={handleInputChange}
+      />
+
       <FontsListSection
         fonts={formData.fonts || []}
         displayFontId={formData.displayFontId || ""}
@@ -426,6 +521,18 @@ export default function TypefaceDetail({
         onAddFontClick={() => setIsFontModalOpen(true)}
         onDisplayFontChange={handleDisplayFontChange}
         onInputChange={handleInputChange}
+      />
+
+      <PackagesListSection
+        packages={formData.packages || []}
+        fonts={formData.fonts || []}
+        onAddPackageClick={() => {
+          setEditingPackage(null);
+          setIsPackageModalOpen(true);
+        }}
+        onEditPackageClick={handleEditPackageClick}
+        onSavePackage={handleSavePackage}
+        onRemovePackage={handleRemovePackage}
       />
 
       <EulaSection
@@ -460,6 +567,11 @@ export default function TypefaceDetail({
         onSave={handleSaveFont}
         editingFont={editingFont}
         studioId={studio?.id || ""}
+        defaultPrices={{
+          printPrice: formData.printPrice ?? 0,
+          webPrice: formData.webPrice ?? 0,
+          appPrice: formData.appPrice ?? 0,
+        }}
       />
 
       <AddVersionModal
@@ -468,6 +580,14 @@ export default function TypefaceDetail({
         onSave={handleSaveVersion}
         editingVersion={editingVersion}
         studioId={studio?.id || ""}
+      />
+
+      <AddPackageModal
+        isOpen={isPackageModalOpen}
+        onClose={handleClosePackageModal}
+        onSave={handleSavePackage}
+        editingPackage={editingPackage}
+        fonts={formData.fonts || []}
       />
 
       <EulaGeneratorModal

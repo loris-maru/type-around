@@ -9,9 +9,9 @@ import {
   RiDeleteBinLine,
   RiDraggable,
 } from "react-icons/ri";
+import BlogArticleModal from "@/components/modals/modal-blog-article";
 import type { BlogBlockInlineProps } from "@/types/components";
 import type { BlogArticle } from "@/types/layout";
-import BlogArticleModal from "./blog-article-modal";
 
 export default function BlogBlockInline({
   data,

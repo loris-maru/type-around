@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { RiAddFill } from "react-icons/ri";
+import AddTypefaceModal from "@/components/modals/modal-add-typeface";
 import type { AddTypefaceProps } from "@/types/components";
-import AddTypefaceModal from "./add-typeface-modal";
 
 export default function AddTypeface({
   studio,
@@ -17,12 +17,12 @@ export default function AddTypeface({
       <button
         type="button"
         onClick={() => setIsModalOpen(true)}
-        className="relative w-full h-[320px] border border-neutral-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-neutral-400 transition-colors"
+        className="relative flex h-[320px] w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-neutral-300 transition-colors hover:border-neutral-400"
       >
-        <div className="relative font-ortank text-xl font-bold">
+        <div className="relative font-bold font-ortank text-xl">
           Add typeface
         </div>
-        <RiAddFill className="w-8 h-8 text-black" />
+        <RiAddFill className="h-8 w-8 text-black" />
       </button>
 
       {/* Modal */}

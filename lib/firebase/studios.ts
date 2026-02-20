@@ -41,6 +41,7 @@ function normalizeFonts(fonts: unknown[]): unknown[] {
         isItalic: f.isItalic ?? false,
         printPrice: f.printPrice ?? f.price ?? 0,
         webPrice: f.webPrice ?? 0,
+        appPrice: f.appPrice ?? 0,
         file: f.file ?? "",
       };
     }
@@ -73,6 +74,19 @@ function normalizeTypefaces(
         visionPlayful: t.visionPlayful ?? "",
         visionFrame: t.visionFrame ?? "",
         visionSerif: t.visionSerif ?? "",
+        printPrice: t.printPrice ?? 0,
+        webPrice: t.webPrice ?? 0,
+        appPrice: t.appPrice ?? 0,
+        packages: Array.isArray(t.packages)
+          ? (t.packages as Record<string, unknown>[]).map(
+              (p) => ({
+                ...p,
+                printPriceAmount: p.printPriceAmount ?? 0,
+                webPriceAmount: p.webPriceAmount ?? 0,
+                appPriceAmount: p.appPriceAmount ?? 0,
+              })
+            )
+          : [],
         fonts: Array.isArray(t.fonts)
           ? normalizeFonts(t.fonts)
           : [],

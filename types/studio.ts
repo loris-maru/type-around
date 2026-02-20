@@ -75,8 +75,10 @@ export const FontSchema = z.object({
   isItalic: z.boolean().default(false),
   printPrice: z.number().min(0).default(0),
   webPrice: z.number().min(0).default(0),
+  appPrice: z.number().min(0).default(0),
   file: z.string().default(""), // Type tester file (woff2)
   salesFiles: z.array(z.string()).default([]), // Files for purchase (woff2, woff, ttf, otf)
+  trialFiles: z.array(z.string()).default([]), // Trial fonts (woff2, woff, ttf, otf)
   // Legacy fields for backwards compatibility
   price: z.number().min(0).optional(),
   text: z.string().optional(),
@@ -92,6 +94,20 @@ export const TypefaceStatusEnum = z.enum([
 export type TypefaceStatus = z.infer<
   typeof TypefaceStatusEnum
 >;
+
+export const PackageSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  description: z.string().default(""),
+  fontIds: z.array(z.string()).default([]),
+  printPrice: z.boolean().default(true),
+  webPrice: z.boolean().default(true),
+  appPrice: z.boolean().default(true),
+  printPriceAmount: z.number().min(0).optional().default(0),
+  webPriceAmount: z.number().min(0).optional().default(0),
+  appPriceAmount: z.number().min(0).optional().default(0),
+});
+export type Package = z.infer<typeof PackageSchema>;
 
 export const StudioTypefaceSchema = z.object({
   id: z.string(),
@@ -128,6 +144,12 @@ export const StudioTypefaceSchema = z.object({
   visionPlayful: z.string().default(""),
   visionFrame: z.string().default(""),
   visionSerif: z.string().default(""),
+  // Shop / pricing (typeface-level defaults)
+  printPrice: z.number().min(0).optional().default(0),
+  webPrice: z.number().min(0).optional().default(0),
+  appPrice: z.number().min(0).optional().default(0),
+  // Packages (font bundles)
+  packages: z.array(PackageSchema).optional().default([]),
 });
 
 export const SpecimenPageMarginsSchema = z.object({

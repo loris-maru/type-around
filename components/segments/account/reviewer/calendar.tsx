@@ -3,11 +3,11 @@
 import { useUser } from "@clerk/nextjs";
 import { useCallback, useMemo, useState } from "react";
 import { InputDropdown } from "@/components/global/inputs";
+import AddAvailabilityModal from "@/components/modals/modal-add-availability";
 import { ButtonAddAvailabilityDay } from "@/components/molecules/buttons";
 import { CALENDAR_MONTHS } from "@/constant/CALENDAR_MONTHS";
 import { useStudio } from "@/hooks/use-studio";
 import { formatDateKey } from "@/utils/format-date-key";
-import AddAvailabilityModal from "./add-availability-modal";
 
 export default function AccountReviewerCalendar() {
   const { user } = useUser();

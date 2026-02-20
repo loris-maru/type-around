@@ -15,7 +15,10 @@ export default function TypefaceShop({
   studioSlug?: string;
 }) {
   return (
-    <div className="relative my-[20vh] flex w-full flex-col gap-y-1">
+    <div
+      className="relative my-[20vh] flex w-full flex-col gap-y-1"
+      id="shop"
+    >
       {fonts.map((font, index: number) => (
         <div key={`${font.id || font.name}-${font.weight}`}>
           <FontLine

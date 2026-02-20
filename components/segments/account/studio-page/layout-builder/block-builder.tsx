@@ -20,11 +20,11 @@ import type {
 } from "@/types/layout";
 import { cn } from "@/utils/class-names";
 import BlogBlockInline from "./blog-block-inline";
-import GalleryBlockModal from "./gallery-block-modal";
-import MediaBlockModal from "./media-block-modal";
-import SpacerBlockModal from "./spacer-block-modal";
-import StoreBlockModal from "./store-block-modal";
-import TypefaceListBlockModal from "./typeface-list-block-modal";
+import GalleryBlockModal from "@/components/modals/modal-gallery-block";
+import MediaBlockModal from "@/components/modals/modal-media-block";
+import SpacerBlockModal from "@/components/modals/modal-spacer-block";
+import StoreBlockModal from "@/components/modals/modal-store-block";
+import TypefaceListBlockModal from "@/components/modals/modal-typeface-list-block";
 
 export default function BlockBuilder({
   activeItems,

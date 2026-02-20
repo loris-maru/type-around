@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
+import RichTextEditor from "@/components/segments/account/studio-page/layout-builder/rich-text-editor";
 import type { BlogArticleModalProps } from "@/types/components";
 import { generateUUID } from "@/utils/generate-uuid";
-import RichTextEditor from "./rich-text-editor";
 
 export default function BlogArticleModal({
   isOpen,

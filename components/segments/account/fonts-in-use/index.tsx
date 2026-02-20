@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 import { RiLoader4Line } from "react-icons/ri";
+import AddFontInUseModal from "@/components/modals/modal-add-font-in-use";
 import { ButtonAddCard } from "@/components/molecules/buttons";
 import {
   FontInUseCard,
@@ -20,7 +21,6 @@ import {
 import type { FontInUseSubmission } from "@/types/my-account";
 import type { FontInUse } from "@/types/studio";
 import { generateUUID } from "@/utils/generate-uuid";
-import AddFontInUseModal from "./add-font-in-use-modal";
 
 export default function AccountFontsInUse() {
   const { studio, updateStudio } = useStudio();

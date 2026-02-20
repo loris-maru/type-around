@@ -97,6 +97,10 @@ export default function AddTypefaceModal({
         visionPlayful: "",
         visionFrame: "",
         visionSerif: "",
+        printPrice: 0,
+        webPrice: 0,
+        appPrice: 0,
+        packages: [],
       };
 
       await onAddTypeface(newTypeface);

@@ -1,9 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
+import Image from "next/image";
+import { useCallback, useEffect, useState } from "react";
 import { RiAddFill, RiLoader4Line } from "react-icons/ri";
+import SubmitFontInUseModal from "@/components/modals/modal-submit-font-in-use";
 import {
   createSubmission,
   getAllStudios,
@@ -13,7 +14,6 @@ import type {
   FontInUseSubmission,
   StudioSummary,
 } from "@/types/my-account";
-import SubmitFontInUseModal from "./submit-font-in-use-modal";
 
 export default function MyAccountFontsInUse() {
   const { user } = useUser();
@@ -94,30 +94,30 @@ export default function MyAccountFontsInUse() {
 
   if (isLoading) {
     return (
-      <div className="relative w-full flex items-center justify-center py-20">
-        <RiLoader4Line className="w-8 h-8 animate-spin text-neutral-400" />
+      <div className="relative flex w-full items-center justify-center py-20">
+        <RiLoader4Line className="h-8 w-8 animate-spin text-neutral-400" />
       </div>
     );
   }
 
   return (
     <div className="relative w-full">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="font-ortank text-3xl font-bold">
+      <div className="mb-8 flex items-center justify-between">
+        <h1 className="font-bold font-ortank text-3xl">
           Fonts In Use
         </h1>
         <button
           type="button"
           onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-2 px-5 py-2.5 bg-black text-white font-whisper font-medium rounded-lg hover:bg-neutral-800 transition-colors cursor-pointer"
+          className="flex cursor-pointer items-center gap-2 rounded-lg bg-black px-5 py-2.5 font-medium font-whisper text-white transition-colors hover:bg-neutral-800"
         >
-          <RiAddFill className="w-5 h-5" />
+          <RiAddFill className="h-5 w-5" />
           Submit a font in use
         </button>
       </div>
 
       {submissions.length === 0 ? (
-        <p className="text-neutral-500 font-whisper">
+        <p className="font-whisper text-neutral-500">
           You haven&apos;t submitted any fonts in use yet.
         </p>
       ) : (
@@ -125,11 +125,11 @@ export default function MyAccountFontsInUse() {
           {submissions.map((submission) => (
             <div
               key={submission.id}
-              className="relative flex flex-col p-4 border border-neutral-300 bg-white rounded-lg"
+              className="relative flex flex-col rounded-lg border border-neutral-300 bg-white p-4"
             >
               {/* Thumbnail */}
               {submission.images[0] && (
-                <div className="relative w-full aspect-video mb-3 rounded-md overflow-hidden bg-neutral-100">
+                <div className="relative mb-3 aspect-video w-full overflow-hidden rounded-md bg-neutral-100">
                   <Image
                     src={submission.images[0]}
                     alt={submission.projectName}
@@ -140,24 +140,24 @@ export default function MyAccountFontsInUse() {
                 </div>
               )}
 
-              <h3 className="font-ortank text-lg font-bold mb-1">
+              <h3 className="mb-1 font-bold font-ortank text-lg">
                 {submission.projectName}
               </h3>
-              <p className="text-sm text-neutral-500 mb-1">
+              <p className="mb-1 text-neutral-500 text-sm">
                 by {submission.designerName}
               </p>
-              <p className="text-sm text-neutral-500 mb-2">
+              <p className="mb-2 text-neutral-500 text-sm">
                 Studio: {submission.studioName}
               </p>
 
-              <div className="flex items-center justify-between mt-auto pt-3 border-t border-neutral-200">
-                <span className="text-xs text-neutral-400 font-whisper">
+              <div className="mt-auto flex items-center justify-between border-neutral-200 border-t pt-3">
+                <span className="font-whisper text-neutral-400 text-xs">
                   {new Date(
                     submission.submittedAt
                   ).toLocaleDateString()}
                 </span>
                 <span
-                  className={`text-xs px-2 py-1 rounded-full font-medium ${statusColor(submission.status)}`}
+                  className={`rounded-full px-2 py-1 font-medium text-xs ${statusColor(submission.status)}`}
                 >
                   {statusLabel(submission.status)}
                 </span>

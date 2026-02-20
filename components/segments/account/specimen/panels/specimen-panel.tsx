@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 import { RiCheckboxCircleFill } from "react-icons/ri";
-import AddFontModal from "@/components/segments/account/typefaces/add-font-modal";
+import AddFontModal from "@/components/modals/modal-add-font";
 import { useSpecimenPage } from "@/contexts/specimen-page-context";
 import { useStudio } from "@/hooks/use-studio";
 import type { SpecimenPanelProps } from "@/types/components";

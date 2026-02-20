@@ -2,10 +2,10 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { RiAddFill } from "react-icons/ri";
+import AddDesignerModal from "@/components/modals/modal-add-designer";
 import { DesignerCard } from "@/components/molecules/cards";
 import { useStudio } from "@/hooks/use-studio";
 import type { Designer } from "@/types/studio";
-import AddDesignerModal from "./add-designer-modal";
 
 export default function AccountDesigners() {
   const { studio, updateStudio } = useStudio();
@@ -62,7 +62,7 @@ export default function AccountDesigners() {
 
   return (
     <div className="relative w-full">
-      <h1 className="font-ortank text-3xl font-bold mb-8">
+      <h1 className="mb-8 font-bold font-ortank text-3xl">
         Designers
       </h1>
 
@@ -79,10 +79,10 @@ export default function AccountDesigners() {
         <button
           type="button"
           onClick={() => setIsModalOpen(true)}
-          className="flex flex-col items-center justify-center gap-2 p-4 border-2 border-dashed border-neutral-300 rounded-lg hover:border-black hover:bg-neutral-50 transition-all duration-300 ease-in-out min-h-[200px] cursor-pointer"
+          className="flex min-h-[200px] cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-neutral-300 border-dashed p-4 transition-all duration-300 ease-in-out hover:border-black hover:bg-neutral-50"
         >
-          <RiAddFill className="w-8 h-8 text-neutral-400" />
-          <span className="text-neutral-500 font-medium">
+          <RiAddFill className="h-8 w-8 text-neutral-400" />
+          <span className="font-medium text-neutral-500">
             Add Designer
           </span>
         </button>

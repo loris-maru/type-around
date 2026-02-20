@@ -80,7 +80,10 @@ export default function TypefaceUpdates() {
   }, []);
 
   return (
-    <div className="relative my-[20vh] w-full px-10">
+    <div
+      className="relative my-[20vh] w-full px-10"
+      id="updates"
+    >
       <header className="relative mb-10 flex w-full flex-row items-center justify-between">
         <h3 className="font-black font-ortank text-2xl text-black">
           Updates

@@ -18,6 +18,12 @@ import {
   RiLoader4Line,
   RiRestartLine,
 } from "react-icons/ri";
+import StepFontProduct from "@/components/segments/account/eula-generator/step-font-product";
+import StepFoundryInfo from "@/components/segments/account/eula-generator/step-foundry-info";
+import StepIndicator from "@/components/segments/account/eula-generator/step-indicator";
+import StepLegalPreferences from "@/components/segments/account/eula-generator/step-legal-preferences";
+import StepLicenseScope from "@/components/segments/account/eula-generator/step-license-scope";
+import StepRestrictions from "@/components/segments/account/eula-generator/step-restrictions";
 import { uploadFile } from "@/lib/firebase/storage";
 import { useEulaStore } from "@/stores/eula-store";
 import type { EulaFormData } from "@/types/eula";
@@ -26,12 +32,6 @@ import {
   foundryInfoSchema,
   licenseScopeSchema,
 } from "@/types/eula";
-import StepFontProduct from "./step-font-product";
-import StepFoundryInfo from "./step-foundry-info";
-import StepIndicator from "./step-indicator";
-import StepLegalPreferences from "./step-legal-preferences";
-import StepLicenseScope from "./step-license-scope";
-import StepRestrictions from "./step-restrictions";
 
 // ─── Modal step enum ────────────────────────────────────────────────
 type ModalPhase = "form" | "preview" | "confirmation";

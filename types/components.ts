@@ -25,6 +25,7 @@ import type {
   Font,
   FontInUse,
   MemberRole,
+  Package,
   Studio,
   StudioMember,
   StudioSpecimen,
@@ -257,6 +258,34 @@ export type VersionCardProps = {
   onEdit: (version: TypefaceVersion) => void;
 };
 
+export type ShopSectionProps = {
+  printPrice: string;
+  webPrice: string;
+  appPrice: string;
+  onInputChange: (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement
+    >
+  ) => void;
+};
+
+export type AddPackageModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (pkg: Package) => void;
+  editingPackage: Package | null;
+  fonts: Font[];
+};
+
+export type PackagesListSectionProps = {
+  packages: Package[];
+  fonts: Font[];
+  onAddPackageClick: () => void;
+  onEditPackageClick: (pkg: Package) => void;
+  onSavePackage: (pkg: Package) => void;
+  onRemovePackage: (packageId: string) => void;
+};
+
 export type FontsListSectionProps = {
   fonts: Font[];
   displayFontId: string;
@@ -345,6 +374,12 @@ export type AddFontModalProps = {
   onSave: (font: Font) => void;
   editingFont?: Font | null;
   studioId: string;
+  /** Default prices when adding a new font (from typeface Shop section) */
+  defaultPrices?: {
+    printPrice: number;
+    webPrice: number;
+    appPrice: number;
+  };
 };
 
 export type AddFontInUseModalProps = {
