@@ -9,6 +9,7 @@ import {
 } from "react-icons/ri";
 import {
   removeStudioMember,
+  updateMemberIsReviewer,
   updateMemberRole,
 } from "@/actions/members";
 import { useStudio } from "@/hooks/use-studio";
@@ -67,6 +68,7 @@ export default function AccountSettings() {
         ownerInMembers?.imageUrl || user?.imageUrl || "",
       role: "owner",
       addedAt: "",
+      isReviewer: false,
     };
 
     // Filter out the owner and deduplicate by email (case-insensitive)
@@ -118,6 +120,27 @@ export default function AccountSettings() {
       await updateStudio({ members: result.members });
     } else {
       setError(result.error || "Failed to update role");
+    }
+  };
+
+  const handleIsReviewerChange = async (
+    memberId: string,
+    isReviewer: boolean
+  ) => {
+    if (!studio) return;
+
+    const result = await updateMemberIsReviewer(
+      studio.id,
+      memberId,
+      isReviewer
+    );
+
+    if (result.success && result.members) {
+      await updateStudio({ members: result.members });
+    } else {
+      setError(
+        result.error || "Failed to update reviewer status"
+      );
     }
   };
 
@@ -186,6 +209,7 @@ export default function AccountSettings() {
             canManageMembers={canManageMembers}
             isRemoving={removingMemberId === member.id}
             onRoleChange={handleRoleChange}
+            onIsReviewerChange={handleIsReviewerChange}
             onRemove={handleRemoveMember}
           />
         ))}

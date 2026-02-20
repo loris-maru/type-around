@@ -408,6 +408,37 @@ export async function updateStudioStripeAccountId(
 }
 
 /**
+ * Add a reviewer availability slot for a user on a given date
+ */
+export async function addReviewerAvailabilitySlot(
+  studioId: string,
+  userId: string,
+  dateStr: string,
+  startTime: string,
+  endTime: string
+): Promise<void> {
+  const studio = await getStudioById(studioId);
+  if (!studio) throw new Error("Studio not found");
+
+  const existing = studio.reviewerAvailability ?? {};
+  const userSlots = existing[userId] ?? {};
+  const dateSlots = userSlots[dateStr] ?? [];
+  const newSlot = { startTime, endTime };
+
+  const updated = {
+    ...existing,
+    [userId]: {
+      ...userSlots,
+      [dateStr]: [...dateSlots, newSlot],
+    },
+  };
+
+  await updateStudio(studioId, {
+    reviewerAvailability: updated,
+  });
+}
+
+/**
  * Get all studios where user is owner or member
  */
 export async function getStudiosByUserEmail(

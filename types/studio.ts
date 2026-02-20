@@ -21,6 +21,7 @@ export const DesignerSchema = z.object({
   socialMedia: z
     .array(DesignerSocialMediaSchema)
     .default([]),
+  isReviewer: z.boolean().optional().default(false),
 });
 
 // Studio member roles
@@ -40,6 +41,7 @@ export const StudioMemberSchema = z.object({
   imageUrl: z.string().default(""),
   role: MemberRoleEnum.default("editor"),
   addedAt: z.string(), // ISO date string
+  isReviewer: z.boolean().optional().default(false),
 });
 export type StudioMember = z.infer<
   typeof StudioMemberSchema
@@ -309,7 +311,31 @@ export const StudioSchema = z.object({
   stripeAccountId: z.string().optional().default(""),
   // Team members with access to the studio
   members: z.array(StudioMemberSchema).default([]),
+  // Reviewer availability: userId -> date (YYYY-MM-DD) -> slots
+  reviewerAvailability: z
+    .record(
+      z.string(),
+      z.record(
+        z.string(),
+        z.array(
+          z.object({
+            startTime: z.string(),
+            endTime: z.string(),
+          })
+        )
+      )
+    )
+    .optional()
+    .default({}),
 });
+
+export const ReviewerAvailabilitySlotSchema = z.object({
+  startTime: z.string(),
+  endTime: z.string(),
+});
+export type ReviewerAvailabilitySlot = z.infer<
+  typeof ReviewerAvailabilitySlotSchema
+>;
 
 // Inferred Types from Zod schemas
 export type Designer = z.infer<typeof DesignerSchema>;
@@ -473,4 +499,5 @@ export const DEFAULT_STUDIO: Omit<
   fontsInUse: [],
   stripeAccountId: "",
   members: [],
+  reviewerAvailability: {},
 };

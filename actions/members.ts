@@ -57,6 +57,7 @@ export async function lookupUserByEmail(
         imageUrl: user.imageUrl || "",
         role: "editor",
         addedAt: new Date().toISOString(),
+        isReviewer: false,
       },
     };
   } catch (error) {
@@ -302,6 +303,78 @@ export async function updateMemberRole(
         error instanceof Error
           ? error.message
           : "Failed to update role",
+    };
+  }
+}
+
+/**
+ * Update a member's isReviewer flag
+ */
+export async function updateMemberIsReviewer(
+  studioId: string,
+  memberId: string,
+  isReviewer: boolean
+): Promise<MemberActionResult> {
+  try {
+    const { userId } = await auth();
+    if (!userId) {
+      return { success: false, error: "Not authenticated" };
+    }
+
+    const clerk = await clerkClient();
+    const currentUser = await clerk.users.getUser(userId);
+    const currentEmail = currentUser.emailAddresses.find(
+      (e) => e.id === currentUser.primaryEmailAddressId
+    )?.emailAddress;
+
+    if (!currentEmail) {
+      return {
+        success: false,
+        error: "Could not verify your identity",
+      };
+    }
+
+    const studio = await getStudioByEmail(currentEmail);
+    if (!studio) {
+      return { success: false, error: "Studio not found" };
+    }
+
+    const isOwner = studio.ownerEmail === currentEmail;
+    const currentMember = studio.members?.find(
+      (m) => m.id === userId
+    );
+    const isAdmin = currentMember?.role === "admin";
+
+    if (!isOwner && !isAdmin) {
+      return {
+        success: false,
+        error:
+          "You don't have permission to update members",
+      };
+    }
+
+    const updatedMembers = (studio.members || []).map(
+      (m) => (m.id === memberId ? { ...m, isReviewer } : m)
+    );
+    await updateStudio(studioId, {
+      members: updatedMembers,
+    });
+
+    return {
+      success: true,
+      members: updatedMembers,
+    };
+  } catch (error) {
+    console.error(
+      "Error updating member isReviewer:",
+      error
+    );
+    return {
+      success: false,
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to update reviewer status",
     };
   }
 }

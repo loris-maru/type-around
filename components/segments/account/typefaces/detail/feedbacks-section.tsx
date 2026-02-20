@@ -11,12 +11,12 @@ import {
 import { RiArrowLeftLine } from "react-icons/ri";
 import CollapsibleSection from "@/components/global/collapsible-section";
 import FileDropZone from "@/components/global/file-drop-zone";
+import type { FeedbackReviewer } from "@/constant/FEEDBACK_REVIEWERS";
 import {
   FEEDBACK_REVIEWERS,
   getDefaultNylasConfigId,
   getReviewerNylasConfigId,
 } from "@/constant/FEEDBACK_REVIEWERS";
-import type { FeedbackReviewer } from "@/constant/FEEDBACK_REVIEWERS";
 
 type FeedbacksSectionProps = {
   studioId: string;
@@ -355,9 +355,6 @@ export default function FeedbacksSection({
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <span className="mb-2 block font-whisper text-neutral-600 text-sm">
-                  Upload your typographic proof
-                </span>
                 <FileDropZone
                   label="Typographic proof"
                   accept=".pdf,.png,.jpg,.jpeg,.webp"
@@ -370,14 +367,8 @@ export default function FeedbacksSection({
                 />
               </div>
               <div>
-                <span className="mb-2 block font-whisper text-neutral-600 text-sm">
-                  Upload your glyphs or ufo file{" "}
-                  <span className="text-neutral-400">
-                    (not mandatory)
-                  </span>
-                </span>
                 <FileDropZone
-                  label="Glyphs or UFO file"
+                  label="Glyphs or UFO file (not mandatory)"
                   accept=".glyphs,.ufo,.zip"
                   value={glyphsFile}
                   onChange={setGlyphsFile}
@@ -400,7 +391,7 @@ export default function FeedbacksSection({
               <button
                 type="button"
                 onClick={handleSendRequest}
-                className="rounded-lg border border-black bg-black px-4 py-2 font-whisper text-sm text-white transition-colors hover:bg-neutral-800"
+                className="rounded-lg border border-black bg-black px-12 py-4 font-medium font-whisper text-base text-white transition-colors hover:bg-neutral-800"
               >
                 Send request
               </button>

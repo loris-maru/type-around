@@ -421,6 +421,10 @@ export type MemberListItemProps = {
     memberId: string,
     role: MemberRole
   ) => void;
+  onIsReviewerChange?: (
+    memberId: string,
+    isReviewer: boolean
+  ) => void;
   onRemove: (memberId: string) => void;
 };
 

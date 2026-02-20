@@ -10,5 +10,4 @@ export const TYPEFACE_SECTIONS: TypefaceSection[] = [
   { id: "eula", label: "EULA" },
   { id: "specimen", label: "Specimen" },
   { id: "assets", label: "Assets" },
-  { id: "feedbacks", label: "Feedbacks" },
 ];

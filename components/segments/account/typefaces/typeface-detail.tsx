@@ -20,7 +20,6 @@ import {
   AssetsSection,
   BasicInformationSection,
   EulaSection,
-  FeedbacksSection,
   FontsListSection,
   SpecimenSection,
   TypefaceDetailHeader,
@@ -454,8 +453,6 @@ export default function TypefaceDetail({
         )}
         onGalleryImagesChange={handleGalleryImagesChange}
       />
-
-      <FeedbacksSection studioId={studio?.id || ""} />
 
       <AddFontModal
         isOpen={isFontModalOpen}

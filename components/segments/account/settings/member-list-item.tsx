@@ -11,6 +11,7 @@ export default function MemberListItem({
   canManageMembers,
   isRemoving,
   onRoleChange,
+  onIsReviewerChange,
   onRemove,
 }: MemberListItemProps) {
   const displayName =
@@ -46,22 +47,44 @@ export default function MemberListItem({
         </div>
       </div>
 
-      <MemberRoleBadge
-        role={member.role}
-        isOwner={isOwner}
-        canManageMembers={canManageMembers}
-        isRemoving={isRemoving}
-        onRoleChange={
-          member.role !== "owner"
-            ? (role) => onRoleChange(member.id, role)
-            : undefined
-        }
-        onRemove={
-          member.role !== "owner"
-            ? () => onRemove(member.id)
-            : undefined
-        }
-      />
+      <div className="flex items-center gap-4">
+        {canManageMembers &&
+          member.role !== "owner" &&
+          onIsReviewerChange && (
+            <label className="flex cursor-pointer items-center gap-2">
+              <input
+                type="checkbox"
+                checked={member.isReviewer ?? false}
+                onChange={(e) =>
+                  onIsReviewerChange(
+                    member.id,
+                    e.target.checked
+                  )
+                }
+                className="h-4 w-4 rounded border-neutral-300"
+              />
+              <span className="font-whisper text-neutral-600 text-sm">
+                Reviewer
+              </span>
+            </label>
+          )}
+        <MemberRoleBadge
+          role={member.role}
+          isOwner={isOwner}
+          canManageMembers={canManageMembers}
+          isRemoving={isRemoving}
+          onRoleChange={
+            member.role !== "owner"
+              ? (role) => onRoleChange(member.id, role)
+              : undefined
+          }
+          onRemove={
+            member.role !== "owner"
+              ? () => onRemove(member.id)
+              : undefined
+          }
+        />
+      </div>
     </div>
   );
 }

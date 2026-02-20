@@ -274,6 +274,7 @@ export default function AddDesignerModal({
         avatar: avatarUrl,
         website: formData.website,
         socialMedia,
+        isReviewer: editingDesigner?.isReviewer ?? false,
       };
 
       onSave(designer);

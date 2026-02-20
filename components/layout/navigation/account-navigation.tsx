@@ -1,12 +1,12 @@
 "use client";
 
-import { SignOutButton } from "@clerk/nextjs";
+import { SignOutButton, useUser } from "@clerk/nextjs";
 import {
   usePathname,
   useRouter,
   useSearchParams,
 } from "next/navigation";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import {
   RiArrowDownSLine,
   RiLogoutBoxLine,
@@ -16,6 +16,7 @@ import {
   DEFAULT_ACCOUNT_NAV,
 } from "@/constant/ACCOUNT_NAV_ITEMS";
 import { TYPEFACE_SECTIONS } from "@/constant/TYPEFACE_SECTIONS";
+import { REVIEWER_SECTIONS } from "@/constant/REVIEWER_SECTIONS";
 import { useStudio } from "@/hooks/use-studio";
 import { cn } from "@/utils/class-names";
 import { slugify } from "@/utils/slugify";
@@ -124,12 +125,32 @@ export default function AccountNavigation() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
+  const { user } = useUser();
   const { studio } = useStudio();
 
   const activeNav =
     searchParams.get("nav") || DEFAULT_ACCOUNT_NAV;
   const activeTypeface = searchParams.get("typeface");
+  const activeReviewerSection =
+    searchParams.get("reviewer");
   const isTypefacesExpanded = activeNav === "typefaces";
+  const isReviewerExpanded = activeNav === "reviewer";
+
+  const isReviewer = useMemo(() => {
+    if (!user?.id || !studio?.members) return false;
+    const member = studio.members.find(
+      (m) => m.id === user.id
+    );
+    return member?.isReviewer === true;
+  }, [user?.id, studio?.members]);
+
+  const navItems = useMemo(() => {
+    if (!isReviewer) return ACCOUNT_NAV_ITEMS;
+    const idx = ACCOUNT_NAV_ITEMS.indexOf("Feedback");
+    const before = ACCOUNT_NAV_ITEMS.slice(0, idx + 1);
+    const after = ACCOUNT_NAV_ITEMS.slice(idx + 1);
+    return [...before, "Reviewer", ...after];
+  }, [isReviewer]);
 
   useEffect(() => {
     if (!searchParams.get("nav")) {
@@ -147,8 +168,12 @@ export default function AccountNavigation() {
         searchParams.toString()
       );
       params.set("nav", slug);
-      // Remove typeface param when changing main nav
       params.delete("typeface");
+      if (slug === "reviewer" && !params.get("reviewer")) {
+        params.set("reviewer", "calendar");
+      } else if (slug !== "reviewer") {
+        params.delete("reviewer");
+      }
       router.push(`${pathname}?${params.toString()}`);
     },
     [searchParams, router, pathname]
@@ -179,14 +204,27 @@ export default function AccountNavigation() {
     []
   );
 
+  const handleReviewerNavChange = useCallback(
+    (sectionId: string) => {
+      const params = new URLSearchParams(
+        searchParams.toString()
+      );
+      params.set("nav", "reviewer");
+      params.set("reviewer", sectionId);
+      router.push(`${pathname}?${params.toString()}`);
+    },
+    [searchParams, router, pathname]
+  );
+
   return (
     <div className="relative z-0 w-full">
       <div className="mb-2 font-ortank font-bold text-xl">
         {studio?.name || "Your studio"}
       </div>
       <div className="relative w-full flex flex-col gap-y-2">
-        {ACCOUNT_NAV_ITEMS.map((item) => {
+        {navItems.map((item) => {
           const isTypefaces = item === "Typefaces";
+          const isReviewerItem = item === "Reviewer";
           const hasTypefaces =
             isTypefaces &&
             studio?.typefaces &&
@@ -201,9 +239,10 @@ export default function AccountNavigation() {
                 label={item}
                 activeNav={activeNav}
                 onNavChange={handleNavChange}
-                hasSubmenu={hasTypefaces}
+                hasSubmenu={hasTypefaces || isReviewerItem}
                 isExpanded={
-                  hasTypefaces && isTypefacesExpanded
+                  (hasTypefaces && isTypefacesExpanded) ||
+                  (isReviewerItem && isReviewerExpanded)
                 }
                 count={typefaceCount}
               />
@@ -246,6 +285,29 @@ export default function AccountNavigation() {
                       </div>
                     );
                   })}
+                </div>
+              )}
+
+              {/* Reviewer submenu */}
+              {isReviewerItem && isReviewerExpanded && (
+                <div className="flex flex-col my-4 border-l border-neutral-300 ml-4">
+                  {REVIEWER_SECTIONS.map((section) => (
+                    <button
+                      key={section.id}
+                      type="button"
+                      onClick={() =>
+                        handleReviewerNavChange(section.id)
+                      }
+                      className={cn(
+                        "w-full text-left text-sm font-whisper px-6 py-2 transition-colors",
+                        activeReviewerSection === section.id
+                          ? "text-black font-semibold"
+                          : "text-neutral-500 hover:text-black"
+                      )}
+                    >
+                      {section.label}
+                    </button>
+                  ))}
                 </div>
               )}
             </div>

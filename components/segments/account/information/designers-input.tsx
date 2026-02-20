@@ -32,6 +32,7 @@ export default function DesignersInput() {
       id: `designer-${Date.now()}`,
       firstName: firstName.trim(),
       lastName: lastName.trim(),
+      isReviewer: false,
       email: "",
       biography: "",
       avatar: "",

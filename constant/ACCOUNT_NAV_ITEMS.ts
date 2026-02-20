@@ -3,6 +3,7 @@ export const ACCOUNT_NAV_ITEMS: string[] = [
   "Studio page",
   "Designers",
   "Typefaces",
+  "Feedback",
   "Fonts in use",
   "Stripe",
   "Settings",

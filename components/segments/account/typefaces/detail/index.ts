@@ -1,5 +1,4 @@
 export { default as AssetsSection } from "./assets-section";
-export { default as FeedbacksSection } from "./feedbacks-section";
 export { default as BasicInformationSection } from "./basic-information-section";
 export { default as EulaSection } from "./eula-section";
 export { default as FontsListSection } from "./fonts-list-section";

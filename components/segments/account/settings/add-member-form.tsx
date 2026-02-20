@@ -91,6 +91,12 @@ export default function AddMemberForm({
     }
   };
 
+  const handleIsReviewerChange = (isReviewer: boolean) => {
+    if (lookupResult) {
+      setLookupResult({ ...lookupResult, isReviewer });
+    }
+  };
+
   const displayName =
     lookupResult?.firstName && lookupResult?.lastName
       ? `${lookupResult.firstName} ${lookupResult.lastName}`
@@ -160,23 +166,38 @@ export default function AddMemberForm({
             </div>
           </div>
 
-          <div className="flex gap-3">
-            <select
-              value={lookupResult.role}
-              onChange={(e) =>
-                handleRoleChange(
-                  e.target.value as MemberRole
-                )
-              }
-              className="rounded-lg border border-neutral-300 px-4 py-3 font-whisper"
-            >
-              <option value="editor">
-                Editor - {ROLE_DESCRIPTIONS.editor}
-              </option>
-              <option value="admin">
-                Admin - {ROLE_DESCRIPTIONS.admin}
-              </option>
-            </select>
+          <div className="flex flex-col gap-4">
+            <div className="flex gap-3">
+              <select
+                value={lookupResult.role}
+                onChange={(e) =>
+                  handleRoleChange(
+                    e.target.value as MemberRole
+                  )
+                }
+                className="rounded-lg border border-neutral-300 px-4 py-3 font-whisper"
+              >
+                <option value="editor">
+                  Editor - {ROLE_DESCRIPTIONS.editor}
+                </option>
+                <option value="admin">
+                  Admin - {ROLE_DESCRIPTIONS.admin}
+                </option>
+              </select>
+            </div>
+            <label className="flex cursor-pointer items-center gap-2">
+              <input
+                type="checkbox"
+                checked={lookupResult.isReviewer ?? false}
+                onChange={(e) =>
+                  handleIsReviewerChange(e.target.checked)
+                }
+                className="h-4 w-4 rounded border-neutral-300"
+              />
+              <span className="font-whisper text-sm">
+                Is reviewer (can manage calendar & requests)
+              </span>
+            </label>
           </div>
 
           <div className="flex gap-3">
