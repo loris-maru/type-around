@@ -6,4 +6,5 @@ export { default as PackagesListSection } from "./packages-list-section";
 export { default as ShopSection } from "./shop-section";
 export { default as SpecimenSection } from "./specimen-section";
 export { default as TypefaceDetailHeader } from "./typeface-detail-header";
+export { default as TypefacePageSection } from "./typeface-page-section";
 export { default as VersionsListSection } from "./versions-list-section";

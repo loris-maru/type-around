@@ -1,7 +1,7 @@
 "use client";
 
 import { Reorder } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   RiAddLine,
   RiCloseLine,
@@ -10,6 +10,7 @@ import {
   RiLoader4Line,
   RiUploadCloud2Line,
 } from "react-icons/ri";
+import { useModalOpen } from "@/hooks/use-modal-open";
 import { uploadFile } from "@/lib/firebase/storage";
 import type { StoreBlockModalProps } from "@/types/components";
 import type { StoreProduct } from "@/types/layout";
@@ -32,6 +33,8 @@ export default function StoreBlockModal({
   initialData,
   studioId,
 }: StoreBlockModalProps) {
+  useModalOpen(isOpen);
+
   const [products, setProducts] = useState<StoreProduct[]>(
     () => initialData?.products || []
   );
@@ -78,20 +81,14 @@ export default function StoreBlockModal({
     onClose();
   };
 
-  useEffect(() => {
-    if (!isOpen) return;
-    document.documentElement.style.overflow = "hidden";
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.documentElement.style.overflow = "";
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
-
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden">
+    <div
+      className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden"
+      data-modal
+      data-lenis-prevent
+    >
       {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop dismiss */}
       {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop dismiss */}
       <div

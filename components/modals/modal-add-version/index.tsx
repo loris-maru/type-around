@@ -1,13 +1,9 @@
 "use client";
 
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { useCallback, useMemo, useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
 import FileDropZone from "@/components/global/file-drop-zone";
+import { useModalOpen } from "@/hooks/use-modal-open";
 import type {
   AddVersionModalProps,
   TypefaceVersion,
@@ -51,6 +47,8 @@ export default function AddVersionModal({
   editingVersion,
   studioId,
 }: AddVersionModalProps) {
+  useModalOpen(isOpen);
+
   const initialForm = useMemo<FormData>(() => {
     if (!isOpen) return EMPTY_FORM;
     if (editingVersion) {
@@ -113,17 +111,6 @@ export default function AddVersionModal({
     setForm(initialForm);
     setToggles(initialToggles);
   }
-
-  useEffect(() => {
-    if (isOpen) {
-      document.documentElement.style.overflow = "hidden";
-      document.body.style.overflow = "hidden";
-    }
-    return () => {
-      document.documentElement.style.overflow = "";
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
 
   const handleChange = useCallback(
     (
@@ -204,7 +191,11 @@ export default function AddVersionModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center">
+    <div
+      className="fixed inset-0 z-100 flex items-center justify-center"
+      data-modal
+      data-lenis-prevent
+    >
       {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop click to dismiss */}
       {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop click to dismiss */}
       <div

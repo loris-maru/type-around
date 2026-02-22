@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   RiCloseLine,
   RiLoader4Line,
@@ -14,6 +14,7 @@ import {
   MARGIN_OPTIONS,
   SIZE_OPTIONS,
 } from "@/constant/BLOCK_OPTIONS";
+import { useModalOpen } from "@/hooks/use-modal-open";
 import { uploadFile } from "@/lib/firebase/storage";
 import type { MediaBlockModalProps } from "@/types/components";
 import type {
@@ -31,6 +32,8 @@ export default function MediaBlockModal({
   studioId,
   type,
 }: MediaBlockModalProps) {
+  useModalOpen(isOpen);
+
   const [url, setUrl] = useState(initialData?.url || "");
   const [title, setTitle] = useState(
     initialData?.title || ""
@@ -114,20 +117,14 @@ export default function MediaBlockModal({
     onClose();
   };
 
-  useEffect(() => {
-    if (!isOpen) return;
-    document.documentElement.style.overflow = "hidden";
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.documentElement.style.overflow = "";
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
-
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden">
+    <div
+      className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden"
+      data-modal
+      data-lenis-prevent
+    >
       {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop dismiss */}
       {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop dismiss */}
       <div

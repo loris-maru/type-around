@@ -5,6 +5,7 @@ export interface TypefaceSection {
 
 export const TYPEFACE_SECTIONS: TypefaceSection[] = [
   { id: "information", label: "Information" },
+  { id: "typeface-page", label: "Typeface page" },
   { id: "versions", label: "Versions" },
   { id: "shop", label: "Shop" },
   { id: "fonts", label: "Fonts" },

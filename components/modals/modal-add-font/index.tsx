@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { RiCloseLine, RiLoader4Line } from "react-icons/ri";
+import { useModalOpen } from "@/hooks/use-modal-open";
 import {
   uploadFile,
   uploadMultipleFiles,
@@ -56,6 +57,8 @@ export default function AddFontModal({
     appPrice: 0,
   },
 }: AddFontModalProps) {
+  useModalOpen(isOpen);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -383,7 +386,11 @@ export default function AddFontModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden">
+    <div
+      className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden"
+      data-modal
+      data-lenis-prevent
+    >
       {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop dismiss */}
       {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop dismiss */}
       <div

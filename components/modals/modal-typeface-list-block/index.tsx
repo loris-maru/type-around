@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
 import ColorPicker from "@/components/molecules/color-picker";
+import { useModalOpen } from "@/hooks/use-modal-open";
 import type { TypefaceListBlockModalProps } from "@/types/components";
 
 export default function TypefaceListBlockModal({
@@ -23,20 +24,16 @@ export default function TypefaceListBlockModal({
     onClose();
   };
 
-  useEffect(() => {
-    if (!isOpen) return;
-    document.documentElement.style.overflow = "hidden";
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.documentElement.style.overflow = "";
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
+  useModalOpen(isOpen);
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden">
+    <div
+      className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden"
+      data-modal
+      data-lenis-prevent
+    >
       {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop dismiss */}
       {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop dismiss */}
       <div

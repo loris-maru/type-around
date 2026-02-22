@@ -12,6 +12,7 @@ import {
   RiUploadCloud2Line,
 } from "react-icons/ri";
 import ColorPicker from "@/components/molecules/color-picker";
+import { useModalOpen } from "@/hooks/use-modal-open";
 import { uploadFile } from "@/lib/firebase/storage";
 import type { GalleryBlockModalProps } from "@/types/components";
 import type { GalleryImage } from "@/types/layout";
@@ -24,6 +25,8 @@ export default function GalleryBlockModal({
   initialData,
   studioId,
 }: GalleryBlockModalProps) {
+  useModalOpen(isOpen);
+
   const [gap, setGap] = useState<number>(
     initialData?.gap ?? 0
   );
@@ -151,7 +154,11 @@ export default function GalleryBlockModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden">
+    <div
+      className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden"
+      data-modal
+      data-lenis-prevent
+    >
       {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop dismiss */}
       {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop dismiss */}
       <div

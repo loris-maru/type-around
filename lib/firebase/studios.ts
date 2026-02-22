@@ -64,6 +64,7 @@ function normalizeTypefaces(
         published: t.published ?? false,
         supportedLanguages: t.supportedLanguages ?? [],
         headerImage: t.headerImage ?? "",
+        heroLetter: t.heroLetter ?? "",
         specimen: t.specimen ?? "",
         eula: t.eula ?? "",
         variableFontFile: t.variableFontFile ?? "",
@@ -86,6 +87,11 @@ function normalizeTypefaces(
                 appPriceAmount: p.appPriceAmount ?? 0,
               })
             )
+          : [],
+        typefacePageLayout: Array.isArray(
+          t.typefacePageLayout
+        )
+          ? t.typefacePageLayout
           : [],
         fonts: Array.isArray(t.fonts)
           ? normalizeFonts(t.fonts)

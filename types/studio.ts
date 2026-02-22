@@ -150,6 +150,17 @@ export const StudioTypefaceSchema = z.object({
   appPrice: z.number().min(0).optional().default(0),
   // Packages (font bundles)
   packages: z.array(PackageSchema).optional().default([]),
+  // Typeface page layout (block order for public typeface page)
+  typefacePageLayout: z
+    .array(
+      z.object({
+        blockId: z.string(),
+        key: z.string(),
+        data: z.record(z.string(), z.unknown()).optional(),
+      })
+    )
+    .optional()
+    .default([]),
 });
 
 export const SpecimenPageMarginsSchema = z.object({

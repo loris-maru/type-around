@@ -1,13 +1,10 @@
 import Footer from "@/components/global/footer";
-import SingleTypetester from "@/components/global/typetester/single";
-import DownloadButtons from "@/components/segments/typeface/download-buttons";
-import TypefaceGallery from "@/components/segments/typeface/gallery";
 import TypefaceHeader from "@/components/segments/typeface/header";
 import MoreContent from "@/components/segments/typeface/more-content";
-import TypefaceShop from "@/components/segments/typeface/shop";
-import TypefaceStatus from "@/components/segments/typeface/status";
-import TypefaceUpdates from "@/components/segments/typeface/updates";
+import TypefacePageBlocks from "@/components/segments/typeface-page-blocks";
+import { DEFAULT_TYPEFACE_PAGE_LAYOUT } from "@/constant/DEFAULT_TYPEFACE_PAGE_LAYOUT";
 import { getStudioBySlug } from "@/lib/firebase/studios";
+import type { TypefaceLayoutItem } from "@/types/layout-typeface";
 import type { Studio, Typeface } from "@/types/typefaces";
 import type { TypetesterFont } from "@/types/typetester";
 import { slugify } from "@/utils/slugify";
@@ -136,14 +133,6 @@ export default async function TypefacePage({
     ),
   };
 
-  // Gallery images from Account > typefaces > Gallery images
-  const galleryImages = (
-    rawTypeface.galleryImages || []
-  ).map((src, i) => ({
-    src,
-    alt: `Gallery image ${i + 1}`,
-  }));
-
   // Extract fonts for the SingleTypetester from this typeface only
   const typetesterFonts: TypetesterFont[] =
     rawTypeface.fonts
@@ -156,6 +145,17 @@ export default async function TypefacePage({
         file: f.file,
       }));
 
+  const typefacePageLayout =
+    (
+      rawTypeface as {
+        typefacePageLayout?: TypefaceLayoutItem[];
+      }
+    ).typefacePageLayout ?? [];
+  const blocks =
+    typefacePageLayout.length > 0
+      ? typefacePageLayout
+      : DEFAULT_TYPEFACE_PAGE_LAYOUT;
+
   return (
     <div className="relative w-full">
       <TypefaceHeader
@@ -163,26 +163,15 @@ export default async function TypefacePage({
         typeface={typeface}
         hangeulName={hangeulName}
       />
-      <SingleTypetester fonts={typetesterFonts} />
-      <TypefaceGallery images={galleryImages} />
-      <DownloadButtons
-        typefaceName={typeface.name}
-        specimenUrl={rawTypeface.specimen || undefined}
-        trialFontUrls={rawTypeface.fonts
-          .filter((f) => f.file)
-          .map((f) => ({
-            styleName: f.styleName,
-            file: f.file,
-          }))}
-      />
-      <TypefaceStatus />
-      <TypefaceUpdates />
-      <TypefaceShop
-        fonts={typeface.fonts}
+      <TypefacePageBlocks
+        blocks={blocks}
+        rawTypeface={rawTypeface}
         typefaceName={typeface.name}
         typefaceSlug={typefaceName}
         studioId={firebaseStudio.id}
         studioSlug={name}
+        typetesterFonts={typetesterFonts}
+        typefaceFonts={typeface.fonts}
       />
       <MoreContent studio={studioWithTypefaces} />
       <Footer />

@@ -1,6 +1,6 @@
 import Footer from "@/components/global/footer";
 import StudioHeader from "@/components/segments/studio/header";
-import StudioPageBlocks from "@/components/segments/studio/page-blocks";
+import StudioPageBlocks from "@/components/segments/studio-page-blocks";
 import { DEFAULT_PAGE_LAYOUT } from "@/constant/DEFAULT_PAGE_LAYOUT";
 import { StudioFontsProvider } from "@/contexts/studio-fonts-context";
 import { getStudioBySlug } from "@/lib/firebase/studios";

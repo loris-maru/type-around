@@ -15,6 +15,7 @@ import type {
   TypefaceDetailProps,
   TypefaceVersion,
 } from "@/types/components";
+import type { TypefaceLayoutItem } from "@/types/layout-typeface";
 import type {
   Font,
   Package,
@@ -30,6 +31,7 @@ import {
   ShopSection,
   SpecimenSection,
   TypefaceDetailHeader,
+  TypefacePageSection,
   VersionsListSection,
 } from "./detail";
 
@@ -133,6 +135,12 @@ export default function TypefaceDetail({
               packages?: Package[];
             }
           ).packages ?? [],
+        typefacePageLayout:
+          (
+            typeface as StudioTypeface & {
+              typefacePageLayout?: TypefaceLayoutItem[];
+            }
+          ).typefacePageLayout ?? [],
       });
       setHasChanges(false);
     }
@@ -332,6 +340,17 @@ export default function TypefaceDetail({
     setEditingPackage(null);
   }, []);
 
+  const handleTypefacePageLayoutChange = useCallback(
+    (layout: TypefaceLayoutItem[]) => {
+      setFormData((prev) => ({
+        ...prev,
+        typefacePageLayout: layout,
+      }));
+      setHasChanges(true);
+    },
+    []
+  );
+
   // ── Version handlers ──
   const handleSaveVersion = useCallback(
     (version: TypefaceVersion) => {
@@ -494,6 +513,19 @@ export default function TypefaceDetail({
         onLanguagesChange={handleLanguagesChange}
         onTypefaceVisionChange={handleTypefaceVisionChange}
         onDesignerIdsChange={handleDesignerIdsChange}
+      />
+
+      <TypefacePageSection
+        typefacePageLayout={
+          (
+            formData as StudioTypeface & {
+              typefacePageLayout?: TypefaceLayoutItem[];
+            }
+          ).typefacePageLayout ?? []
+        }
+        onLayoutChange={handleTypefacePageLayoutChange}
+        studioId={studio?.id || ""}
+        typefaceId={typeface?.id || ""}
       />
 
       <VersionsListSection

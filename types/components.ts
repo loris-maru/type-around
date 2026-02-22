@@ -503,6 +503,31 @@ export type BlocksListProps = {
   handleAdd: (blockId: LayoutBlockId) => void;
 };
 
+export type TypefacePageLayoutBuilderProps = {
+  value: import("@/types/layout-typeface").TypefaceLayoutItem[];
+  onChange: (
+    layout: import("@/types/layout-typeface").TypefaceLayoutItem[]
+  ) => void;
+  studioId: string;
+  typefaceId: string;
+};
+
+export type TypefaceBlockBuilderProps = {
+  activeItems: import("@/types/layout-typeface").TypefaceLayoutItem[];
+  handleRemove: (key: string) => void;
+  handleReorder: (
+    newOrder: import("@/types/layout-typeface").TypefaceLayoutItem[]
+  ) => void;
+  handleUpdateData: (
+    key: string,
+    data: import("@/types/layout-typeface").TypefaceLayoutItemData
+  ) => void;
+  getLabelForId: (
+    id: import("@/types/layout-typeface").TypefaceLayoutBlockId
+  ) => string;
+  studioId: string;
+};
+
 export type GalleryBlockModalProps = {
   isOpen: boolean;
   onClose: () => void;

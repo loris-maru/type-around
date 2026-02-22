@@ -9,6 +9,7 @@ import {
   RiUploadCloud2Line,
 } from "react-icons/ri";
 import { InputDropdown } from "@/components/global/inputs";
+import { useModalOpen } from "@/hooks/use-modal-open";
 import { uploadFile } from "@/lib/firebase/storage";
 import type {
   ImagePreview,
@@ -25,6 +26,8 @@ export default function SubmitFontInUseModal({
   userId,
   userName,
 }: SubmitFontInUseModalProps) {
+  useModalOpen(isOpen);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -231,20 +234,14 @@ export default function SubmitFontInUseModal({
     onClose();
   };
 
-  useEffect(() => {
-    if (!isOpen) return;
-    document.documentElement.style.overflow = "hidden";
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.documentElement.style.overflow = "";
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
-
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden">
+    <div
+      className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden"
+      data-modal
+      data-lenis-prevent
+    >
       {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop dismiss */}
       {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop dismiss */}
       <div

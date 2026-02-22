@@ -24,6 +24,7 @@ import StepIndicator from "@/components/segments/account/eula-generator/step-ind
 import StepLegalPreferences from "@/components/segments/account/eula-generator/step-legal-preferences";
 import StepLicenseScope from "@/components/segments/account/eula-generator/step-license-scope";
 import StepRestrictions from "@/components/segments/account/eula-generator/step-restrictions";
+import { useModalOpen } from "@/hooks/use-modal-open";
 import { uploadFile } from "@/lib/firebase/storage";
 import { useEulaStore } from "@/stores/eula-store";
 import type { EulaFormData } from "@/types/eula";
@@ -261,6 +262,8 @@ export default function EulaGeneratorModal({
   onClose: () => void;
   studioId: string;
 }) {
+  useModalOpen(isOpen);
+
   const store = useEulaStore();
   const {
     currentStep,
@@ -282,17 +285,6 @@ export default function EulaGeneratorModal({
   } = store;
 
   const [phase, setPhase] = useState<ModalPhase>("form");
-
-  // Scroll lock
-  useEffect(() => {
-    if (!isOpen) return;
-    document.documentElement.style.overflow = "hidden";
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.documentElement.style.overflow = "";
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
 
   const handleClose = () => {
     if (isGenerating) return; // prevent closing mid-generation
@@ -459,7 +451,11 @@ export default function EulaGeneratorModal({
         : "E.U.L.A. Ready";
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden">
+    <div
+      className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden"
+      data-modal
+      data-lenis-prevent
+    >
       {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop */}
       {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop */}
       <div

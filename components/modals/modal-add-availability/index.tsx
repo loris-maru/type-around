@@ -6,6 +6,7 @@ import {
   ButtonCancelForm,
   ButtonCloseModal,
 } from "@/components/molecules/buttons";
+import { useModalOpen } from "@/hooks/use-modal-open";
 
 type AddAvailabilityModalProps = {
   isOpen: boolean;
@@ -22,6 +23,8 @@ export default function AddAvailabilityModal({
   onSave,
   isSaving = false,
 }: AddAvailabilityModalProps) {
+  useModalOpen(isOpen);
+
   const [startTime, setStartTime] = useState("15:00");
   const [endTime, setEndTime] = useState("20:00");
 
@@ -41,10 +44,14 @@ export default function AddAvailabilityModal({
     : "";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4"
+      data-modal
+      data-lenis-prevent
+    >
       <div className="w-full max-w-md rounded-lg border border-neutral-200 bg-white p-6 shadow-lg">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="font-ortank font-bold text-lg text-neutral-800">
+          <h2 className="font-bold font-ortank text-lg text-neutral-800">
             Add availability
           </h2>
           <ButtonCloseModal

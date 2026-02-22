@@ -22,7 +22,9 @@ export default async function FontsPage() {
       slug: t.slug,
       description: t.description,
       icon:
-        t.headerImage || "/mock/typefaces/icn_ortank.svg",
+        t.heroLetter ||
+        t.headerImage ||
+        "/mock/typefaces/icn_ortank.svg",
       fonts: t.fonts.map((f) => ({
         price: f.printPrice || f.price || 0,
         text: f.text || "",

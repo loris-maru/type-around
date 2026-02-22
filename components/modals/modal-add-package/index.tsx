@@ -6,6 +6,7 @@ import {
   RiCloseLine,
   RiDeleteBinLine,
 } from "react-icons/ri";
+import { useModalOpen } from "@/hooks/use-modal-open";
 import type { AddPackageModalProps } from "@/types/components";
 import type { Package } from "@/types/studio";
 import { generateUUID } from "@/utils/generate-uuid";
@@ -22,6 +23,8 @@ export default function AddPackageModal({
   editingPackage,
   fonts,
 }: AddPackageModalProps) {
+  useModalOpen(isOpen);
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [fontIds, setFontIds] = useState<string[]>([]);
@@ -118,7 +121,11 @@ export default function AddPackageModal({
   );
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden">
+    <div
+      className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden"
+      data-modal
+      data-lenis-prevent
+    >
       {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop dismiss */}
       {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop dismiss */}
       <div
@@ -188,7 +195,12 @@ export default function AddPackageModal({
 
           {/* Fonts */}
           <div>
-            <label className={labelClass}>Fonts</label>
+            <label
+              className={labelClass}
+              htmlFor="fonts"
+            >
+              Fonts
+            </label>
             <div className="space-y-3">
               {/* Selected fonts */}
               {selectedFonts.length > 0 && (
@@ -283,7 +295,7 @@ export default function AddPackageModal({
                       className="w-full rounded-lg border border-neutral-300 px-4 py-3 pr-10 font-whisper text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                       placeholder="0"
                     />
-                    <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 font-whisper text-neutral-500 text-sm">
+                    <span className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 font-whisper text-neutral-500 text-sm">
                       ₩
                     </span>
                   </div>
@@ -316,7 +328,7 @@ export default function AddPackageModal({
                       className="w-full rounded-lg border border-neutral-300 px-4 py-3 pr-10 font-whisper text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                       placeholder="0"
                     />
-                    <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 font-whisper text-neutral-500 text-sm">
+                    <span className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 font-whisper text-neutral-500 text-sm">
                       ₩
                     </span>
                   </div>
@@ -349,7 +361,7 @@ export default function AddPackageModal({
                       className="w-full rounded-lg border border-neutral-300 px-4 py-3 pr-10 font-whisper text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
                       placeholder="0"
                     />
-                    <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 font-whisper text-neutral-500 text-sm">
+                    <span className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 font-whisper text-neutral-500 text-sm">
                       ₩
                     </span>
                   </div>

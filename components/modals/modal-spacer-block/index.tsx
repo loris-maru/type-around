@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
 import { SPACER_SIZE_OPTIONS } from "@/constant/BLOCK_OPTIONS";
+import { useModalOpen } from "@/hooks/use-modal-open";
 import type { SpacerBlockModalProps } from "@/types/components";
 import type { SpacerSize } from "@/types/layout";
 import { cn } from "@/utils/class-names";
@@ -13,6 +14,8 @@ export default function SpacerBlockModal({
   onSave,
   initialData,
 }: SpacerBlockModalProps) {
+  useModalOpen(isOpen);
+
   const [size, setSize] = useState<SpacerSize>(
     initialData?.size || "m"
   );
@@ -22,20 +25,14 @@ export default function SpacerBlockModal({
     onClose();
   };
 
-  useEffect(() => {
-    if (!isOpen) return;
-    document.documentElement.style.overflow = "hidden";
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.documentElement.style.overflow = "";
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
-
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden">
+    <div
+      className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden"
+      data-modal
+      data-lenis-prevent
+    >
       {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop dismiss */}
       {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop dismiss */}
       <div
