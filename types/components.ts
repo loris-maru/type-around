@@ -1,5 +1,6 @@
 import type { MotionValue } from "motion/react";
 import type { ReactNode } from "react";
+import type { FontFormat } from "@/constant/FONT_FORMATS";
 import type { UploadFolder } from "@/lib/firebase/storage";
 import type {
   BlogArticle,
@@ -15,6 +16,11 @@ import type {
   TypefaceListBlockData,
   VideoBlockData,
 } from "./layout";
+import type {
+  CharacterSetBlockData,
+  TypefaceLayoutBlock,
+  TypefaceLayoutBlockId,
+} from "./layout-typeface";
 import type {
   FontInUseSubmission,
   Purchase,
@@ -32,12 +38,6 @@ import type {
   StudioTypeface,
 } from "./studio";
 import type { Typeface } from "./typefaces";
-import type { FontFormat } from "@/constant/FONT_FORMATS";
-import type {
-  CharacterSetBlockData,
-  TypefaceLayoutBlock,
-  TypefaceLayoutBlockId,
-} from "./layout-typeface";
 
 // ===========================================
 // Global Component Props
@@ -438,6 +438,7 @@ export type TypefaceCardProps = {
 export type PublicTypefaceCardProps = {
   studioName: string;
   typeface: Typeface;
+  compact?: boolean;
 };
 
 export type FontInUseCardProps = {

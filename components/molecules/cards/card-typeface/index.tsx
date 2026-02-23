@@ -12,6 +12,7 @@ import { slugify } from "@/utils/slugify";
 export default function TypefaceCard({
   studioName,
   typeface,
+  compact = false,
 }: PublicTypefaceCardProps) {
   const [isHovered, setIsHovered] =
     useState<boolean>(false);
@@ -49,7 +50,8 @@ export default function TypefaceCard({
     <Link
       href={`studio/${slugify(studioName)}/typeface/${slugify(typeface.name)}`}
       className={cn(
-        "relative flex h-[340px] w-full flex-col items-center justify-between overflow-hidden rounded-lg p-4 transition-all duration-300 ease-in-out",
+        "relative flex w-full flex-col items-center justify-between overflow-hidden rounded-lg p-4 transition-all duration-300 ease-in-out",
+        compact ? "h-[272px]" : "h-[340px]",
         "bg-light-gray hover:bg-white",
         "border border-neutral-300 hover:border-black",
         "transparent hover:shadow-button-hover",
@@ -72,7 +74,9 @@ export default function TypefaceCard({
                 duration: 0.3,
                 ease: "easeInOut",
               }}
-              className="w-[200px]"
+              className={
+                compact ? "w-[160px]" : "w-[200px]"
+              }
             >
               <Image
                 src={typeface.icon}
@@ -91,7 +95,12 @@ export default function TypefaceCard({
               transition={{ duration: 0.2 }}
               className="absolute top-0 w-full text-left"
             >
-              <p className="whitespace-pre-line font-black font-ortank text-4xl text-black leading-[1.3]">
+              <p
+                className={cn(
+                  "whitespace-pre-line font-black font-ortank text-black leading-[1.3]",
+                  compact ? "text-3xl" : "text-4xl"
+                )}
+              >
                 {displayedText}
                 {isHovered &&
                   displayedText.length <
@@ -113,7 +122,12 @@ export default function TypefaceCard({
         </AnimatePresence>
       </div>
       <div className="flex w-full flex-col gap-1">
-        <h3 className="font-black font-ortank text-2xl">
+        <h3
+          className={cn(
+            "font-black font-ortank",
+            compact ? "text-xl" : "text-2xl"
+          )}
+        >
           {typeface.name}
         </h3>
         <div className="flex w-full flex-row items-baseline justify-between">

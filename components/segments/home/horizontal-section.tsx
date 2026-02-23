@@ -1,20 +1,41 @@
 "use client";
 
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useInView } from "motion/react";
 import {
-  motion,
-  useInView,
-  useScroll,
-  useTransform,
-} from "motion/react";
-import { useMemo, useRef } from "react";
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { TypefaceCard } from "@/components/molecules/cards";
 import HeaderAllFonts from "@/components/segments/home/all-fonts/header";
 import STUDIOS from "@/mock-data/studios";
 import type { Typeface } from "@/types/typefaces";
+import { cn } from "@/utils/class-names";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function HorizontalSection() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const innerTrackRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
+
+  const [viewportWidth, setViewportWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 1024
+  );
+
+  useEffect(() => {
+    const updateViewport = () =>
+      setViewportWidth(window.innerWidth);
+    updateViewport();
+    window.addEventListener("resize", updateViewport);
+    return () =>
+      window.removeEventListener("resize", updateViewport);
+  }, []);
+
   const allTypefaces: Typeface[] = useMemo(() => {
     return STUDIOS.flatMap((studio) =>
       studio.typefaces.map((typeface, index) => {
@@ -56,16 +77,6 @@ export default function HorizontalSection() {
     );
   }, []);
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  const isInView = useInView(stickyRef, {
-    amount: 0.55,
-    once: false,
-  });
-
   const columns = useMemo(() => {
     const cols: Typeface[][] = [];
     const maxCardsPerColumn = 2;
@@ -92,42 +103,68 @@ export default function HorizontalSection() {
     return cols;
   }, [allTypefaces]);
 
-  const numColumns = columns.length;
-  const columnWidth = 340 + 50;
-  const totalWidth = numColumns * columnWidth + 64;
-  const viewportWidth =
-    typeof window !== "undefined"
-      ? window.innerWidth
-      : 1920;
-  const translateAmount = Math.min(
-    0,
-    -(totalWidth - viewportWidth)
-  );
-  const x = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [0, translateAmount]
+  const isMobile = viewportWidth < 768;
+
+  const isInView = useInView(stickyRef, {
+    amount: 1,
+    once: false,
+  });
+
+  useGSAP(
+    () => {
+      const container = containerRef.current;
+      const innerTrack = innerTrackRef.current;
+      if (!container || !innerTrack) return;
+
+      const getScrollDistance = () => {
+        const w = innerTrack.scrollWidth;
+        const vw = window.innerWidth;
+        return Math.max(w - vw, 0);
+      };
+
+      const getEndValue = () => innerTrack.scrollWidth;
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: container,
+          pin: true,
+          start: "top top",
+          end: () => `+=${getEndValue()}`,
+          scrub: 1,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      tl.to(innerTrack, {
+        x: () => -getScrollDistance(),
+        ease: "none",
+      });
+    },
+    {
+      dependencies: [columns.length, viewportWidth],
+      revertOnUpdate: true,
+    }
   );
 
   return (
     <div
       ref={containerRef}
-      className="relative h-[300vh] w-full"
+      className="relative h-screen w-full overflow-x-hidden"
     >
       <div
         ref={stickyRef}
         className="sticky top-0 h-screen w-full overflow-hidden"
       >
         {isInView && (
-          <div className="fixed top-3 left-28 z-50 bg-light-gray">
+          <div className="fixed top-3 left-6 z-50 bg-light-gray md:left-28">
             <HeaderAllFonts />
           </div>
         )}
-        <motion.div
+        <div
+          ref={innerTrackRef}
           className="h-full w-max pt-10"
-          style={{ x }}
         >
-          <div className="flex h-full flex-row items-center gap-x-10 px-8">
+          <div className="flex h-full flex-row items-center gap-x-6 px-6 md:gap-x-10 md:px-8">
             {columns.map((columnTypefaces, columnIndex) => {
               const isOddColumn = columnIndex % 2 === 1;
 
@@ -136,7 +173,12 @@ export default function HorizontalSection() {
                   key={
                     columnTypefaces[0]?.id ?? columnIndex
                   }
-                  className="flex w-[340px] flex-col gap-y-[40px]"
+                  className={cn(
+                    "flex shrink-0 flex-col gap-y-[40px]",
+                    isMobile
+                      ? "w-[224px]"
+                      : "w-[280px] md:w-[340px]"
+                  )}
                 >
                   {columnTypefaces
                     .slice(0, 2)
@@ -152,6 +194,7 @@ export default function HorizontalSection() {
                         <TypefaceCard
                           studioName={typeface.studio}
                           typeface={typeface}
+                          compact={isMobile}
                         />
                       </div>
                     ))}
@@ -159,7 +202,7 @@ export default function HorizontalSection() {
               );
             })}
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );

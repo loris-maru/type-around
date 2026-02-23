@@ -15,7 +15,7 @@ export default function HeaderHome({
       style={{ opacity }}
     >
       <motion.div
-        className="pointer-events-none absolute top-0 left-0 flex h-screen w-screen items-center justify-center px-[6vw] font-ortank text-[20vw] text-white"
+        className="pointer-events-none absolute top-0 left-0 flex h-screen w-full items-center justify-center px-[6vw] font-ortank text-[20vw] text-white"
         style={{
           fontVariationSettings: '"wght" 900, "opsz" 100',
           scale: svgScale,
@@ -25,7 +25,7 @@ export default function HeaderHome({
           <SVGAnimatedText />
         </div>
       </motion.div>
-      <div className="pointer-events-auto absolute bottom-0 left-0 w-full px-10 pb-10">
+      <div className="pointer-events-auto absolute bottom-0 left-0 w-full px-4 pb-4 lg:px-10 lg:pb-10">
         <CartoucheHeader />
       </div>
     </motion.div>

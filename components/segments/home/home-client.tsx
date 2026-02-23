@@ -28,8 +28,11 @@ export default function HomeClient({
   );
 
   return (
-    <main className="relative w-full">
-      <section className="relative flex h-screen w-full items-center justify-center bg-light-gray">
+    <main className="relative w-full overflow-x-hidden">
+      <section
+        id="headerHome"
+        className="relative flex h-screen w-full min-w-0 items-center justify-center overflow-x-hidden bg-light-gray"
+      >
         <HeaderHome
           svgScale={svgScale}
           opacity={headerOpacity}

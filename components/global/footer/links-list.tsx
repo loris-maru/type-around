@@ -6,12 +6,12 @@ export default function LinksList({
   links: { href: string; label: string }[];
 }) {
   return (
-    <div className="relative flex flex-col gap-y-2 p-5 rounded-lg border border-neutral-300">
+    <div className="relative flex flex-col gap-y-4 rounded-lg border border-neutral-300 p-5 lg:gap-y-2">
       {links.map((link) => (
         <Link
           key={link.href}
           href={link.href}
-          className="font-whisper text-black text-base whitespace-nowrap"
+          className="whitespace-nowrap font-whisper text-black text-xl lg:text-base"
         >
           {link.label}
         </Link>

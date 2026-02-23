@@ -1,7 +1,8 @@
 "use client";
 
 import { ReactLenis } from "lenis/react";
-import { SmoothScrollProviderProps } from "@/types/components";
+import type { SmoothScrollProviderProps } from "@/types/components";
+import LenisScrollTriggerSync from "./lenis-scrolltrigger-sync";
 
 export default function SmoothScrollProvider({
   children,
@@ -11,8 +12,7 @@ export default function SmoothScrollProvider({
       root
       options={{
         duration: 1.2,
-        easing: (t) =>
-          Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        easing: (t) => Math.min(1, 1.001 - 2 ** (-10 * t)),
         orientation: "vertical",
         gestureOrientation: "vertical",
         smoothWheel: true,
@@ -21,6 +21,7 @@ export default function SmoothScrollProvider({
         infinite: false,
       }}
     >
+      <LenisScrollTriggerSync />
       {children}
     </ReactLenis>
   );

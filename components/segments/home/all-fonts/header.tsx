@@ -1,8 +1,8 @@
 "use client";
 
-import STUDIOS from "@/mock-data/studios";
 import { useState } from "react";
 import CategoryFilter from "@/components/segments/home/all-fonts/category-filter";
+import STUDIOS from "@/mock-data/studios";
 
 export default function HeaderAllFonts() {
   const [selectedCategories, setSelectedCategories] =
@@ -14,12 +14,12 @@ export default function HeaderAllFonts() {
   );
 
   return (
-    <div className="relative w-full flex flex-row gap-x-4 items-center px-8">
+    <div className="relative flex w-full flex-row items-center gap-x-4 px-8">
       <CategoryFilter
         selectedCategories={selectedCategories}
         setSelectedCategories={setSelectedCategories}
       />
-      <div className="font-whisper text-sm text-black">
+      <div className="font-whisper text-black text-sm">
         <span className="font-light">
           Total typefaces:{" "}
         </span>

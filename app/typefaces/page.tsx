@@ -3,9 +3,9 @@
 import { useMemo, useState } from "react";
 import Footer from "@/components/global/footer";
 import { TypefaceCard } from "@/components/molecules/cards";
-import STUDIOS from "@/mock-data/studios";
-import { Typeface } from "@/types/typefaces";
 import TypefaceFilter from "@/components/segments/typeface/filter";
+import STUDIOS from "@/mock-data/studios";
+import type { Typeface } from "@/types/typefaces";
 
 export default function AllTypefacesPage() {
   const [selectedCategories, setSelectedCategories] =
@@ -114,10 +114,10 @@ export default function AllTypefacesPage() {
 
   return (
     <div className="relative w-full">
-      <div className="relative w-full px-10 pt-32 flex flex-col">
-        <header className="relative w-full flex flex-col gap-4 mb-12">
-          <div className="relative w-full flex flex-row justify-between items-center pb-1">
-            <h1 className="text-3xl font-black font-ortank">
+      <div className="relative flex w-full flex-col px-10 pt-32">
+        <header className="relative mb-12 flex w-full flex-col gap-4">
+          <div className="relative flex w-full flex-row items-center justify-between pb-1">
+            <h1 className="font-black font-ortank text-3xl">
               All Typefaces
             </h1>
 
@@ -130,12 +130,12 @@ export default function AllTypefacesPage() {
               handleStudioToggle={handleStudioToggle}
             />
           </div>
-          <div className="font-whisper text-sm text-black pt-5 border-t border-medium-gray">
+          <div className="border-medium-gray border-t pt-5 font-whisper text-black text-sm">
             Showing {filteredTypefaces.length} of{" "}
             {typefacesWithIds.length} typefaces
           </div>
         </header>
-        <div className="relative w-full grid grid-cols-4 gap-4">
+        <div className="relative grid w-full grid-cols-4 gap-4">
           {filteredTypefaces.map((typeface) => (
             <TypefaceCard
               key={typeface.id}

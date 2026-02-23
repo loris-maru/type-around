@@ -78,7 +78,7 @@ export default function SocialMediaNewsletter() {
   );
 
   return (
-    <div className="relative flex w-1/3 flex-col gap-2">
+    <div className="relative flex w-full flex-col gap-2 lg:w-1/3">
       <div className="grid grid-cols-3 gap-2">
         {SOCIAL_MEDIA_LINKS.map((link) => (
           <Link
@@ -87,7 +87,9 @@ export default function SocialMediaNewsletter() {
             className="flex flex-col items-center justify-center gap-2 rounded-lg border border-neutral-300 py-10 text-black text-xs transition-all duration-300 ease-in-out hover:bg-black hover:text-light-gray"
           >
             <div>{link.icon}</div>
-            <div>{link.name}</div>
+            <div className="hidden lg:block">
+              {link.name}
+            </div>
           </Link>
         ))}
       </div>

@@ -54,14 +54,25 @@ export default function StudioCard({
           loading="eager"
         />
       </div>
-      <div className="flex flex-row gap-4 text-sm">
-        <div>{studio.typefaces.length} type families</div>
+      <div className="mt-2 flex flex-col gap-2 text-base lg:mt-0 lg:flex-row lg:gap-4 lg:text-sm">
+        <div>
+          {studio.typefaces.length}{" "}
+          {`type ${studio.typefaces.length !== 1 ? "families" : "family"}`}
+        </div>
         <div>
           {studio.typefaces.reduce(
             (acc, typeface) => acc + typeface.fonts.length,
             0
           )}{" "}
-          fonts
+          {`font${
+            studio.typefaces.reduce(
+              (acc, typeface) =>
+                acc + typeface.fonts.length,
+              0
+            ) !== 1
+              ? "s"
+              : ""
+          }`}
         </div>
       </div>
     </Link>

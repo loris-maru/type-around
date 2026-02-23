@@ -1,15 +1,23 @@
 "use client";
 
+import { useLenis } from "lenis/react";
+import {
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import AddFontModal from "@/components/modals/modal-add-font";
 import AddPackageModal from "@/components/modals/modal-add-package";
 import AddVersionModal from "@/components/modals/modal-add-version";
 import EulaGeneratorModal from "@/components/modals/modal-eula-generator";
+import { TYPEFACE_SECTIONS } from "@/constant/TYPEFACE_SECTIONS";
 import { useStudio } from "@/hooks/use-studio";
 import type {
   TypefaceDetailProps,
@@ -35,10 +43,16 @@ import {
   VersionsListSection,
 } from "./detail";
 
+const SECTION_OFFSET = 120;
+
 export default function TypefaceDetail({
   typefaceSlug,
 }: TypefaceDetailProps) {
   const { studio, isLoading, updateTypeface } = useStudio();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const scrollUpdateScheduled = useRef(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isFontModalOpen, setIsFontModalOpen] =
     useState(false);
@@ -158,6 +172,50 @@ export default function TypefaceDetail({
       setHasChanges(false);
     }
   }, [typeface]);
+
+  // Update active section in URL when scrolling (scroll-spy)
+  const updateActiveSection = useCallback(() => {
+    if (!typeface) return;
+    if (scrollUpdateScheduled.current) return;
+    scrollUpdateScheduled.current = true;
+
+    requestAnimationFrame(() => {
+      scrollUpdateScheduled.current = false;
+      let activeId: string | null = null;
+      for (const section of TYPEFACE_SECTIONS) {
+        const el = document.getElementById(section.id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= SECTION_OFFSET) {
+            activeId = section.id;
+          }
+        }
+      }
+      if (!activeId && TYPEFACE_SECTIONS.length > 0) {
+        activeId = TYPEFACE_SECTIONS[0].id;
+      }
+      if (
+        activeId &&
+        activeId !== searchParams.get("section")
+      ) {
+        const params = new URLSearchParams(
+          searchParams.toString()
+        );
+        params.set("section", activeId);
+        router.replace(`${pathname}?${params.toString()}`, {
+          scroll: false,
+        });
+      }
+    });
+  }, [typeface, pathname, router, searchParams]);
+
+  useLenis(() => {
+    if (typeface) updateActiveSection();
+  }, [typeface, updateActiveSection]);
+
+  useEffect(() => {
+    if (typeface) updateActiveSection();
+  }, [typeface, updateActiveSection]);
 
   const handleInputChange = useCallback(
     (

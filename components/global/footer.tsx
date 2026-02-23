@@ -8,14 +8,14 @@ import SocialMediaNewsletter from "./footer/social-media-newsletter";
 
 export default function Footer() {
   return (
-    <footer className="relative mt-44 flex h-[40vh] w-full flex-row items-center justify-between p-10">
-      <div className="relative flex h-full w-1/2 flex-row gap-2">
-        <div className="relative grid h-full grid-rows-2 gap-1">
+    <footer className="relative mt-44 flex h-[60vh] w-full flex-col items-center justify-between gap-4 p-5 lg:h-[40vh] lg:flex-row lg:p-10">
+      <div className="relative flex h-full w-full flex-col gap-2 lg:w-1/2 lg:flex-row">
+        <div className="relative flex h-full w-full grid-rows-2 flex-col gap-1 lg:grid lg:w-auto">
           {PRIMARY_LINKS.map((link) => (
             <Link
               key={link.body}
               href={link.href}
-              className="w-[400px] rounded-lg border border-neutral-300 bg-transparent p-5 text-black transition-all duration-300 ease-in-out"
+              className="w-full max-w-[400px] rounded-lg border border-neutral-300 bg-transparent p-5 text-2xl text-black transition-all duration-300 ease-in-out lg:w-[400px] lg:text-base"
             >
               <div className="font-whisper text-base text-black">
                 {link.label}

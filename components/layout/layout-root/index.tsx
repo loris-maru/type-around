@@ -21,10 +21,10 @@ export default function LayoutRoot({
             fontFamily: "Whisper, Ortank, sans-serif",
           }}
         >
+          <Navigation />
           <SmoothScrollProvider>
             <ModalScrollLock />
-            <Navigation />
-            <div className="relative z-20 min-h-screen w-screen">
+            <div className="relative z-20 min-h-screen w-full overflow-x-hidden">
               {children}
             </div>
           </SmoothScrollProvider>

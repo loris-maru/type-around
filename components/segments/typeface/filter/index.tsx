@@ -15,15 +15,15 @@ export default function TypefaceFilter({
 }) {
   return (
     <div className="relative flex flex-row gap-x-2">
-      <div className="flex flex-row gap-x-4 border border-medium-gray shadow-medium-gray py-2 px-4 rounded-sm flex-wrap items-center">
+      <div className="hidden flex-row flex-wrap items-center gap-x-4 rounded-sm border border-medium-gray px-4 py-2 shadow-medium-gray lg:flex">
         {allCategories.map((category) => (
           <div
             key={category}
-            className="flex flex-row font-whisper text-sm gap-x-2 items-center"
+            className="flex flex-row items-center gap-x-2 font-whisper text-sm"
           >
             <label
               htmlFor={`category-${category}`}
-              className="font-light capitalize cursor-pointer"
+              className="cursor-pointer font-light capitalize"
             >
               {category}
             </label>
@@ -41,18 +41,18 @@ export default function TypefaceFilter({
           </div>
         ))}
       </div>
-      <div className="flex flex-row gap-x-4 border border-medium-gray shadow-medium-gray py-2 px-4 rounded-sm flex-wrap">
-        <span className="font-whisper text-sm font-bold mr-2">
+      <div className="flex flex-row flex-wrap gap-x-4 rounded-sm border border-medium-gray px-4 py-2 shadow-medium-gray">
+        <span className="mr-2 font-bold font-whisper text-sm">
           Studios:
         </span>
         {allStudioNames.map((studio) => (
           <div
             key={studio}
-            className="flex flex-row font-whisper text-sm gap-x-2 items-center"
+            className="flex flex-row items-center gap-x-2 font-whisper text-sm"
           >
             <label
               htmlFor={`studio-${studio}`}
-              className="font-light cursor-pointer"
+              className="cursor-pointer font-light"
             >
               {studio}
             </label>
