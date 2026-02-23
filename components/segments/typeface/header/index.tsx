@@ -1,8 +1,26 @@
+"use client";
+
 import Link from "next/link";
+import {
+  useCallback,
+  useEffect,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import IconTriangle from "@/components/icons/icon-triangle";
 import type { Typeface } from "@/types/typefaces";
 import { slugify } from "@/utils/slugify";
 import SingleTypefaceLetter from "./single-typeface-letter";
+
+const handleOrientation = (
+  e: DeviceOrientationEvent,
+  setter: (vw: number) => void
+) => {
+  const gamma = e.gamma ?? 0;
+  const clamped = Math.max(-90, Math.min(90, gamma));
+  const vw = (clamped / 90) * 50;
+  setter(vw);
+};
 
 export default function TypefaceHeader({
   studio,
@@ -13,9 +31,93 @@ export default function TypefaceHeader({
   typeface: Typeface;
   hangeulName: string;
 }) {
+  const [gyroOffset, setGyroOffset] = useState(0);
+  const [permissionGranted, setPermissionGranted] =
+    useState(false);
+
+  const isMobile = useSyncExternalStore(
+    useCallback((cb: () => void) => {
+      const mq = window.matchMedia("(max-width: 1023px)");
+      mq.addEventListener("change", cb);
+      return () => mq.removeEventListener("change", cb);
+    }, []),
+    useCallback(
+      () =>
+        typeof window !== "undefined"
+          ? window.matchMedia("(max-width: 1023px)").matches
+          : false,
+      []
+    ),
+    useCallback(() => false, [])
+  );
+
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const needsPermission =
+      typeof DeviceOrientationEvent !== "undefined" &&
+      typeof (
+        DeviceOrientationEvent as unknown as {
+          requestPermission?: () => Promise<string>;
+        }
+      ).requestPermission === "function";
+
+    if (!needsPermission) {
+      queueMicrotask(() => setPermissionGranted(true));
+    }
+  }, [isMobile]);
+
+  useEffect(() => {
+    if (!isMobile || !permissionGranted) return;
+
+    const handler = (e: DeviceOrientationEvent) =>
+      handleOrientation(e, setGyroOffset);
+    window.addEventListener("deviceorientation", handler);
+    return () =>
+      window.removeEventListener(
+        "deviceorientation",
+        handler
+      );
+  }, [isMobile, permissionGranted]);
+
+  const handleRequestMotion = useCallback(async () => {
+    if (
+      typeof DeviceOrientationEvent === "undefined" ||
+      typeof (
+        DeviceOrientationEvent as unknown as {
+          requestPermission?: () => Promise<string>;
+        }
+      ).requestPermission !== "function"
+    ) {
+      return;
+    }
+    try {
+      const permission = await (
+        DeviceOrientationEvent as unknown as {
+          requestPermission: () => Promise<string>;
+        }
+      ).requestPermission();
+      if (permission === "granted") {
+        setPermissionGranted(true);
+      }
+    } catch {
+      // Permission denied
+    }
+  }, []);
+
+  const needsPermission =
+    isMobile &&
+    !permissionGranted &&
+    typeof DeviceOrientationEvent !== "undefined" &&
+    typeof (
+      DeviceOrientationEvent as unknown as {
+        requestPermission?: () => Promise<string>;
+      }
+    ).requestPermission === "function";
+
   return (
     <div className="relative flex h-screen w-full flex-row items-center gap-x-10 px-[14vw]">
-      <aside className="relative flex w-1/3 flex-col items-center gap-2">
+      <aside className="relative flex w-full flex-col items-center gap-2 lg:w-1/3">
         <div className="relative mb-2 flex flex-row items-center gap-4 font-ortank font-semibold text-black text-sm uppercase tracking-[2px]">
           <Link href={`/studio/${slugify(studio)}`}>
             {studio}
@@ -27,9 +129,29 @@ export default function TypefaceHeader({
           {hangeulName}
         </h1>
       </aside>
-      <div className="h-full w-2/3">
+      <div
+        className="absolute top-0 left-[50vw] h-full w-full transition-transform duration-100 lg:relative lg:left-0 lg:z-0 lg:w-2/3"
+        style={
+          isMobile &&
+          (permissionGranted || !needsPermission)
+            ? {
+                transform: `translateX(calc(-50vw + ${gyroOffset}vw))`,
+              }
+            : undefined
+        }
+      >
         <SingleTypefaceLetter typeface={typeface} />
       </div>
+      {needsPermission && (
+        <button
+          type="button"
+          onClick={handleRequestMotion}
+          aria-label="Enable motion to tilt the letter with your device"
+          className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 rounded-full bg-black px-4 py-2 font-whisper text-white text-xs transition-opacity hover:opacity-80 lg:hidden"
+        >
+          Tap to enable motion
+        </button>
+      )}
     </div>
   );
 }

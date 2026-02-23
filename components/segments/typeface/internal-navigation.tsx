@@ -48,7 +48,7 @@ export default function TypefaceInternalNavigation() {
   ];
 
   return (
-    <div className="fixed bottom-5 left-1/2 z-100 flex -translate-x-1/2 flex-row gap-x-2">
+    <div className="fixed bottom-5 left-0 z-100 flex w-full flex-row gap-x-2 lg:left-1/2 lg:w-auto lg:-translate-x-1/2">
       {buttons.map((button) => (
         <motion.div
           key={button.href}
