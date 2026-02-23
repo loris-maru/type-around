@@ -16,8 +16,9 @@ import type {
   TypetesterParams,
 } from "@/types/typetester";
 import { cn } from "@/utils/class-names";
-import { FontDropdown } from "./parameters";
-import TypetesterParameters from "./parameters";
+import TypetesterParameters, {
+  FontDropdown,
+} from "./parameters";
 
 export default function SingleTypetesterBlock({
   placeholder = "가을 하늘 공활한데 높고 구름 없이 밝은 달은 우리 가슴 일편단심일세.",
@@ -103,14 +104,14 @@ export default function SingleTypetesterBlock({
 
   return (
     <div
-      className="relative min-h-[180px] w-full overflow-hidden rounded-lg"
+      className="relative min-h-[180px] w-full rounded-lg"
       style={{
         backgroundColor: params.backgroundColor,
         color: params.fontColor,
       }}
     >
-      {/* Top bar */}
-      <div className="relative z-10 flex items-center gap-4 px-5 pt-4">
+      {/* Top bar — overflow-visible so VerticalSlider expand popup isn't clipped */}
+      <div className="relative z-10 flex items-center gap-4 overflow-visible px-5 pt-4">
         {/* When params closed: font selector + size */}
         {!showParams && (
           <div className="flex flex-1 items-center gap-2">
@@ -179,16 +180,16 @@ export default function SingleTypetesterBlock({
               onChange={updateFontId}
             />
           )}
-          <span className="font-normal font-whisper text-neutral-500 text-xs">
+          <span className="font-normal font-whisper text-base text-neutral-500 lg:text-xs">
             — {params.fontSize}px
           </span>
         </div>
       )}
 
-      {/* Editable text area */}
+      {/* Editable text area — overflow-hidden for rounded corners clipping */}
       {/* biome-ignore lint/a11y/useSemanticElements: contentEditable div is required for rich inline editing */}
       <div
-        className="w-full px-8 pt-4 pb-14 outline-none"
+        className="w-full overflow-hidden rounded-b-lg px-8 pt-4 pb-14 outline-none"
         contentEditable
         role="textbox"
         tabIndex={0}

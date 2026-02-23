@@ -9,9 +9,9 @@ import {
   useRef,
   useState,
 } from "react";
-import { useStudioFonts } from "@/contexts/studio-fonts-context";
 import { GalleryCard } from "@/components/molecules/cards";
 import GalleryNavigator from "@/components/molecules/gallery/navigator";
+import { useStudioFonts } from "@/contexts/studio-fonts-context";
 import type { StudioGalleryProps } from "@/types/components";
 
 export default function StudioGallery({
@@ -87,12 +87,12 @@ export default function StudioGallery({
 
   return (
     <div
-      className="relative my-[20vh] w-full px-10"
+      className="relative my-20 w-full px-0 lg:my-[20vh] lg:px-10"
       style={sectionStyle}
     >
       <header className="relative mb-10 flex w-full flex-row items-center justify-between">
         <h3
-          className="text-2xl font-black text-black"
+          className="font-black text-2xl text-black"
           style={{ fontFamily: displayFontFamily }}
         >
           {title || "Gallery"}

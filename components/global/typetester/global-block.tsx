@@ -108,18 +108,78 @@ export default function GlobalTypetesterBlock({
   }, []);
 
   return (
-    <div
-      className="relative w-full overflow-hidden rounded-lg"
-      style={{
-        backgroundColor: params.backgroundColor,
-        color: params.fontColor,
-      }}
-    >
-      {/* Top bar */}
-      <div className="relative z-10 flex items-center gap-4 px-5 pt-4">
-        {/* When params closed: font selector + size */}
-        {!showParams && (
-          <div className="flex flex-1 items-center gap-2">
+    <>
+      <div
+        className="relative w-full rounded-lg"
+        style={{
+          backgroundColor: params.backgroundColor,
+          color: params.fontColor,
+        }}
+      >
+        {/* Top bar — overflow-visible so VerticalSlider expand popup isn't clipped */}
+        <div className="relative z-10 flex items-center gap-4 overflow-visible px-5 pt-4">
+          {/* When params closed: font selector + size */}
+          {!showParams && (
+            <div className="flex flex-1 items-center gap-2">
+              {typefaces.length > 0 && (
+                <GroupedFontDropdown
+                  typefaces={typefaces}
+                  selectedId={params.fontId}
+                  onChange={updateFontId}
+                />
+              )}
+              <span className="font-normal font-whisper text-base text-neutral-500 lg:text-xs">
+                — {params.fontSize}px
+              </span>
+            </div>
+          )}
+
+          {/* When params open: inline parameter controls (desktop only) */}
+          {showParams && (
+            <div className="hidden flex-1 lg:flex">
+              <TypetesterParameters
+                params={params}
+                onChange={setParams}
+                variant="desktop"
+              />
+            </div>
+          )}
+
+          {/* Action buttons */}
+          <div className="flex shrink-0 items-center gap-1">
+            {!showParams && canDelete && onDelete && (
+              <button
+                type="button"
+                onClick={onDelete}
+                className="rounded-md p-2 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-500"
+                aria-label="Delete block"
+              >
+                <RiDeleteBinLine size={18} />
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={toggleParams}
+              className={cn(
+                "rounded-md p-2 transition-colors",
+                showParams
+                  ? "bg-black text-white"
+                  : "text-black hover:bg-neutral-100 hover:text-black"
+              )}
+              aria-label="Toggle type settings"
+            >
+              {showParams ? (
+                <RiCloseFill size={18} />
+              ) : (
+                <RiListSettingsLine size={18} />
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Font selector + info bar — visible below params when open */}
+        {showParams && (
+          <div className="flex items-center gap-2 px-5 pt-3">
             {typefaces.length > 0 && (
               <GroupedFontDropdown
                 typefaces={typefaces}
@@ -127,90 +187,49 @@ export default function GlobalTypetesterBlock({
                 onChange={updateFontId}
               />
             )}
-            <span className="font-normal font-whisper text-neutral-500 text-xs">
+            <span className="font-normal font-whisper text-base text-neutral-500 lg:text-xs">
               — {params.fontSize}px
             </span>
           </div>
         )}
 
-        {/* When params open: inline parameter controls */}
-        {showParams && (
-          <div className="flex-1">
-            <TypetesterParameters
-              params={params}
-              onChange={setParams}
-            />
-          </div>
-        )}
-
-        {/* Action buttons */}
-        <div className="flex shrink-0 items-center gap-1">
-          {!showParams && canDelete && onDelete && (
-            <button
-              type="button"
-              onClick={onDelete}
-              className="rounded-md p-2 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-500"
-              aria-label="Delete block"
-            >
-              <RiDeleteBinLine size={18} />
-            </button>
-          )}
-          <button
-            type="button"
-            onClick={toggleParams}
-            className={cn(
-              "rounded-md p-2 transition-colors",
-              showParams
-                ? "bg-black text-white"
-                : "text-black hover:bg-neutral-100 hover:text-black"
-            )}
-            aria-label="Toggle type settings"
-          >
-            {showParams ? (
-              <RiCloseFill size={18} />
-            ) : (
-              <RiListSettingsLine size={18} />
-            )}
-          </button>
+        {/* Editable text area - overflow-hidden for rounded corners clipping */}
+        {/* biome-ignore lint/a11y/useSemanticElements: contentEditable div is required for rich inline editing */}
+        <div
+          className="typetester-text-responsive h-full w-full overflow-hidden rounded-b-lg px-8 pt-4 pb-14 outline-none"
+          contentEditable
+          role="textbox"
+          tabIndex={0}
+          aria-label="Editable typography preview text"
+          aria-multiline="true"
+          suppressContentEditableWarning
+          style={
+            {
+              "--tt-fs-mobile": `${params.fontSizeMobile ?? Math.round(params.fontSize * 0.55)}px`,
+              "--tt-fs-tablet": `${params.fontSizeTablet ?? Math.round(params.fontSize * 0.9)}px`,
+              "--tt-fs-desktop": `${params.fontSize}px`,
+              "--tt-fs-super-desktop": `${params.fontSizeSuperDesktop ?? Math.round(params.fontSize * 1.25)}px`,
+              lineHeight: params.lineHeight,
+              letterSpacing: `${params.letterSpacing}px`,
+              textAlign: params.textAlign,
+              fontFamily: fontFamily || undefined,
+            } as React.CSSProperties
+          }
+        >
+          {placeholder}
         </div>
       </div>
 
-      {/* Font selector + info bar — visible below params when open */}
+      {/* Mobile: fixed bottom overlay when params open — overflow-visible so VerticalSlider expand popup isn't clipped */}
       {showParams && (
-        <div className="flex items-center gap-2 px-5 pt-3">
-          {typefaces.length > 0 && (
-            <GroupedFontDropdown
-              typefaces={typefaces}
-              selectedId={params.fontId}
-              onChange={updateFontId}
-            />
-          )}
-          <span className="font-normal font-whisper text-neutral-500 text-xs">
-            — {params.fontSize}px
-          </span>
+        <div className="fixed bottom-0 left-0 z-99999 w-screen overflow-visible bg-white p-5 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] lg:hidden">
+          <TypetesterParameters
+            params={params}
+            onChange={setParams}
+            variant="mobile"
+          />
         </div>
       )}
-
-      {/* Editable text area */}
-      {/* biome-ignore lint/a11y/useSemanticElements: contentEditable div is required for rich inline editing */}
-      <div
-        className="h-full w-full px-8 pt-4 pb-14 outline-none"
-        contentEditable
-        role="textbox"
-        tabIndex={0}
-        aria-label="Editable typography preview text"
-        aria-multiline="true"
-        suppressContentEditableWarning
-        style={{
-          fontSize: `${params.fontSize}px`,
-          lineHeight: params.lineHeight,
-          letterSpacing: `${params.letterSpacing}px`,
-          textAlign: params.textAlign,
-          fontFamily: fontFamily || undefined,
-        }}
-      >
-        {placeholder}
-      </div>
-    </div>
+    </>
   );
 }

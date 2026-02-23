@@ -16,7 +16,10 @@ export type TypetesterTypeface = {
 };
 
 export type TypetesterParams = {
-  fontSize: number;
+  fontSize: number; // desktop
+  fontSizeMobile?: number;
+  fontSizeTablet?: number;
+  fontSizeSuperDesktop?: number;
   lineHeight: number;
   letterSpacing: number;
   textAlign: TextAlign;
@@ -35,6 +38,8 @@ export type TypetesterBlock = {
 export type TypetesterParametersProps = {
   params: TypetesterParams;
   onChange: (params: TypetesterParams) => void;
+  /** "mobile" = vertical sliders with value on top (mobile/tablet overlay); "desktop" = horizontal sliders */
+  variant?: "mobile" | "desktop";
 };
 
 export type SingleTypetesterBlockProps = {

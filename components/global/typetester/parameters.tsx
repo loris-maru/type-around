@@ -11,6 +11,7 @@ import {
   RiFontSizeAi,
 } from "react-icons/ri";
 import Slider from "@/components/global/slider";
+import VerticalSlider from "@/components/global/slider/vertical-slider";
 import ColorPicker from "@/components/molecules/color-picker";
 import type {
   TextAlign,
@@ -129,7 +130,7 @@ export function GroupedFontDropdown({
         onClick={() => setOpen((o) => !o)}
         aria-label="Select font"
         aria-expanded={open}
-        className="flex items-center gap-1 rounded-md px-2 py-1 font-whisper text-black text-xs transition-colors hover:bg-neutral-100"
+        className="flex items-center gap-1 rounded-md px-2 py-1 font-whisper text-base text-black transition-colors hover:bg-neutral-100 lg:text-xs"
       >
         <span className="max-w-[200px] truncate">
           {label}
@@ -181,7 +182,7 @@ export function GroupedFontDropdown({
                         setExpandedTypeface(null);
                       }}
                       className={cn(
-                        "w-full py-1.5 pr-3 pl-4 text-left font-whisper text-xs transition-colors hover:bg-neutral-50",
+                        "w-full py-1.5 pr-3 pl-4 text-left font-whisper text-base transition-colors hover:bg-neutral-50 lg:text-xs",
                         font.id === selectedId
                           ? "bg-neutral-100 font-medium text-black"
                           : "text-neutral-500"
@@ -205,6 +206,7 @@ export function GroupedFontDropdown({
 export default function TypetesterParameters({
   params,
   onChange,
+  variant = "desktop",
 }: TypetesterParametersProps) {
   const updateParam = <K extends keyof TypetesterParams>(
     key: K,
@@ -214,44 +216,111 @@ export default function TypetesterParameters({
   };
 
   const fc = params.fontColor;
+  const isMobile = variant === "mobile";
+  const [expandedSliderId, setExpandedSliderId] = useState<
+    string | null
+  >(null);
 
   return (
-    <div className="flex w-full items-center gap-6">
+    <div
+      className={
+        isMobile
+          ? "flex w-full flex-wrap items-end justify-center gap-6"
+          : "grid w-full grid-cols-3 items-center gap-6 lg:flex"
+      }
+    >
       {/* Font Size */}
-      <Slider
-        id="tt-font-size"
-        label="Size"
-        min={8}
-        max={200}
-        value={params.fontSize}
-        onChange={(v) => updateParam("fontSize", v)}
-        color={fc}
-      />
+      {isMobile ? (
+        <VerticalSlider
+          id="tt-font-size"
+          label="Size"
+          min={8}
+          max={200}
+          value={params.fontSize}
+          onChange={(v) => updateParam("fontSize", v)}
+          displayValue={`${params.fontSize}px`}
+          color={fc}
+          expanded={expandedSliderId === "tt-font-size"}
+          onExpandedChange={(v) =>
+            setExpandedSliderId(v ? "tt-font-size" : null)
+          }
+        />
+      ) : (
+        <Slider
+          id="tt-font-size"
+          label="Size"
+          min={8}
+          max={200}
+          value={params.fontSize}
+          onChange={(v) => updateParam("fontSize", v)}
+          color={fc}
+        />
+      )}
 
       {/* Line Height */}
-      <Slider
-        id="tt-line-height"
-        label="Leading"
-        min={0.5}
-        max={3}
-        step={0.05}
-        value={params.lineHeight}
-        onChange={(v) => updateParam("lineHeight", v)}
-        displayValue={params.lineHeight.toFixed(2)}
-        color={fc}
-      />
+      {isMobile ? (
+        <VerticalSlider
+          id="tt-line-height"
+          label="Leading"
+          min={0.5}
+          max={3}
+          step={0.05}
+          value={params.lineHeight}
+          onChange={(v) => updateParam("lineHeight", v)}
+          displayValue={params.lineHeight.toFixed(2)}
+          color={fc}
+          expanded={expandedSliderId === "tt-line-height"}
+          onExpandedChange={(v) =>
+            setExpandedSliderId(v ? "tt-line-height" : null)
+          }
+        />
+      ) : (
+        <Slider
+          id="tt-line-height"
+          label="Leading"
+          min={0.5}
+          max={3}
+          step={0.05}
+          value={params.lineHeight}
+          onChange={(v) => updateParam("lineHeight", v)}
+          displayValue={params.lineHeight.toFixed(2)}
+          color={fc}
+        />
+      )}
 
       {/* Letter Spacing */}
-      <Slider
-        id="tt-letter-spacing"
-        label="Tracking"
-        min={-10}
-        max={30}
-        step={0.5}
-        value={params.letterSpacing}
-        onChange={(v) => updateParam("letterSpacing", v)}
-        color={fc}
-      />
+      {isMobile ? (
+        <VerticalSlider
+          id="tt-letter-spacing"
+          label="Spacing"
+          min={-10}
+          max={30}
+          step={0.5}
+          value={params.letterSpacing}
+          onChange={(v) => updateParam("letterSpacing", v)}
+          displayValue={`${params.letterSpacing}px`}
+          color={fc}
+          expanded={
+            expandedSliderId === "tt-letter-spacing"
+          }
+          onExpandedChange={(v) =>
+            setExpandedSliderId(
+              v ? "tt-letter-spacing" : null
+            )
+          }
+        />
+      ) : (
+        <Slider
+          id="tt-letter-spacing"
+          label="Tracking"
+          min={-10}
+          max={30}
+          step={0.5}
+          value={params.letterSpacing}
+          onChange={(v) => updateParam("letterSpacing", v)}
+          color={fc}
+        />
+      )}
 
       {/* Text Align */}
       <div className="flex items-center gap-1">

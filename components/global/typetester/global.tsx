@@ -28,7 +28,7 @@ export default function GlobalTypetester({
 
   return (
     <div
-      className="relative my-40 flex w-full flex-col gap-4 px-16"
+      className="relative my-40 flex w-full flex-col gap-4 px-4 lg:px-16"
       id="tester"
     >
       <div

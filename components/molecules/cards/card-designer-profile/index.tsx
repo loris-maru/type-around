@@ -20,7 +20,7 @@ export default function DesignerCardProfile({
   return (
     <div className="flex items-start gap-5 rounded-lg border border-neutral-300 bg-transparent p-5">
       {/* Avatar */}
-      <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full bg-neutral-100">
+      <div className="relative hidden h-16 w-16 shrink-0 overflow-hidden rounded-full bg-neutral-100 lg:block">
         {designer.avatar ? (
           <Image
             src={designer.avatar}
@@ -35,7 +35,7 @@ export default function DesignerCardProfile({
           />
         ) : (
           <div
-            className="flex h-full w-full items-center justify-center font-bold text-lg text-neutral-400"
+            className="flex h-full w-full items-center justify-center font-bold text-neutral-400 text-xl lg:text-lg"
             style={{ fontFamily: displayFontFamily }}
           >
             {designer.firstName.charAt(0)}
@@ -55,7 +55,7 @@ export default function DesignerCardProfile({
 
         {designer.biography && (
           <p
-            className="line-clamp-3 font-normal text-black text-sm leading-relaxed"
+            className="line-clamp-3 font-normal text-base text-black leading-relaxed lg:text-sm"
             style={{ fontFamily: textFontFamily }}
           >
             {designer.biography}
@@ -73,7 +73,7 @@ export default function DesignerCardProfile({
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Visit ${fullName}'s website`}
-              className="flex items-center gap-1 text-neutral-500 text-xs transition-colors hover:text-black"
+              className="flex items-center gap-1 text-neutral-700 text-sm transition-colors hover:text-black lg:text-neutral-500 lg:text-xs"
             >
               <RiGlobalLine size={14} />
               <span>Website</span>

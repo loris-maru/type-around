@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import {
-  useScroll,
+  motion,
   useMotionValueEvent,
+  useScroll,
 } from "motion/react";
-import { motion } from "motion/react";
+import { useState } from "react";
 import SimpleButton from "../buttons/simple-button";
 
 export default function StudioInternalNavigation() {
@@ -31,27 +31,34 @@ export default function StudioInternalNavigation() {
       href: "#about",
       label: "About",
       width: "140px",
+      widthMobile: "100px",
+      widthSuperDesktop: "180px",
       delay: 0,
     },
     {
       href: "#tester",
       label: "Tester",
       width: "140px",
+      widthMobile: "100px",
+      widthSuperDesktop: "180px",
       delay: 0.1,
     },
     {
       href: "#families",
       label: "Families",
       width: "140px",
+      widthMobile: "100px",
+      widthSuperDesktop: "180px",
       delay: 0.2,
     },
   ];
 
   return (
-    <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-100 flex flex-row gap-x-2">
+    <div className="fixed bottom-5 left-1/2 z-100 flex -translate-x-1/2 flex-row gap-x-2">
       {buttons.map((button) => (
         <motion.div
           key={button.href}
+          className="shrink-0"
           initial={{ y: 100, opacity: 0 }}
           animate={{
             y: isVisible ? 0 : 100,
@@ -69,6 +76,8 @@ export default function StudioInternalNavigation() {
             href={button.href}
             label={button.label}
             width={button.width}
+            widthMobile={button.widthMobile}
+            widthSuperDesktop={button.widthSuperDesktop}
           />
         </motion.div>
       ))}

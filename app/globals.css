@@ -87,6 +87,26 @@
   transform: translate(-4px, -4px);
 }
 
+/* Typetester responsive font sizes (mobile, tablet, desktop, super-desktop) */
+.typetester-text-responsive {
+  font-size: var(--tt-fs-mobile);
+}
+@media (min-width: 768px) {
+  .typetester-text-responsive {
+    font-size: var(--tt-fs-tablet);
+  }
+}
+@media (min-width: 1024px) {
+  .typetester-text-responsive {
+    font-size: var(--tt-fs-desktop);
+  }
+}
+@media (min-width: 1280px) {
+  .typetester-text-responsive {
+    font-size: var(--tt-fs-super-desktop);
+  }
+}
+
 .section-title {
   font-family: var(--font-ortank);
   font-weight: 900;

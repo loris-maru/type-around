@@ -22,13 +22,13 @@ export default function StudioHeader({
     >
       <div className="flex flex-col items-center">
         <h2
-          className="text-medium text-xl uppercase tracking-[4px]"
+          className="text-base text-medium uppercase tracking-[4px] lg:text-xl"
           style={{ fontFamily: displayFontFamily }}
         >
           Studio
         </h2>
         <h1
-          className="font-black text-[270px] text-black leading-[1.3]"
+          className="text-center font-black text-[60px] text-black leading-[1.3] lg:text-[270px]"
           style={{ fontFamily: displayFontFamily }}
         >
           {studioName}
