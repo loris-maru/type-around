@@ -15,8 +15,8 @@ import {
   ACCOUNT_NAV_ITEMS,
   DEFAULT_ACCOUNT_NAV,
 } from "@/constant/ACCOUNT_NAV_ITEMS";
-import { TYPEFACE_SECTIONS } from "@/constant/TYPEFACE_SECTIONS";
 import { REVIEWER_SECTIONS } from "@/constant/REVIEWER_SECTIONS";
+import { TYPEFACE_SECTIONS } from "@/constant/TYPEFACE_SECTIONS";
 import { useStudio } from "@/hooks/use-studio";
 import { cn } from "@/utils/class-names";
 import { slugify } from "@/utils/slugify";
@@ -51,24 +51,24 @@ const NavigationButton = ({
       type="button"
       aria-label={label}
       className={cn(
-        "relative w-full text-base font-whisper rounded-lg border text-left px-4 py-2 cursor-pointer transition-all duration-300 ease-in-out flex items-center justify-between",
+        "relative flex w-full cursor-pointer items-center justify-between rounded-lg border px-4 py-2 text-left font-whisper text-base transition-all duration-300 ease-in-out",
         isActive
-          ? "text-black border-black shadow-button font-semibold"
-          : "text-dark-gray border-medium-gray shadow-medium-gray font-medium"
+          ? "border-black font-semibold text-black shadow-button"
+          : "border-medium-gray font-medium text-dark-gray shadow-medium-gray"
       )}
       onClick={handleClick}
     >
       <div>{label}</div>
       <div className="flex items-center gap-2">
         {count !== undefined && (
-          <span className="text-sm text-neutral-500">
+          <span className="text-neutral-500 text-sm">
             {count}
           </span>
         )}
         {hasSubmenu && (
           <RiArrowDownSLine
             className={cn(
-              "w-4 h-4 transition-transform duration-200",
+              "h-4 w-4 transition-transform duration-200",
               isExpanded && "rotate-180"
             )}
           />
@@ -92,10 +92,10 @@ const TypefaceSubItem = ({
       type="button"
       onClick={onClick}
       className={cn(
-        "w-full text-left text-base font-whisper px-4 transition-colors",
+        "w-full px-4 text-left font-whisper text-base transition-colors",
         isActive
-          ? "text-black font-semibold"
-          : "text-dark-gray font-normal"
+          ? "font-semibold text-black"
+          : "font-normal text-dark-gray"
       )}
     >
       {name}
@@ -106,15 +106,22 @@ const TypefaceSubItem = ({
 const SectionLink = ({
   label,
   onClick,
+  isActive,
 }: {
   label: string;
   onClick: () => void;
+  isActive: boolean;
 }) => {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="w-full text-left text-sm font-whisper px-6 py-2 text-neutral-500 hover:text-black transition-colors"
+      className={cn(
+        "w-full px-6 py-2 text-left font-whisper text-sm transition-colors",
+        isActive
+          ? "font-bold text-black"
+          : "text-neutral-500 hover:text-black"
+      )}
     >
       {label}
     </button>
@@ -131,6 +138,8 @@ export default function AccountNavigation() {
   const activeNav =
     searchParams.get("nav") || DEFAULT_ACCOUNT_NAV;
   const activeTypeface = searchParams.get("typeface");
+  const activeTypefaceSection =
+    searchParams.get("section") || TYPEFACE_SECTIONS[0]?.id;
   const activeReviewerSection =
     searchParams.get("reviewer");
   const isTypefacesExpanded = activeNav === "typefaces";
@@ -193,6 +202,12 @@ export default function AccountNavigation() {
 
   const handleSectionClick = useCallback(
     (sectionId: string) => {
+      const params = new URLSearchParams(
+        searchParams.toString()
+      );
+      params.set("section", sectionId);
+      router.push(`${pathname}?${params.toString()}`);
+
       const element = document.getElementById(sectionId);
       if (element) {
         element.scrollIntoView({
@@ -201,7 +216,7 @@ export default function AccountNavigation() {
         });
       }
     },
-    []
+    [searchParams, router, pathname]
   );
 
   const handleReviewerNavChange = useCallback(
@@ -218,10 +233,10 @@ export default function AccountNavigation() {
 
   return (
     <div className="relative z-0 w-full">
-      <div className="mb-2 font-ortank font-bold text-xl">
+      <div className="mb-2 font-bold font-ortank text-xl">
         {studio?.name || "Your studio"}
       </div>
-      <div className="relative w-full flex flex-col gap-y-2">
+      <div className="relative flex w-full flex-col gap-y-2">
         {navItems.map((item) => {
           const isTypefaces = item === "Typefaces";
           const isReviewerItem = item === "Reviewer";
@@ -249,7 +264,7 @@ export default function AccountNavigation() {
 
               {/* Typefaces submenu */}
               {hasTypefaces && isTypefacesExpanded && (
-                <div className="mt-1 flex flex-col py-4 gap-y-3">
+                <div className="mt-1 flex flex-col gap-y-3 py-4">
                   {studio.typefaces.map((typeface) => {
                     const isActiveTypeface =
                       activeTypeface === typeface.slug;
@@ -266,7 +281,7 @@ export default function AccountNavigation() {
                         />
                         {/* Section links for active typeface */}
                         {isActiveTypeface && (
-                          <div className="flex flex-col my-4 border-l border-neutral-300 ml-4">
+                          <div className="my-4 ml-4 flex flex-col border-neutral-300 border-l">
                             {TYPEFACE_SECTIONS.map(
                               (section) => (
                                 <SectionLink
@@ -276,6 +291,10 @@ export default function AccountNavigation() {
                                     handleSectionClick(
                                       section.id
                                     )
+                                  }
+                                  isActive={
+                                    activeTypefaceSection ===
+                                    section.id
                                   }
                                 />
                               )
@@ -290,7 +309,7 @@ export default function AccountNavigation() {
 
               {/* Reviewer submenu */}
               {isReviewerItem && isReviewerExpanded && (
-                <div className="flex flex-col my-4 border-l border-neutral-300 ml-4">
+                <div className="my-4 ml-4 flex flex-col border-neutral-300 border-l">
                   {REVIEWER_SECTIONS.map((section) => (
                     <button
                       key={section.id}
@@ -299,9 +318,9 @@ export default function AccountNavigation() {
                         handleReviewerNavChange(section.id)
                       }
                       className={cn(
-                        "w-full text-left text-sm font-whisper px-6 py-2 transition-colors",
+                        "w-full px-6 py-2 text-left font-whisper text-sm transition-colors",
                         activeReviewerSection === section.id
-                          ? "text-black font-semibold"
+                          ? "font-semibold text-black"
                           : "text-neutral-500 hover:text-black"
                       )}
                     >
@@ -320,9 +339,9 @@ export default function AccountNavigation() {
         <SignOutButton redirectUrl="/">
           <button
             type="button"
-            className="w-full flex items-center gap-2 text-base font-whisper text-black transition-colors cursor-pointer"
+            className="flex w-full cursor-pointer items-center gap-2 font-whisper text-base text-black transition-colors"
           >
-            <RiLogoutBoxLine className="w-4 h-4" />
+            <RiLogoutBoxLine className="h-4 w-4" />
             Log-out
           </button>
         </SignOutButton>

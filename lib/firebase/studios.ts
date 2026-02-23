@@ -93,6 +93,11 @@ function normalizeTypefaces(
         )
           ? t.typefacePageLayout
           : [],
+        typefacePageBackground:
+          t.typefacePageBackground &&
+          typeof t.typefacePageBackground === "object"
+            ? t.typefacePageBackground
+            : { type: "color", color: "#ffffff" },
         fonts: Array.isArray(t.fonts)
           ? normalizeFonts(t.fonts)
           : [],

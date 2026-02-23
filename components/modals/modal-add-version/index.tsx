@@ -3,22 +3,25 @@
 import { useCallback, useMemo, useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
 import FileDropZone from "@/components/global/file-drop-zone";
+import {
+  ButtonCancelForm,
+  ButtonModalSave,
+} from "@/components/molecules/buttons";
+import {
+  INPUT_CLASS,
+  LABEL_CLASS,
+  SUB_LABEL_CLASS,
+} from "@/constant/FORM_CLASSES";
 import { useModalOpen } from "@/hooks/use-modal-open";
 import type {
+  AddVersionFormData,
   AddVersionModalProps,
+  AddVersionOptionalToggles,
   TypefaceVersion,
 } from "@/types/components";
 import { generateUUID } from "@/utils/generate-uuid";
 
-type FormData = Omit<TypefaceVersion, "id">;
-
-type OptionalToggles = {
-  newWeight: boolean;
-  newStyle: boolean;
-  corrections: boolean;
-};
-
-const EMPTY_FORM: FormData = {
+const EMPTY_FORM: AddVersionFormData = {
   title: "",
   versionNumber: "",
   description: "",
@@ -33,13 +36,6 @@ const EMPTY_FORM: FormData = {
   corrections: "",
 };
 
-const inputClass =
-  "w-full rounded-lg border border-neutral-300 px-4 py-3 font-whisper text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black";
-const labelClass =
-  "mb-2 font-normal font-whisper text-black text-sm";
-const subLabelClass =
-  "font-normal font-whisper text-neutral-500 text-xs";
-
 export default function AddVersionModal({
   isOpen,
   onClose,
@@ -49,7 +45,7 @@ export default function AddVersionModal({
 }: AddVersionModalProps) {
   useModalOpen(isOpen);
 
-  const initialForm = useMemo<FormData>(() => {
+  const initialForm = useMemo<AddVersionFormData>(() => {
     if (!isOpen) return EMPTY_FORM;
     if (editingVersion) {
       return {
@@ -70,31 +66,32 @@ export default function AddVersionModal({
     return EMPTY_FORM;
   }, [isOpen, editingVersion]);
 
-  const initialToggles = useMemo<OptionalToggles>(() => {
-    if (!isOpen) {
+  const initialToggles =
+    useMemo<AddVersionOptionalToggles>(() => {
+      if (!isOpen) {
+        return {
+          newWeight: false,
+          newStyle: false,
+          corrections: false,
+        };
+      }
+      if (editingVersion) {
+        return {
+          newWeight:
+            !!editingVersion.newWeightCurrent ||
+            !!editingVersion.newWeightFinal,
+          newStyle:
+            !!editingVersion.newStyleCurrent ||
+            !!editingVersion.newStyleFinal,
+          corrections: !!editingVersion.corrections,
+        };
+      }
       return {
         newWeight: false,
         newStyle: false,
         corrections: false,
       };
-    }
-    if (editingVersion) {
-      return {
-        newWeight:
-          !!editingVersion.newWeightCurrent ||
-          !!editingVersion.newWeightFinal,
-        newStyle:
-          !!editingVersion.newStyleCurrent ||
-          !!editingVersion.newStyleFinal,
-        corrections: !!editingVersion.corrections,
-      };
-    }
-    return {
-      newWeight: false,
-      newStyle: false,
-      corrections: false,
-    };
-  }, [isOpen, editingVersion]);
+    }, [isOpen, editingVersion]);
 
   // Track the reset key to detect when form should be reset
   const resetKey = `${isOpen}-${editingVersion?.id ?? "new"}`;
@@ -103,7 +100,7 @@ export default function AddVersionModal({
     useState(resetKey);
   const [form, setForm] = useState(initialForm);
   const [toggles, setToggles] =
-    useState<OptionalToggles>(initialToggles);
+    useState<AddVersionOptionalToggles>(initialToggles);
 
   // Reset form during render when dependencies change (avoids useEffect setState)
   if (prevResetKey !== resetKey) {
@@ -139,18 +136,22 @@ export default function AddVersionModal({
   );
 
   const handleToggle = useCallback(
-    (field: keyof OptionalToggles) => {
+    (field: keyof AddVersionOptionalToggles) => {
       setToggles((prev) => {
         const next = !prev[field];
         if (!next) {
           // Clear the paired fields when disabling
           if (field === "corrections") {
-            setForm((f) => ({ ...f, corrections: "" }));
-          } else {
-            setForm((f) => ({
+            setForm((f: AddVersionFormData) => ({
               ...f,
-              [`${field}Current`]: 0,
-              [`${field}Final`]: 0,
+              corrections: "",
+            }));
+          } else {
+            const keyBase = String(field);
+            setForm((f: AddVersionFormData) => ({
+              ...f,
+              [`${keyBase}Current`]: 0,
+              [`${keyBase}Final`]: 0,
             }));
           }
         }
@@ -229,7 +230,7 @@ export default function AddVersionModal({
           <div className="flex flex-col gap-y-2">
             <label
               htmlFor="versionTitle"
-              className={labelClass}
+              className={LABEL_CLASS}
             >
               Title
             </label>
@@ -240,7 +241,7 @@ export default function AddVersionModal({
               value={form.title}
               onChange={handleChange}
               placeholder="e.g. Initial release"
-              className={inputClass}
+              className={INPUT_CLASS}
             />
           </div>
 
@@ -248,7 +249,7 @@ export default function AddVersionModal({
           <div className="flex flex-col gap-y-2">
             <label
               htmlFor="versionNumber"
-              className={labelClass}
+              className={LABEL_CLASS}
             >
               Version number
             </label>
@@ -260,7 +261,7 @@ export default function AddVersionModal({
               onChange={handleChange}
               placeholder="e.g. 1.0"
               required
-              className={inputClass}
+              className={INPUT_CLASS}
             />
           </div>
 
@@ -268,7 +269,7 @@ export default function AddVersionModal({
           <div className="flex flex-col gap-y-2">
             <label
               htmlFor="versionDescription"
-              className={labelClass}
+              className={LABEL_CLASS}
             >
               Description
             </label>
@@ -279,7 +280,7 @@ export default function AddVersionModal({
               onChange={handleChange}
               rows={3}
               placeholder="Describe what's included in this version"
-              className={`resize-y ${inputClass}`}
+              className={`resize-y ${INPUT_CLASS}`}
             />
           </div>
 
@@ -314,7 +315,7 @@ export default function AddVersionModal({
           <div className="flex flex-col gap-y-2">
             <label
               htmlFor="versionFeatures"
-              className={labelClass}
+              className={LABEL_CLASS}
             >
               Features
             </label>
@@ -325,7 +326,7 @@ export default function AddVersionModal({
               onChange={handleChange}
               rows={3}
               placeholder="List the features of this version"
-              className={`resize-y ${inputClass}`}
+              className={`resize-y ${INPUT_CLASS}`}
             />
           </div>
 
@@ -377,27 +378,27 @@ export default function AddVersionModal({
               onChange={handleChange}
               rows={3}
               placeholder="List the corrections made in this version"
-              className={`resize-y ${inputClass}`}
+              className={`resize-y ${INPUT_CLASS}`}
             />
           </OptionalField>
 
           {/* Submit */}
           <div className="flex justify-end gap-3 border-neutral-200 border-t pt-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded-lg border border-neutral-300 px-4 py-2 font-medium font-whisper transition-colors hover:bg-neutral-50"
-            >
-              Cancel
-            </button>
-            <button
+            <ButtonCancelForm onClick={onClose} />
+            <ButtonModalSave
               type="submit"
-              className="rounded-lg bg-black px-6 py-2 font-medium font-whisper text-white transition-colors hover:bg-neutral-800"
-            >
-              {editingVersion
-                ? "Save Changes"
-                : "Add Version"}
-            </button>
+              label={
+                editingVersion
+                  ? "Save Changes"
+                  : "Add Version"
+              }
+              className="w-auto! px-6 py-2"
+              aria-label={
+                editingVersion
+                  ? "Save version changes"
+                  : "Add version"
+              }
+            />
           </div>
         </form>
       </div>
@@ -426,12 +427,14 @@ function CurrentFinalField({
 }) {
   return (
     <div className="flex flex-col gap-y-2">
-      {label && <span className={labelClass}>{label}</span>}
+      {label && (
+        <span className={LABEL_CLASS}>{label}</span>
+      )}
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-y-1">
           <label
             htmlFor={currentId}
-            className={subLabelClass}
+            className={SUB_LABEL_CLASS}
           >
             Current
           </label>
@@ -442,13 +445,13 @@ function CurrentFinalField({
             min={0}
             value={currentValue}
             onChange={onChange}
-            className={inputClass}
+            className={INPUT_CLASS}
           />
         </div>
         <div className="flex flex-col gap-y-1">
           <label
             htmlFor={finalId}
-            className={subLabelClass}
+            className={SUB_LABEL_CLASS}
           >
             Final
           </label>
@@ -459,7 +462,7 @@ function CurrentFinalField({
             min={0}
             value={finalValue}
             onChange={onChange}
-            className={inputClass}
+            className={INPUT_CLASS}
           />
         </div>
       </div>

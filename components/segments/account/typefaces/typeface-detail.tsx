@@ -141,6 +141,19 @@ export default function TypefaceDetail({
               typefacePageLayout?: TypefaceLayoutItem[];
             }
           ).typefacePageLayout ?? [],
+        typefacePageBackground: (
+          typeface as StudioTypeface & {
+            typefacePageBackground?: {
+              type: "color" | "gradient" | "image";
+              color?: string;
+              gradient?: { from: string; to: string };
+              image?: string;
+            };
+          }
+        ).typefacePageBackground ?? {
+          type: "color",
+          color: "#ffffff",
+        },
       });
       setHasChanges(false);
     }
@@ -351,6 +364,30 @@ export default function TypefaceDetail({
     []
   );
 
+  const handlePageBackgroundChange = useCallback(
+    (value: {
+      type: "color" | "gradient" | "image";
+      color?: string;
+      gradient?: { from: string; to: string };
+      image?: string;
+    }) => {
+      setFormData((prev) => {
+        const next = { ...prev };
+        (
+          next as Record<string, unknown>
+        ).typefacePageBackground = {
+          type: value.type,
+          color: value.color ?? "#ffffff",
+          gradient: value.gradient,
+          image: value.image ?? "",
+        };
+        return next;
+      });
+      setHasChanges(true);
+    },
+    []
+  );
+
   // ── Version handlers ──
   const handleSaveVersion = useCallback(
     (version: TypefaceVersion) => {
@@ -488,110 +525,176 @@ export default function TypefaceDetail({
         onTogglePublish={handleTogglePublish}
       />
 
-      <BasicInformationSection
-        name={formData.name || ""}
-        hangeulName={formData.hangeulName || ""}
-        categories={formData.category || []}
-        characters={formData.characters || ""}
-        releaseDate={formData.releaseDate || ""}
-        description={formData.description || ""}
-        supportedLanguages={
-          formData.supportedLanguages || []
-        }
-        typefaceVision={{
-          usage: formData.visionUsage || "",
-          contrast: formData.visionContrast || "",
-          width: formData.visionWidth || "",
-          playful: formData.visionPlayful || "",
-          frame: formData.visionFrame || "",
-          serif: formData.visionSerif || "",
-        }}
-        designerIds={formData.designerIds || []}
-        studioDesigners={studio?.designers || []}
-        onInputChange={handleInputChange}
-        onCategoriesChange={handleCategoriesChange}
-        onLanguagesChange={handleLanguagesChange}
-        onTypefaceVisionChange={handleTypefaceVisionChange}
-        onDesignerIdsChange={handleDesignerIdsChange}
-      />
+      <div
+        id="information"
+        className="scroll-mt-8"
+      >
+        <BasicInformationSection
+          name={formData.name || ""}
+          hangeulName={formData.hangeulName || ""}
+          categories={formData.category || []}
+          characters={formData.characters || ""}
+          releaseDate={formData.releaseDate || ""}
+          description={formData.description || ""}
+          supportedLanguages={
+            formData.supportedLanguages || []
+          }
+          typefaceVision={{
+            usage: formData.visionUsage || "",
+            contrast: formData.visionContrast || "",
+            width: formData.visionWidth || "",
+            playful: formData.visionPlayful || "",
+            frame: formData.visionFrame || "",
+            serif: formData.visionSerif || "",
+          }}
+          designerIds={formData.designerIds || []}
+          studioDesigners={studio?.designers || []}
+          onInputChange={handleInputChange}
+          onCategoriesChange={handleCategoriesChange}
+          onLanguagesChange={handleLanguagesChange}
+          onTypefaceVisionChange={
+            handleTypefaceVisionChange
+          }
+          onDesignerIdsChange={handleDesignerIdsChange}
+        />
+      </div>
 
-      <TypefacePageSection
-        typefacePageLayout={
-          (
-            formData as StudioTypeface & {
-              typefacePageLayout?: TypefaceLayoutItem[];
-            }
-          ).typefacePageLayout ?? []
-        }
-        onLayoutChange={handleTypefacePageLayoutChange}
-        studioId={studio?.id || ""}
-        typefaceId={typeface?.id || ""}
-      />
+      <div
+        id="typeface-page"
+        className="scroll-mt-8"
+      >
+        <TypefacePageSection
+          typefacePageLayout={
+            (
+              formData as StudioTypeface & {
+                typefacePageLayout?: TypefaceLayoutItem[];
+              }
+            ).typefacePageLayout ?? []
+          }
+          onLayoutChange={handleTypefacePageLayoutChange}
+          typefacePageBackground={
+            (
+              formData as StudioTypeface & {
+                typefacePageBackground?: {
+                  type: "color" | "gradient" | "image";
+                  color?: string;
+                  gradient?: { from: string; to: string };
+                  image?: string;
+                };
+              }
+            ).typefacePageBackground
+          }
+          onPageBackgroundChange={
+            handlePageBackgroundChange
+          }
+          studioId={studio?.id || ""}
+          typefaceId={typeface?.id || ""}
+        />
+      </div>
 
-      <VersionsListSection
-        versions={versions}
-        onAddVersionClick={() =>
-          setIsVersionModalOpen(true)
-        }
-        onEditVersion={handleEditVersion}
-        onRemoveVersion={handleRemoveVersion}
-      />
+      <div
+        id="versions"
+        className="scroll-mt-8"
+      >
+        <VersionsListSection
+          versions={versions}
+          onAddVersionClick={() =>
+            setIsVersionModalOpen(true)
+          }
+          onEditVersion={handleEditVersion}
+          onRemoveVersion={handleRemoveVersion}
+        />
+      </div>
 
-      <ShopSection
-        printPrice={String(formData.printPrice ?? 0)}
-        webPrice={String(formData.webPrice ?? 0)}
-        appPrice={String(formData.appPrice ?? 0)}
-        onInputChange={handleInputChange}
-      />
+      <div
+        id="shop"
+        className="scroll-mt-8"
+      >
+        <ShopSection
+          printPrice={String(formData.printPrice ?? 0)}
+          webPrice={String(formData.webPrice ?? 0)}
+          appPrice={String(formData.appPrice ?? 0)}
+          onInputChange={handleInputChange}
+        />
+      </div>
 
-      <FontsListSection
-        fonts={formData.fonts || []}
-        displayFontId={formData.displayFontId || ""}
-        fontLineText={formData.fontLineText || ""}
-        onRemoveFont={handleRemoveFont}
-        onEditFont={handleEditFont}
-        onAddFontClick={() => setIsFontModalOpen(true)}
-        onDisplayFontChange={handleDisplayFontChange}
-        onInputChange={handleInputChange}
-      />
+      <div
+        id="fonts"
+        className="scroll-mt-8"
+      >
+        <FontsListSection
+          fonts={formData.fonts || []}
+          displayFontId={formData.displayFontId || ""}
+          fontLineText={formData.fontLineText || ""}
+          onRemoveFont={handleRemoveFont}
+          onEditFont={handleEditFont}
+          onAddFontClick={() => setIsFontModalOpen(true)}
+          onDisplayFontChange={handleDisplayFontChange}
+          onInputChange={handleInputChange}
+        />
+      </div>
 
-      <PackagesListSection
-        packages={formData.packages || []}
-        fonts={formData.fonts || []}
-        onAddPackageClick={() => {
-          setEditingPackage(null);
-          setIsPackageModalOpen(true);
-        }}
-        onEditPackageClick={handleEditPackageClick}
-        onSavePackage={handleSavePackage}
-        onRemovePackage={handleRemovePackage}
-      />
+      <div
+        id="packages"
+        className="scroll-mt-8"
+      >
+        <PackagesListSection
+          packages={formData.packages || []}
+          fonts={formData.fonts || []}
+          onAddPackageClick={() => {
+            setEditingPackage(null);
+            setIsPackageModalOpen(true);
+          }}
+          onEditPackageClick={handleEditPackageClick}
+          onSavePackage={handleSavePackage}
+          onRemovePackage={handleRemovePackage}
+        />
+      </div>
 
-      <EulaSection
-        studioId={studio?.id || ""}
-        eula={formData.eula || ""}
-        onEulaChange={handleFileChange("eula")}
-        onOpenEulaGenerator={() => setIsEulaModalOpen(true)}
-      />
+      <div
+        id="eula"
+        className="scroll-mt-8"
+      >
+        <EulaSection
+          studioId={studio?.id || ""}
+          eula={formData.eula || ""}
+          onEulaChange={handleFileChange("eula")}
+          onOpenEulaGenerator={() =>
+            setIsEulaModalOpen(true)
+          }
+        />
+      </div>
 
-      <SpecimenSection
-        studioId={studio?.id || ""}
-        typefaceSlug={typefaceSlug}
-        specimen={formData.specimen || ""}
-        onSpecimenChange={handleFileChange("specimen")}
-      />
+      <div
+        id="specimen"
+        className="scroll-mt-8"
+      >
+        <SpecimenSection
+          studioId={studio?.id || ""}
+          typefaceSlug={typefaceSlug}
+          specimen={formData.specimen || ""}
+          onSpecimenChange={handleFileChange("specimen")}
+        />
+      </div>
 
-      <AssetsSection
-        studioId={studio?.id || ""}
-        heroLetter={formData.heroLetter || ""}
-        variableFontFile={formData.variableFontFile || ""}
-        galleryImages={formData.galleryImages || []}
-        onHeroLetterChange={handleFileChange("heroLetter")}
-        onVariableFontFileChange={handleFileChange(
-          "variableFontFile"
-        )}
-        onGalleryImagesChange={handleGalleryImagesChange}
-      />
+      <div
+        id="assets"
+        className="scroll-mt-8"
+      >
+        <AssetsSection
+          studioId={studio?.id || ""}
+          heroLetter={formData.heroLetter || ""}
+          variableFontFile={formData.variableFontFile || ""}
+          galleryImages={formData.galleryImages || []}
+          onHeroLetterChange={handleFileChange(
+            "heroLetter"
+          )}
+          onVariableFontFileChange={handleFileChange(
+            "variableFontFile"
+          )}
+          onGalleryImagesChange={handleGalleryImagesChange}
+        />
+      </div>
 
       <AddFontModal
         isOpen={isFontModalOpen}

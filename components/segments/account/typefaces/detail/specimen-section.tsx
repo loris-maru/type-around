@@ -40,10 +40,7 @@ export default function SpecimenSection({
   };
 
   return (
-    <CollapsibleSection
-      id="specimen"
-      title="Specimen"
-    >
+    <CollapsibleSection title="Specimen">
       <div className="flex flex-col gap-10">
         <div className="flex flex-col gap-y-2">
           <span className="font-semibold text-black text-sm">

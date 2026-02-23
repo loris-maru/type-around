@@ -1,7 +1,24 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { RiCloseLine, RiLoader4Line } from "react-icons/ri";
+import {
+  ModalErrorDisplay,
+  ModalHeader,
+} from "@/components/global/modal";
+import { ButtonModalSave } from "@/components/molecules/buttons";
+import {
+  FONT_FORMATS,
+  type FontFormat,
+} from "@/constant/FONT_FORMATS";
+import {
+  DEFAULT_FONT_PRICES,
+  DEFAULT_FONT_WEIGHT,
+  DEFAULT_FONT_WIDTH,
+  ERROR_SAVE_FONT_FAILED,
+  LABEL_SAVING,
+  LABEL_UPLOADING,
+  MODAL_TITLE_FONT,
+} from "@/constant/MODAL_CONSTANTS";
 import { useModalOpen } from "@/hooks/use-modal-open";
 import {
   uploadFile,
@@ -14,16 +31,8 @@ import type {
 import type { Font } from "@/types/studio";
 import { generateUUID } from "@/utils/generate-uuid";
 import FontFilesSection from "./font-files-section";
-import type { FontFormat } from "./font-format-dropzone";
 import FormFields from "./form-fields";
 import TypeTesterDropzone from "./type-tester-dropzone";
-
-const FONT_FORMATS: FontFormat[] = [
-  "otf",
-  "ttf",
-  "woff",
-  "woff2",
-];
 
 const emptyFilesByFormat = (): Record<
   FontFormat,
@@ -51,11 +60,7 @@ export default function AddFontModal({
   onSave,
   editingFont,
   studioId,
-  defaultPrices = {
-    printPrice: 0,
-    webPrice: 0,
-    appPrice: 0,
-  },
+  defaultPrices = DEFAULT_FONT_PRICES,
 }: AddFontModalProps) {
   useModalOpen(isOpen);
 
@@ -83,8 +88,8 @@ export default function AddFontModal({
     );
   const [formData, setFormData] = useState({
     styleName: "",
-    weight: "400",
-    width: "100",
+    weight: DEFAULT_FONT_WEIGHT,
+    width: DEFAULT_FONT_WIDTH,
     isItalic: false,
     file: "",
   });
@@ -361,7 +366,7 @@ export default function AddFontModal({
       setError(
         err instanceof Error
           ? err.message
-          : "Failed to save font"
+          : ERROR_SAVE_FONT_FAILED
       );
     } finally {
       setIsSubmitting(false);
@@ -399,29 +404,20 @@ export default function AddFontModal({
       />
 
       <div className="relative mx-4 flex max-h-[90vh] w-full max-w-lg flex-col rounded-lg bg-white">
-        <div className="flex shrink-0 items-center justify-between border-neutral-200 border-b p-6">
-          <h2 className="font-bold font-ortank text-xl">
-            {editingFont ? "Edit Font" : "Add New Font"}
-          </h2>
-          <button
-            type="button"
-            onClick={handleClose}
-            aria-label="Close modal"
-            className="rounded-lg p-1 transition-colors hover:bg-neutral-100"
-          >
-            <RiCloseLine className="h-6 w-6" />
-          </button>
-        </div>
+        <ModalHeader
+          title={
+            editingFont
+              ? MODAL_TITLE_FONT.edit
+              : MODAL_TITLE_FONT.add
+          }
+          onClose={handleClose}
+        />
 
         <form
           onSubmit={handleSubmit}
           className="min-h-0 flex-1 space-y-4 overflow-y-auto overscroll-contain p-6"
         >
-          {error && (
-            <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-red-600 text-sm">
-              {error}
-            </div>
-          )}
+          {error && <ModalErrorDisplay message={error} />}
 
           <FormFields
             formData={formData}
@@ -461,22 +457,22 @@ export default function AddFontModal({
           />
 
           <div className="pt-4">
-            <button
+            <ButtonModalSave
               type="submit"
+              label={
+                editingFont ? "Save Changes" : "Add Font"
+              }
+              loadingLabel={
+                pendingFile ? LABEL_UPLOADING : LABEL_SAVING
+              }
               disabled={isSubmitting || !formData.styleName}
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-black py-3 font-medium font-whisper text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-400"
-            >
-              {isSubmitting && (
-                <RiLoader4Line className="h-5 w-5 animate-spin" />
-              )}
-              {isSubmitting
-                ? pendingFile
-                  ? "Uploading..."
-                  : "Saving..."
-                : editingFont
-                  ? "Save Changes"
-                  : "Add Font"}
-            </button>
+              loading={isSubmitting}
+              aria-label={
+                editingFont
+                  ? "Save font changes"
+                  : "Add font"
+              }
+            />
           </div>
         </form>
       </div>

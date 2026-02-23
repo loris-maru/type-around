@@ -1,10 +1,7 @@
 "use client";
 
 import { RiArrowLeftLine } from "react-icons/ri";
-
-type ButtonGoBackProps = {
-  onClick: () => void;
-};
+import type { ButtonGoBackProps } from "@/types/components";
 
 export default function ButtonGoBack({
   onClick,

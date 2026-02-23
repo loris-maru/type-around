@@ -18,10 +18,7 @@ export default function EulaSection({
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
-    <CollapsibleSection
-      id="eula"
-      title="EULA"
-    >
+    <CollapsibleSection title="EULA">
       <div className="flex flex-col gap-y-3">
         <div className="flex items-center gap-x-2">
           <span className="font-semibold text-black text-sm">

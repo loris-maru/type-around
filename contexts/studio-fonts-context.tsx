@@ -8,11 +8,7 @@ import {
   useMemo,
   useState,
 } from "react";
-
-type StudioFontsContextValue = {
-  displayFontFamily: string;
-  textFontFamily: string;
-};
+import type { StudioFontsContextValue } from "@/types/contexts";
 
 const StudioFontsContext =
   createContext<StudioFontsContextValue | null>(null);

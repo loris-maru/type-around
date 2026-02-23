@@ -8,12 +8,7 @@ import {
   RiImageLine,
 } from "react-icons/ri";
 import { uploadFile } from "@/lib/firebase/storage";
-
-type GalleryUploaderProps = {
-  studioId: string;
-  images: string[];
-  onChange: (images: string[]) => void;
-};
+import type { GalleryUploaderProps } from "@/types/components";
 
 export default function GalleryUploader({
   studioId,

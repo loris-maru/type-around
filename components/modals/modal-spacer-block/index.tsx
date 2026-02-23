@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
+import { ButtonModalSave } from "@/components/molecules/buttons";
 import { SPACER_SIZE_OPTIONS } from "@/constant/BLOCK_OPTIONS";
 import { useModalOpen } from "@/hooks/use-modal-open";
 import type { SpacerBlockModalProps } from "@/types/components";
@@ -82,13 +83,12 @@ export default function SpacerBlockModal({
 
           {/* Save */}
           <div className="pt-2">
-            <button
+            <ButtonModalSave
               type="button"
               onClick={handleSave}
-              className="w-full cursor-pointer rounded-lg bg-black py-3 font-medium font-whisper text-white transition-colors hover:bg-neutral-800"
-            >
-              Save Spacer
-            </button>
+              label="Save Spacer"
+              aria-label="Save spacer block"
+            />
           </div>
         </div>
       </div>

@@ -6,29 +6,18 @@ import {
   RiArrowLeftSLine,
   RiArrowRightSLine,
 } from "react-icons/ri";
+import type {
+  TypefaceGalleryProps,
+  TypefaceGalleryTransitionPhase,
+} from "@/types/components";
 import { cn } from "@/utils/class-names";
-
-type TypefaceGalleryImage = {
-  src: string;
-  alt?: string;
-};
-
-type TypefaceGalleryProps = {
-  images: TypefaceGalleryImage[];
-};
-
-type TransitionPhase =
-  | "idle"
-  | "cover-up"
-  | "hold"
-  | "uncover-up";
 
 export default function TypefaceGallery({
   images,
 }: TypefaceGalleryProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [phase, setPhase] =
-    useState<TransitionPhase>("idle");
+    useState<TypefaceGalleryTransitionPhase>("idle");
   const pendingIndex = useRef<number | null>(null);
 
   const canPrev = currentIndex > 0;

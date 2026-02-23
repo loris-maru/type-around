@@ -11,6 +11,7 @@ import {
   RiLoader4Line,
   RiUploadCloud2Line,
 } from "react-icons/ri";
+import { ButtonModalSave } from "@/components/molecules/buttons";
 import ColorPicker from "@/components/molecules/color-picker";
 import { useModalOpen } from "@/hooks/use-modal-open";
 import { uploadFile } from "@/lib/firebase/storage";
@@ -458,13 +459,12 @@ export default function GalleryBlockModal({
 
         {/* Footer - fixed save button */}
         <div className="shrink-0 border-neutral-200 border-t p-6">
-          <button
+          <ButtonModalSave
             type="button"
             onClick={handleSave}
-            className="w-full rounded-lg bg-black py-3 font-medium font-whisper text-white transition-colors hover:bg-neutral-800"
-          >
-            Save Gallery
-          </button>
+            label="Save Gallery"
+            aria-label="Save gallery block"
+          />
         </div>
       </div>
     </div>

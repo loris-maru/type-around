@@ -1,11 +1,5 @@
 import { create } from "zustand";
-
-type ModalStore = {
-  openCount: number;
-  isModalOpen: boolean;
-  openModal: () => void;
-  closeModal: () => void;
-};
+import type { ModalStore } from "@/types/stores";
 
 export const useModalStore = create<ModalStore>((set) => ({
   openCount: 0,

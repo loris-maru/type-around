@@ -2,11 +2,7 @@
 
 import { RiLoaderLine } from "react-icons/ri";
 import { SiStripe } from "react-icons/si";
-
-type ButtonConnectStripeProps = {
-  onClick: () => void;
-  disabled?: boolean;
-};
+import type { ButtonConnectStripeProps } from "@/types/components";
 
 export default function ButtonConnectStripe({
   onClick,

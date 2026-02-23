@@ -1,9 +1,6 @@
 "use client";
 
-type ButtonSelectSlotProps = {
-  slot: string;
-  onClick: () => void;
-};
+import type { ButtonSelectSlotProps } from "@/types/components";
 
 export default function ButtonSelectSlot({
   slot,

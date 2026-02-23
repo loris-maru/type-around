@@ -1,10 +1,6 @@
 "use client";
 
-type ButtonAddAvailabilityProps = {
-  onClick: () => void;
-  disabled?: boolean;
-  children?: React.ReactNode;
-};
+import type { ButtonAddAvailabilityProps } from "@/types/components";
 
 export default function ButtonAddAvailability({
   onClick,

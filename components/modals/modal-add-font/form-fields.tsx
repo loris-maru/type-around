@@ -1,25 +1,11 @@
 "use client";
 
-type FormData = {
-  styleName: string;
-  weight: string;
-  width: string;
-  isItalic: boolean;
-};
-
-type FormFieldsProps = {
-  formData: FormData;
-  onChange: (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement
-    >
-  ) => void;
-};
+import type { AddFontFormFieldsProps } from "@/types/components";
 
 export default function FormFields({
   formData,
   onChange,
-}: FormFieldsProps) {
+}: AddFontFormFieldsProps) {
   return (
     <>
       {/* Style Name */}

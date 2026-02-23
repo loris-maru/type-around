@@ -1,41 +1,15 @@
 import { create } from "zustand";
 import type {
+  EulaActions,
+  EulaState,
+} from "@/types/stores";
+import type {
   FoundryInfo,
   FontProduct,
   LicenseScope,
   Restrictions,
   LegalPreferences,
 } from "@/types/eula";
-
-type EulaState = {
-  currentStep: number;
-  foundryInfo: FoundryInfo;
-  fontProduct: FontProduct;
-  licenseScope: LicenseScope;
-  restrictions: Restrictions;
-  legalPreferences: LegalPreferences;
-  generatedEula: string;
-  isGenerating: boolean;
-  generationError: string | null;
-};
-
-type EulaActions = {
-  setStep: (step: number) => void;
-  nextStep: () => void;
-  prevStep: () => void;
-  updateFoundryInfo: (data: Partial<FoundryInfo>) => void;
-  updateFontProduct: (data: Partial<FontProduct>) => void;
-  updateLicenseScope: (data: Partial<LicenseScope>) => void;
-  updateRestrictions: (data: Partial<Restrictions>) => void;
-  updateLegalPreferences: (
-    data: Partial<LegalPreferences>
-  ) => void;
-  setGeneratedEula: (eula: string) => void;
-  appendToEula: (chunk: string) => void;
-  setIsGenerating: (generating: boolean) => void;
-  setGenerationError: (error: string | null) => void;
-  reset: () => void;
-};
 
 const initialFoundryInfo: FoundryInfo = {
   foundryName: "",

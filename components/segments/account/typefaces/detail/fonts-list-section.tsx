@@ -22,7 +22,6 @@ export default function FontsListSection({
 
   return (
     <CollapsibleSection
-      id="fonts"
       title="Fonts"
       count={fonts.length}
       countLabel="styles"

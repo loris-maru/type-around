@@ -1,10 +1,7 @@
 "use client";
 
 import { RiEyeLine } from "react-icons/ri";
-
-type ButtonPreviewPageProps = {
-  onClick: () => void;
-};
+import type { ButtonPreviewPageProps } from "@/types/components";
 
 export default function ButtonPreviewPage({
   onClick,

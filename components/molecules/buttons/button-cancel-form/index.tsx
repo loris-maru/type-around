@@ -1,10 +1,6 @@
 "use client";
 
-type ButtonCancelFormProps = {
-  onClick: () => void;
-  children?: React.ReactNode;
-  className?: string;
-};
+import type { ButtonCancelFormProps } from "@/types/components";
 
 export default function ButtonCancelForm({
   onClick,

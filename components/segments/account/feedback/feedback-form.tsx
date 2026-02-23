@@ -29,16 +29,11 @@ import {
   getDefaultNylasConfigId,
   getReviewerNylasConfigId,
 } from "@/constant/FEEDBACK_REVIEWERS";
+import type {
+  FeedbackFormProps,
+  NylasBookedEvent,
+} from "@/types/components";
 import type { StudioTypeface } from "@/types/studio";
-
-type FeedbackFormProps = {
-  studioId: string;
-  studioName: string;
-  typefaces: StudioTypeface[];
-  reviewers: FeedbackReviewer[];
-  step: number;
-  onStepChange: (step: number) => void;
-};
 
 function ReviewerCard({
   reviewer,
@@ -93,16 +88,6 @@ function CheckIcon({ className }: { className?: string }) {
     </svg>
   );
 }
-
-type NylasBookedEvent = {
-  start_time?: string | number;
-  end_time?: string | number;
-  selectedTimeslot?: {
-    start_time?: string | number;
-    end_time?: string | number;
-  };
-  [key: string]: unknown;
-};
 
 export default function FeedbackForm({
   studioId,

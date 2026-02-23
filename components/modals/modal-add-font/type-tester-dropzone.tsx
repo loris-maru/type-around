@@ -4,15 +4,7 @@ import {
   RiFileTextLine,
   RiUploadCloud2Line,
 } from "react-icons/ri";
-
-type TypeTesterDropzoneProps = {
-  fileName: string | null;
-  onChange: (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => void;
-  onDrop: (e: React.DragEvent) => void;
-  inputRef: React.RefObject<HTMLInputElement | null>;
-};
+import type { TypeTesterDropzoneProps } from "@/types/components";
 
 export default function TypeTesterDropzone({
   fileName,

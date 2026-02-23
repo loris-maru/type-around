@@ -13,7 +13,6 @@ export default function VersionsListSection({
 }: VersionsListSectionProps) {
   return (
     <CollapsibleSection
-      id="versions"
       title="Versions"
       count={versions.length}
       countLabel="versions"

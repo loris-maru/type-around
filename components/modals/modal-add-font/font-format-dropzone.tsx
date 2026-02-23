@@ -5,21 +5,7 @@ import {
   RiFileTextLine,
   RiUploadCloud2Line,
 } from "react-icons/ri";
-import type { SalesFile } from "@/types/components";
-
-export type FontFormat = "otf" | "ttf" | "woff" | "woff2";
-
-type FontFormatDropzoneProps = {
-  format: FontFormat;
-  file: SalesFile | null;
-  onChange: (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => void;
-  onDrop: (e: React.DragEvent) => void;
-  onRemove: () => void;
-  onTriggerClick: () => void;
-  inputRef: React.RefCallback<HTMLInputElement | null>;
-};
+import type { FontFormatDropzoneProps } from "@/types/components";
 
 export default function FontFormatDropzone({
   format,

@@ -1,10 +1,6 @@
 "use client";
 
-type ButtonRemoveDesignerProps = {
-  onClick: () => void;
-  ariaLabel: string;
-  children?: React.ReactNode;
-};
+import type { ButtonRemoveDesignerProps } from "@/types/components";
 
 export default function ButtonRemoveDesigner({
   onClick,

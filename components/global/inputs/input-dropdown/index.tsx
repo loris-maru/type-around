@@ -2,13 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import type { CustomSelectProps } from "@/types/components";
+import type { InputDropdownProps } from "@/types/components";
 import { cn } from "@/utils/class-names";
-
-type InputDropdownProps = CustomSelectProps & {
-  disabled?: boolean;
-  transparent?: boolean;
-};
 
 export default function InputDropdown({
   value,

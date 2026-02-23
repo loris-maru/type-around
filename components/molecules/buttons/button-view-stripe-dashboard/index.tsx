@@ -4,11 +4,7 @@ import {
   RiExternalLinkLine,
   RiLoaderLine,
 } from "react-icons/ri";
-
-type ButtonViewStripeDashboardProps = {
-  onClick: () => void;
-  disabled?: boolean;
-};
+import type { ButtonViewStripeDashboardProps } from "@/types/components";
 
 export default function ButtonViewStripeDashboard({
   onClick,

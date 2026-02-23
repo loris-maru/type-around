@@ -105,6 +105,11 @@ export default function AddTypefaceModal({
         appPrice: 0,
         packages: [],
         typefacePageLayout: [],
+        typefacePageBackground: {
+          type: "color",
+          color: "#ffffff",
+          image: "",
+        },
       };
 
       await onAddTypeface(newTypeface);

@@ -1,18 +1,8 @@
 "use client";
 
 import { useId } from "react";
+import type { InputCheckboxProps } from "@/types/components";
 import { cn } from "@/utils/class-names";
-
-type InputCheckboxProps = {
-  id?: string;
-  name?: string;
-  label?: React.ReactNode;
-  checked: boolean;
-  onChange: (checked: boolean) => void;
-  disabled?: boolean;
-  className?: string;
-  inputClassName?: string;
-};
 
 export default function InputCheckbox({
   id,

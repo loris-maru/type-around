@@ -8,6 +8,7 @@ import {
   RiRefreshLine,
   RiUploadCloud2Line,
 } from "react-icons/ri";
+import { ButtonModalSave } from "@/components/molecules/buttons";
 import ColorPicker from "@/components/molecules/color-picker";
 import {
   ALIGNMENT_OPTIONS,
@@ -448,13 +449,12 @@ export default function MediaBlockModal({
 
               {/* Save - pushed to bottom of right column */}
               <div className="mt-auto pt-4">
-                <button
+                <ButtonModalSave
                   type="button"
                   onClick={handleSave}
-                  className="w-full cursor-pointer rounded-lg bg-black py-3 font-medium font-whisper text-white transition-colors hover:bg-neutral-800"
-                >
-                  Save {label}
-                </button>
+                  label={`Save ${label}`}
+                  aria-label={`Save ${label.toLowerCase()} block`}
+                />
               </div>
             </div>
           </div>

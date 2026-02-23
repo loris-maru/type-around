@@ -2,15 +2,10 @@
 
 import { useCallback } from "react";
 import IconDownload from "@/components/icons/icon-download";
+import type { DownloadButtonsProps } from "@/types/components";
 import { cn } from "@/utils/class-names";
 import { downloadFile } from "@/utils/download-file";
 import { slugify } from "@/utils/slugify";
-
-type DownloadButtonsProps = {
-  typefaceName: string;
-  specimenUrl?: string;
-  trialFontUrls?: { styleName: string; file: string }[];
-};
 
 export default function DownloadButtons({
   typefaceName,

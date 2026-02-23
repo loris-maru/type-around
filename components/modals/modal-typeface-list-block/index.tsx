@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
+import { ButtonModalSave } from "@/components/molecules/buttons";
 import ColorPicker from "@/components/molecules/color-picker";
 import { useModalOpen } from "@/hooks/use-modal-open";
 import type { TypefaceListBlockModalProps } from "@/types/components";
@@ -107,13 +108,12 @@ export default function TypefaceListBlockModal({
 
           {/* Save */}
           <div className="pt-2">
-            <button
+            <ButtonModalSave
               type="button"
               onClick={handleSave}
-              className="w-full cursor-pointer rounded-lg bg-black py-3 font-medium font-whisper text-white transition-colors hover:bg-neutral-800"
-            >
-              Save Typeface List
-            </button>
+              label="Save Typeface List"
+              aria-label="Save typeface list block"
+            />
           </div>
         </div>
       </div>

@@ -2,16 +2,10 @@
 
 import { useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
+import { ButtonModalSave } from "@/components/molecules/buttons";
 import ColorPicker from "@/components/molecules/color-picker";
 import { useModalOpen } from "@/hooks/use-modal-open";
-import type { CharacterSetBlockData } from "@/types/layout-typeface";
-
-type CharacterSetBlockModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  onSave: (data: CharacterSetBlockData) => void;
-  initialData?: CharacterSetBlockData;
-};
+import type { CharacterSetBlockModalProps } from "@/types/components";
 
 export default function CharacterSetBlockModal({
   isOpen,
@@ -115,13 +109,12 @@ export default function CharacterSetBlockModal({
           </div>
 
           <div className="pt-2">
-            <button
+            <ButtonModalSave
               type="button"
               onClick={handleSave}
-              className="w-full rounded-lg bg-black py-3 font-medium font-whisper text-white transition-colors hover:bg-neutral-800"
-            >
-              Save Character Set
-            </button>
+              label="Save Character Set"
+              aria-label="Save character set block"
+            />
           </div>
         </div>
       </div>

@@ -32,6 +32,12 @@ import type {
   StudioTypeface,
 } from "./studio";
 import type { Typeface } from "./typefaces";
+import type { FontFormat } from "@/constant/FONT_FORMATS";
+import type {
+  CharacterSetBlockData,
+  TypefaceLayoutBlock,
+  TypefaceLayoutBlockId,
+} from "./layout-typeface";
 
 // ===========================================
 // Global Component Props
@@ -42,7 +48,7 @@ export type SmoothScrollProviderProps = {
 };
 
 export type CollapsibleSectionProps = {
-  id: string;
+  id?: string;
   title: string;
   count?: number;
   countLabel?: string;
@@ -417,6 +423,13 @@ export type FontCardProps = {
   onEdit: (font: Font) => void;
 };
 
+export type PackageCardProps = {
+  pkg: Package;
+  fonts: Font[];
+  onEdit: () => void;
+  onRemove: () => void;
+};
+
 export type TypefaceCardProps = {
   typeface: StudioTypeface;
   onClick?: () => void;
@@ -612,6 +625,409 @@ export type PreviewBlockRendererProps = {
   block: LayoutItem;
   studio: Studio;
 };
+
+// ===========================================
+// Modal & Button Component Props
+// ===========================================
+
+export type ButtonModalSaveProps = {
+  label: string;
+  loadingLabel?: string;
+  disabled?: boolean;
+  loading?: boolean;
+  type?: "button" | "submit";
+  onClick?: () => void;
+  "aria-label"?: string;
+  className?: string;
+};
+
+export type ButtonAddPackageProps = {
+  onClick: () => void;
+};
+
+export type AddAvailabilityModalProps = {
+  isOpen: boolean;
+  date: Date | null;
+  onClose: () => void;
+  onSave: (startTime: string, endTime: string) => void;
+  isSaving?: boolean;
+};
+
+export type PageBackgroundBlockProps = {
+  value: import("./studio").TypefacePageBackground;
+  onChange: (
+    value: import("./studio").TypefacePageBackground
+  ) => void;
+  studioId: string;
+};
+
+export type TypefacePageSectionProps = {
+  typefacePageLayout: import("./layout-typeface").TypefaceLayoutItem[];
+  onLayoutChange: (
+    layout: import("./layout-typeface").TypefaceLayoutItem[]
+  ) => void;
+  typefacePageBackground?: import("./studio").TypefacePageBackground;
+  onPageBackgroundChange: (
+    value: import("./studio").TypefacePageBackground
+  ) => void;
+  studioId: string;
+  typefaceId: string;
+};
+
+export type AddVersionFormData = Omit<
+  TypefaceVersion,
+  "id"
+>;
+
+export type AddVersionOptionalToggles = {
+  newWeight: boolean;
+  newStyle: boolean;
+  corrections: boolean;
+};
+
+// Modal sub-components
+export type ModalHeaderProps = {
+  title: string;
+  onClose: () => void;
+};
+
+export type ModalErrorDisplayProps = {
+  message: string;
+};
+
+export type ModalPhase =
+  | "form"
+  | "preview"
+  | "confirmation";
+
+// Add Font modal
+export type AddFontFormData = {
+  styleName: string;
+  weight: string;
+  width: string;
+  isItalic: boolean;
+};
+
+export type AddFontFormFieldsProps = {
+  formData: AddFontFormData;
+  onChange: (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement
+    >
+  ) => void;
+};
+
+export type FontFormatDropzoneProps = {
+  format: FontFormat;
+  file: SalesFile | null;
+  onChange: (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => void;
+  onDrop: (e: React.DragEvent) => void;
+  onRemove: () => void;
+  onTriggerClick: () => void;
+  inputRef: React.RefCallback<HTMLInputElement | null>;
+};
+
+export type FontFilesSectionProps = {
+  salesFilesByFormat: Record<FontFormat, SalesFile | null>;
+  trialFilesByFormat: Record<FontFormat, SalesFile | null>;
+  salesInputRefs: React.MutableRefObject<
+    Record<FontFormat, HTMLInputElement | null>
+  >;
+  trialInputRefs: React.MutableRefObject<
+    Record<FontFormat, HTMLInputElement | null>
+  >;
+  onSalesChange: (
+    format: FontFormat
+  ) => (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSalesDrop: (
+    format: FontFormat
+  ) => (e: React.DragEvent) => void;
+  onSalesRemove: (format: FontFormat) => () => void;
+  onTrialChange: (
+    format: FontFormat
+  ) => (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onTrialDrop: (
+    format: FontFormat
+  ) => (e: React.DragEvent) => void;
+  onTrialRemove: (format: FontFormat) => () => void;
+};
+
+export type TypeTesterDropzoneProps = {
+  fileName: string | null;
+  onChange: (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => void;
+  onDrop: (e: React.DragEvent) => void;
+  inputRef: React.RefObject<HTMLInputElement | null>;
+};
+
+// Add Font In Use modal
+export type FontInUseFormFieldsProps = {
+  formData: {
+    projectName: string;
+    designerName: string;
+    typefaceId: string;
+    description: string;
+  };
+  onInputChange: (
+    e: React.ChangeEvent<
+      | HTMLInputElement
+      | HTMLSelectElement
+      | HTMLTextAreaElement
+    >
+  ) => void;
+  onTypefaceChange: (typefaceId: string) => void;
+  typefaceOptions: { value: string; label: string }[];
+};
+
+export type FontInUseImageUploadProps = {
+  images: ImagePreview[];
+  fileInputRef: React.RefObject<HTMLInputElement | null>;
+  isDragging: boolean;
+  onDragOver: (e: React.DragEvent) => void;
+  onDragLeave: (e: React.DragEvent) => void;
+  onDrop: (e: React.DragEvent) => void;
+  onTriggerClick: () => void;
+  onFileChange: (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => void;
+  onRemoveImage: (id: string) => void;
+};
+
+// Character Set Block modal
+export type CharacterSetBlockModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (data: CharacterSetBlockData) => void;
+  initialData?: CharacterSetBlockData;
+};
+
+// Typeface page
+export type TypefaceBlocksListProps = {
+  availableBlocks: TypefaceLayoutBlock[];
+  handleAdd: (blockId: TypefaceLayoutBlockId) => void;
+};
+
+export type TypefaceVisionBlockProps = {
+  usage: string;
+  contrast: string;
+  width: string;
+  playful: string;
+  frame: string;
+  serif: string;
+  onUsageChange: (value: string) => void;
+  onContrastChange: (value: string) => void;
+  onWidthChange: (value: string) => void;
+  onPlayfulChange: (value: string) => void;
+  onFrameChange: (value: string) => void;
+  onSerifChange: (value: string) => void;
+};
+
+export type DownloadButtonsProps = {
+  typefaceName: string;
+  specimenUrl?: string;
+  trialFontUrls?: { styleName: string; file: string }[];
+};
+
+// Input components
+export type InputDropdownProps = CustomSelectProps & {
+  disabled?: boolean;
+  transparent?: boolean;
+};
+
+export type InputCheckboxProps = {
+  id?: string;
+  name?: string;
+  label?: React.ReactNode;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  disabled?: boolean;
+  className?: string;
+  inputClassName?: string;
+};
+
+// Button components (beyond ButtonModalSaveProps, ButtonAddPackageProps)
+export type ButtonCancelFormProps = {
+  onClick: () => void;
+  children?: React.ReactNode;
+  className?: string;
+};
+
+export type ButtonCloseModalProps = {
+  onClick: () => void;
+  children?: React.ReactNode;
+  variant?: "icon" | "text";
+};
+
+export type ButtonSaveFormProps = {
+  onClick: () => void;
+  disabled?: boolean;
+  label?: string;
+  loadingLabel?: string;
+};
+
+export type ButtonSaveChangesProps = {
+  onClick: () => void;
+  disabled?: boolean;
+  label?: string;
+  loadingLabel?: string;
+};
+
+export type ButtonGoBackProps = {
+  onClick: () => void;
+};
+
+export type ButtonAddAvailabilityProps = {
+  onClick: () => void;
+  disabled?: boolean;
+  children?: React.ReactNode;
+};
+
+export type ButtonAddAvailabilityDayProps = {
+  day: number;
+  onClick: () => void;
+  slotCount?: number;
+};
+
+export type ButtonAddMemberProps = {
+  onClick: () => void;
+};
+
+export type ButtonRemoveDesignerProps = {
+  onClick: () => void;
+  ariaLabel: string;
+  children?: React.ReactNode;
+};
+
+export type ButtonReplaceFileProps = {
+  onClick: () => void;
+};
+
+export type ButtonDeleteFileProps = {
+  onClick: () => void;
+};
+
+export type ButtonConnectStripeProps = {
+  onClick: () => void;
+  disabled?: boolean;
+};
+
+export type ButtonAddCardProps = {
+  label: string;
+  onClick: () => void;
+};
+
+export type ButtonPreviewPageProps = {
+  onClick: () => void;
+};
+
+export type ButtonDismissErrorProps = {
+  onClick: () => void;
+};
+
+export type ButtonSendRequestProps = {
+  onClick: () => void;
+  className?: string;
+};
+
+export type ButtonViewStripeDashboardProps = {
+  onClick: () => void;
+  disabled?: boolean;
+};
+
+export type ButtonSelectSlotProps = {
+  slot: string;
+  onClick: () => void;
+};
+
+export type ButtonSelectReviewerProps = {
+  children: React.ReactNode;
+  onSelect: () => void;
+};
+
+// Feedback & Nylas
+export type NylasBookedEvent = {
+  start_time?: string | number;
+  end_time?: string | number;
+  title?: string;
+  selectedTimeslot?: {
+    start_time?: string | number;
+    end_time?: string | number;
+  };
+  [key: string]: unknown;
+};
+
+export type FeedbacksSectionProps = {
+  studioId: string;
+};
+
+export type FeedbackFormProps = {
+  studioId: string;
+  studioName: string;
+  typefaces: import("./studio").StudioTypeface[];
+  reviewers: import("@/constant/FEEDBACK_REVIEWERS").FeedbackReviewer[];
+  step: number;
+  onStepChange: (step: number) => void;
+};
+
+// Specimen
+export type TemplatePickerPanelProps = {
+  specimenId: string;
+  pageId: string;
+  pageName: string;
+};
+
+// EULA generator
+export type ToggleFieldProps = {
+  label: string;
+  labelKo: string;
+  description: string;
+  checked: boolean;
+  onChange: (value: boolean) => void;
+};
+
+export type StepIndicatorProps = {
+  currentStep: number;
+};
+
+// Gallery & upload
+export type GalleryUploaderProps = {
+  studioId: string;
+  images: string[];
+  onChange: (images: string[]) => void;
+};
+
+export type FontField = "headerFont" | "textFont";
+
+export type FontUploadInputProps = {
+  field: FontField;
+  label: string;
+};
+
+// Typeface gallery
+export type TypefaceGalleryImage = {
+  src: string;
+  alt?: string;
+};
+
+export type TypefaceGalleryProps = {
+  images: TypefaceGalleryImage[];
+};
+
+export type TypefaceGalleryTransitionPhase =
+  | "idle"
+  | "cover-up"
+  | "hold"
+  | "uncover-up";
+
+// Footer / newsletter
+export type SubscribeStatus =
+  | "idle"
+  | "loading"
+  | "success"
+  | "error";
 
 // ===========================================
 // Molecule Component Props

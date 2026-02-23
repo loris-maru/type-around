@@ -1,11 +1,7 @@
 "use client";
 
 import { RiAddFill } from "react-icons/ri";
-
-type ButtonAddCardProps = {
-  label: string;
-  onClick: () => void;
-};
+import type { ButtonAddCardProps } from "@/types/components";
 
 export default function ButtonAddCard({
   label,

@@ -1,14 +1,17 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import {
-  RiCloseLine,
-  RiDeleteBinLine,
-  RiLoader4Line,
-  RiUploadCloud2Line,
-} from "react-icons/ri";
-import { InputDropdown } from "@/components/global/inputs";
+  ModalErrorDisplay,
+  ModalHeader,
+} from "@/components/global/modal";
+import { ButtonModalSave } from "@/components/molecules/buttons";
+import {
+  ERROR_IMAGE_REQUIRED,
+  ERROR_SAVE_FAILED,
+  LABEL_UPLOADING,
+  MODAL_TITLE_FONT_IN_USE,
+} from "@/constant/MODAL_CONSTANTS";
 import { useModalOpen } from "@/hooks/use-modal-open";
 import { uploadFile } from "@/lib/firebase/storage";
 import type {
@@ -17,6 +20,8 @@ import type {
 } from "@/types/components";
 import type { FontInUse } from "@/types/studio";
 import { generateUUID } from "@/utils/generate-uuid";
+import FontInUseFormFields from "./font-in-use-form-fields";
+import FontInUseImageUpload from "./font-in-use-image-upload";
 
 export default function AddFontInUseModal({
   isOpen,
@@ -97,7 +102,7 @@ export default function AddFontInUseModal({
     const validFiles = Array.from(files).filter(
       (file) =>
         file.type.startsWith("image/") &&
-        file.size <= 10 * 1024 * 1024
+        file.size <= 10 * 1024 * 1024 // 10MB - MAX_IMAGE_FILE_SIZE
     );
 
     const newImages: ImagePreview[] = validFiles.map(
@@ -174,7 +179,7 @@ export default function AddFontInUseModal({
 
     try {
       if (images.length === 0) {
-        throw new Error("At least one image is required");
+        throw new Error(ERROR_IMAGE_REQUIRED);
       }
 
       // Upload new images to Firebase Storage
@@ -214,7 +219,7 @@ export default function AddFontInUseModal({
       setError(
         err instanceof Error
           ? err.message
-          : "Failed to save"
+          : ERROR_SAVE_FAILED
       );
     } finally {
       setIsSubmitting(false);
@@ -242,203 +247,67 @@ export default function AddFontInUseModal({
       />
 
       <div className="relative mx-4 flex max-h-[90vh] w-full max-w-lg flex-col rounded-lg bg-white">
-        <div className="flex shrink-0 items-center justify-between border-neutral-200 border-b p-6">
-          <h2 className="font-bold font-ortank text-xl">
-            {editingFontInUse
-              ? "Edit Font In Use"
-              : "Add Font In Use"}
-          </h2>
-          <button
-            type="button"
-            onClick={handleClose}
-            aria-label="Close modal"
-            className="rounded-lg p-1 transition-colors hover:bg-neutral-100"
-          >
-            <RiCloseLine className="h-6 w-6" />
-          </button>
-        </div>
+        <ModalHeader
+          title={
+            editingFontInUse
+              ? MODAL_TITLE_FONT_IN_USE.edit
+              : MODAL_TITLE_FONT_IN_USE.add
+          }
+          onClose={handleClose}
+        />
 
         <form
           onSubmit={handleSubmit}
           className="min-h-0 flex-1 space-y-4 overflow-y-auto overscroll-contain p-6"
         >
-          {error && (
-            <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-red-600 text-sm">
-              {error}
-            </div>
+          {error && <ModalErrorDisplay message={error} />}
+
+          <FontInUseImageUpload
+            images={images}
+            fileInputRef={fileInputRef}
+            isDragging={isDragging}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            onTriggerClick={() =>
+              fileInputRef.current?.click()
+            }
+            onFileChange={handleFileChange}
+            onRemoveImage={handleRemoveImage}
+          />
+
+          <FontInUseFormFields
+            formData={formData}
+            onInputChange={handleInputChange}
+            onTypefaceChange={(typefaceId) =>
+              setFormData((prev) => ({
+                ...prev,
+                typefaceId,
+              }))
+            }
+            typefaceOptions={typefaces.map((t) => ({
+              value: t.id,
+              label: t.name,
+            }))}
+          />
+
+          {typefaces.length === 0 && (
+            <p className="text-neutral-500 text-xs">
+              No typefaces available. Create a typeface
+              first.
+            </p>
           )}
-
-          {/* Images Drop Zone */}
-          <div>
-            <label
-              htmlFor="images"
-              className="mb-2 block font-normal font-whisper text-black text-sm"
-            >
-              Images <span className="text-red-500">*</span>
-            </label>
-            {/* biome-ignore lint/a11y/noStaticElementInteractions: drop zone triggers file input */}
-            {/* biome-ignore lint/a11y/useKeyWithClickEvents: drop zone triggers file input */}
-            <div
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-              onClick={() => fileInputRef.current?.click()}
-              className={`w-full cursor-pointer rounded-lg border-2 border-dashed p-6 transition-colors ${
-                isDragging
-                  ? "border-black bg-neutral-50"
-                  : "border-neutral-300 hover:border-neutral-400"
-              }`}
-            >
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={handleFileChange}
-                className="hidden"
-                aria-label="Upload images for font in use"
-              />
-              <div className="flex flex-col items-center gap-2">
-                <RiUploadCloud2Line className="h-8 w-8 text-neutral-400" />
-                <span className="text-neutral-500 text-sm">
-                  Drop images or click to browse
-                </span>
-                <span className="text-neutral-400 text-xs">
-                  PNG, JPG, WebP (max 10MB each)
-                </span>
-              </div>
-            </div>
-
-            {/* Image Previews */}
-            {images.length > 0 && (
-              <div className="mt-3 grid grid-cols-4 gap-2">
-                {images.map((img) => (
-                  <div
-                    key={img.id}
-                    className="group relative aspect-square overflow-hidden rounded-lg bg-neutral-100"
-                  >
-                    <Image
-                      src={img.previewUrl}
-                      alt="Preview"
-                      fill
-                      className="object-cover"
-                      unoptimized
-                    />
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleRemoveImage(img.id);
-                      }}
-                      className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity group-hover:opacity-100"
-                    >
-                      <RiDeleteBinLine className="h-5 w-5 text-white" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Project Name */}
-          <div>
-            <label
-              htmlFor="projectName"
-              className="mb-2 block font-normal font-whisper text-black text-sm"
-            >
-              Project Name{" "}
-              <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="projectName"
-              name="projectName"
-              value={formData.projectName}
-              onChange={handleInputChange}
-              required
-              className="w-full rounded-lg border border-neutral-300 px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
-              placeholder="e.g., Brand Identity for XYZ"
-            />
-          </div>
-
-          {/* Designer Name */}
-          <div>
-            <label
-              htmlFor="designerName"
-              className="mb-2 block font-normal font-whisper text-black text-sm"
-            >
-              Designer Name{" "}
-              <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="designerName"
-              name="designerName"
-              value={formData.designerName}
-              onChange={handleInputChange}
-              required
-              className="w-full rounded-lg border border-neutral-300 px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
-              placeholder="e.g., John Doe"
-            />
-          </div>
-
-          {/* Typeface Select */}
-          <div>
-            <label
-              htmlFor="typefaceId"
-              className="mb-2 block font-normal font-whisper text-black text-sm"
-            >
-              Typeface{" "}
-              <span className="text-red-500">*</span>
-            </label>
-            <InputDropdown
-              value={formData.typefaceId}
-              options={[
-                { value: "", label: "Select a typeface" },
-                ...typefaces.map((t) => ({
-                  value: t.id,
-                  label: t.name,
-                })),
-              ]}
-              onChange={(value) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  typefaceId: value,
-                }))
-              }
-              className="w-full"
-            />
-            {typefaces.length === 0 && (
-              <p className="mt-1 text-neutral-500 text-xs">
-                No typefaces available. Create a typeface
-                first.
-              </p>
-            )}
-          </div>
-
-          {/* Description */}
-          <div>
-            <label
-              htmlFor="description"
-              className="mb-2 block font-normal font-whisper text-black text-sm"
-            >
-              Description
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-              rows={3}
-              className="w-full resize-none rounded-lg border border-neutral-300 px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
-              placeholder="Brief description of the project..."
-            />
-          </div>
 
           {/* Submit */}
           <div className="pt-4">
-            <button
+            <ButtonModalSave
               type="submit"
+              label={
+                editingFontInUse
+                  ? "Save Changes"
+                  : "Add Font In Use"
+              }
+              loadingLabel={LABEL_UPLOADING}
               disabled={
                 isSubmitting ||
                 !formData.projectName ||
@@ -446,17 +315,13 @@ export default function AddFontInUseModal({
                 !formData.typefaceId ||
                 images.length === 0
               }
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-black py-3 font-medium font-whisper text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-400"
-            >
-              {isSubmitting && (
-                <RiLoader4Line className="h-5 w-5 animate-spin" />
-              )}
-              {isSubmitting
-                ? "Uploading..."
-                : editingFontInUse
-                  ? "Save Changes"
-                  : "Add Font In Use"}
-            </button>
+              loading={isSubmitting}
+              aria-label={
+                editingFontInUse
+                  ? "Save font in use changes"
+                  : "Add font in use"
+              }
+            />
           </div>
         </form>
       </div>

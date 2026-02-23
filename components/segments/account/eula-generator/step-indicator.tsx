@@ -1,12 +1,9 @@
 "use client";
 
 import { RiCheckLine } from "react-icons/ri";
+import type { StepIndicatorProps } from "@/types/components";
 import { EULA_STEPS } from "@/types/eula";
 import { cn } from "@/utils/class-names";
-
-type StepIndicatorProps = {
-  currentStep: number;
-};
 
 export default function StepIndicator({
   currentStep,

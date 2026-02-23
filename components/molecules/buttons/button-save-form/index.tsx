@@ -1,13 +1,7 @@
 "use client";
 
 import { RiSaveLine } from "react-icons/ri";
-
-type ButtonSaveFormProps = {
-  onClick: () => void;
-  disabled?: boolean;
-  label?: string;
-  loadingLabel?: string;
-};
+import type { ButtonSaveFormProps } from "@/types/components";
 
 export default function ButtonSaveForm({
   onClick,

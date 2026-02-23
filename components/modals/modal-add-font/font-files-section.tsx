@@ -1,40 +1,8 @@
 "use client";
 
-import type { SalesFile } from "@/types/components";
-import type { FontFormat } from "./font-format-dropzone";
+import { FONT_FORMATS } from "@/constant/FONT_FORMATS";
+import type { FontFilesSectionProps } from "@/types/components";
 import FontFormatDropzone from "./font-format-dropzone";
-
-const FONT_FORMATS: FontFormat[] = [
-  "otf",
-  "ttf",
-  "woff",
-  "woff2",
-];
-
-type FontFilesSectionProps = {
-  salesFilesByFormat: Record<FontFormat, SalesFile | null>;
-  trialFilesByFormat: Record<FontFormat, SalesFile | null>;
-  salesInputRefs: React.MutableRefObject<
-    Record<FontFormat, HTMLInputElement | null>
-  >;
-  trialInputRefs: React.MutableRefObject<
-    Record<FontFormat, HTMLInputElement | null>
-  >;
-  onSalesChange: (
-    format: FontFormat
-  ) => (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSalesDrop: (
-    format: FontFormat
-  ) => (e: React.DragEvent) => void;
-  onSalesRemove: (format: FontFormat) => () => void;
-  onTrialChange: (
-    format: FontFormat
-  ) => (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onTrialDrop: (
-    format: FontFormat
-  ) => (e: React.DragEvent) => void;
-  onTrialRemove: (format: FontFormat) => () => void;
-};
 
 export default function FontFilesSection({
   salesFilesByFormat,

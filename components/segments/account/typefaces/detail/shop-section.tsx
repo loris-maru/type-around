@@ -10,10 +10,7 @@ export default function ShopSection({
   onInputChange,
 }: ShopSectionProps) {
   return (
-    <CollapsibleSection
-      id="shop"
-      title="Shop"
-    >
+    <CollapsibleSection title="Shop">
       <div>
         <h3 className="mb-4 font-bold font-ortank text-base text-black">
           Prices

@@ -16,10 +16,7 @@ export default function AssetsSection({
   onGalleryImagesChange,
 }: AssetsSectionProps) {
   return (
-    <CollapsibleSection
-      id="assets"
-      title="Assets"
-    >
+    <CollapsibleSection title="Assets">
       <div className="flex flex-col gap-10">
         <div className="flex flex-row gap-8">
           <div className="flex-1">

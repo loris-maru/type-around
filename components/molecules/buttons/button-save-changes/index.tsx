@@ -1,13 +1,7 @@
 "use client";
 
 import { RiSaveLine } from "react-icons/ri";
-
-type ButtonSaveChangesProps = {
-  onClick: () => void;
-  disabled?: boolean;
-  label?: string;
-  loadingLabel?: string;
-};
+import type { ButtonSaveChangesProps } from "@/types/components";
 
 export default function ButtonSaveChanges({
   onClick,

@@ -1,7 +1,7 @@
 "use client";
 
-import { RiCloseFill } from "react-icons/ri";
 import { motion } from "motion/react";
+import { RiCloseFill } from "react-icons/ri";
 import {
   getTemplateGradient,
   SPECIMEN_TEMPLATES,
@@ -11,13 +11,8 @@ import type { SpecimenTemplate } from "@/constant/specimen-templates/schema";
 import { SPECIMEN_TEMPLATE_PICKER_WIDTH } from "@/constant/UI_LAYOUT";
 import { useSpecimenPage } from "@/contexts/specimen-page-context";
 import { useStudio } from "@/hooks/use-studio";
+import type { TemplatePickerPanelProps } from "@/types/components";
 import type { SpecimenPage } from "@/types/studio";
-
-type TemplatePickerPanelProps = {
-  specimenId: string;
-  pageId: string;
-  pageName: string;
-};
 
 export default function TemplatePickerPanel({
   specimenId,

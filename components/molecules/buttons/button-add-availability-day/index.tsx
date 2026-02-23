@@ -1,12 +1,7 @@
 "use client";
 
 import { RiAddLine } from "react-icons/ri";
-
-type ButtonAddAvailabilityDayProps = {
-  day: number;
-  onClick: () => void;
-  slotCount?: number;
-};
+import type { ButtonAddAvailabilityDayProps } from "@/types/components";
 
 export default function ButtonAddAvailabilityDay({
   day,

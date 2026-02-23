@@ -161,6 +161,27 @@ export const StudioTypefaceSchema = z.object({
     )
     .optional()
     .default([]),
+  // Typeface page background (color, gradient, or image)
+  typefacePageBackground: z
+    .object({
+      type: z
+        .enum(["color", "gradient", "image"])
+        .default("color"),
+      color: z.string().optional().default("#ffffff"),
+      gradient: z
+        .object({
+          from: z.string().default("#FFF8E8"),
+          to: z.string().default("#F2F2F2"),
+        })
+        .optional(),
+      image: z.string().optional().default(""),
+    })
+    .optional()
+    .default({
+      type: "color",
+      color: "#ffffff",
+      image: "",
+    }),
 });
 
 export const SpecimenPageMarginsSchema = z.object({
@@ -189,6 +210,13 @@ export const SpecimenPageBackgroundSchema = z.object({
 export type SpecimenPageBackground = z.infer<
   typeof SpecimenPageBackgroundSchema
 >;
+
+export type TypefacePageBackground = {
+  type: "color" | "gradient" | "image";
+  color?: string;
+  gradient?: { from: string; to: string };
+  image?: string;
+};
 
 export const SpecimenPageGridSchema = z.object({
   columns: z.number().min(1).default(2),

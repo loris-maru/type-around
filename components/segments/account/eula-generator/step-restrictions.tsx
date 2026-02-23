@@ -1,14 +1,7 @@
 "use client";
 
 import { useEulaStore } from "@/stores/eula-store";
-
-type ToggleFieldProps = {
-  label: string;
-  labelKo: string;
-  description: string;
-  checked: boolean;
-  onChange: (value: boolean) => void;
-};
+import type { ToggleFieldProps } from "@/types/components";
 
 function ToggleField({
   label,

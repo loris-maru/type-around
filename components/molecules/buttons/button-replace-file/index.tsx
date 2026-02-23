@@ -1,10 +1,7 @@
 "use client";
 
 import { RiRefreshLine } from "react-icons/ri";
-
-type ButtonReplaceFileProps = {
-  onClick: () => void;
-};
+import type { ButtonReplaceFileProps } from "@/types/components";
 
 export default function ButtonReplaceFile({
   onClick,

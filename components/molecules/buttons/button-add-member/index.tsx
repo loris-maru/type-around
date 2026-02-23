@@ -1,10 +1,7 @@
 "use client";
 
 import { RiUserAddLine } from "react-icons/ri";
-
-type ButtonAddMemberProps = {
-  onClick: () => void;
-};
+import type { ButtonAddMemberProps } from "@/types/components";
 
 export default function ButtonAddMember({
   onClick,

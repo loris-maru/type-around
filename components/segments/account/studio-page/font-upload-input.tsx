@@ -15,14 +15,8 @@ import {
 import { MAX_FONT_FILE_SIZE } from "@/constant/FILE_UPLOAD_LIMITS";
 import { useStudio } from "@/hooks/use-studio";
 import { uploadFile } from "@/lib/firebase/storage";
+import type { FontUploadInputProps } from "@/types/components";
 import { cn } from "@/utils/class-names";
-
-type FontField = "headerFont" | "textFont";
-
-type FontUploadInputProps = {
-  field: FontField;
-  label: string;
-};
 
 export default function FontUploadInput({
   field,

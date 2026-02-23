@@ -10,13 +10,8 @@ import {
 } from "react";
 import { RiCheckboxCircleFill } from "react-icons/ri";
 import { SOCIAL_MEDIA_LINKS } from "@/constant/SOCIAL_MEDIA_LINKS";
+import type { SubscribeStatus } from "@/types/components";
 import { cn } from "@/utils/class-names";
-
-type SubscribeStatus =
-  | "idle"
-  | "loading"
-  | "success"
-  | "error";
 
 export default function SocialMediaNewsletter() {
   const [email, setEmail] = useState("");

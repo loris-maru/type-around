@@ -1,12 +1,7 @@
 "use client";
 
 import { RiCloseLine } from "react-icons/ri";
-
-type ButtonCloseModalProps = {
-  onClick: () => void;
-  children?: React.ReactNode;
-  variant?: "icon" | "text";
-};
+import type { ButtonCloseModalProps } from "@/types/components";
 
 export default function ButtonCloseModal({
   onClick,

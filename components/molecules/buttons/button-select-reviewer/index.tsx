@@ -1,9 +1,6 @@
 "use client";
 
-type ButtonSelectReviewerProps = {
-  children: React.ReactNode;
-  onSelect: () => void;
-};
+import type { ButtonSelectReviewerProps } from "@/types/components";
 
 export default function ButtonSelectReviewer({
   children,

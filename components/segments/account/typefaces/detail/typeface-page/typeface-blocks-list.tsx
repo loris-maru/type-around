@@ -1,15 +1,7 @@
 "use client";
 
 import { RiAddLine } from "react-icons/ri";
-import type {
-  TypefaceLayoutBlock,
-  TypefaceLayoutBlockId,
-} from "@/types/layout-typeface";
-
-type TypefaceBlocksListProps = {
-  availableBlocks: TypefaceLayoutBlock[];
-  handleAdd: (blockId: TypefaceLayoutBlockId) => void;
-};
+import type { TypefaceBlocksListProps } from "@/types/components";
 
 export default function TypefaceBlocksList({
   availableBlocks,

@@ -1,9 +1,6 @@
 "use client";
 
-type ButtonSendRequestProps = {
-  onClick: () => void;
-  className?: string;
-};
+import type { ButtonSendRequestProps } from "@/types/components";
 
 export default function ButtonSendRequest({
   onClick,

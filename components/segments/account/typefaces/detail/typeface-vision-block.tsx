@@ -9,21 +9,7 @@ import {
   TYPEFACE_VISION_USAGE,
   TYPEFACE_VISION_WIDTH,
 } from "@/constant/TYPEFACE_VISION";
-
-type TypefaceVisionBlockProps = {
-  usage: string;
-  contrast: string;
-  width: string;
-  playful: string;
-  frame: string;
-  serif: string;
-  onUsageChange: (value: string) => void;
-  onContrastChange: (value: string) => void;
-  onWidthChange: (value: string) => void;
-  onPlayfulChange: (value: string) => void;
-  onFrameChange: (value: string) => void;
-  onSerifChange: (value: string) => void;
-};
+import type { TypefaceVisionBlockProps } from "@/types/components";
 
 function SelectDropdown({
   label,

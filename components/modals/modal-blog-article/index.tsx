@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
+import { ButtonModalSave } from "@/components/molecules/buttons";
 import RichTextEditor from "@/components/segments/account/studio-page/layout-builder/rich-text-editor";
 import { useModalOpen } from "@/hooks/use-modal-open";
 import type { BlogArticleModalProps } from "@/types/components";
@@ -184,13 +185,12 @@ export default function BlogArticleModal({
 
         {/* Footer */}
         <div className="shrink-0 border-neutral-200 border-t p-6">
-          <button
+          <ButtonModalSave
             type="button"
             onClick={handleSave}
-            className="w-full cursor-pointer rounded-lg bg-black py-3 font-medium font-whisper text-white transition-colors hover:bg-neutral-800"
-          >
-            Save Article
-          </button>
+            label="Save Article"
+            aria-label="Save article"
+          />
         </div>
       </div>
     </div>

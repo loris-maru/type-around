@@ -14,7 +14,6 @@ import {
   RiGlobalLine,
   RiInstagramLine,
   RiLinkedinLine,
-  RiLoader4Line,
   RiMastodonLine,
   RiPinterestLine,
   RiThreadsLine,
@@ -24,6 +23,7 @@ import {
   RiUserLine,
   RiYoutubeLine,
 } from "react-icons/ri";
+import { ButtonModalSave } from "@/components/molecules/buttons";
 import { useModalOpen } from "@/hooks/use-modal-open";
 import { uploadFile } from "@/lib/firebase/storage";
 import type { AddDesignerModalProps } from "@/types/components";
@@ -601,24 +601,26 @@ export default function AddDesignerModal({
 
           {/* Footer */}
           <div className="shrink-0 border-neutral-200 border-t p-6">
-            <button
+            <ButtonModalSave
               type="submit"
+              label={
+                editingDesigner
+                  ? "Save Changes"
+                  : "Add Designer"
+              }
+              loadingLabel="Saving..."
               disabled={
                 isSubmitting ||
                 !formData.firstName ||
                 !formData.lastName
               }
-              className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-black py-3 font-medium font-whisper text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-400"
-            >
-              {isSubmitting && (
-                <RiLoader4Line className="h-5 w-5 animate-spin" />
-              )}
-              {isSubmitting
-                ? "Saving..."
-                : editingDesigner
-                  ? "Save Changes"
-                  : "Add Designer"}
-            </button>
+              loading={isSubmitting}
+              aria-label={
+                editingDesigner
+                  ? "Save designer changes"
+                  : "Add designer"
+              }
+            />
           </div>
         </form>
       </div>

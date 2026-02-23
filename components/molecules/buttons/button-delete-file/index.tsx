@@ -1,10 +1,7 @@
 "use client";
 
 import { RiDeleteBinLine } from "react-icons/ri";
-
-type ButtonDeleteFileProps = {
-  onClick: () => void;
-};
+import type { ButtonDeleteFileProps } from "@/types/components";
 
 export default function ButtonDeleteFile({
   onClick,

@@ -84,10 +84,7 @@ export default function BasicInformationSection({
     .filter(Boolean);
 
   return (
-    <CollapsibleSection
-      id="information"
-      title="Information"
-    >
+    <CollapsibleSection title="Information">
       <div className="flex flex-col gap-y-8">
         <div className="grid grid-cols-2 gap-4">
           <InputText

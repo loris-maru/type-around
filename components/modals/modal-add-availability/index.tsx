@@ -2,19 +2,17 @@
 
 import { useCallback, useState } from "react";
 import {
-  ButtonAddAvailability,
   ButtonCancelForm,
   ButtonCloseModal,
+  ButtonModalSave,
 } from "@/components/molecules/buttons";
+import {
+  DEFAULT_AVAILABILITY_END_TIME,
+  DEFAULT_AVAILABILITY_START_TIME,
+  LABEL_ADDING,
+} from "@/constant/MODAL_CONSTANTS";
 import { useModalOpen } from "@/hooks/use-modal-open";
-
-type AddAvailabilityModalProps = {
-  isOpen: boolean;
-  date: Date | null;
-  onClose: () => void;
-  onSave: (startTime: string, endTime: string) => void;
-  isSaving?: boolean;
-};
+import type { AddAvailabilityModalProps } from "@/types/components";
 
 export default function AddAvailabilityModal({
   isOpen,
@@ -25,8 +23,12 @@ export default function AddAvailabilityModal({
 }: AddAvailabilityModalProps) {
   useModalOpen(isOpen);
 
-  const [startTime, setStartTime] = useState("15:00");
-  const [endTime, setEndTime] = useState("20:00");
+  const [startTime, setStartTime] = useState(
+    DEFAULT_AVAILABILITY_START_TIME
+  );
+  const [endTime, setEndTime] = useState(
+    DEFAULT_AVAILABILITY_END_TIME
+  );
 
   const handleSave = useCallback(() => {
     onSave(startTime, endTime);
@@ -104,12 +106,16 @@ export default function AddAvailabilityModal({
             onClick={onClose}
             className="flex-1"
           />
-          <ButtonAddAvailability
+          <ButtonModalSave
+            type="button"
             onClick={handleSave}
+            label="Add"
+            loadingLabel={LABEL_ADDING}
             disabled={isSaving}
-          >
-            {isSaving ? "Adding…" : "Add"}
-          </ButtonAddAvailability>
+            loading={isSaving}
+            className="flex-1"
+            aria-label="Add availability"
+          />
         </div>
       </div>
     </div>

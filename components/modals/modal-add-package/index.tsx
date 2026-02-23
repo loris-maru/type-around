@@ -6,6 +6,7 @@ import {
   RiCloseLine,
   RiDeleteBinLine,
 } from "react-icons/ri";
+import { ButtonModalSave } from "@/components/molecules/buttons";
 import { useModalOpen } from "@/hooks/use-modal-open";
 import type { AddPackageModalProps } from "@/types/components";
 import type { Package } from "@/types/studio";
@@ -371,15 +372,20 @@ export default function AddPackageModal({
           </div>
 
           <div className="pt-4">
-            <button
+            <ButtonModalSave
               type="submit"
+              label={
+                editingPackage
+                  ? "Save Changes"
+                  : "Add Package"
+              }
               disabled={!name.trim()}
-              className="flex w-full items-center justify-center rounded-lg bg-black py-3 font-medium font-whisper text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-400"
-            >
-              {editingPackage
-                ? "Save Changes"
-                : "Add Package"}
-            </button>
+              aria-label={
+                editingPackage
+                  ? "Save package changes"
+                  : "Add package"
+              }
+            />
           </div>
         </form>
       </div>
