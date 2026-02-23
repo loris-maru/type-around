@@ -24,10 +24,10 @@ export const SIZE_CLASS_MAP: Record<string, string> = {
 };
 
 export const SPACER_CLASS_MAP: Record<string, string> = {
-  s: "h-8",
-  m: "h-16",
-  l: "h-32",
-  xl: "h-48",
+  s: "h-2 lg:h-8",
+  m: "h-4 lg:h-16",
+  l: "h-8 lg:h-32",
+  xl: "h-12 lg:h-48",
 };
 
 export const CONFIGURABLE_BLOCKS: LayoutBlockId[] = [

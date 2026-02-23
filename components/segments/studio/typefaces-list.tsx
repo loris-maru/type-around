@@ -48,7 +48,7 @@ export default function TypefacesList({
       id="families"
     >
       <div
-        className="relative mb-10 px-10 text-xl font-bold"
+        className="relative mb-10 px-10 font-bold text-xl"
         style={{ fontFamily: displayFontFamily }}
       >
         The Studio&lsquo;s Typefaces

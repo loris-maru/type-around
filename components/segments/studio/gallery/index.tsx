@@ -87,16 +87,44 @@ export default function StudioGallery({
 
   return (
     <div
-      className="relative my-20 w-full px-0 lg:my-[20vh] lg:px-10"
+      className="relative my-12 w-full px-0 lg:my-[20vh] lg:px-10"
       style={sectionStyle}
     >
       <header className="relative mb-10 flex w-full flex-row items-center justify-between">
         <h3
-          className="font-black text-2xl text-black"
+          className="px-4 font-black text-2xl text-black lg:px-0"
           style={{ fontFamily: displayFontFamily }}
         >
           {title || "Gallery"}
         </h3>
+        <div className="hidden lg:flex">
+          <GalleryNavigator
+            scrollPrev={scrollPrev}
+            scrollNext={scrollNext}
+            canScrollPrev={canScrollPrev}
+            canScrollNext={canScrollNext}
+            selectedIndex={selectedIndex}
+            scrollSnaps={scrollSnaps}
+            scrollTo={scrollTo}
+          />
+        </div>
+      </header>
+      <div
+        className="relative -mx-2 w-[calc(100%+1rem)] overflow-hidden px-2 pb-4 lg:mx-0 lg:w-full"
+        ref={setEmblaRef}
+      >
+        <div className="relative flex w-full gap-4">
+          {images.map((img) => (
+            <div
+              key={img.key}
+              className="relative min-w-[90vw] shrink-0 flex-[0_0_90vw] pr-4 first:pl-0 lg:min-w-0 lg:flex-[0_0_28.57%]"
+            >
+              <GalleryCard image={img} />
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="mt-4 flex justify-center px-4 lg:hidden">
         <GalleryNavigator
           scrollPrev={scrollPrev}
           scrollNext={scrollNext}
@@ -106,21 +134,6 @@ export default function StudioGallery({
           scrollSnaps={scrollSnaps}
           scrollTo={scrollTo}
         />
-      </header>
-      <div
-        className="relative -mx-2 w-[calc(100%+1rem)] overflow-hidden px-2 pb-4"
-        ref={setEmblaRef}
-      >
-        <div className="relative flex w-full gap-4">
-          {images.map((img) => (
-            <div
-              key={img.key}
-              className="relative min-w-0 flex-[0_0_28.57%] pr-4 first:pl-0"
-            >
-              <GalleryCard image={img} />
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );

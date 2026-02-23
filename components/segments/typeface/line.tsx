@@ -7,6 +7,7 @@ import {
   useEffect,
   useId,
   useState,
+  useSyncExternalStore,
 } from "react";
 import IconDownload from "@/components/icons/icon-download";
 import { TYPEFACE_DEFAULT_SAMPLE_TEXT } from "@/constant/TYPEFACE_SAMPLE_TEXT";
@@ -37,6 +38,23 @@ export default function TypefaceLine({
     useStudioFonts();
   const [isHovered, setIsHovered] = useState(false);
   const [fontLoaded, setFontLoaded] = useState(false);
+
+  // Auto-play animation on mobile (no hover)
+  const isMobile = useSyncExternalStore(
+    useCallback((cb: () => void) => {
+      const mq = window.matchMedia("(max-width: 1023px)");
+      mq.addEventListener("change", cb);
+      return () => mq.removeEventListener("change", cb);
+    }, []),
+    useCallback(
+      () =>
+        typeof window !== "undefined"
+          ? window.matchMedia("(max-width: 1023px)").matches
+          : false,
+      []
+    ),
+    useCallback(() => false, [])
+  );
   const controls = useAnimation();
   const uniqueId = useId();
   const fontFamily = `TypefaceLine-${uniqueId.replace(/:/g, "")}`;
@@ -75,12 +93,14 @@ export default function TypefaceLine({
     };
   }, [fontFileUrl, fontFamily, familyName]);
 
+  const shouldAnimate = isHovered || isMobile;
+
   useEffect(() => {
-    if (isHovered) {
+    if (shouldAnimate) {
       controls.start({
         x: [null, -1000],
         transition: {
-          duration: 5,
+          duration: isMobile ? 10 : 5,
           ease: "linear",
           repeat: Number.POSITIVE_INFINITY,
         },
@@ -94,7 +114,7 @@ export default function TypefaceLine({
         },
       });
     }
-  }, [isHovered, controls]);
+  }, [shouldAnimate, isMobile, controls]);
 
   const handleDownloadTrial = useCallback(async () => {
     if (!trialFontUrl) return;
@@ -117,7 +137,7 @@ export default function TypefaceLine({
   return (
     <div className="relative w-full bg-light-gray py-6 transition-all duration-300 ease-in-out hover:bg-white">
       <header
-        className="relative mb-3 flex flex-row items-center justify-between px-10 text-sm"
+        className="relative mb-3 flex flex-row items-center justify-between px-4 text-sm lg:px-10"
         style={{ fontFamily: textFontFamily }}
       >
         <div className="relative flex flex-row items-baseline gap-x-4">
@@ -138,8 +158,10 @@ export default function TypefaceLine({
               onClick={handleDownloadTrial}
               className="flex cursor-pointer flex-row gap-x-2 font-medium text-black text-sm transition-opacity hover:opacity-60"
             >
-              <IconDownload className="h-3 w-3" /> Trial
-              font
+              <IconDownload className="h-5 w-5 lg:h-3 lg:w-3" />{" "}
+              <span className="hidden lg:block">
+                Trial font
+              </span>
             </button>
           )}
           {specimenUrl && (
@@ -149,7 +171,10 @@ export default function TypefaceLine({
               onClick={handleDownloadSpecimen}
               className="flex cursor-pointer flex-row gap-x-2 font-medium text-black text-sm transition-opacity hover:opacity-60"
             >
-              <IconDownload className="h-3 w-3" /> Specimen
+              <IconDownload className="h-5 w-5 lg:h-3 lg:w-3" />{" "}
+              <span className="hidden lg:block">
+                Specimen
+              </span>
             </button>
           )}
         </div>

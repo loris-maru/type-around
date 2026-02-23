@@ -9,6 +9,8 @@ export const PARALLAX_SPEEDS = [-70, -400, -20] as const;
 
 // Pagination
 export const FONTS_IN_USE_PER_PAGE = 6;
+export const FONTS_IN_USE_MOBILE_INITIAL = 3;
+export const FONTS_IN_USE_MOBILE_LOAD_MORE = 3;
 
 // Specimen panel dimensions
 export const SPECIMEN_PANEL_WIDTH = 300;
