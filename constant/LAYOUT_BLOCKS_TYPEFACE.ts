@@ -22,6 +22,6 @@ export const LAYOUT_BLOCKS_TYPEFACE: TypefaceLayoutBlock[] =
     {
       id: "character-set",
       label: "Character set",
-      unique: false,
+      unique: true,
     },
   ];

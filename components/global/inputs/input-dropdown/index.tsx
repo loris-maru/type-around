@@ -7,6 +7,7 @@ import { cn } from "@/utils/class-names";
 
 type InputDropdownProps = CustomSelectProps & {
   disabled?: boolean;
+  transparent?: boolean;
 };
 
 export default function InputDropdown({
@@ -15,6 +16,7 @@ export default function InputDropdown({
   onChange,
   className,
   disabled = false,
+  transparent = false,
 }: InputDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownStyle, setDropdownStyle] = useState({
@@ -80,7 +82,12 @@ export default function InputDropdown({
             !disabled && setIsOpen((prev) => !prev)
           }
           disabled={disabled}
-          className="flex w-full cursor-pointer items-center justify-between rounded-lg border border-neutral-300 bg-white px-4 py-3 font-whisper text-sm transition-colors hover:border-neutral-400 disabled:cursor-not-allowed disabled:bg-neutral-100 disabled:text-neutral-400"
+          className={cn(
+            "flex w-full cursor-pointer items-center justify-between rounded-lg border px-4 py-3 font-whisper text-sm transition-colors disabled:cursor-not-allowed disabled:text-neutral-400",
+            transparent
+              ? "border-neutral-300/60 bg-transparent hover:border-neutral-400/80 disabled:bg-transparent"
+              : "border-neutral-300 bg-white hover:border-neutral-400 disabled:bg-neutral-100"
+          )}
         >
           <span
             className={cn(

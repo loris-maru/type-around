@@ -41,7 +41,7 @@ export default function DownloadButtons({
   if (!hasTrialFonts && !specimenUrl) return null;
 
   return (
-    <div className="relative flex w-full flex-row px-24 pb-[20vh]">
+    <div className="relative flex w-full flex-row px-24 py-32">
       <div className="relative flex w-full flex-row">
         {hasTrialFonts && (
           <button

@@ -86,7 +86,9 @@ export default function TypefaceBlockBuilder({
     }
     if (blockId === "character-set") {
       const d = item.data as CharacterSetBlockData;
-      return d.sampleText ? "Configured" : null;
+      return d.backgroundColor || d.fontColor
+        ? "Configured"
+        : null;
     }
     if (blockId === "goodies-shop") {
       const d = item.data as StoreBlockData;

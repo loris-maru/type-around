@@ -137,6 +137,7 @@ export default function TypefacePageBlocks({
               <CharacterSetBlock
                 key={block.key}
                 data={charData}
+                fonts={rawTypeface.fonts}
               />
             );
           }

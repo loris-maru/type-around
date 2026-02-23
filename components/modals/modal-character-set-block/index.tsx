@@ -21,10 +21,6 @@ export default function CharacterSetBlockModal({
 }: CharacterSetBlockModalProps) {
   useModalOpen(isOpen);
 
-  const [sampleText, setSampleText] = useState(
-    initialData?.sampleText ||
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-  );
   const [backgroundColor, setBackgroundColor] = useState(
     initialData?.backgroundColor || ""
   );
@@ -33,7 +29,7 @@ export default function CharacterSetBlockModal({
   );
 
   const handleSave = () => {
-    onSave({ sampleText, backgroundColor, fontColor });
+    onSave({ backgroundColor, fontColor });
     onClose();
   };
 
@@ -68,23 +64,10 @@ export default function CharacterSetBlockModal({
         </div>
 
         <div className="min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain p-6">
-          <div>
-            <label
-              htmlFor="sample-text"
-              className="mb-2 block font-semibold text-black text-sm"
-            >
-              Sample text
-            </label>
-            <textarea
-              value={sampleText}
-              onChange={(e) =>
-                setSampleText(e.target.value)
-              }
-              placeholder="Characters to display"
-              rows={3}
-              className="w-full rounded-lg border border-neutral-300 px-4 py-3 font-whisper text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
-            />
-          </div>
+          <p className="font-whisper text-neutral-600 text-sm">
+            The character set is extracted from the typeface
+            font. Customize colors below.
+          </p>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
