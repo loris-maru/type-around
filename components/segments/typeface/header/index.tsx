@@ -11,15 +11,19 @@ import IconTriangle from "@/components/icons/icon-triangle";
 import type { Typeface } from "@/types/typefaces";
 import { slugify } from "@/utils/slugify";
 import SingleTypefaceLetter from "./single-typeface-letter";
+import SingleTypefaceLetterMobile from "./single-typeface-letter-mobile";
 
 const handleOrientation = (
   e: DeviceOrientationEvent,
-  setter: (vw: number) => void
+  setGyroOffset: (vw: number) => void,
+  setBeta: (b: number) => void
 ) => {
   const gamma = e.gamma ?? 0;
-  const clamped = Math.max(-90, Math.min(90, gamma));
-  const vw = (clamped / 90) * 50;
-  setter(vw);
+  const beta = e.beta ?? 0;
+  const gammaClamped = Math.max(-90, Math.min(90, gamma));
+  const vw = (gammaClamped / 90) * 50;
+  setGyroOffset(vw);
+  setBeta(beta);
 };
 
 export default function TypefaceHeader({
@@ -32,6 +36,7 @@ export default function TypefaceHeader({
   hangeulName: string;
 }) {
   const [gyroOffset, setGyroOffset] = useState(0);
+  const [beta, setBeta] = useState(0);
   const [permissionGranted, setPermissionGranted] =
     useState(false);
 
@@ -71,7 +76,7 @@ export default function TypefaceHeader({
     if (!isMobile || !permissionGranted) return;
 
     const handler = (e: DeviceOrientationEvent) =>
-      handleOrientation(e, setGyroOffset);
+      handleOrientation(e, setGyroOffset, setBeta);
     window.addEventListener("deviceorientation", handler);
     return () =>
       window.removeEventListener(
@@ -140,7 +145,18 @@ export default function TypefaceHeader({
             : undefined
         }
       >
-        <SingleTypefaceLetter typeface={typeface} />
+        {isMobile ? (
+          <SingleTypefaceLetterMobile
+            typeface={typeface}
+            beta={
+              permissionGranted || !needsPermission
+                ? beta
+                : 0
+            }
+          />
+        ) : (
+          <SingleTypefaceLetter typeface={typeface} />
+        )}
       </div>
       {needsPermission && (
         <button
