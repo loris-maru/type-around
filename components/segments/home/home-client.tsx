@@ -28,7 +28,11 @@ export default function HomeClient({
   );
 
   return (
-    <main className="relative w-full overflow-x-hidden">
+    <div className="relative w-full overflow-x-hidden">
+      <h1 className="sr-only">
+        글자곁 Type-Around – 독립적인 한국 타입 팩토리의
+        미래
+      </h1>
       <section
         id="headerHome"
         className="relative flex h-screen w-full min-w-0 items-center justify-center overflow-x-hidden bg-light-gray"
@@ -56,6 +60,6 @@ export default function HomeClient({
       <Studios studios={studios} />
 
       <Footer />
-    </main>
+    </div>
   );
 }

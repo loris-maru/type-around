@@ -21,18 +21,18 @@ export default function StudioHeader({
       style={gradientStyle}
     >
       <div className="flex flex-col items-center">
-        <h2
-          className="text-base text-medium uppercase tracking-[4px] lg:text-xl"
-          style={{ fontFamily: displayFontFamily }}
-        >
-          Studio
-        </h2>
         <h1
           className="text-center font-black text-[60px] text-black leading-[1.3] lg:text-[270px]"
           style={{ fontFamily: displayFontFamily }}
         >
           {studioName}
         </h1>
+        <p
+          className="text-base text-medium uppercase tracking-[4px] lg:text-xl"
+          style={{ fontFamily: displayFontFamily }}
+        >
+          Studio
+        </p>
       </div>
     </div>
   );

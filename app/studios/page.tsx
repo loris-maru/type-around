@@ -5,6 +5,7 @@ import {
   DEFAULT_OPEN_GRAPH,
   DEFAULT_TWITTER,
   SITE_NAME,
+  SITE_URL,
 } from "@/constant/SEO_METADATA";
 import { getAllStudiosForDisplay } from "@/lib/firebase/studios";
 import type { Studio } from "@/types/typefaces";
@@ -14,6 +15,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "스튜디오",
   description: `${SITE_NAME}에서 독립적인 한국 타입 팩토리를 탐색하세요. 독특한 한글 글꼴을 만드는 스튜디오를 발견하세요.`,
+  alternates: { canonical: `${SITE_URL}/studios` },
   openGraph: {
     ...DEFAULT_OPEN_GRAPH,
     title: `스튜디오 | ${SITE_NAME}`,
@@ -64,9 +66,9 @@ export default async function StudiosPage() {
   return (
     <div className="relative w-full px-10 py-32">
       <header className="relative mb-24 flex w-full flex-row items-baseline justify-between">
-        <h3 className="font-bold font-ortank text-lg uppercase tracking-[2px]">
+        <h1 className="font-bold font-ortank text-lg uppercase tracking-[2px]">
           The Studios
-        </h3>
+        </h1>
         <div className="font-whisper text-black text-sm">
           Total of {studios.length} studios
         </div>

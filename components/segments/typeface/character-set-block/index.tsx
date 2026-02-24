@@ -180,9 +180,9 @@ export default function TypefaceCharacterSetBlock({
       id="character-set"
       style={sectionStyle}
     >
-      <h3 className="mb-8 font-black font-ortank text-2xl text-black">
+      <h2 className="mb-8 font-black font-ortank text-2xl text-black">
         Character set
-      </h3>
+      </h2>
 
       <div className="flex h-auto w-full grid-cols-2 flex-col gap-4 lg:grid lg:h-screen lg:gap-12">
         {/* Left column: single character viewer + chevrons + font dropdown */}

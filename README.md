@@ -59,6 +59,7 @@ node --env-file=.env.local scripts/create-nylas-configs.mjs
 ### Env vars reference
 
 ```env
+NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=... # Google Search Console verification; add to .env.local for site ownership
 NEXT_PUBLIC_NYLAS_CLIENT_ID=...        # Required for Scheduler Editor
 NEXT_PUBLIC_NYLAS_CONFIG_EUNYOU_NOH=... # Config ID for Eunyou
 NEXT_PUBLIC_NYLAS_CONFIG_NOHEUL_LEE=... # Config ID for Noheul

@@ -15,11 +15,28 @@ const isPublicRoute = createRouteMatcher([
   "/api/webhooks(.*)",
 ]);
 
-export default clerkMiddleware(async (auth, req) => {
-  if (!isPublicRoute(req) && isProtectedRoute(req)) {
-    await auth.protect();
+export default clerkMiddleware(
+  async (auth, req) => {
+    if (!isPublicRoute(req) && isProtectedRoute(req)) {
+      await auth.protect();
+    }
+  },
+  {
+    contentSecurityPolicy: {
+      directives: {
+        "connect-src": [
+          "https://firebasestorage.googleapis.com",
+          "https://*.googleapis.com",
+        ],
+        "img-src": [
+          "https://firebasestorage.googleapis.com",
+          "https://storage.googleapis.com",
+        ],
+        "trusted-types": ["default"],
+      },
+    },
   }
-});
+);
 
 export const config = {
   matcher: [

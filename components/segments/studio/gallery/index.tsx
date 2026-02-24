@@ -91,12 +91,12 @@ export default function StudioGallery({
       style={sectionStyle}
     >
       <header className="relative mb-10 flex w-full flex-row items-center justify-between">
-        <h3
+        <h2
           className="px-4 font-black text-2xl text-black lg:px-0"
           style={{ fontFamily: displayFontFamily }}
         >
           {title || "Gallery"}
-        </h3>
+        </h2>
         <div className="hidden lg:flex">
           <GalleryNavigator
             scrollPrev={scrollPrev}

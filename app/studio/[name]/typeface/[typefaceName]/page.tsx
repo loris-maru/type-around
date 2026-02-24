@@ -8,6 +8,7 @@ import {
   DEFAULT_TWITTER,
   OG_IMAGE_PATH,
   SITE_NAME,
+  SITE_URL,
 } from "@/constant/SEO_METADATA";
 import { getStudioBySlug } from "@/lib/firebase/studios";
 import type { TypefaceLayoutItem } from "@/types/layout-typeface";
@@ -54,9 +55,12 @@ export async function generateMetadata({
     firebaseStudio.avatar ||
     OG_IMAGE_PATH;
 
+  const canonical = `${SITE_URL}/studio/${name}/typeface/${typefaceName}`;
+
   return {
     title: `${studioName}의 ${typefaceNameDisplay}`,
     description,
+    alternates: { canonical },
     openGraph: {
       ...DEFAULT_OPEN_GRAPH,
       title: `${studioName}의 ${typefaceNameDisplay} | ${SITE_NAME}`,

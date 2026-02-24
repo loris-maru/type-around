@@ -43,9 +43,9 @@ export default function Studios({
       className="relative w-full px-8 lg:px-24"
     >
       <header className="relative mb-12 flex w-full flex-col items-start justify-between lg:flex-row lg:items-center">
-        <h3 className="section-title text-left">
+        <h2 className="section-title text-left">
           The Studios
-        </h3>
+        </h2>
         <div className="font-whisper text-black text-sm">
           Total of {studios.length} studios
         </div>

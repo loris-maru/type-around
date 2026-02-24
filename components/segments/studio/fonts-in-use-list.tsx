@@ -78,12 +78,12 @@ export default function FontsInUseList() {
     <div className="relative flex w-full flex-col gap-y-8 px-5 py-24 lg:px-10">
       <div className="relative flex w-full flex-col items-center gap-x-12 lg:flex-row">
         <header className="relative mb-8 flex w-full flex-col lg:-top-[40px] lg:mb-0 lg:w-1/3">
-          <h3
+          <h2
             className="font-black text-4xl text-black lg:text-6xl"
             style={{ fontFamily: displayFontFamily }}
           >
             Fonts in use
-          </h3>
+          </h2>
           <div
             className="text-black text-lg lg:mt-2 lg:text-sm"
             style={{ fontFamily: textFontFamily }}

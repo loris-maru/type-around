@@ -85,9 +85,9 @@ export default function TypefaceUpdates() {
       id="updates"
     >
       <header className="relative mb-10 flex w-full flex-row items-center justify-between">
-        <h3 className="font-black font-ortank text-2xl text-black">
+        <h2 className="font-black font-ortank text-2xl text-black">
           Updates
-        </h3>
+        </h2>
         <div className="hidden lg:flex">
           <GalleryNavigator
             scrollPrev={scrollPrev}

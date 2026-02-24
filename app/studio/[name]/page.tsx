@@ -8,6 +8,7 @@ import {
   DEFAULT_TWITTER,
   OG_IMAGE_PATH,
   SITE_NAME,
+  SITE_URL,
 } from "@/constant/SEO_METADATA";
 import { StudioFontsProvider } from "@/contexts/studio-fonts-context";
 import { getStudioBySlug } from "@/lib/firebase/studios";
@@ -32,9 +33,12 @@ export async function generateMetadata({
     studio.description ||
     `${studioName} – 독립적인 한국 타입 팩토리. 글꼴을 발견하고 독립 디자이너를 지원하세요.`;
 
+  const canonical = `${SITE_URL}/studio/${name}`;
+
   return {
     title: studioName,
     description,
+    alternates: { canonical },
     openGraph: {
       ...DEFAULT_OPEN_GRAPH,
       title: `${studioName} | ${SITE_NAME}`,

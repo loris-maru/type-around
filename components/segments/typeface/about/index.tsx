@@ -10,9 +10,9 @@ export default function TypefaceAbout({
       className="relative my-20 flex w-full flex-col px-5 lg:px-24"
       id="about"
     >
-      <h3 className="mb-4 font-black font-ortank text-2xl text-black">
+      <h2 className="mb-4 font-black font-ortank text-2xl text-black">
         About
-      </h3>
+      </h2>
       <p className="hyphens-auto font-whisper text-base text-neutral-700 leading-relaxed">
         {description}
       </p>

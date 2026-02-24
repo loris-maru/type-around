@@ -24,9 +24,12 @@ export default function LayoutRoot({
           <Navigation />
           <SmoothScrollProvider>
             <ModalScrollLock />
-            <div className="relative z-20 min-h-screen w-full overflow-x-hidden">
+            <main
+              id="main-content"
+              className="relative z-20 min-h-screen w-full overflow-x-hidden"
+            >
               {children}
-            </div>
+            </main>
           </SmoothScrollProvider>
         </body>
       </html>

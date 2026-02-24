@@ -43,11 +43,14 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: SITE_URL,
+    canonical: SITE_URL, // Default for homepage; child pages override with their own URL
   },
   verification: {
-    // Add when available: google: "verification_token",
-    // yandex: "verification_token",
+    ...(process.env
+      .NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION && {
+      google:
+        process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    }),
   },
 };
 
