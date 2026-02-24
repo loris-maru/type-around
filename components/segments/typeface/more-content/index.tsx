@@ -1,7 +1,7 @@
-import { SmallTypefaceCard } from "@/components/molecules/cards";
-import { Studio } from "@/types/typefaces";
-import { slugify } from "@/utils/slugify";
 import Link from "next/link";
+import { SmallTypefaceCard } from "@/components/molecules/cards";
+import type { Studio } from "@/types/typefaces";
+import { slugify } from "@/utils/slugify";
 
 export default function MoreContent({
   studio,
@@ -9,15 +9,15 @@ export default function MoreContent({
   studio: Studio;
 }) {
   return (
-    <div className="relative w-full grid grid-cols-3 gap-x-1 px-[16vw] my-[20vh]">
+    <div className="relative my-10 flex w-full grid-cols-3 flex-col gap-2 px-5 lg:my-20 lg:my-[20vh] lg:grid lg:gap-1 lg:px-[16vw]">
       <Link
         href={`/studio/${slugify(studio.name)}`}
-        className="relative bg-white rounded-xl p-5"
+        className="relative rounded-xl bg-white p-10 lg:p-5"
       >
-        <div className="font-whisper text-base font-normal text-black">
+        <div className="font-normal font-whisper text-base text-black">
           To the studio
         </div>
-        <div className="font-black text-3xl font-ortank">
+        <div className="font-black font-ortank text-3xl">
           {studio.name}
         </div>
       </Link>

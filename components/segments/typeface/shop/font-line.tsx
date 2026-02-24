@@ -1,7 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import IconCart from "@/components/icons/icon-cart";
+import { motion, useAnimation } from "motion/react";
+import {
+  useCallback,
+  useEffect,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import {
   InputCheckbox,
   InputDropdown,
@@ -9,6 +14,7 @@ import {
 import { useCartStore } from "@/stores/cart";
 import { getCartItemKey } from "@/types/cart";
 import type { Font } from "@/types/typefaces";
+import ButtonAddToCart from "./button-add-to-cart";
 
 const USER_OPTIONS = [
   { value: "1-2", label: "1-2 users" },
@@ -39,6 +45,45 @@ export default function FontLine({
   text: string;
 }) {
   const [isHovered, setIsHovered] = useState(false);
+  const controls = useAnimation();
+
+  const isMobile = useSyncExternalStore(
+    useCallback((cb: () => void) => {
+      const mq = window.matchMedia("(max-width: 1023px)");
+      mq.addEventListener("change", cb);
+      return () => mq.removeEventListener("change", cb);
+    }, []),
+    useCallback(
+      () =>
+        typeof window !== "undefined"
+          ? window.matchMedia("(max-width: 1023px)").matches
+          : false,
+      []
+    ),
+    useCallback(() => false, [])
+  );
+
+  useEffect(() => {
+    if (isMobile) {
+      controls.start({
+        x: [null, -1000],
+        transition: {
+          duration: 10,
+          ease: "linear",
+          repeat: Number.POSITIVE_INFINITY,
+        },
+      });
+    } else {
+      controls.start({
+        x: 0,
+        transition: {
+          duration: 0.8,
+          ease: [0.4, 0, 0.2, 1],
+        },
+      });
+    }
+  }, [isMobile, controls]);
+
   const [users, setUsers] =
     useState<(typeof USER_OPTIONS)[number]["value"]>("1-2");
   const [licenses, setLicenses] = useState<Set<string>>(
@@ -92,29 +137,33 @@ export default function FontLine({
   return (
     // biome-ignore lint/a11y/noStaticElementInteractions: hover detection for visual feedback only
     <div
-      className="relative flex w-full flex-col gap-2"
+      className="relative flex w-full flex-col gap-2 py-6 lg:py-0"
       onMouseOver={() => setIsHovered(true)}
       onFocus={() => setIsHovered(true)}
       onMouseOut={() => setIsHovered(false)}
       onBlur={() => setIsHovered(false)}
     >
-      <div className="relative flex w-full flex-row items-center justify-between px-10 font-normal font-whisper text-base text-black">
+      <div className="relative flex w-full flex-row items-center justify-between px-5 font-normal font-whisper text-black text-xl lg:px-10 lg:text-base">
         <div className="capitalize">{font.name}</div>
         <div>
           {font.price > 0 ? `${font.price}₩` : "Free"}
         </div>
       </div>
-      <div className="relative w-full px-10">
-        <div
-          className="relative z-10 w-full whitespace-nowrap font-black font-ortank text-9xl"
-          style={{
-            fontVariationSettings: `'wght' ${font.weight}`,
-          }}
-        >
-          {text}
+      <div className="relative w-full px-0 lg:px-10">
+        <div className="relative w-full overflow-hidden">
+          <motion.div
+            className="relative z-10 w-full whitespace-nowrap font-black font-ortank text-9xl"
+            style={{
+              fontVariationSettings: `'wght' ${font.weight}`,
+            }}
+            animate={controls}
+            initial={{ x: 0 }}
+          >
+            {text}
+          </motion.div>
         </div>
 
-        <div className="relative z-10 mt-6 flex flex-row flex-wrap items-center gap-x-8 gap-y-2 font-whisper text-sm">
+        <div className="relative z-10 mt-6 flex flex-col flex-wrap items-start gap-x-8 gap-y-2 px-4 font-whisper text-base lg:flex-row lg:items-center lg:px-0 lg:text-sm">
           <div className="flex flex-row items-center gap-2">
             <span className="font-medium text-black">
               Users
@@ -153,45 +202,21 @@ export default function FontLine({
         </div>
 
         <div
-          className="absolute top-1/2 right-10 z-30 -translate-y-1/2"
+          className="absolute top-1/2 right-10 z-[100] -translate-y-1/2"
           title={
             isAddDisabled && !isInCart
               ? "Please choose a license type"
               : undefined
           }
         >
-          <button
-            type="button"
-            className="flex h-20 w-20 cursor-pointer items-center justify-center rounded-full border transition-all duration-300 ease-in-out hover:border-white hover:bg-white disabled:cursor-not-allowed disabled:opacity-60"
-            style={{
-              opacity: isHovered || isAddDisabled ? 1 : 0.4,
-              transform:
-                isHovered && !isAddDisabled
-                  ? "scale(1.1)"
-                  : "scale(1)",
-              borderColor: isInCart
-                ? "#16a34a"
-                : isHovered && !isAddDisabled
-                  ? "black"
-                  : "transparent",
-              backgroundColor: isInCart
-                ? "#f0fdf4"
-                : "transparent",
-            }}
-            onClick={handleAddToCart}
-            aria-label={
-              isInCart
-                ? "Already in cart"
-                : !hasLicense
-                  ? "Please choose a license type"
-                  : `Add ${font.name} to cart`
-            }
-            disabled={isAddDisabled}
-          >
-            <IconCart
-              className={`h-7 w-7 ${isInCart ? "text-green-600" : "text-black"}`}
-            />
-          </button>
+          <ButtonAddToCart
+            isHovered={isHovered}
+            isAddDisabled={isAddDisabled}
+            isInCart={isInCart}
+            hasLicense={hasLicense}
+            font={font}
+            handleAddToCart={handleAddToCart}
+          />
         </div>
       </div>
     </div>

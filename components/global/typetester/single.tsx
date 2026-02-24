@@ -29,10 +29,10 @@ export default function SingleTypetester({
 
   return (
     <div
-      className="relative my-[20vh] flex w-full flex-col gap-4 px-16"
+      className="relative my-8 flex w-full flex-col gap-4 px-4 lg:my-40 lg:px-16"
       id="tester"
     >
-      <div className="relative mb-10 px-10 font-bold font-ortank text-xl">
+      <div className="relative mb-2 font-bold font-ortank text-xl">
         Test our fonts!
       </div>
       <div className="relative flex flex-col gap-1">

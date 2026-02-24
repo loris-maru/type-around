@@ -31,12 +31,14 @@ export default function SimpleButton({
   width,
   widthMobile,
   widthSuperDesktop,
+  className,
 }: {
   label: string;
   href: string;
   width: string;
   widthMobile?: string;
   widthSuperDesktop?: string;
+  className?: string;
 }) {
   const hasResponsiveWidth =
     widthMobile !== undefined ||
@@ -78,9 +80,12 @@ export default function SimpleButton({
       onClick={handleClick}
       className={cn(
         "button-shadow relative flex shrink-0 items-center justify-center rounded-lg border border-black bg-light-gray py-4 text-black transition-all duration-300 ease-in-out hover:-translate-x-1 hover:-translate-y-1 hover:bg-white",
-        widthClass
+        widthClass,
+        className
       )}
-      style={!widthClass ? { width } : undefined}
+      style={
+        !widthClass && !className ? { width } : undefined
+      }
     >
       {label}
     </Link>

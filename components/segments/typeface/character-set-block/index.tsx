@@ -1,6 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import useLoadFont from "@/hooks/use-load-font";
 import type { CharacterSetBlockData } from "@/types/layout-typeface";
 import {
@@ -13,7 +18,34 @@ import FontSelector from "./font-selector";
 import CharacterSetBlockNavigation from "./navigation";
 import ViewerNavigation from "./viewer-navigation";
 
-const CHARS_PER_PAGE = 12 * 12; // 144 (12 cols × 12 rows)
+// mobile: 6×3, tablet: 8×6, desktop: 12×12, super-desktop: 14×12
+const CHARS_BY_BREAKPOINT = {
+  mobile: 6 * 3,
+  tablet: 8 * 6,
+  desktop: 12 * 12,
+  superDesktop: 14 * 12,
+} as const;
+
+function useCharsPerPage() {
+  const width = useSyncExternalStore(
+    useCallback((cb: () => void) => {
+      window.addEventListener("resize", cb);
+      return () => window.removeEventListener("resize", cb);
+    }, []),
+    useCallback(
+      () =>
+        typeof window !== "undefined"
+          ? window.innerWidth
+          : 1024,
+      []
+    ),
+    useCallback(() => 1024, [])
+  );
+  if (width < 768) return CHARS_BY_BREAKPOINT.mobile;
+  if (width < 1024) return CHARS_BY_BREAKPOINT.tablet;
+  if (width < 1280) return CHARS_BY_BREAKPOINT.desktop;
+  return CHARS_BY_BREAKPOINT.superDesktop;
+}
 
 export type CharacterSetFont = {
   id?: string;
@@ -40,6 +72,8 @@ export default function TypefaceCharacterSetBlock({
   >(null);
   const [fontFamily, setFontFamily] = useState<string>("");
 
+  const charsPerPage = useCharsPerPage();
+
   const isLoading =
     fonts.length > 0 && characterSet.length === 0;
   const effectiveFontId =
@@ -56,9 +90,9 @@ export default function TypefaceCharacterSetBlock({
     : "";
   const currentChar = characterSet[selectedIndex] ?? "";
   const totalPages =
-    Math.ceil(characterSet.length / CHARS_PER_PAGE) || 1;
+    Math.ceil(characterSet.length / charsPerPage) || 1;
   const currentPage =
-    Math.floor(selectedIndex / CHARS_PER_PAGE) + 1;
+    Math.floor(selectedIndex / charsPerPage) + 1;
 
   // Parse font to extract character set
   useEffect(() => {
@@ -123,9 +157,9 @@ export default function TypefaceCharacterSetBlock({
   const goToPage = useCallback(
     (page: number) => {
       const p = Math.max(1, Math.min(totalPages, page));
-      setSelectedIndex((p - 1) * CHARS_PER_PAGE);
+      setSelectedIndex((p - 1) * charsPerPage);
     },
-    [totalPages]
+    [totalPages, charsPerPage]
   );
 
   const sectionStyle: React.CSSProperties = {};
@@ -142,7 +176,7 @@ export default function TypefaceCharacterSetBlock({
 
   return (
     <section
-      className="relative flex w-full flex-col px-24 py-32"
+      className="relative flex w-full flex-col px-5 py-12 lg:px-24 lg:py-32"
       id="character-set"
       style={sectionStyle}
     >
@@ -150,7 +184,7 @@ export default function TypefaceCharacterSetBlock({
         Character set
       </h3>
 
-      <div className="grid h-screen w-full grid-cols-2 gap-12">
+      <div className="flex h-auto w-full grid-cols-2 flex-col gap-4 lg:grid lg:h-screen lg:gap-12">
         {/* Left column: single character viewer + chevrons + font dropdown */}
         <div className="flex flex-col gap-6">
           <ViewerNavigation
@@ -171,7 +205,7 @@ export default function TypefaceCharacterSetBlock({
                   Loading…
                 </span>
               ) : (
-                <span className="text-[32vw] leading-none">
+                <span className="text-[50vw] leading-none lg:text-[32vw]">
                   {currentChar || " "}
                 </span>
               )}
@@ -193,7 +227,7 @@ export default function TypefaceCharacterSetBlock({
             effectiveFontFamily={effectiveFontFamily}
             selectedIndex={selectedIndex}
             setSelectedIndex={setSelectedIndex}
-            CHARS_PER_PAGE={CHARS_PER_PAGE}
+            CHARS_PER_PAGE={charsPerPage}
           />
 
           <CharacterSetBlockNavigation

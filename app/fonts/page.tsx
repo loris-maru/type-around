@@ -1,9 +1,30 @@
+import type { Metadata } from "next";
 import Footer from "@/components/global/footer";
 import { TypefaceCard } from "@/components/molecules/cards";
+import {
+  DEFAULT_OPEN_GRAPH,
+  DEFAULT_TWITTER,
+  SITE_NAME,
+} from "@/constant/SEO_METADATA";
 import { getAllPublishedTypefaces } from "@/lib/firebase/studios";
 import type { Typeface } from "@/types/typefaces";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "전체 글꼴",
+  description: `독립적인 팩토리의 한국 글꼴을 발견하세요. ${SITE_NAME}에서 독특한 한글 폰트를 둘러보고 구매하세요.`,
+  openGraph: {
+    ...DEFAULT_OPEN_GRAPH,
+    title: `전체 글꼴 | ${SITE_NAME}`,
+    description:
+      "독립적인 팩토리의 한국 글꼴을 발견하세요.",
+  },
+  twitter: {
+    ...DEFAULT_TWITTER,
+    title: `전체 글꼴 | ${SITE_NAME}`,
+  },
+};
 
 export default async function FontsPage() {
   const typefaces = await getAllPublishedTypefaces();

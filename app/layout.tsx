@@ -1,12 +1,54 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import {
+  DEFAULT_OPEN_GRAPH,
+  DEFAULT_TWITTER,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_URL,
+} from "@/constant/SEO_METADATA";
 import LayoutRoot from "@/components/layout/layout-root";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title:
-    "글자곁 - The Future of Independent Korean Type Foundries",
-  description:
-    "글자궤도는 독립적인 한국 타입 팩토리의 미래를 이끌어갑니다. 우리는 한국 타입 팩토리의 미래를 이끌어갑니다. 우리는 한국 타입 팩토리의 미래를 이끌어갑니다. 우리는 한국 타입 팩토리의 미래를 이끌어갑니다. 우리는 한국 타입 팩토리의 미래를 이끌어갑니다. 우리는 한국 타입 팩토리의 미래를 이끌어갑니다. 우리는 한국 타입 팩토리의 미래를 이끌어갑니다. 우리는 한국 타입 팩토리의 미래를 이끌어갑니다. 우리는 한국 타입 팩토리의 미래를 이끌어갑니다. 우리는 한국 타입 팩토리의 미래를 이끌어갑니다. 우리는 한국 타입 팩토리의 미래를 이끌어갑니다. 우리는 한국 타입 팩토리의 미래를 이끌어갑니다. 우리는 한국 타입 팩토리의 미래를 이끌어갑니다. 우리는 한국 타입 팩토리의 미래를 이끌어갑니다. 우리는 한국 타입 팩토리의 미래를 이끌어갑니다. 우리는 한국 타입 팩토리의 미랄 타입 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타입 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한국 타임 팩토리의 미래를 이끌어갑니다. 우리는 한",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: `${SITE_NAME} – 독립적인 한국 타입 팩토리의 미래`,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  keywords: [
+    "한국 글꼴",
+    "한글 폰트",
+    "독립 타입 팩토리",
+    "한국 타이포그래피",
+    "글자곁",
+    "글자궤도",
+    "타이포그래피 디자인",
+  ],
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  openGraph: {
+    ...DEFAULT_OPEN_GRAPH,
+    url: SITE_URL,
+    title: `${SITE_NAME} – 독립적인 한국 타입 팩토리의 미래`,
+    description: SITE_DESCRIPTION,
+  },
+  twitter: DEFAULT_TWITTER,
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+  alternates: {
+    canonical: SITE_URL,
+  },
+  verification: {
+    // Add when available: google: "verification_token",
+    // yandex: "verification_token",
+  },
 };
 
 export default function RootLayout({

@@ -8,7 +8,7 @@ import SocialMediaNewsletter from "./footer/social-media-newsletter";
 
 export default function Footer() {
   return (
-    <footer className="relative mt-44 flex h-[60vh] w-full flex-col items-center justify-between gap-4 p-5 lg:h-[40vh] lg:flex-row lg:p-10">
+    <footer className="relative mt-44 flex min-h-[60vh] w-full flex-col items-center justify-between gap-4 p-5 lg:min-h-[40vh] lg:flex-row lg:p-10">
       <div className="relative flex h-full w-full flex-col gap-2 lg:w-1/2 lg:flex-row">
         <div className="relative flex h-full w-full grid-rows-2 flex-col gap-1 lg:grid lg:w-auto">
           {PRIMARY_LINKS.map((link) => (

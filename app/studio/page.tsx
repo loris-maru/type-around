@@ -1,9 +1,29 @@
 import Footer from "@/components/global/footer";
 import StudiosGrid from "@/components/segments/studios/studios-grid";
+import {
+  DEFAULT_OPEN_GRAPH,
+  DEFAULT_TWITTER,
+  SITE_NAME,
+} from "@/constant/SEO_METADATA";
 import { getAllStudiosForDisplay } from "@/lib/firebase/studios";
 import type { Studio } from "@/types/typefaces";
+import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "스튜디오",
+  description: `${SITE_NAME}에서 독립적인 한국 타입 팩토리를 탐색하세요. 독특한 한글 글꼴을 만드는 스튜디오를 발견하세요.`,
+  openGraph: {
+    ...DEFAULT_OPEN_GRAPH,
+    title: `스튜디오 | ${SITE_NAME}`,
+    description: "독립적인 한국 타입 팩토리를 탐색하세요.",
+  },
+  twitter: {
+    ...DEFAULT_TWITTER,
+    title: `스튜디오 | ${SITE_NAME}`,
+  },
+};
 
 export default async function AllStudiosPage() {
   const rawStudios = await getAllStudiosForDisplay();

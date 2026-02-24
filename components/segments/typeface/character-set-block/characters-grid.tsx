@@ -16,7 +16,7 @@ export default function CharactersGrid({
   CHARS_PER_PAGE: number;
 }) {
   return (
-    <div className="grid aspect-square w-full grid-cols-12 grid-rows-12 gap-1">
+    <div className="grid aspect-2/1 w-full grid-cols-6 grid-rows-3 gap-1 md:aspect-4/3 md:grid-cols-8 md:grid-rows-6 lg:aspect-square lg:grid-cols-12 lg:grid-rows-12 xl:aspect-6/7 xl:grid-cols-12 xl:grid-rows-14">
       {characterSet
         .slice(
           (currentPage - 1) * CHARS_PER_PAGE,

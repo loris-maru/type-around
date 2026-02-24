@@ -3,13 +3,80 @@ import TypefaceHeader from "@/components/segments/typeface/header";
 import MoreContent from "@/components/segments/typeface/more-content";
 import TypefacePageBlocks from "@/components/segments/typeface-page-blocks";
 import { DEFAULT_TYPEFACE_PAGE_LAYOUT } from "@/constant/DEFAULT_TYPEFACE_PAGE_LAYOUT";
+import {
+  DEFAULT_OPEN_GRAPH,
+  DEFAULT_TWITTER,
+  OG_IMAGE_PATH,
+  SITE_NAME,
+} from "@/constant/SEO_METADATA";
 import { getStudioBySlug } from "@/lib/firebase/studios";
 import type { TypefaceLayoutItem } from "@/types/layout-typeface";
 import type { Studio, Typeface } from "@/types/typefaces";
 import type { TypetesterFont } from "@/types/typetester";
 import { slugify } from "@/utils/slugify";
+import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ name: string; typefaceName: string }>;
+}): Promise<Metadata> {
+  const { name, typefaceName } = await params;
+  const firebaseStudio = await getStudioBySlug(name);
+
+  if (!firebaseStudio) {
+    return { title: "스튜디오를 찾을 수 없습니다" };
+  }
+
+  const rawTypeface = firebaseStudio.typefaces.find(
+    (tf) => slugify(tf.name) === typefaceName
+  );
+
+  if (!rawTypeface) {
+    return { title: "글꼴을 찾을 수 없습니다" };
+  }
+
+  const typefaceNameDisplay =
+    rawTypeface.hangeulName || rawTypeface.name;
+  const studioName =
+    firebaseStudio.hangeulName || firebaseStudio.name;
+  const stylesCount = rawTypeface.fonts?.length ?? 0;
+  const description =
+    rawTypeface.description ||
+    `${studioName}의 ${typefaceNameDisplay}. ${stylesCount}가지 스타일. 이 한국 글꼴을 발견하고 구매하세요.`;
+
+  const ogImage =
+    rawTypeface.heroLetter ||
+    rawTypeface.headerImage ||
+    firebaseStudio.thumbnail ||
+    firebaseStudio.avatar ||
+    OG_IMAGE_PATH;
+
+  return {
+    title: `${studioName}의 ${typefaceNameDisplay}`,
+    description,
+    openGraph: {
+      ...DEFAULT_OPEN_GRAPH,
+      title: `${studioName}의 ${typefaceNameDisplay} | ${SITE_NAME}`,
+      description,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: typefaceNameDisplay,
+        },
+      ],
+    },
+    twitter: {
+      ...DEFAULT_TWITTER,
+      title: `${studioName}의 ${typefaceNameDisplay} | ${SITE_NAME}`,
+      description,
+    },
+  };
+}
 
 export default async function TypefacePage({
   params,

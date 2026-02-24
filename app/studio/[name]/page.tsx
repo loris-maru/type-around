@@ -1,12 +1,63 @@
+import type { Metadata } from "next";
 import Footer from "@/components/global/footer";
 import StudioHeader from "@/components/segments/studio/header";
 import StudioPageBlocks from "@/components/segments/studio-page-blocks";
 import { DEFAULT_PAGE_LAYOUT } from "@/constant/DEFAULT_PAGE_LAYOUT";
+import {
+  DEFAULT_OPEN_GRAPH,
+  DEFAULT_TWITTER,
+  OG_IMAGE_PATH,
+  SITE_NAME,
+} from "@/constant/SEO_METADATA";
 import { StudioFontsProvider } from "@/contexts/studio-fonts-context";
 import { getStudioBySlug } from "@/lib/firebase/studios";
 import type { LayoutItem } from "@/types/layout";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ name: string }>;
+}): Promise<Metadata> {
+  const { name } = await params;
+  const studio = await getStudioBySlug(name);
+
+  if (!studio) {
+    return { title: "스튜디오를 찾을 수 없습니다" };
+  }
+
+  const studioName = studio.hangeulName || studio.name;
+  const description =
+    studio.description ||
+    `${studioName} – 독립적인 한국 타입 팩토리. 글꼴을 발견하고 독립 디자이너를 지원하세요.`;
+
+  return {
+    title: studioName,
+    description,
+    openGraph: {
+      ...DEFAULT_OPEN_GRAPH,
+      title: `${studioName} | ${SITE_NAME}`,
+      description,
+      images: [
+        {
+          url:
+            studio.thumbnail ||
+            studio.avatar ||
+            OG_IMAGE_PATH,
+          width: 1200,
+          height: 630,
+          alt: studioName,
+        },
+      ],
+    },
+    twitter: {
+      ...DEFAULT_TWITTER,
+      title: `${studioName} | ${SITE_NAME}`,
+      description,
+    },
+  };
+}
 
 export default async function StudioPage({
   params,

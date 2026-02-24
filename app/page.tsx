@@ -1,8 +1,29 @@
+import type { Metadata } from "next";
 import HomeClient from "@/components/segments/home/home-client";
+import {
+  DEFAULT_OPEN_GRAPH,
+  DEFAULT_TWITTER,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_URL,
+} from "@/constant/SEO_METADATA";
 import { getAllStudiosForDisplay } from "@/lib/firebase/studios";
 import type { Studio } from "@/types/typefaces";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: `${SITE_NAME} – 독립적인 한국 타입 팩토리의 미래`,
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    ...DEFAULT_OPEN_GRAPH,
+    url: SITE_URL,
+    title: `${SITE_NAME} – 독립적인 한국 타입 팩토리의 미래`,
+    description: SITE_DESCRIPTION,
+  },
+  twitter: DEFAULT_TWITTER,
+  alternates: { canonical: SITE_URL },
+};
 
 export default async function Home() {
   const rawStudios = await getAllStudiosForDisplay();

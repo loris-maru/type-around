@@ -36,7 +36,7 @@ export default function DownloadButtons({
   if (!hasTrialFonts && !specimenUrl) return null;
 
   return (
-    <div className="relative flex w-full flex-row px-24 py-32">
+    <div className="relative flex w-full flex-col px-5 py-12 lg:flex-row lg:px-24 lg:py-32">
       <div className="relative flex w-full flex-row">
         {hasTrialFonts && (
           <button
@@ -44,12 +44,12 @@ export default function DownloadButtons({
             aria-label="Download trial fonts"
             name="download-trial-font"
             className={cn(
-              "download-button-hover flex cursor-pointer flex-row items-center justify-between gap-x-2 rounded-2xl border border-neutral-300 px-16 py-12 font-medium font-whisper text-black text-sm transition-all duration-300 ease-in-out hover:-translate-x-1 hover:-translate-y-1 hover:bg-white",
-              specimenUrl ? "w-1/2" : "w-full"
+              "download-button-hover flex cursor-pointer flex-row items-center justify-between gap-2 rounded-2xl border border-neutral-300 px-8 py-8 font-medium font-whisper text-black text-sm transition-all duration-300 ease-in-out hover:-translate-x-1 hover:-translate-y-1 hover:bg-white lg:px-16 lg:py-12",
+              specimenUrl ? "w-full lg:w-1/2" : "w-full"
             )}
             onClick={handleDownloadTrialFonts}
           >
-            <div className="font-bold font-ortank text-2xl">
+            <div className="text-left font-bold font-ortank text-xl lg:text-2xl">
               Download trial fonts
             </div>
             <IconDownload className="h-6 w-6" />

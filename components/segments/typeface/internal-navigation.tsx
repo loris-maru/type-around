@@ -48,10 +48,11 @@ export default function TypefaceInternalNavigation() {
   ];
 
   return (
-    <div className="fixed bottom-5 left-0 z-100 flex w-full flex-row gap-x-2 lg:left-1/2 lg:w-auto lg:-translate-x-1/2">
+    <div className="fixed bottom-5 left-0 z-100 flex w-full flex-row gap-x-2 px-4 lg:left-1/2 lg:w-auto lg:-translate-x-1/2 lg:px-0">
       {buttons.map((button) => (
         <motion.div
           key={button.href}
+          className="min-w-0 flex-1 lg:flex-none"
           initial={{ y: 100, opacity: 0 }}
           animate={{
             y: isVisible ? 0 : 100,
@@ -69,6 +70,7 @@ export default function TypefaceInternalNavigation() {
             href={button.href}
             label={button.label}
             width={button.width}
+            className="w-full min-w-0 shrink lg:w-[140px]"
           />
         </motion.div>
       ))}
