@@ -12,6 +12,7 @@ export default function InputDropdown({
   className,
   disabled = false,
   transparent = false,
+  backgroundColor,
 }: InputDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownStyle, setDropdownStyle] = useState({
@@ -115,12 +116,14 @@ export default function InputDropdown({
         createPortal(
           <div
             ref={dropdownRef}
-            className="fixed z-9999 rounded-lg border border-neutral-200 bg-white shadow-lg"
+            className="fixed z-9999 rounded-lg border border-neutral-200 shadow-lg"
             style={{
               top: dropdownStyle.top,
               left: dropdownStyle.left,
               minWidth: dropdownStyle.minWidth,
               transform: "translateX(-100%)",
+              backgroundColor:
+                backgroundColor ?? "transparent",
             }}
           >
             {options.map((option) => (

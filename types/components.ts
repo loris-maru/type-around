@@ -149,6 +149,7 @@ export type MultiSelectDropdownProps = {
   placeholder?: string;
   label?: string;
   showTags?: boolean;
+  backgroundColor?: string;
 };
 
 // ===========================================
@@ -220,6 +221,16 @@ export type BasicInformationSectionProps = {
     serif?: string;
   }) => void;
   onDesignerIdsChange: (ids: string[]) => void;
+  // Font line (at bottom of Information section)
+  fonts: Font[];
+  displayFontId: string;
+  fontLineText: string;
+  onDisplayFontChange: (fontId: string) => void;
+  // Typeface card (displayed font + content for typeface card)
+  typefaceCardDisplayFontId: string;
+  typefaceCardContent: string;
+  onTypefaceCardDisplayFontChange: (fontId: string) => void;
+  backgroundColor?: string;
 };
 
 // ===========================================
@@ -294,15 +305,9 @@ export type PackagesListSectionProps = {
 
 export type FontsListSectionProps = {
   fonts: Font[];
-  displayFontId: string;
-  fontLineText: string;
   onRemoveFont: (fontId: string) => void;
   onEditFont: (font: Font) => void;
   onAddFontClick: () => void;
-  onDisplayFontChange: (fontId: string) => void;
-  onInputChange: (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => void;
 };
 
 export type FilesAssetsSectionProps = {
@@ -836,6 +841,7 @@ export type DownloadButtonsProps = {
 export type InputDropdownProps = CustomSelectProps & {
   disabled?: boolean;
   transparent?: boolean;
+  backgroundColor?: string;
 };
 
 export type InputCheckboxProps = {

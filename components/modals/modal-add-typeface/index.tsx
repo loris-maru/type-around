@@ -87,6 +87,8 @@ export default function AddTypefaceModal({
         designerIds: [],
         fontLineText: "",
         displayFontId: "",
+        typefaceCardDisplayFontId: "",
+        typefaceCardContent: "",
         supportedLanguages: [],
         headerImage: "",
         heroLetter: "",

@@ -7,11 +7,13 @@ export default function FontSelector({
   displayFontId,
   onDisplayFontChange,
   selectedFont,
+  backgroundColor,
 }: {
   fonts: Font[];
   displayFontId: string;
   onDisplayFontChange: (fontId: string) => void;
   selectedFont: Font | null;
+  backgroundColor?: string;
 }) {
   const [isDropdownOpen, setIsDropdownOpen] =
     useState(false);
@@ -48,7 +50,13 @@ export default function FontSelector({
         </button>
 
         {isDropdownOpen && (
-          <div className="absolute right-0 left-0 z-50 mt-1 overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-lg">
+          <div
+            className="absolute right-0 left-0 z-50 mt-1 overflow-hidden rounded-lg border border-neutral-200 shadow-lg"
+            style={{
+              backgroundColor:
+                backgroundColor ?? "transparent",
+            }}
+          >
             {fonts
               .filter((f) => f.file)
               .map((font) => (

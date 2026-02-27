@@ -111,6 +111,18 @@ export default function TypefaceDetail({
         designerIds: typeface.designerIds || [],
         fontLineText: typeface.fontLineText || "",
         displayFontId: typeface.displayFontId || "",
+        typefaceCardDisplayFontId:
+          (
+            typeface as StudioTypeface & {
+              typefaceCardDisplayFontId?: string;
+            }
+          ).typefaceCardDisplayFontId || "",
+        typefaceCardContent:
+          (
+            typeface as StudioTypeface & {
+              typefaceCardContent?: string;
+            }
+          ).typefaceCardContent || "",
         fonts: typeface.fonts || [],
         headerImage: typeface.headerImage || "",
         heroLetter: typeface.heroLetter || "",
@@ -356,6 +368,17 @@ export default function TypefaceDetail({
       setFormData((prev) => ({
         ...prev,
         displayFontId: fontId,
+      }));
+      setHasChanges(true);
+    },
+    []
+  );
+
+  const handleTypefaceCardDisplayFontChange = useCallback(
+    (fontId: string) => {
+      setFormData((prev) => ({
+        ...prev,
+        typefaceCardDisplayFontId: fontId,
       }));
       setHasChanges(true);
     },
@@ -614,6 +637,19 @@ export default function TypefaceDetail({
             handleTypefaceVisionChange
           }
           onDesignerIdsChange={handleDesignerIdsChange}
+          fonts={formData.fonts || []}
+          displayFontId={formData.displayFontId || ""}
+          fontLineText={formData.fontLineText || ""}
+          onDisplayFontChange={handleDisplayFontChange}
+          typefaceCardDisplayFontId={
+            formData.typefaceCardDisplayFontId || ""
+          }
+          typefaceCardContent={
+            formData.typefaceCardContent || ""
+          }
+          onTypefaceCardDisplayFontChange={
+            handleTypefaceCardDisplayFontChange
+          }
         />
       </div>
 
@@ -682,13 +718,9 @@ export default function TypefaceDetail({
       >
         <FontsListSection
           fonts={formData.fonts || []}
-          displayFontId={formData.displayFontId || ""}
-          fontLineText={formData.fontLineText || ""}
           onRemoveFont={handleRemoveFont}
           onEditFont={handleEditFont}
           onAddFontClick={() => setIsFontModalOpen(true)}
-          onDisplayFontChange={handleDisplayFontChange}
-          onInputChange={handleInputChange}
         />
       </div>
 

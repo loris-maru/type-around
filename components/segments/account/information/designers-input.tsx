@@ -12,7 +12,11 @@ import type { Designer } from "@/types/studio";
 // Mock data - replace with actual data from your backend
 const EXISTING_DESIGNERS: Designer[] = [];
 
-export default function DesignersInput() {
+export default function DesignersInput({
+  backgroundColor,
+}: {
+  backgroundColor?: string;
+} = {}) {
   const [designers, setDesigners] = useState<Designer[]>(
     EXISTING_DESIGNERS
   );
@@ -138,7 +142,13 @@ export default function DesignersInput() {
           </button>
 
           {isDropdownOpen && (
-            <div className="absolute top-full right-0 left-0 z-10 mt-1 max-h-60 overflow-y-auto border border-neutral-300 bg-white shadow-lg">
+            <div
+              className="absolute top-full right-0 left-0 z-10 mt-1 max-h-60 overflow-y-auto border border-neutral-300 shadow-lg"
+              style={{
+                backgroundColor:
+                  backgroundColor ?? "transparent",
+              }}
+            >
               {availableDesigners.map((designer) => (
                 <button
                   key={designer.id}

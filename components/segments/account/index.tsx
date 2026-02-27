@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import type { ComponentType } from "react";
 import { Suspense } from "react";
@@ -10,11 +11,22 @@ import AccountFontsInUse from "./fonts-in-use";
 import AccountInformation from "./information";
 import AccountReviewerCalendar from "./reviewer/calendar";
 import AccountReviewerRequest from "./reviewer/request";
-import AccountSettings from "./settings";
 import AccountStripe from "./stripe";
 import AccountStudioPage from "./studio-page";
 import AccountTypefaces from "./typefaces";
 import TypefaceDetail from "./typefaces/typeface-detail";
+
+const AccountSettings = dynamic(
+  () => import("./settings"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="relative flex w-full items-center justify-center py-12">
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-neutral-300 border-t-black" />
+      </div>
+    ),
+  }
+);
 
 const NAV_COMPONENTS: Record<string, ComponentType> = {
   about: AccountInformation,

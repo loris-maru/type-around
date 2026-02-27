@@ -15,6 +15,7 @@ export default function InputMultiSelect({
   placeholder = "Select options...",
   label,
   showTags = true,
+  backgroundColor,
 }: MultiSelectDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -96,7 +97,13 @@ export default function InputMultiSelect({
       </button>
 
       {isOpen && (
-        <div className="absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-lg border border-neutral-300 bg-white shadow-lg">
+        <div
+          className="absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-lg border border-neutral-300 shadow-lg"
+          style={{
+            backgroundColor:
+              backgroundColor ?? "transparent",
+          }}
+        >
           {options.map((option) => {
             const isSelected = value.includes(option.value);
             return (

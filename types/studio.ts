@@ -129,6 +129,9 @@ export const StudioTypefaceSchema = z.object({
   fontLineText: z.string().default(""),
   // Font used for display in studio page typeface list
   displayFontId: z.string().default(""),
+  // Typeface card (e.g. on studio page) - displayed font and content
+  typefaceCardDisplayFontId: z.string().default(""),
+  typefaceCardContent: z.string().default(""),
   // New fields
   supportedLanguages: z.array(z.string()).default([]),
   headerImage: z.string().default(""),

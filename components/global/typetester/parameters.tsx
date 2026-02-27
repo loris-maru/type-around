@@ -36,10 +36,12 @@ export function FontDropdown({
   fonts,
   selectedId,
   onChange,
+  backgroundColor,
 }: {
   fonts: TypetesterFont[];
   selectedId: string;
   onChange: (id: string) => void;
+  backgroundColor?: string;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -70,7 +72,13 @@ export function FontDropdown({
       </button>
 
       {open && (
-        <div className="absolute top-full left-0 z-20 mt-1 max-h-48 min-w-[180px] overflow-y-auto rounded-lg border border-neutral-200 bg-white shadow-lg">
+        <div
+          className="absolute top-full left-0 z-20 mt-1 max-h-48 min-w-[180px] overflow-y-auto rounded-lg border border-neutral-200 shadow-lg"
+          style={{
+            backgroundColor:
+              backgroundColor ?? "transparent",
+          }}
+        >
           {fonts.map((font) => (
             <button
               key={font.id}
@@ -101,10 +109,12 @@ export function GroupedFontDropdown({
   typefaces,
   selectedId,
   onChange,
+  backgroundColor,
 }: {
   typefaces: TypetesterTypeface[];
   selectedId: string;
   onChange: (id: string) => void;
+  backgroundColor?: string;
 }) {
   const [open, setOpen] = useState(false);
   const [expandedTypeface, setExpandedTypeface] = useState<
@@ -145,7 +155,13 @@ export function GroupedFontDropdown({
       </button>
 
       {open && (
-        <div className="absolute top-full left-0 z-20 mt-1 max-h-64 min-w-[220px] overflow-y-auto rounded-lg border border-neutral-200 bg-white shadow-lg">
+        <div
+          className="absolute top-full left-0 z-20 mt-1 max-h-64 min-w-[220px] overflow-y-auto rounded-lg border border-neutral-200 shadow-lg"
+          style={{
+            backgroundColor:
+              backgroundColor ?? "transparent",
+          }}
+        >
           {typefaces.map((tf) => (
             <div key={tf.id}>
               <button

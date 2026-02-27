@@ -35,7 +35,7 @@ export default function SingleTypetesterBlock({
   }, [fonts]);
 
   const [params, setParams] = useState<TypetesterParams>({
-    fontSize: 120,
+    fontSize: 72,
     lineHeight: 1.2,
     letterSpacing: 0,
     textAlign: "left",

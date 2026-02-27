@@ -43,6 +43,7 @@ function SelectDropdown({
         ]}
         onChange={onChange}
         className="w-full"
+        transparent
       />
     </div>
   );
