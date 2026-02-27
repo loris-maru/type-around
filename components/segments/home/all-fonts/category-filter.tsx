@@ -1,15 +1,15 @@
 "use client";
 
-import STUDIOS from "@/mock-data/studios";
 import type { CategoryFilterProps } from "@/types/Global";
 
 export default function CategoryFilter({
   selectedCategories,
   setSelectedCategories,
+  studios = [],
 }: CategoryFilterProps) {
-  const allCategories = STUDIOS.flatMap((studio) =>
+  const allCategories = studios.flatMap((studio) =>
     studio.typefaces.flatMap(
-      (typeface) => typeface.category
+      (typeface) => typeface.category ?? []
     )
   );
   const fontCategories: string[] = Array.from(
@@ -44,11 +44,13 @@ export default function CategoryFilter({
             </label>
             <span className="ml-1 font-bold">
               {
-                STUDIOS.flatMap((studio) =>
-                  studio.typefaces.flatMap(
-                    (typeface) => typeface.category
+                studios
+                  .flatMap((studio) =>
+                    studio.typefaces.flatMap(
+                      (typeface) => typeface.category ?? []
+                    )
                   )
-                ).filter((c) => c === category).length
+                  .filter((c) => c === category).length
               }
               :
             </span>

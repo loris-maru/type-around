@@ -4,6 +4,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
+  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -12,17 +13,26 @@ import {
 import { createPortal } from "react-dom";
 import { TypefaceCard } from "@/components/molecules/cards";
 import CategoryFilter from "@/components/segments/home/all-fonts/category-filter";
-import STUDIOS from "@/mock-data/studios";
-import type { Typeface } from "@/types/typefaces";
+import type { HorizontalSectionProps } from "@/types/horizontal-section";
+import type { Studio, Typeface } from "@/types/typefaces";
 import { cn } from "@/utils/class-names";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function HorizontalSection() {
+export default function HorizontalSection({
+  studios: initialStudios,
+}: HorizontalSectionProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const innerTrackRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
 
+  const [studios, setStudios] = useState<Studio[]>(
+    initialStudios ?? []
+  );
+  const [isLoading, setIsLoading] = useState(
+    !initialStudios?.length
+  );
+  const [error, setError] = useState<string | null>(null);
   const [selectedCategories, setSelectedCategories] =
     useState<string[]>([]);
   const [isSectionAtTop, setIsSectionAtTop] =
@@ -30,6 +40,35 @@ export default function HorizontalSection() {
   const [viewportWidth, setViewportWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 1024
   );
+
+  const fetchStudios = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/studios/display");
+      if (!res.ok)
+        throw new Error("Failed to fetch studios");
+      const data: Studio[] = await res.json();
+      setStudios(data);
+    } catch (e) {
+      setError(
+        e instanceof Error
+          ? e.message
+          : "Failed to load typefaces"
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (initialStudios?.length) {
+      setStudios(initialStudios);
+      setIsLoading(false);
+    } else {
+      fetchStudios();
+    }
+  }, [initialStudios, fetchStudios]);
 
   useEffect(() => {
     const updateViewport = () =>
@@ -41,30 +80,30 @@ export default function HorizontalSection() {
   }, []);
 
   const allTypefaces: Typeface[] = useMemo(() => {
-    return STUDIOS.flatMap((studio) =>
-      studio.typefaces.map((typeface, index) => {
+    if (!studios?.length) return [];
+    return studios.flatMap((studio) =>
+      (studio.typefaces ?? []).map((typeface, index) => {
         const hash = studio.id
           .split("")
           .reduce(
             (acc, char) => acc + char.charCodeAt(0),
             0
           );
+        const studioGradient = Array.isArray(
+          studio.gradient
+        )
+          ? studio.gradient[0]
+          : "#FFF8E8";
         return {
           ...typeface,
           id: hash + index,
           category: typeface.category || [],
-          hangeulName:
-            "hangeulName" in typeface &&
-            typeof typeface.hangeulName === "string"
-              ? typeface.hangeulName
-              : "오흐탕크",
+          hangeulName: typeface.hangeulName || "오흐탕크",
           gradient:
             "gradient" in typeface &&
             typeof typeface.gradient === "string"
               ? typeface.gradient
-              : Array.isArray(studio.gradient)
-                ? studio.gradient[0]
-                : studio.gradient,
+              : studioGradient,
           fonts: typeface.fonts.map((font) => ({
             ...font,
             price:
@@ -79,7 +118,14 @@ export default function HorizontalSection() {
         } as Typeface;
       })
     );
-  }, []);
+  }, [studios]);
+
+  useEffect(() => {
+    console.log(
+      "All typefaces from Firebase:",
+      allTypefaces
+    );
+  }, [allTypefaces]);
 
   const filteredTypefaces = useMemo(() => {
     if (selectedCategories.length === 0)
@@ -159,11 +205,40 @@ export default function HorizontalSection() {
     }
   );
 
+  if (isLoading) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-light-gray">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-current border-t-transparent" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex h-screen w-full flex-col items-center justify-center gap-4 bg-light-gray">
+        <p className="text-neutral-600">{error}</p>
+        <button
+          type="button"
+          onClick={fetchStudios}
+          className="rounded bg-black px-4 py-2 text-white hover:bg-neutral-700"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div
       ref={containerRef}
       className="relative h-screen w-full overflow-x-hidden"
     >
+      {process.env.NODE_ENV === "development" && (
+        <div className="absolute top-4 right-4 z-50 rounded bg-black/80 px-2 py-1 text-white text-xs">
+          {allTypefaces.length} typefaces from{" "}
+          {studios.length} studios
+        </div>
+      )}
       <div
         ref={stickyRef}
         className="sticky top-0 h-screen w-full overflow-hidden"
@@ -177,6 +252,7 @@ export default function HorizontalSection() {
                 setSelectedCategories={
                   setSelectedCategories
                 }
+                studios={studios}
               />
             </div>,
             document.body

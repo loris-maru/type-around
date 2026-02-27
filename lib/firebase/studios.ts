@@ -8,6 +8,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import { EXCLUDED_STUDIO_IDS } from "@/constant/EXCLUDED_STUDIO_IDS";
 import type {
   SocialMedia,
   Studio,
@@ -618,7 +619,7 @@ export async function getStudioBySlug(
 }
 
 /**
- * Get all studios for public display (studio cards)
+ * Get all studios for public display (studio cards and horizontal section)
  */
 export async function getAllStudiosForDisplay(): Promise<
   Array<{
@@ -626,9 +627,31 @@ export async function getAllStudiosForDisplay(): Promise<
     name: string;
     slug: string;
     image: string;
+    gradient:
+      | { from: string; to: string }
+      | string
+      | string[];
     typefaces: Array<{
+      id: string;
       name: string;
-      fonts: Array<{ name: string }>;
+      hangeulName?: string;
+      slug: string;
+      description: string;
+      icon: string;
+      category: string[];
+      characters: number;
+      releaseDate: string;
+      studio: string;
+      gradient?: string;
+      fonts: Array<{
+        name: string;
+        styleName?: string;
+        weight?: number;
+        style?: string;
+        price?: number;
+        text?: string;
+        fullName?: string;
+      }>;
     }>;
   }>
 > {
@@ -637,31 +660,57 @@ export async function getAllStudiosForDisplay(): Promise<
   );
   const snapshot = await getDocs(allStudiosQuery);
 
-  return snapshot.docs.map((docData) => {
-    const rawData = docData.data();
-    const studioName = rawData.name || "Unknown Studio";
-    const typefaces = rawData.typefaces
-      ? normalizeTypefaces(rawData.typefaces)
-      : [];
+  return snapshot.docs
+    .filter(
+      (docData) => !EXCLUDED_STUDIO_IDS.includes(docData.id)
+    )
+    .map((docData) => {
+      const rawData = docData.data();
+      const studioName = rawData.name || "Unknown Studio";
+      const typefaces = rawData.typefaces
+        ? normalizeTypefaces(rawData.typefaces)
+        : [];
+      const studioGradient = rawData.gradient ?? {
+        from: "#FFF8E8",
+        to: "#F2F2F2",
+      };
 
-    return {
-      id: docData.id,
-      name: studioName,
-      slug: slugify(studioName),
-      image:
-        rawData.thumbnail ||
-        rawData.avatar ||
-        "/placeholders/studio_image_placeholder.webp",
-      typefaces: (typefaces as StudioTypeface[]).map(
-        (t) => ({
-          name: t.name,
-          fonts: Array.isArray(t.fonts)
-            ? t.fonts.map((f) => ({
-                name: f.styleName || f.name || "",
-              }))
-            : [],
-        })
-      ),
-    };
-  });
+      return {
+        id: docData.id,
+        name: studioName,
+        slug: slugify(studioName),
+        image:
+          rawData.thumbnail ||
+          rawData.avatar ||
+          "/placeholders/studio_image_placeholder.webp",
+        gradient: studioGradient,
+        typefaces: (typefaces as StudioTypeface[]).map(
+          (t) => ({
+            id: t.id,
+            name: t.name,
+            hangeulName: t.hangeulName,
+            slug: t.slug,
+            description: t.description ?? "",
+            icon:
+              t.heroLetter ?? t.headerImage ?? t.icon ?? "",
+            category: t.category ?? [],
+            characters: t.characters ?? 0,
+            releaseDate: t.releaseDate ?? "",
+            studio: studioName,
+            gradient: t.gradient,
+            fonts: Array.isArray(t.fonts)
+              ? t.fonts.map((f) => ({
+                  name: f.styleName || f.name || "",
+                  styleName: f.styleName ?? f.name ?? "",
+                  weight: f.weight ?? 400,
+                  style: f.isItalic ? "italic" : "normal",
+                  price: f.printPrice ?? f.price ?? 0,
+                  text: f.text ?? "",
+                  fullName: f.styleName || f.name || "",
+                }))
+              : [],
+          })
+        ),
+      };
+    });
 }

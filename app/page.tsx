@@ -37,26 +37,39 @@ export default async function Home() {
     website: "",
     email: "",
     imageCover: "",
-    gradient: [],
+    gradient: Array.isArray(s.gradient)
+      ? s.gradient
+      : typeof s.gradient === "object" &&
+          s.gradient !== null &&
+          "from" in s.gradient
+        ? [
+            (s.gradient as { from: string }).from,
+            (s.gradient as { to: string }).to,
+          ]
+        : [
+            typeof s.gradient === "string"
+              ? s.gradient
+              : "#FFF8E8",
+          ],
     socialMedia: [],
     typefaces: s.typefaces.map((t, tIndex) => ({
       id: index * 1000 + tIndex,
       name: t.name,
-      hangeulName: "",
-      slug: "",
-      description: "",
-      icon: "",
-      category: [],
-      characters: 0,
-      releaseDate: "",
+      hangeulName: t.hangeulName ?? "",
+      slug: t.slug,
+      description: t.description,
+      icon: t.icon,
+      category: t.category,
+      characters: t.characters,
+      releaseDate: t.releaseDate,
       studio: s.name,
       fonts: t.fonts.map((f) => ({
-        fullName: f.name,
+        fullName: f.fullName ?? f.name,
         name: f.name,
-        weight: 400,
-        style: "normal",
-        price: 0,
-        text: "",
+        weight: f.weight ?? 400,
+        style: f.style ?? "normal",
+        price: f.price ?? 0,
+        text: f.text ?? "",
       })),
     })),
   }));

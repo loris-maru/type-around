@@ -180,7 +180,7 @@ async function main() {
       ...DEFAULT_STUDIO,
       id: clerkUserId,
       ownerEmail: email,
-      name: studioName,
+      name: studioName.trim(),
       contactEmail: email,
       designers: [
         {

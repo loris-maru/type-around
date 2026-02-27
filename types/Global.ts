@@ -8,4 +8,7 @@ export type CategoryFilterProps = {
   setSelectedCategories: React.Dispatch<
     React.SetStateAction<string[]>
   >;
+  studios?: Array<{
+    typefaces: Array<{ category?: string[] }>;
+  }>;
 };

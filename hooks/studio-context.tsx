@@ -125,21 +125,41 @@ export function StudioProvider({
       avatar?: string;
     }) => {
       if (!studio) throw new Error("No studio loaded");
-      await updateStudioInformation(studio.id, data);
+      const normalizedData = {
+        ...data,
+        name: data.name?.trim(),
+        hangeulName: data.hangeulName?.trim(),
+        location: data.location?.trim(),
+        foundedIn: data.foundedIn?.trim(),
+        contactEmail: data.contactEmail?.trim(),
+        website: data.website?.trim(),
+        description: data.description?.trim(),
+      };
+      await updateStudioInformation(
+        studio.id,
+        normalizedData
+      );
 
       // Create/update Mailchimp segment when studio name is set or changed
-      if (data.name && data.name !== studio.name) {
+      if (
+        normalizedData.name &&
+        normalizedData.name !== studio.name
+      ) {
         fetch("/api/newsletter/create-studio-segment", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ studioName: data.name }),
+          body: JSON.stringify({
+            studioName: normalizedData.name,
+          }),
         }).catch(() => {
           // Silently fail — Mailchimp sync is non-critical
         });
       }
 
       setStudio((prev) =>
-        prev ? ({ ...prev, ...data } as typeof prev) : null
+        prev
+          ? ({ ...prev, ...normalizedData } as typeof prev)
+          : null
       );
     },
     [studio]
