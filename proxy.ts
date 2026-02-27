@@ -28,7 +28,15 @@ export default clerkMiddleware(
           "https://firebasestorage.googleapis.com",
           "https://*.googleapis.com",
         ],
+        "font-src": [
+          "self",
+          "https://storage.googleapis.com",
+          "https://firebasestorage.googleapis.com",
+          "https://*.googleapis.com",
+        ],
         "img-src": [
+          "self",
+          "blob:",
           "https://firebasestorage.googleapis.com",
           "https://storage.googleapis.com",
         ],
