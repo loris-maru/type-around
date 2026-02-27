@@ -20,6 +20,10 @@ export type Typeface = {
   releaseDate: string;
   studio: string;
   gradient?: string;
+  /** Custom content for typeface card hover (from typefaceCardContent) */
+  typefaceCardContent?: string;
+  /** Font file URL for typeface card display (from typefaceCardDisplayFontId) */
+  typefaceCardDisplayFontFile?: string;
 };
 
 export type Studio = {

@@ -11,8 +11,8 @@ import AccountFontsInUse from "./fonts-in-use";
 import AccountInformation from "./information";
 import AccountReviewerCalendar from "./reviewer/calendar";
 import AccountReviewerRequest from "./reviewer/request";
-import AccountStudioPage from "./studio-page";
 import AccountStripe from "./stripe";
+import AccountStudioPage from "./studio-page";
 import AccountTypefaces from "./typefaces";
 import TypefaceDetail from "./typefaces/typeface-detail";
 

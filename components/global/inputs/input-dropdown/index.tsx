@@ -116,14 +116,15 @@ export default function InputDropdown({
         createPortal(
           <div
             ref={dropdownRef}
-            className="fixed z-9999 rounded-lg border border-neutral-200 shadow-lg"
+            className="fixed z-9999 rounded-lg border border-neutral-200 bg-white shadow-lg"
             style={{
               top: dropdownStyle.top,
               left: dropdownStyle.left,
               minWidth: dropdownStyle.minWidth,
               transform: "translateX(-100%)",
-              backgroundColor:
-                backgroundColor ?? "transparent",
+              ...(backgroundColor && {
+                backgroundColor,
+              }),
             }}
           >
             {options.map((option) => (

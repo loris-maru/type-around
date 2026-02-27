@@ -10,9 +10,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { createPortal } from "react-dom";
 import { TypefaceCard } from "@/components/molecules/cards";
-import CategoryFilter from "@/components/segments/home/all-fonts/category-filter";
 import type { HorizontalSectionProps } from "@/types/horizontal-section";
 import type { Studio, Typeface } from "@/types/typefaces";
 import { cn } from "@/utils/class-names";
@@ -33,10 +31,7 @@ export default function HorizontalSection({
     !initialStudios?.length
   );
   const [error, setError] = useState<string | null>(null);
-  const [selectedCategories, setSelectedCategories] =
-    useState<string[]>([]);
-  const [isSectionAtTop, setIsSectionAtTop] =
-    useState(false);
+  const [selectedCategories] = useState<string[]>([]);
   const [viewportWidth, setViewportWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 1024
   );
@@ -187,10 +182,6 @@ export default function HorizontalSection({
           end: () => `+=${getEndValue()}`,
           scrub: 1,
           invalidateOnRefresh: true,
-          onEnter: () => setIsSectionAtTop(true),
-          onLeaveBack: () => setIsSectionAtTop(false),
-          onLeave: () => setIsSectionAtTop(false),
-          onEnterBack: () => setIsSectionAtTop(true),
         },
       });
 
@@ -233,30 +224,10 @@ export default function HorizontalSection({
       ref={containerRef}
       className="relative h-screen w-full overflow-x-hidden"
     >
-      {process.env.NODE_ENV === "development" && (
-        <div className="absolute top-4 right-4 z-50 rounded bg-black/80 px-2 py-1 text-white text-xs">
-          {allTypefaces.length} typefaces from{" "}
-          {studios.length} studios
-        </div>
-      )}
       <div
         ref={stickyRef}
         className="sticky top-0 h-screen w-full overflow-hidden"
       >
-        {isSectionAtTop &&
-          typeof document !== "undefined" &&
-          createPortal(
-            <div className="fixed top-[140px] left-4 z-50 bg-light-gray">
-              <CategoryFilter
-                selectedCategories={selectedCategories}
-                setSelectedCategories={
-                  setSelectedCategories
-                }
-                studios={studios}
-              />
-            </div>,
-            document.body
-          )}
         <div
           ref={innerTrackRef}
           className="h-full w-max pt-10"

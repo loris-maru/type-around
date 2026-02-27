@@ -643,6 +643,8 @@ export async function getAllStudiosForDisplay(): Promise<
       releaseDate: string;
       studio: string;
       gradient?: string;
+      typefaceCardContent?: string;
+      typefaceCardDisplayFontFile?: string;
       fonts: Array<{
         name: string;
         styleName?: string;
@@ -685,31 +687,47 @@ export async function getAllStudiosForDisplay(): Promise<
           "/placeholders/studio_image_placeholder.webp",
         gradient: studioGradient,
         typefaces: (typefaces as StudioTypeface[]).map(
-          (t) => ({
-            id: t.id,
-            name: t.name,
-            hangeulName: t.hangeulName,
-            slug: t.slug,
-            description: t.description ?? "",
-            icon:
-              t.heroLetter ?? t.headerImage ?? t.icon ?? "",
-            category: t.category ?? [],
-            characters: t.characters ?? 0,
-            releaseDate: t.releaseDate ?? "",
-            studio: studioName,
-            gradient: t.gradient,
-            fonts: Array.isArray(t.fonts)
-              ? t.fonts.map((f) => ({
-                  name: f.styleName || f.name || "",
-                  styleName: f.styleName ?? f.name ?? "",
-                  weight: f.weight ?? 400,
-                  style: f.isItalic ? "italic" : "normal",
-                  price: f.printPrice ?? f.price ?? 0,
-                  text: f.text ?? "",
-                  fullName: f.styleName || f.name || "",
-                }))
-              : [],
-          })
+          (t) => {
+            const cardDisplayFont =
+              t.typefaceCardDisplayFontId
+                ? (t.fonts ?? []).find(
+                    (f) =>
+                      f.id === t.typefaceCardDisplayFontId
+                  )
+                : null;
+            return {
+              id: t.id,
+              name: t.name,
+              hangeulName: t.hangeulName,
+              slug: t.slug,
+              description: t.description ?? "",
+              icon:
+                t.heroLetter ??
+                t.headerImage ??
+                t.icon ??
+                "",
+              category: t.category ?? [],
+              characters: t.characters ?? 0,
+              releaseDate: t.releaseDate ?? "",
+              studio: studioName,
+              gradient: t.gradient,
+              typefaceCardContent:
+                t.typefaceCardContent ?? "",
+              typefaceCardDisplayFontFile:
+                cardDisplayFont?.file ?? "",
+              fonts: Array.isArray(t.fonts)
+                ? t.fonts.map((f) => ({
+                    name: f.styleName || f.name || "",
+                    styleName: f.styleName ?? f.name ?? "",
+                    weight: f.weight ?? 400,
+                    style: f.isItalic ? "italic" : "normal",
+                    price: f.printPrice ?? f.price ?? 0,
+                    text: f.text ?? "",
+                    fullName: f.styleName || f.name || "",
+                  }))
+                : [],
+            };
+          }
         ),
       };
     });

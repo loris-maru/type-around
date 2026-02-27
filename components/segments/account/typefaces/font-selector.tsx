@@ -51,11 +51,12 @@ export default function FontSelector({
 
         {isDropdownOpen && (
           <div
-            className="absolute right-0 left-0 z-50 mt-1 overflow-hidden rounded-lg border border-neutral-200 shadow-lg"
-            style={{
-              backgroundColor:
-                backgroundColor ?? "transparent",
-            }}
+            className="absolute right-0 left-0 z-50 mt-1 overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-lg"
+            style={
+              backgroundColor
+                ? { backgroundColor }
+                : undefined
+            }
           >
             {fonts
               .filter((f) => f.file)

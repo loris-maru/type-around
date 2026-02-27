@@ -63,6 +63,9 @@ export default async function Home() {
       characters: t.characters,
       releaseDate: t.releaseDate,
       studio: s.name,
+      typefaceCardContent: t.typefaceCardContent,
+      typefaceCardDisplayFontFile:
+        t.typefaceCardDisplayFontFile,
       fonts: t.fonts.map((f) => ({
         fullName: f.fullName ?? f.name,
         name: f.name,

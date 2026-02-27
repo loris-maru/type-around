@@ -3,11 +3,13 @@
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { TYPEFACE_CARD_DESCRIPTION_TEXT } from "@/constant/TYPEFACE_CARD_TEXT";
 import type { PublicTypefaceCardProps } from "@/types/components";
 import { cn } from "@/utils/class-names";
 import { slugify } from "@/utils/slugify";
+
+const CARD_FONT_PREFIX = "typeface-card-font";
 
 export default function TypefaceCard({
   studioName,
@@ -18,21 +20,62 @@ export default function TypefaceCard({
     useState<boolean>(false);
   const [displayedText, setDisplayedText] =
     useState<string>("");
+  const [fontLoaded, setFontLoaded] = useState(false);
+
+  const cardContent =
+    typeface.typefaceCardContent?.trim() ||
+    TYPEFACE_CARD_DESCRIPTION_TEXT;
+  const fontFamily = typeface.typefaceCardDisplayFontFile
+    ? `"${CARD_FONT_PREFIX}-${typeface.id}", "Ortank", sans-serif`
+    : "font-ortank";
+
+  const loadFont = useCallback(
+    (url: string, familyName: string) => {
+      const existing = Array.from(document.fonts).find(
+        (f) => f.family === familyName
+      );
+      if (existing) {
+        setFontLoaded(true);
+        return;
+      }
+      const face = new FontFace(familyName, `url(${url})`, {
+        weight: "100 900",
+        style: "normal",
+      });
+      face
+        .load()
+        .then((loaded) => {
+          document.fonts.add(loaded);
+          setFontLoaded(true);
+        })
+        .catch(() => setFontLoaded(true));
+    },
+    []
+  );
+
+  useEffect(() => {
+    if (typeface.typefaceCardDisplayFontFile) {
+      loadFont(
+        typeface.typefaceCardDisplayFontFile,
+        `${CARD_FONT_PREFIX}-${typeface.id}`
+      );
+    } else {
+      setFontLoaded(true);
+    }
+  }, [
+    typeface.typefaceCardDisplayFontFile,
+    typeface.id,
+    loadFont,
+  ]);
 
   useEffect(() => {
     if (isHovered) {
       setDisplayedText("");
       let currentIndex = 0;
       const interval = setInterval(() => {
-        if (
-          currentIndex <
-          TYPEFACE_CARD_DESCRIPTION_TEXT.length
-        ) {
+        if (currentIndex < cardContent.length) {
           setDisplayedText(
-            TYPEFACE_CARD_DESCRIPTION_TEXT.slice(
-              0,
-              currentIndex + 1
-            )
+            cardContent.slice(0, currentIndex + 1)
           );
           currentIndex++;
         } else {
@@ -44,7 +87,7 @@ export default function TypefaceCard({
     } else {
       setDisplayedText("");
     }
-  }, [isHovered]);
+  }, [isHovered, cardContent]);
 
   return (
     <Link
@@ -97,14 +140,22 @@ export default function TypefaceCard({
             >
               <p
                 className={cn(
-                  "whitespace-pre-line font-black font-ortank text-black leading-[1.3]",
+                  "line-clamp-6 whitespace-pre-line font-black text-black leading-[1.3]",
+                  !typeface.typefaceCardDisplayFontFile &&
+                    "font-ortank",
                   compact ? "text-3xl" : "text-4xl"
                 )}
+                style={
+                  typeface.typefaceCardDisplayFontFile &&
+                  fontLoaded
+                    ? { fontFamily }
+                    : undefined
+                }
               >
                 {displayedText}
                 {isHovered &&
                   displayedText.length <
-                    TYPEFACE_CARD_DESCRIPTION_TEXT.length && (
+                    cardContent.length && (
                     <motion.span
                       animate={{ opacity: [1, 0] }}
                       transition={{
