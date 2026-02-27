@@ -1,7 +1,7 @@
 "use client";
 
 import STUDIOS from "@/mock-data/studios";
-import { CategoryFilterProps } from "@/types/Global";
+import type { CategoryFilterProps } from "@/types/Global";
 
 export default function CategoryFilter({
   selectedCategories,
@@ -29,11 +29,11 @@ export default function CategoryFilter({
   };
 
   return (
-    <div className="flex flex-row gap-x-4 border border-medium-gray shadow-medium-gray py-2 px-4 rounded-sm">
+    <div className="flex flex-row gap-x-4 rounded-sm border border-medium-gray px-4 py-2 shadow-medium-gray">
       {fontCategories.map((category) => (
         <div
           key={category}
-          className="flex flex-row font-whisper text-sm gap-x-2"
+          className="flex flex-row gap-x-2 font-whisper text-sm"
         >
           <div className="flex flex-row items-center">
             <label
@@ -42,7 +42,7 @@ export default function CategoryFilter({
             >
               {category}{" "}
             </label>
-            <span className="font-bold ml-1">
+            <span className="ml-1 font-bold">
               {
                 STUDIOS.flatMap((studio) =>
                   studio.typefaces.flatMap(

@@ -3,15 +3,15 @@
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useInView } from "motion/react";
 import {
   useEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
+import { createPortal } from "react-dom";
 import { TypefaceCard } from "@/components/molecules/cards";
-import HeaderAllFonts from "@/components/segments/home/all-fonts/header";
+import CategoryFilter from "@/components/segments/home/all-fonts/category-filter";
 import STUDIOS from "@/mock-data/studios";
 import type { Typeface } from "@/types/typefaces";
 import { cn } from "@/utils/class-names";
@@ -23,6 +23,10 @@ export default function HorizontalSection() {
   const innerTrackRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
 
+  const [selectedCategories, setSelectedCategories] =
+    useState<string[]>([]);
+  const [isSectionAtTop, setIsSectionAtTop] =
+    useState(false);
   const [viewportWidth, setViewportWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 1024
   );
@@ -77,15 +81,25 @@ export default function HorizontalSection() {
     );
   }, []);
 
+  const filteredTypefaces = useMemo(() => {
+    if (selectedCategories.length === 0)
+      return allTypefaces;
+    return allTypefaces.filter((typeface) =>
+      typeface.category.some((cat) =>
+        selectedCategories.includes(cat)
+      )
+    );
+  }, [allTypefaces, selectedCategories]);
+
   const columns = useMemo(() => {
     const cols: Typeface[][] = [];
     const maxCardsPerColumn = 2;
     for (
       let i = 0;
-      i < allTypefaces.length;
+      i < filteredTypefaces.length;
       i += maxCardsPerColumn
     ) {
-      const columnCards = allTypefaces.slice(
+      const columnCards = filteredTypefaces.slice(
         i,
         i + maxCardsPerColumn
       );
@@ -101,14 +115,9 @@ export default function HorizontalSection() {
       }
     }
     return cols;
-  }, [allTypefaces]);
+  }, [filteredTypefaces]);
 
   const isMobile = viewportWidth < 768;
-
-  const isInView = useInView(stickyRef, {
-    amount: 1,
-    once: false,
-  });
 
   useGSAP(
     () => {
@@ -132,6 +141,10 @@ export default function HorizontalSection() {
           end: () => `+=${getEndValue()}`,
           scrub: 1,
           invalidateOnRefresh: true,
+          onEnter: () => setIsSectionAtTop(true),
+          onLeaveBack: () => setIsSectionAtTop(false),
+          onLeave: () => setIsSectionAtTop(false),
+          onEnterBack: () => setIsSectionAtTop(true),
         },
       });
 
@@ -155,11 +168,19 @@ export default function HorizontalSection() {
         ref={stickyRef}
         className="sticky top-0 h-screen w-full overflow-hidden"
       >
-        {isInView && (
-          <div className="fixed top-3 left-6 z-50 bg-light-gray md:left-28">
-            <HeaderAllFonts />
-          </div>
-        )}
+        {isSectionAtTop &&
+          typeof document !== "undefined" &&
+          createPortal(
+            <div className="fixed top-[140px] left-4 z-50 bg-light-gray">
+              <CategoryFilter
+                selectedCategories={selectedCategories}
+                setSelectedCategories={
+                  setSelectedCategories
+                }
+              />
+            </div>,
+            document.body
+          )}
         <div
           ref={innerTrackRef}
           className="h-full w-max pt-10"
