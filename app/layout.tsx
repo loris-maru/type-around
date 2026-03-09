@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import LayoutRoot from "@/components/layout/layout-root";
 import {
   DEFAULT_OPEN_GRAPH,
   DEFAULT_TWITTER,
@@ -6,7 +7,6 @@ import {
   SITE_NAME,
   SITE_URL,
 } from "@/constant/SEO_METADATA";
-import LayoutRoot from "@/components/layout/layout-root";
 import "./globals.css";
 
 export const metadata: Metadata = {

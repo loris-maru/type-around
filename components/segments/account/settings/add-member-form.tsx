@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import {
+  RiAddFill,
+  RiDeleteBinLine,
   RiLoaderLine,
   RiUserAddLine,
 } from "react-icons/ri";
@@ -92,11 +94,45 @@ export default function AddMemberForm({
     }
   };
 
-  const handleIsReviewerChange = (isReviewer: boolean) => {
-    if (lookupResult) {
-      setLookupResult({ ...lookupResult, isReviewer });
+  const handleAddSocialMedia = () => {
+    if (
+      !lookupResult ||
+      !newSocialName.trim() ||
+      !newSocialUrl.trim()
+    )
+      return;
+    try {
+      new URL(newSocialUrl);
+    } catch {
+      onError("Please enter a valid URL");
+      return;
     }
+    setLookupResult({
+      ...lookupResult,
+      socialMedia: [
+        ...(lookupResult.socialMedia ?? []),
+        {
+          name: newSocialName.trim(),
+          url: newSocialUrl.trim(),
+        },
+      ],
+    });
+    setNewSocialName("");
+    setNewSocialUrl("");
   };
+
+  const handleRemoveSocialMedia = (index: number) => {
+    if (!lookupResult) return;
+    setLookupResult({
+      ...lookupResult,
+      socialMedia: (lookupResult.socialMedia ?? []).filter(
+        (_, i) => i !== index
+      ),
+    });
+  };
+
+  const [newSocialName, setNewSocialName] = useState("");
+  const [newSocialUrl, setNewSocialUrl] = useState("");
 
   const displayName =
     lookupResult?.firstName && lookupResult?.lastName
@@ -157,24 +193,19 @@ export default function AddMemberForm({
               name={displayName}
               size="lg"
             />
-            <div>
-              <p className="font-medium font-whisper">
-                {displayName}
-              </p>
-              <p className="font-whisper text-neutral-500 text-sm">
-                {lookupResult.email}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-4">
-            <div className="flex gap-3">
+            <div className="flex flex-col gap-1">
+              <label
+                className="font-whisper text-neutral-600 text-sm"
+                htmlFor="role"
+              >
+                Role
+              </label>
               <InputDropdown
                 value={lookupResult.role}
                 options={[
                   {
-                    value: "editor",
-                    label: `Editor - ${ROLE_DESCRIPTIONS.editor}`,
+                    value: "member",
+                    label: `Member - ${ROLE_DESCRIPTIONS.member}`,
                   },
                   {
                     value: "admin",
@@ -186,19 +217,128 @@ export default function AddMemberForm({
                 }
               />
             </div>
-            <label className="flex cursor-pointer items-center gap-2">
-              <input
-                type="checkbox"
-                checked={lookupResult.isReviewer ?? false}
+            <div>
+              <p className="font-medium font-whisper">
+                {displayName}
+              </p>
+              <p className="font-whisper text-neutral-500 text-sm">
+                {lookupResult.email}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <div>
+              <label
+                htmlFor="add-member-bio"
+                className="mb-1 block font-whisper text-neutral-600 text-sm"
+              >
+                Biography
+              </label>
+              <textarea
+                id="add-member-bio"
+                value={lookupResult.biography ?? ""}
                 onChange={(e) =>
-                  handleIsReviewerChange(e.target.checked)
+                  setLookupResult({
+                    ...lookupResult,
+                    biography: e.target.value,
+                  })
                 }
-                className="h-4 w-4 rounded border-neutral-300"
+                rows={3}
+                placeholder="A short bio..."
+                className="w-full resize-none rounded-lg border border-neutral-300 px-3 py-2 font-whisper text-sm placeholder:text-neutral-400"
               />
-              <span className="font-whisper text-sm">
-                Is reviewer (can manage calendar & requests)
+            </div>
+
+            <div>
+              <label
+                htmlFor="add-member-website"
+                className="mb-1 block font-whisper text-neutral-600 text-sm"
+              >
+                Website
+              </label>
+              <input
+                id="add-member-website"
+                type="url"
+                value={lookupResult.website ?? ""}
+                onChange={(e) =>
+                  setLookupResult({
+                    ...lookupResult,
+                    website: e.target.value,
+                  })
+                }
+                placeholder="https://example.com"
+                className="w-full rounded-lg border border-neutral-300 px-3 py-2 font-whisper text-sm placeholder:text-neutral-400"
+              />
+            </div>
+
+            <div>
+              <span className="mb-1 block font-whisper text-neutral-600 text-sm">
+                Social media
               </span>
-            </label>
+              {(lookupResult.socialMedia ?? []).length >
+                0 && (
+                <div className="mb-2 space-y-2">
+                  {(lookupResult.socialMedia ?? []).map(
+                    (social, index) => (
+                      <div
+                        key={`${social.name}-${index}`}
+                        className="flex items-center gap-2 rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2"
+                      >
+                        <span className="font-medium text-black text-sm">
+                          {social.name}
+                        </span>
+                        <span className="flex-1 truncate text-neutral-500 text-sm">
+                          {social.url}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleRemoveSocialMedia(index)
+                          }
+                          aria-label={`Remove ${social.name}`}
+                          className="shrink-0 p-1 text-neutral-400 transition-colors hover:text-red-500"
+                        >
+                          <RiDeleteBinLine className="h-4 w-4" />
+                        </button>
+                      </div>
+                    )
+                  )}
+                </div>
+              )}
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={newSocialName}
+                  onChange={(e) =>
+                    setNewSocialName(e.target.value)
+                  }
+                  placeholder="Platform (e.g. Instagram)"
+                  className="flex-1 rounded-lg border border-neutral-300 px-3 py-2 font-whisper text-sm placeholder:text-neutral-400"
+                />
+                <input
+                  type="url"
+                  value={newSocialUrl}
+                  onChange={(e) =>
+                    setNewSocialUrl(e.target.value)
+                  }
+                  placeholder="URL"
+                  className="flex-1 rounded-lg border border-neutral-300 px-3 py-2 font-whisper text-sm placeholder:text-neutral-400"
+                />
+                <button
+                  type="button"
+                  onClick={handleAddSocialMedia}
+                  disabled={
+                    !newSocialName.trim() ||
+                    !newSocialUrl.trim()
+                  }
+                  className="shrink-0 rounded-lg bg-black p-2 text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-300"
+                  aria-label="Add social link"
+                >
+                  <RiAddFill className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
           </div>
 
           <div className="flex gap-3">

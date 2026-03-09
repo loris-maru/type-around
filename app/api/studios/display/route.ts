@@ -11,13 +11,6 @@ import type { Studio } from "@/types/typefaces";
 export async function GET() {
   try {
     const rawStudios = await getAllStudiosForDisplay();
-    const allTypefaces = rawStudios.flatMap(
-      (s) => s.typefaces
-    );
-    console.log(
-      "[api/studios/display] Typefaces fetched from Firebase:",
-      allTypefaces
-    );
 
     const studios: Studio[] = rawStudios.map(
       (s, index) => ({

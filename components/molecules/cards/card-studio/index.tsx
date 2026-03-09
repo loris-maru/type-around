@@ -29,7 +29,7 @@ export default function StudioCard({
       onBlur={() => setIsHovered(false)}
     >
       <header className="relative flex flex-col gap-2">
-        <h3 className="font-black font-ortank text-3xl capitalize">
+        <h3 className="font-black font-ortank text-3xl">
           {studio.name}
         </h3>
       </header>

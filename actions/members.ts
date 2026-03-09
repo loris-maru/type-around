@@ -55,9 +55,12 @@ export async function lookupUserByEmail(
         firstName: user.firstName || "",
         lastName: user.lastName || "",
         imageUrl: user.imageUrl || "",
-        role: "editor",
+        role: "member",
         addedAt: new Date().toISOString(),
         isReviewer: false,
+        biography: "",
+        website: "",
+        socialMedia: [],
       },
     };
   } catch (error) {
@@ -303,6 +306,140 @@ export async function updateMemberRole(
         error instanceof Error
           ? error.message
           : "Failed to update role",
+    };
+  }
+}
+
+/**
+ * Update a member's profile (biography, website, social media)
+ * Members can edit their own profile; owners/admins can edit any member's profile
+ */
+export async function updateMemberProfile(
+  studioId: string,
+  memberId: string,
+  profile: {
+    biography?: string;
+    website?: string;
+    socialMedia?: { name: string; url: string }[];
+  }
+): Promise<MemberActionResult> {
+  try {
+    const { userId } = await auth();
+    if (!userId) {
+      return { success: false, error: "Not authenticated" };
+    }
+
+    const clerk = await clerkClient();
+    const currentUser = await clerk.users.getUser(userId);
+    const currentEmail = currentUser.emailAddresses.find(
+      (e) => e.id === currentUser.primaryEmailAddressId
+    )?.emailAddress;
+
+    if (!currentEmail) {
+      return {
+        success: false,
+        error: "Could not verify your identity",
+      };
+    }
+
+    const studio = await getStudioByEmail(currentEmail);
+    if (!studio) {
+      return { success: false, error: "Studio not found" };
+    }
+
+    const isOwner = studio.ownerEmail === currentEmail;
+    const currentMember = studio.members?.find(
+      (m) => m.id === userId
+    );
+    const isAdmin = currentMember?.role === "admin";
+    const isEditingSelf = userId === memberId;
+
+    if (!isOwner && !isAdmin && !isEditingSelf) {
+      return {
+        success: false,
+        error:
+          "You don't have permission to edit this profile",
+      };
+    }
+
+    const isOwnerId = memberId.startsWith("owner-");
+    const targetMember = isOwnerId
+      ? (studio.members || []).find(
+          (m) =>
+            m.email.toLowerCase() ===
+            studio.ownerEmail.toLowerCase()
+        )
+      : studio.members?.find((m) => m.id === memberId);
+
+    if (!targetMember && !isOwnerId) {
+      return {
+        success: false,
+        error: "Member not found",
+      };
+    }
+
+    const members = studio.members || [];
+    let updatedMembers: typeof members;
+
+    if (targetMember) {
+      updatedMembers = members.map((m) =>
+        m.id === targetMember.id ||
+        (isOwnerId &&
+          m.email.toLowerCase() ===
+            studio.ownerEmail.toLowerCase())
+          ? {
+              ...m,
+              biography:
+                profile.biography !== undefined
+                  ? profile.biography
+                  : (m.biography ?? ""),
+              website:
+                profile.website !== undefined
+                  ? profile.website
+                  : (m.website ?? ""),
+              socialMedia:
+                profile.socialMedia !== undefined
+                  ? profile.socialMedia
+                  : (m.socialMedia ?? []),
+            }
+          : m
+      );
+    } else if (isOwnerId && isOwner) {
+      // Owner not in members yet - add them with profile data (use userId as id)
+      const ownerProfile = {
+        id: userId,
+        email: studio.ownerEmail,
+        firstName: currentUser.firstName ?? "",
+        lastName: currentUser.lastName ?? "",
+        imageUrl: currentUser.imageUrl ?? "",
+        role: "owner" as const,
+        addedAt: new Date().toISOString(),
+        isReviewer: false,
+        biography: profile.biography ?? "",
+        website: profile.website ?? "",
+        socialMedia: profile.socialMedia ?? [],
+      };
+      updatedMembers = [...members, ownerProfile];
+    } else {
+      return { success: false, error: "Member not found" };
+    }
+
+    await updateStudio(studioId, {
+      members: updatedMembers,
+    });
+
+    return {
+      success: true,
+      members: updatedMembers,
+    };
+  } catch (error) {
+    console.error("Error updating member profile:", error);
+    return {
+      success: false,
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to update profile",
     };
   }
 }

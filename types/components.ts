@@ -474,18 +474,17 @@ export type MemberRoleBadgeProps = {
 export type MemberListItemProps = {
   member: StudioMember;
   currentUserEmail?: string;
-  isOwner: boolean;
   canManageMembers: boolean;
+  canEditProfile: boolean;
   isRemoving: boolean;
+  studioId: string;
   onRoleChange: (
     memberId: string,
     role: MemberRole
   ) => void;
-  onIsReviewerChange?: (
-    memberId: string,
-    isReviewer: boolean
-  ) => void;
   onRemove: (memberId: string) => void;
+  onProfileUpdate?: (members: StudioMember[]) => void;
+  onError?: (error: string) => void;
 };
 
 export type AddMemberFormProps = {

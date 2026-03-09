@@ -24,10 +24,11 @@ export const DesignerSchema = z.object({
   isReviewer: z.boolean().optional().default(false),
 });
 
-// Studio member roles
+// Studio member roles ("editor" kept for backward compatibility with existing data)
 export const MemberRoleEnum = z.enum([
   "owner",
   "admin",
+  "member",
   "editor",
 ]);
 export type MemberRole = z.infer<typeof MemberRoleEnum>;
@@ -39,9 +40,14 @@ export const StudioMemberSchema = z.object({
   firstName: z.string().default(""),
   lastName: z.string().default(""),
   imageUrl: z.string().default(""),
-  role: MemberRoleEnum.default("editor"),
+  role: MemberRoleEnum.default("member"),
   addedAt: z.string(), // ISO date string
   isReviewer: z.boolean().optional().default(false),
+  biography: z.string().default(""),
+  website: z.string().url().or(z.literal("")).default(""),
+  socialMedia: z
+    .array(DesignerSocialMediaSchema)
+    .default([]),
 });
 export type StudioMember = z.infer<
   typeof StudioMemberSchema

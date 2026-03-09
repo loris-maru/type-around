@@ -5,7 +5,6 @@ import { useMemo, useState } from "react";
 import { RiLoaderLine } from "react-icons/ri";
 import {
   removeStudioMember,
-  updateMemberIsReviewer,
   updateMemberRole,
 } from "@/actions/members";
 import {
@@ -67,6 +66,9 @@ export default function AccountSettings() {
       role: "owner",
       addedAt: "",
       isReviewer: false,
+      biography: ownerInMembers?.biography ?? "",
+      website: ownerInMembers?.website ?? "",
+      socialMedia: ownerInMembers?.socialMedia ?? [],
     };
 
     // Filter out the owner and deduplicate by email (case-insensitive)
@@ -121,32 +123,17 @@ export default function AccountSettings() {
     }
   };
 
-  const handleIsReviewerChange = async (
-    memberId: string,
-    isReviewer: boolean
-  ) => {
-    if (!studio) return;
-
-    const result = await updateMemberIsReviewer(
-      studio.id,
-      memberId,
-      isReviewer
-    );
-
-    if (result.success && result.members) {
-      await updateStudio({ members: result.members });
-    } else {
-      setError(
-        result.error || "Failed to update reviewer status"
-      );
-    }
-  };
-
   const handleMemberAdded = async (
     members: StudioMember[]
   ) => {
     await updateStudio({ members });
     setIsAddingMember(false);
+  };
+
+  const handleProfileUpdate = async (
+    members: StudioMember[]
+  ) => {
+    await updateStudio({ members });
   };
 
   const handleCancelAddMember = () => {
@@ -199,12 +186,17 @@ export default function AccountSettings() {
             key={member.id}
             member={member}
             currentUserEmail={currentUserEmail}
-            isOwner={isOwner}
             canManageMembers={canManageMembers}
+            canEditProfile={
+              canManageMembers ||
+              member.email === currentUserEmail
+            }
             isRemoving={removingMemberId === member.id}
+            studioId={studio?.id ?? ""}
             onRoleChange={handleRoleChange}
-            onIsReviewerChange={handleIsReviewerChange}
             onRemove={handleRemoveMember}
+            onProfileUpdate={handleProfileUpdate}
+            onError={setError}
           />
         ))}
       </div>

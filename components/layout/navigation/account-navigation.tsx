@@ -162,7 +162,17 @@ export default function AccountNavigation() {
   }, [isReviewer]);
 
   useEffect(() => {
-    if (!searchParams.get("nav")) {
+    const nav = searchParams.get("nav");
+    // Redirect legacy nav values to members (settings/designers were replaced)
+    if (nav === "settings" || nav === "designers") {
+      const params = new URLSearchParams(
+        searchParams.toString()
+      );
+      params.set("nav", "members");
+      router.replace(`${pathname}?${params.toString()}`);
+      return;
+    }
+    if (!nav) {
       const params = new URLSearchParams(
         searchParams.toString()
       );

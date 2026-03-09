@@ -5,7 +5,6 @@ import { useSearchParams } from "next/navigation";
 import type { ComponentType } from "react";
 import { Suspense } from "react";
 import { DEFAULT_ACCOUNT_NAV } from "@/constant/UI_LAYOUT";
-import AccountDesigners from "./designers";
 import AccountFeedback from "./feedback";
 import AccountFontsInUse from "./fonts-in-use";
 import AccountInformation from "./information";
@@ -16,27 +15,26 @@ import AccountStudioPage from "./studio-page";
 import AccountTypefaces from "./typefaces";
 import TypefaceDetail from "./typefaces/typeface-detail";
 
-const AccountSettings = dynamic(
-  () => import("./settings"),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="relative flex w-full items-center justify-center py-12">
-        <div className="h-6 w-6 animate-spin rounded-full border-2 border-neutral-300 border-t-black" />
-      </div>
-    ),
-  }
-);
+const AccountMembers = dynamic(() => import("./settings"), {
+  ssr: false,
+  loading: () => (
+    <div className="relative flex w-full items-center justify-center py-12">
+      <div className="h-6 w-6 animate-spin rounded-full border-2 border-neutral-300 border-t-black" />
+    </div>
+  ),
+});
 
 const NAV_COMPONENTS: Record<string, ComponentType> = {
   about: AccountInformation,
   "studio-page": AccountStudioPage,
-  designers: AccountDesigners,
+  members: AccountMembers,
+  // Legacy: redirect to members, but map here so content shows correctly before redirect
+  settings: AccountMembers,
+  designers: AccountMembers,
   typefaces: AccountTypefaces,
   feedback: AccountFeedback,
   "fonts-in-use": AccountFontsInUse,
   stripe: AccountStripe,
-  settings: AccountSettings,
 };
 
 const REVIEWER_COMPONENTS: Record<string, ComponentType> = {
