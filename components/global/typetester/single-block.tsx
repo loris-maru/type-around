@@ -25,6 +25,8 @@ export default function SingleTypetesterBlock({
   canDelete = false,
   onDelete,
   fonts = [],
+  initialBackgroundColor,
+  initialForegroundColor,
 }: SingleTypetesterBlockProps) {
   // Pick default font: weight 400 (Regular) or first available
   const defaultFontId = useMemo(() => {
@@ -40,8 +42,8 @@ export default function SingleTypetesterBlock({
     letterSpacing: 0,
     textAlign: "left",
     fontId: defaultFontId,
-    backgroundColor: "#FFFFFF",
-    fontColor: "#000000",
+    backgroundColor: initialBackgroundColor || "#FFFFFF",
+    fontColor: initialForegroundColor || "#000000",
   });
   const [showParams, setShowParams] = useState(false);
 

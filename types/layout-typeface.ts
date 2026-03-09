@@ -22,11 +22,65 @@ export type CharacterSetBlockData = {
   fontColor?: string;
 };
 
+export type DownloadBlockData = {
+  showTrialFonts?: boolean;
+  showSpecimen?: boolean;
+  backgroundColor?: string;
+};
+
+export type TypeTesterBlockData = {
+  backgroundColor?: string;
+  foregroundColor?: string;
+};
+
+export type BlockMarginSize = "s" | "m" | "l" | "xl";
+
+export type UpdatesBlockData = {
+  backgroundColor?: string;
+  textColor?: string;
+  margin?: BlockMarginSize;
+};
+
+export type ShopBlockData = {
+  backgroundColor?: string;
+  textColor?: string;
+  margin?: BlockMarginSize;
+  /** Font IDs in display order (drag-and-drop order) */
+  fontOrder?: string[];
+};
+
+export type AboutBlockTextAlign =
+  | "left"
+  | "center"
+  | "right";
+export type AboutBlockTextSize =
+  | "s"
+  | "m"
+  | "l"
+  | "xl"
+  | "2xl";
+
+export type AboutBlockData = {
+  textAlign?: AboutBlockTextAlign;
+  textSize?: AboutBlockTextSize;
+  textColor?: string;
+  backgroundColor?: string;
+  marginTop?: string;
+  marginRight?: string;
+  marginBottom?: string;
+  marginLeft?: string;
+};
+
 export type TypefaceLayoutItemData =
   | GalleryBlockData
   | ImageBlockData
   | VideoBlockData
   | CharacterSetBlockData
+  | AboutBlockData
+  | DownloadBlockData
+  | TypeTesterBlockData
+  | UpdatesBlockData
+  | ShopBlockData
   | import("./layout").StoreBlockData
   | undefined;
 

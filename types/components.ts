@@ -17,9 +17,14 @@ import type {
   VideoBlockData,
 } from "./layout";
 import type {
+  AboutBlockData,
   CharacterSetBlockData,
+  DownloadBlockData,
+  ShopBlockData,
   TypefaceLayoutBlock,
   TypefaceLayoutBlockId,
+  TypeTesterBlockData,
+  UpdatesBlockData,
 } from "./layout-typeface";
 import type {
   FontInUseSubmission,
@@ -528,6 +533,11 @@ export type TypefacePageLayoutBuilderProps = {
   ) => void;
   studioId: string;
   typefaceId: string;
+  typefaceFonts: {
+    id: string;
+    styleName?: string;
+    weight?: number;
+  }[];
 };
 
 export type TypefaceBlockBuilderProps = {
@@ -544,6 +554,11 @@ export type TypefaceBlockBuilderProps = {
     id: import("@/types/layout-typeface").TypefaceLayoutBlockId
   ) => string;
   studioId: string;
+  typefaceFonts: {
+    id: string;
+    styleName?: string;
+    weight?: number;
+  }[];
 };
 
 export type GalleryBlockModalProps = {
@@ -677,6 +692,11 @@ export type TypefacePageSectionProps = {
   ) => void;
   studioId: string;
   typefaceId: string;
+  typefaceFonts: {
+    id: string;
+    styleName?: string;
+    weight?: number;
+  }[];
 };
 
 export type AddVersionFormData = Omit<
@@ -809,6 +829,51 @@ export type CharacterSetBlockModalProps = {
   initialData?: CharacterSetBlockData;
 };
 
+// About Block modal
+export type AboutBlockModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (data: AboutBlockData) => void;
+  initialData?: AboutBlockData;
+};
+
+// Download Block modal
+export type DownloadBlockModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (data: DownloadBlockData) => void;
+  initialData?: DownloadBlockData;
+};
+
+// Type Tester Block modal
+export type TypeTesterBlockModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (data: TypeTesterBlockData) => void;
+  initialData?: TypeTesterBlockData;
+};
+
+// Updates Block modal
+export type UpdatesBlockModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (data: UpdatesBlockData) => void;
+  initialData?: UpdatesBlockData;
+};
+
+// Shop Block modal
+export type ShopBlockModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (data: ShopBlockData) => void;
+  initialData?: ShopBlockData;
+  typefaceFonts: {
+    id: string;
+    styleName?: string;
+    weight?: number;
+  }[];
+};
+
 // Typeface page
 export type TypefaceBlocksListProps = {
   availableBlocks: TypefaceLayoutBlock[];
@@ -834,6 +899,9 @@ export type DownloadButtonsProps = {
   typefaceName: string;
   specimenUrl?: string;
   trialFontUrls?: { styleName: string; file: string }[];
+  showTrialFonts?: boolean;
+  showSpecimen?: boolean;
+  backgroundColor?: string;
 };
 
 // Input components

@@ -17,6 +17,7 @@ export default function TypefacePageLayoutBuilder({
   value,
   onChange,
   studioId,
+  typefaceFonts,
 }: TypefacePageLayoutBuilderProps) {
   const activeItems = useMemo(
     () =>
@@ -89,6 +90,7 @@ export default function TypefacePageLayoutBuilder({
         handleUpdateData={handleUpdateData}
         getLabelForId={getLabelForId}
         studioId={studioId}
+        typefaceFonts={typefaceFonts}
       />
     </div>
   );

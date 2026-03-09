@@ -91,6 +91,8 @@ export default function TypefaceDetail({
     Partial<StudioTypeface>
   >({});
   const [hasChanges, setHasChanges] = useState(false);
+  const formDataRef = useRef(formData);
+  formDataRef.current = formData;
 
   const typeface = studio?.typefaces.find(
     (t) => t.slug === typefaceSlug
@@ -229,6 +231,29 @@ export default function TypefaceDetail({
     if (typeface) updateActiveSection();
   }, [typeface, updateActiveSection]);
 
+  const saveToFirebase = useCallback(
+    async (dataToSave: Partial<StudioTypeface>) => {
+      if (!typeface) return;
+      setIsSaving(true);
+      try {
+        await updateTypeface(typeface.id, {
+          ...dataToSave,
+          characters:
+            parseInt(
+              dataToSave.characters?.toString() || "0",
+              10
+            ) || 0,
+        });
+        setHasChanges(false);
+      } catch (err) {
+        console.error("Failed to save typeface:", err);
+      } finally {
+        setIsSaving(false);
+      }
+    },
+    [typeface, updateTypeface]
+  );
+
   const handleInputChange = useCallback(
     (
       e: React.ChangeEvent<
@@ -328,25 +353,27 @@ export default function TypefaceDetail({
     []
   );
 
-  const handleSaveFont = useCallback((font: Font) => {
-    setFormData((prev) => {
+  const handleSaveFont = useCallback(
+    (font: Font) => {
+      const prev = formDataRef.current;
       const existingFonts = prev.fonts || [];
       const existingIndex = existingFonts.findIndex(
         (f) => f.id === font.id
       );
-
-      if (existingIndex >= 0) {
-        // Edit existing font
-        const updatedFonts = [...existingFonts];
-        updatedFonts[existingIndex] = font;
-        return { ...prev, fonts: updatedFonts };
-      } else {
-        // Add new font
-        return { ...prev, fonts: [...existingFonts, font] };
-      }
-    });
-    setHasChanges(true);
-  }, []);
+      const updatedFonts =
+        existingIndex >= 0
+          ? (() => {
+              const next = [...existingFonts];
+              next[existingIndex] = font;
+              return next;
+            })()
+          : [...existingFonts, font];
+      const next = { ...prev, fonts: updatedFonts };
+      setFormData(next);
+      saveToFirebase(next);
+    },
+    [saveToFirebase]
+  );
 
   const handleEditFont = useCallback((font: Font) => {
     setEditingFont(font);
@@ -391,8 +418,9 @@ export default function TypefaceDetail({
   }, []);
 
   // ── Package handlers ──
-  const handleSavePackage = useCallback((pkg: Package) => {
-    setFormData((prev) => {
+  const handleSavePackage = useCallback(
+    (pkg: Package) => {
+      const prev = formDataRef.current;
       const existing = prev.packages || [];
       const idx = existing.findIndex(
         (p) => p.id === pkg.id
@@ -401,12 +429,14 @@ export default function TypefaceDetail({
         idx >= 0
           ? existing.map((p) => (p.id === pkg.id ? pkg : p))
           : [...existing, pkg];
-      return { ...prev, packages: updated };
-    });
-    setHasChanges(true);
-    setIsPackageModalOpen(false);
-    setEditingPackage(null);
-  }, []);
+      const next = { ...prev, packages: updated };
+      setFormData(next);
+      saveToFirebase(next);
+      setIsPackageModalOpen(false);
+      setEditingPackage(null);
+    },
+    [saveToFirebase]
+  );
 
   const handleEditPackageClick = useCallback(
     (pkg: Package) => {
@@ -436,13 +466,14 @@ export default function TypefaceDetail({
 
   const handleTypefacePageLayoutChange = useCallback(
     (layout: TypefaceLayoutItem[]) => {
-      setFormData((prev) => ({
-        ...prev,
+      const next = {
+        ...formDataRef.current,
         typefacePageLayout: layout,
-      }));
-      setHasChanges(true);
+      };
+      setFormData(next);
+      saveToFirebase(next);
     },
-    []
+    [saveToFirebase]
   );
 
   const handlePageBackgroundChange = useCallback(
@@ -683,6 +714,13 @@ export default function TypefaceDetail({
           }
           studioId={studio?.id || ""}
           typefaceId={typeface?.id || ""}
+          typefaceFonts={(formData.fonts || []).map(
+            (f) => ({
+              id: f.id,
+              styleName: f.styleName,
+              weight: f.weight,
+            })
+          )}
         />
       </div>
 

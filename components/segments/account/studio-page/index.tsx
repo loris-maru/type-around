@@ -141,6 +141,35 @@ export default function AccountStudioPage() {
     [studio]
   );
 
+  const saveToFirebase = useCallback(
+    async (data: {
+      form: Record<string, string>;
+      layout: LayoutItem[];
+    }) => {
+      const payload: Parameters<
+        typeof updateStudioPageSettings
+      >[0] = {};
+
+      if (data.form) {
+        payload.headerFont = data.form.headerFont;
+        payload.textFont = data.form.textFont;
+        const from = data.form.gradientFrom;
+        const to = data.form.gradientTo;
+        if (from && to) {
+          payload.gradient = { from, to };
+        }
+      }
+
+      payload.pageLayout =
+        data.layout?.length > 0
+          ? data.layout
+          : DEFAULT_PAGE_LAYOUT;
+
+      await updateStudioPageSettings(payload);
+    },
+    [updateStudioPageSettings]
+  );
+
   const handleFormChange = useCallback(
     (values: Record<string, string>) => {
       const prev = formValuesRef.current;
@@ -174,37 +203,13 @@ export default function AccountStudioPage() {
     (layout: LayoutItem[]) => {
       persistToStorage(formValuesRef.current, layout);
       setPageLayout(layout);
+      // Immediately save to Firebase when layout changes (e.g. from modal save)
+      saveToFirebase({
+        form: formValuesRef.current,
+        layout,
+      });
     },
-    [persistToStorage]
-  );
-
-  const saveToFirebase = useCallback(
-    async (data: {
-      form: Record<string, string>;
-      layout: LayoutItem[];
-    }) => {
-      const payload: Parameters<
-        typeof updateStudioPageSettings
-      >[0] = {};
-
-      if (data.form) {
-        payload.headerFont = data.form.headerFont;
-        payload.textFont = data.form.textFont;
-        const from = data.form.gradientFrom;
-        const to = data.form.gradientTo;
-        if (from && to) {
-          payload.gradient = { from, to };
-        }
-      }
-
-      payload.pageLayout =
-        data.layout?.length > 0
-          ? data.layout
-          : DEFAULT_PAGE_LAYOUT;
-
-      await updateStudioPageSettings(payload);
-    },
-    [updateStudioPageSettings]
+    [persistToStorage, saveToFirebase]
   );
 
   const combinedData = useMemo(

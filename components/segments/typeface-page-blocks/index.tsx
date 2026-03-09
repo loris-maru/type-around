@@ -6,7 +6,14 @@ import type {
   StoreBlockData,
   VideoBlockData,
 } from "@/types/layout";
-import type { CharacterSetBlockData } from "@/types/layout-typeface";
+import type {
+  AboutBlockData,
+  CharacterSetBlockData,
+  DownloadBlockData,
+  ShopBlockData,
+  TypeTesterBlockData,
+  UpdatesBlockData,
+} from "@/types/layout-typeface";
 import type { TypefacePageBlocksProps } from "@/types/typeface-page-blocks";
 import AboutBlock from "./about-block";
 import CharacterSetBlock from "./character-set-block";
@@ -40,35 +47,62 @@ export default function TypefacePageBlocks({
     <>
       {blocks.map((block) => {
         switch (block.blockId) {
-          case "type-tester":
+          case "type-tester": {
+            const ttData = block.data as
+              | TypeTesterBlockData
+              | undefined;
             return (
               <TypeTesterBlock
                 key={block.key}
                 typetesterFonts={typetesterFonts}
+                data={ttData}
               />
             );
+          }
 
-          case "about":
+          case "about": {
+            const aboutData = block.data as
+              | AboutBlockData
+              | undefined;
             return (
               <AboutBlock
                 key={block.key}
                 rawTypeface={rawTypeface}
+                data={aboutData}
               />
             );
+          }
 
-          case "download":
+          case "download": {
+            const downloadData = block.data as
+              | DownloadBlockData
+              | undefined;
             return (
               <DownloadBlock
                 key={block.key}
                 rawTypeface={rawTypeface}
                 typefaceName={typefaceName}
+                data={downloadData}
               />
             );
+          }
 
-          case "updates":
-            return <UpdatesBlock key={block.key} />;
+          case "updates": {
+            const updatesData = block.data as
+              | UpdatesBlockData
+              | undefined;
+            return (
+              <UpdatesBlock
+                key={block.key}
+                data={updatesData}
+              />
+            );
+          }
 
-          case "shop":
+          case "shop": {
+            const shopData = block.data as
+              | ShopBlockData
+              | undefined;
             return (
               <ShopBlock
                 key={block.key}
@@ -77,8 +111,10 @@ export default function TypefacePageBlocks({
                 typefaceSlug={typefaceSlug}
                 studioId={studioId}
                 studioSlug={studioSlug}
+                data={shopData}
               />
             );
+          }
 
           case "goodies-shop": {
             const storeData = block.data as

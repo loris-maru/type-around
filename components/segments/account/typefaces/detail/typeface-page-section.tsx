@@ -12,6 +12,7 @@ export default function TypefacePageSection({
   onPageBackgroundChange,
   studioId,
   typefaceId,
+  typefaceFonts,
 }: TypefacePageSectionProps) {
   return (
     <CollapsibleSection title="Typeface page">
@@ -33,6 +34,7 @@ export default function TypefacePageSection({
           onChange={onLayoutChange}
           studioId={studioId}
           typefaceId={typefaceId}
+          typefaceFonts={typefaceFonts}
         />
       </div>
     </CollapsibleSection>

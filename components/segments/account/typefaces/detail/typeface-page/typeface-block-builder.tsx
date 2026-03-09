@@ -3,10 +3,15 @@
 import { Reorder } from "motion/react";
 import { useState } from "react";
 import { RiCloseLine, RiDraggable } from "react-icons/ri";
+import AboutBlockModal from "@/components/modals/modal-about-block";
 import CharacterSetBlockModal from "@/components/modals/modal-character-set-block";
+import DownloadBlockModal from "@/components/modals/modal-download-block";
 import GalleryBlockModal from "@/components/modals/modal-gallery-block";
 import MediaBlockModal from "@/components/modals/modal-media-block";
+import ShopBlockModal from "@/components/modals/modal-shop-block";
 import StoreBlockModal from "@/components/modals/modal-store-block";
+import TypeTesterBlockModal from "@/components/modals/modal-type-tester-block";
+import UpdatesBlockModal from "@/components/modals/modal-updates-block";
 import { LAYOUT_BLOCKS_TYPEFACE } from "@/constant/LAYOUT_BLOCKS_TYPEFACE";
 import type { TypefaceBlockBuilderProps } from "@/types/components";
 import type {
@@ -16,14 +21,24 @@ import type {
   VideoBlockData,
 } from "@/types/layout";
 import type {
+  AboutBlockData,
   CharacterSetBlockData,
+  DownloadBlockData,
+  ShopBlockData,
   TypefaceLayoutBlockId,
   TypefaceLayoutItem,
   TypefaceLayoutItemData,
+  TypeTesterBlockData,
+  UpdatesBlockData,
 } from "@/types/layout-typeface";
 
 const CONFIGURABLE_TYPEFACE_BLOCKS: TypefaceLayoutBlockId[] =
   [
+    "type-tester",
+    "about",
+    "download",
+    "updates",
+    "shop",
     "gallery",
     "image",
     "video",
@@ -38,6 +53,7 @@ export default function TypefaceBlockBuilder({
   handleUpdateData,
   getLabelForId,
   studioId,
+  typefaceFonts,
 }: TypefaceBlockBuilderProps) {
   const [editingItem, setEditingItem] =
     useState<TypefaceLayoutItem | null>(null);
@@ -84,6 +100,19 @@ export default function TypefaceBlockBuilder({
         | VideoBlockData;
       return d.title || (d.url ? "Uploaded" : null);
     }
+    if (blockId === "about") {
+      const d = item.data as AboutBlockData;
+      return d.textAlign ||
+        d.textSize ||
+        d.textColor ||
+        d.backgroundColor ||
+        d.marginTop ||
+        d.marginRight ||
+        d.marginBottom ||
+        d.marginLeft
+        ? "Configured"
+        : null;
+    }
     if (blockId === "character-set") {
       const d = item.data as CharacterSetBlockData;
       return d.backgroundColor || d.fontColor
@@ -95,6 +124,35 @@ export default function TypefaceBlockBuilder({
       const count = d.products?.length || 0;
       return count > 0
         ? `${count} product${count > 1 ? "s" : ""}`
+        : null;
+    }
+    if (blockId === "download") {
+      const d = item.data as DownloadBlockData;
+      return d.showTrialFonts !== undefined ||
+        d.showSpecimen !== undefined ||
+        d.backgroundColor
+        ? "Configured"
+        : null;
+    }
+    if (blockId === "type-tester") {
+      const d = item.data as TypeTesterBlockData;
+      return d.backgroundColor || d.foregroundColor
+        ? "Configured"
+        : null;
+    }
+    if (blockId === "updates") {
+      const d = item.data as UpdatesBlockData;
+      return d.backgroundColor || d.textColor || d.margin
+        ? "Configured"
+        : null;
+    }
+    if (blockId === "shop") {
+      const d = item.data as ShopBlockData;
+      return d.backgroundColor ||
+        d.textColor ||
+        d.margin ||
+        (d.fontOrder?.length ?? 0) > 0
+        ? "Configured"
         : null;
     }
     return null;
@@ -171,6 +229,30 @@ export default function TypefaceBlockBuilder({
         </Reorder.Group>
       )}
 
+      {editingItem?.blockId === "type-tester" && (
+        <TypeTesterBlockModal
+          isOpen
+          onClose={() => setEditingItem(null)}
+          onSave={(d) => handleModalSave(d)}
+          initialData={
+            editingItem.data as
+              | TypeTesterBlockData
+              | undefined
+          }
+        />
+      )}
+
+      {editingItem?.blockId === "about" && (
+        <AboutBlockModal
+          isOpen
+          onClose={() => setEditingItem(null)}
+          onSave={(d) => handleModalSave(d)}
+          initialData={
+            editingItem.data as AboutBlockData | undefined
+          }
+        />
+      )}
+
       {editingItem?.blockId === "gallery" && (
         <GalleryBlockModal
           isOpen
@@ -206,6 +288,42 @@ export default function TypefaceBlockBuilder({
           }
           studioId={studioId}
           type="video"
+        />
+      )}
+
+      {editingItem?.blockId === "updates" && (
+        <UpdatesBlockModal
+          isOpen
+          onClose={() => setEditingItem(null)}
+          onSave={(d) => handleModalSave(d)}
+          initialData={
+            editingItem.data as UpdatesBlockData | undefined
+          }
+        />
+      )}
+
+      {editingItem?.blockId === "shop" && (
+        <ShopBlockModal
+          isOpen
+          onClose={() => setEditingItem(null)}
+          onSave={(d) => handleModalSave(d)}
+          initialData={
+            editingItem.data as ShopBlockData | undefined
+          }
+          typefaceFonts={typefaceFonts}
+        />
+      )}
+
+      {editingItem?.blockId === "download" && (
+        <DownloadBlockModal
+          isOpen
+          onClose={() => setEditingItem(null)}
+          onSave={(d) => handleModalSave(d)}
+          initialData={
+            editingItem.data as
+              | DownloadBlockData
+              | undefined
+          }
         />
       )}
 

@@ -23,6 +23,17 @@ export const SIZE_CLASS_MAP: Record<string, string> = {
   "80": "w-4/5",
 };
 
+/** Vertical margin classes for Updates/Shop blocks (S, M, L, XL) */
+export const BLOCK_MARGIN_CLASS_MAP: Record<
+  string,
+  string
+> = {
+  s: "my-4 lg:my-8",
+  m: "my-8 lg:my-16",
+  l: "my-12 lg:my-24",
+  xl: "my-16 lg:my-32",
+};
+
 export const SPACER_CLASS_MAP: Record<string, string> = {
   s: "h-2 lg:h-8",
   m: "h-4 lg:h-16",

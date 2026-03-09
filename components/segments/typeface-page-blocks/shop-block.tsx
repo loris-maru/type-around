@@ -1,5 +1,6 @@
 import TypefaceShop from "@/components/segments/typeface/shop";
 import type { Font } from "@/types/typefaces";
+import type { ShopBlockData } from "@/types/layout-typeface";
 
 export default function ShopBlock({
   typefaceFonts,
@@ -7,6 +8,7 @@ export default function ShopBlock({
   typefaceSlug,
   studioId,
   studioSlug,
+  data,
 }: {
   typefaceFonts: (Font & {
     id?: string;
@@ -16,6 +18,7 @@ export default function ShopBlock({
   typefaceSlug: string;
   studioId: string;
   studioSlug: string;
+  data?: ShopBlockData;
 }) {
   return (
     <TypefaceShop
@@ -24,6 +27,7 @@ export default function ShopBlock({
       typefaceSlug={typefaceSlug}
       studioId={studioId}
       studioSlug={studioSlug}
+      data={data}
     />
   );
 }

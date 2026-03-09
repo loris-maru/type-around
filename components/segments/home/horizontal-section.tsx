@@ -115,13 +115,6 @@ export default function HorizontalSection({
     );
   }, [studios]);
 
-  useEffect(() => {
-    console.log(
-      "All typefaces from Firebase:",
-      allTypefaces
-    );
-  }, [allTypefaces]);
-
   const filteredTypefaces = useMemo(() => {
     if (selectedCategories.length === 0)
       return allTypefaces;

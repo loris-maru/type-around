@@ -8,10 +8,14 @@ import SingleTypetesterBlock from "./single-block";
 
 export type SingleTypetesterProps = {
   fonts?: TypetesterFont[];
+  initialBackgroundColor?: string;
+  initialForegroundColor?: string;
 };
 
 export default function SingleTypetester({
   fonts = [],
+  initialBackgroundColor,
+  initialForegroundColor,
 }: SingleTypetesterProps) {
   const [blockIds, setBlockIds] = useState<string[]>([
     generateUUID(),
@@ -42,6 +46,8 @@ export default function SingleTypetester({
             canDelete={canDelete}
             onDelete={() => removeBlock(id)}
             fonts={fonts}
+            initialBackgroundColor={initialBackgroundColor}
+            initialForegroundColor={initialForegroundColor}
           />
         ))}
       </div>

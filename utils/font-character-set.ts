@@ -198,12 +198,6 @@ export async function extractCharacterSetFromFont(
   }
 
   const result = processCharacterSet(Array.from(chars));
-  console.log(
-    "[extractCharacterSetFromFont] reference glyph set (outlines only):",
-    result.length,
-    "chars",
-    result
-  );
   return result;
 }
 

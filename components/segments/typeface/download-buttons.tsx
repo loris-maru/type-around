@@ -11,6 +11,9 @@ export default function DownloadButtons({
   typefaceName,
   specimenUrl,
   trialFontUrls,
+  showTrialFonts = true,
+  showSpecimen = true,
+  backgroundColor,
 }: DownloadButtonsProps) {
   const handleDownloadTrialFonts = useCallback(async () => {
     if (!trialFontUrls?.length) return;
@@ -31,12 +34,26 @@ export default function DownloadButtons({
   }, [specimenUrl, typefaceName]);
 
   const hasTrialFonts =
-    trialFontUrls && trialFontUrls.length > 0;
+    showTrialFonts &&
+    trialFontUrls &&
+    trialFontUrls.length > 0;
+  const hasSpecimen = showSpecimen && !!specimenUrl;
 
-  if (!hasTrialFonts && !specimenUrl) return null;
+  if (!hasTrialFonts && !hasSpecimen) return null;
+
+  const sectionStyle: React.CSSProperties = {};
+  if (backgroundColor)
+    sectionStyle.backgroundColor = backgroundColor;
 
   return (
-    <div className="relative flex w-full flex-col px-5 py-12 lg:flex-row lg:px-24 lg:py-32">
+    <div
+      className="relative flex w-full flex-col px-5 py-12 lg:flex-row lg:px-24 lg:py-32"
+      style={
+        Object.keys(sectionStyle).length > 0
+          ? sectionStyle
+          : undefined
+      }
+    >
       <div className="relative flex w-full flex-row">
         {hasTrialFonts && (
           <button
@@ -45,7 +62,7 @@ export default function DownloadButtons({
             name="download-trial-font"
             className={cn(
               "download-button-hover flex cursor-pointer flex-row items-center justify-between gap-2 rounded-2xl border border-neutral-300 px-8 py-8 font-medium font-whisper text-black text-sm transition-all duration-300 ease-in-out hover:-translate-x-1 hover:-translate-y-1 hover:bg-white lg:px-16 lg:py-12",
-              specimenUrl ? "w-full lg:w-1/2" : "w-full"
+              hasSpecimen ? "w-full lg:w-1/2" : "w-full"
             )}
             onClick={handleDownloadTrialFonts}
           >
@@ -55,7 +72,7 @@ export default function DownloadButtons({
             <IconDownload className="h-6 w-6" />
           </button>
         )}
-        {specimenUrl && (
+        {hasSpecimen && (
           <button
             type="button"
             aria-label="Download specimen"
