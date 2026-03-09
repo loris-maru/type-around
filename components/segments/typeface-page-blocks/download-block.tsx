@@ -24,6 +24,7 @@ export default function DownloadBlock({
       showTrialFonts={data?.showTrialFonts}
       showSpecimen={data?.showSpecimen}
       backgroundColor={data?.backgroundColor}
+      textColor={data?.textColor}
     />
   );
 }

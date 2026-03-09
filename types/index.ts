@@ -6,7 +6,17 @@ export * from "./components";
 export * from "./contexts";
 export * from "./forms";
 export * from "./layout";
-export * from "./layout-typeface";
+export {
+  type TypefaceLayoutBlockId,
+  type CharacterSetBlockData,
+  type DownloadBlockData,
+  type BlockMarginSize,
+  type UpdatesBlockData,
+  type ShopBlockData,
+  type TypefaceLayoutItemData,
+  type TypefaceLayoutItem,
+  type TypefaceLayoutBlock,
+} from "./layout-typeface";
 export * from "./specimen";
 export * from "./studio";
 export * from "./studio-page-blocks";

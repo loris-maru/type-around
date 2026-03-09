@@ -78,7 +78,7 @@ export default function TypefacePageLayoutBuilder({
       ?.label || id;
 
   return (
-    <div className="grid grid-cols-4 gap-8">
+    <div className="grid grid-cols-3 gap-8">
       <TypefaceBlocksList
         availableBlocks={availableBlocks}
         handleAdd={handleAdd}

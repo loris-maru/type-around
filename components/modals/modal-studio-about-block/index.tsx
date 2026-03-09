@@ -11,12 +11,11 @@ import { ButtonModalSave } from "@/components/molecules/buttons";
 import ColorPicker from "@/components/molecules/color-picker";
 import { ABOUT_BLOCK_MARGIN_PRESETS } from "@/constant/ABOUT_BLOCK_MARGIN_PRESETS";
 import { useModalOpen } from "@/hooks/use-modal-open";
-import type { AboutBlockModalProps } from "@/types/components";
+import type { StudioAboutBlockModalProps } from "@/types/components";
 import type {
   AboutBlockTextAlign,
   AboutBlockTextSize,
-  BlockMarginSize,
-} from "@/types/layout-typeface";
+} from "@/types/layout";
 import { cn } from "@/utils/class-names";
 import { handleHexChange } from "@/utils/color-utils";
 
@@ -40,12 +39,12 @@ const TEXT_SIZE_OPTIONS: {
   { value: "2xl", label: "2XL" },
 ];
 
-export default function AboutBlockModal({
+export default function StudioAboutBlockModal({
   isOpen,
   onClose,
   onSave,
   initialData,
-}: AboutBlockModalProps) {
+}: StudioAboutBlockModalProps) {
   useModalOpen(isOpen);
 
   const [textAlign, setTextAlign] =
@@ -63,7 +62,7 @@ export default function AboutBlockModal({
     initialData?.backgroundColor || "#ffffff"
   );
   const [margin, setMargin] = useState<
-    BlockMarginSize | ""
+    "s" | "m" | "l" | "xl" | ""
   >(initialData?.margin || "");
 
   const handleSave = () => {
@@ -125,11 +124,12 @@ export default function AboutBlockModal({
                       type="button"
                       onClick={() => setTextAlign(value)}
                       aria-label={`Align ${value}`}
-                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border transition-colors ${
+                      className={cn(
+                        "flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border transition-colors",
                         textAlign === value
                           ? "border-black bg-black text-white"
                           : "border-neutral-300 bg-white text-neutral-600 hover:border-neutral-400"
-                      }`}
+                      )}
                     >
                       <Icon className="h-5 w-5" />
                     </button>
@@ -149,11 +149,12 @@ export default function AboutBlockModal({
                       key={value}
                       type="button"
                       onClick={() => setTextSize(value)}
-                      className={`flex min-w-0 flex-1 items-center justify-center rounded-lg border px-2 py-2 font-medium font-whisper text-sm transition-colors ${
+                      className={cn(
+                        "flex min-w-0 flex-1 items-center justify-center rounded-lg border px-2 py-2 font-medium font-whisper text-sm transition-colors",
                         textSize === value
                           ? "border-black bg-black text-white"
                           : "border-neutral-300 bg-white text-neutral-700 hover:border-neutral-400"
-                      }`}
+                      )}
                     >
                       {label}
                     </button>
@@ -170,7 +171,7 @@ export default function AboutBlockModal({
               </span>
               <div className="flex items-center gap-2">
                 <ColorPicker
-                  id="about-text-color"
+                  id="studio-about-text-color"
                   value={textColor || "#000000"}
                   onChange={setTextColor}
                 />
@@ -196,7 +197,7 @@ export default function AboutBlockModal({
               </span>
               <div className="flex items-center gap-2">
                 <ColorPicker
-                  id="about-bg-color"
+                  id="studio-about-bg-color"
                   value={backgroundColor || "#ffffff"}
                   onChange={setBackgroundColor}
                 />

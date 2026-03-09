@@ -56,8 +56,12 @@ export type GlobalTypetesterBlockProps = {
   canDelete?: boolean;
   onDelete?: () => void;
   typefaces?: TypetesterTypeface[];
+  initialBackgroundColor?: string;
+  initialFontColor?: string;
 };
 
 export type GlobalTypetesterProps = {
   typefaces?: TypetesterTypeface[];
+  backgroundColor?: string;
+  fontColor?: string;
 };

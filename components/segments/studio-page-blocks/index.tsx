@@ -2,12 +2,15 @@
 
 import { useMemo } from "react";
 import type {
+  AboutBlockData,
   BlogBlockData,
+  FontsInUseBlockData,
   GalleryBlockData,
   ImageBlockData,
   SpacerBlockData,
   StoreBlockData,
   TypefaceListBlockData,
+  TypeTesterBlockData,
   VideoBlockData,
 } from "@/types/layout";
 import type { StudioPageBlocksProps } from "@/types/studio-page-blocks";
@@ -58,21 +61,31 @@ export default function StudioPageBlocks({
     <>
       {blocks.map((block) => {
         switch (block.blockId) {
-          case "about":
+          case "about": {
+            const aboutData = block.data as
+              | AboutBlockData
+              | undefined;
             return (
               <AboutBlock
                 key={block.key}
                 studio={studio}
+                data={aboutData}
               />
             );
+          }
 
-          case "type-tester":
+          case "type-tester": {
+            const ttData = block.data as
+              | TypeTesterBlockData
+              | undefined;
             return (
               <TypeTesterBlock
                 key={block.key}
                 typefaces={typetesterTypefaces}
+                data={ttData}
               />
             );
+          }
 
           case "typeface-list": {
             const tfData = block.data as
@@ -88,8 +101,17 @@ export default function StudioPageBlocks({
             );
           }
 
-          case "fonts-in-use":
-            return <FontsInUseBlock key={block.key} />;
+          case "fonts-in-use": {
+            const fiuData = block.data as
+              | FontsInUseBlockData
+              | undefined;
+            return (
+              <FontsInUseBlock
+                key={block.key}
+                data={fiuData}
+              />
+            );
+          }
 
           case "gallery": {
             const galleryData = block.data as

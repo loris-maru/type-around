@@ -5,21 +5,21 @@ import { RiCloseLine } from "react-icons/ri";
 import { ButtonModalSave } from "@/components/molecules/buttons";
 import ColorPicker from "@/components/molecules/color-picker";
 import { useModalOpen } from "@/hooks/use-modal-open";
-import type { DownloadBlockModalProps } from "@/types/components";
+import type { FontsInUseBlockModalProps } from "@/types/components";
 import { handleHexChange } from "@/utils/color-utils";
 
-export default function DownloadBlockModal({
+export default function FontsInUseBlockModal({
   isOpen,
   onClose,
   onSave,
   initialData,
-}: DownloadBlockModalProps) {
+}: FontsInUseBlockModalProps) {
   useModalOpen(isOpen);
 
   if (!isOpen) return null;
 
   return (
-    <DownloadBlockModalInner
+    <FontsInUseBlockModalInner
       onClose={onClose}
       onSave={onSave}
       initialData={initialData}
@@ -27,30 +27,22 @@ export default function DownloadBlockModal({
   );
 }
 
-function DownloadBlockModalInner({
+function FontsInUseBlockModalInner({
   onClose,
   onSave,
   initialData,
-}: Omit<DownloadBlockModalProps, "isOpen">) {
-  const [showTrialFonts, setShowTrialFonts] = useState(
-    initialData?.showTrialFonts ?? true
-  );
-  const [showSpecimen, setShowSpecimen] = useState(
-    initialData?.showSpecimen ?? true
-  );
+}: Omit<FontsInUseBlockModalProps, "isOpen">) {
   const [backgroundColor, setBackgroundColor] = useState(
     initialData?.backgroundColor || "#ffffff"
   );
-  const [textColor, setTextColor] = useState(
-    initialData?.textColor || "#000000"
+  const [fontColor, setFontColor] = useState(
+    initialData?.fontColor || "#000000"
   );
 
   const handleSave = () => {
     onSave({
-      showTrialFonts,
-      showSpecimen,
       backgroundColor: backgroundColor || undefined,
-      textColor: textColor || undefined,
+      fontColor: fontColor || undefined,
     });
     onClose();
   };
@@ -71,7 +63,7 @@ function DownloadBlockModalInner({
       <div className="relative mx-4 flex max-h-[90vh] w-full max-w-lg flex-col rounded-lg bg-white">
         <div className="flex shrink-0 items-center justify-between border-neutral-200 border-b p-6">
           <h2 className="font-bold font-ortank text-xl">
-            Download Block
+            Fonts in Use Block
           </h2>
           <button
             type="button"
@@ -85,37 +77,8 @@ function DownloadBlockModalInner({
 
         <div className="min-h-0 flex-1 space-y-6 overflow-y-auto overscroll-contain p-6">
           <p className="font-whisper text-neutral-600 text-sm">
-            Choose which download options to display.
+            Customize the fonts in use section appearance.
           </p>
-
-          <div className="flex flex-col gap-3">
-            <label className="flex cursor-pointer items-center gap-3">
-              <input
-                type="checkbox"
-                checked={showTrialFonts}
-                onChange={(e) =>
-                  setShowTrialFonts(e.target.checked)
-                }
-                className="h-4 w-4 rounded border-neutral-300"
-              />
-              <span className="font-medium font-whisper text-sm">
-                Trial fonts
-              </span>
-            </label>
-            <label className="flex cursor-pointer items-center gap-3">
-              <input
-                type="checkbox"
-                checked={showSpecimen}
-                onChange={(e) =>
-                  setShowSpecimen(e.target.checked)
-                }
-                className="h-4 w-4 rounded border-neutral-300"
-              />
-              <span className="font-medium font-whisper text-sm">
-                Specimen
-              </span>
-            </label>
-          </div>
 
           <div className="flex flex-wrap gap-6">
             <div className="min-w-0 flex-1">
@@ -124,7 +87,7 @@ function DownloadBlockModalInner({
               </span>
               <div className="flex items-center gap-2">
                 <ColorPicker
-                  id="download-bg-color"
+                  id="fiu-bg-color"
                   value={backgroundColor || "#ffffff"}
                   onChange={setBackgroundColor}
                 />
@@ -149,17 +112,17 @@ function DownloadBlockModalInner({
               </span>
               <div className="flex items-center gap-2">
                 <ColorPicker
-                  id="download-text-color"
-                  value={textColor || "#000000"}
-                  onChange={setTextColor}
+                  id="fiu-text-color"
+                  value={fontColor || "#000000"}
+                  onChange={setFontColor}
                 />
                 <input
                   type="text"
-                  value={textColor}
+                  value={fontColor}
                   onChange={(e) =>
                     handleHexChange(
                       e.target.value,
-                      setTextColor
+                      setFontColor
                     )
                   }
                   maxLength={7}
@@ -174,8 +137,8 @@ function DownloadBlockModalInner({
             <ButtonModalSave
               type="button"
               onClick={handleSave}
-              label="Save Download Block"
-              aria-label="Save download block"
+              label="Save Fonts in Use Block"
+              aria-label="Save fonts in use block"
             />
           </div>
         </div>

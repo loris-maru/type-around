@@ -3,11 +3,21 @@
 import { Reorder } from "motion/react";
 import { useState } from "react";
 import { RiCloseLine, RiDraggable } from "react-icons/ri";
+import FontsInUseBlockModal from "@/components/modals/modal-fonts-in-use-block";
+import GalleryBlockModal from "@/components/modals/modal-gallery-block";
+import MediaBlockModal from "@/components/modals/modal-media-block";
+import SpacerBlockModal from "@/components/modals/modal-spacer-block";
+import StoreBlockModal from "@/components/modals/modal-store-block";
+import StudioAboutBlockModal from "@/components/modals/modal-studio-about-block";
+import TypeTesterBlockModal from "@/components/modals/modal-type-tester-block";
+import TypefaceListBlockModal from "@/components/modals/modal-typeface-list-block";
 import { CONFIGURABLE_BLOCKS } from "@/constant/BLOCK_CLASS_MAPS";
 import { LAYOUT_BLOCKS } from "@/constant/LAYOUT_BLOCKS";
 import type { BlockBuilderProps } from "@/types/components";
 import type {
+  AboutBlockData,
   BlogBlockData,
+  FontsInUseBlockData,
   GalleryBlockData,
   ImageBlockData,
   LayoutBlockId,
@@ -16,15 +26,11 @@ import type {
   SpacerBlockData,
   StoreBlockData,
   TypefaceListBlockData,
+  TypeTesterBlockData,
   VideoBlockData,
 } from "@/types/layout";
 import { cn } from "@/utils/class-names";
 import BlogBlockInline from "./blog-block-inline";
-import GalleryBlockModal from "@/components/modals/modal-gallery-block";
-import MediaBlockModal from "@/components/modals/modal-media-block";
-import SpacerBlockModal from "@/components/modals/modal-spacer-block";
-import StoreBlockModal from "@/components/modals/modal-store-block";
-import TypefaceListBlockModal from "@/components/modals/modal-typeface-list-block";
 
 export default function BlockBuilder({
   activeItems,
@@ -57,6 +63,59 @@ export default function BlockBuilder({
     if (editingItem) {
       handleUpdateData(editingItem.key, data);
     }
+  };
+
+  const getBlockColors = (
+    item: LayoutItem
+  ): { bg?: string; text?: string } | null => {
+    const blockId = item.blockId;
+    const d = item.data;
+    if (blockId === "gallery") {
+      const data = d as GalleryBlockData | undefined;
+      return {
+        bg: data?.backgroundColor ?? "#ffffff",
+        text: data?.fontColor ?? "#000000",
+      };
+    }
+    if (blockId === "image" || blockId === "video") {
+      const data = d as
+        | ImageBlockData
+        | VideoBlockData
+        | undefined;
+      return {
+        bg: data?.backgroundColor ?? "#ffffff",
+        text: data?.fontColor ?? "#000000",
+      };
+    }
+    if (blockId === "typeface-list") {
+      const data = d as TypefaceListBlockData | undefined;
+      return {
+        bg: data?.backgroundColor ?? "#ffffff",
+        text: data?.fontColor ?? "#000000",
+      };
+    }
+    if (blockId === "fonts-in-use") {
+      const data = d as FontsInUseBlockData | undefined;
+      return {
+        bg: data?.backgroundColor ?? "#ffffff",
+        text: data?.fontColor ?? "#000000",
+      };
+    }
+    if (blockId === "about") {
+      const data = d as AboutBlockData | undefined;
+      return {
+        bg: data?.backgroundColor ?? "#ffffff",
+        text: data?.textColor ?? "#000000",
+      };
+    }
+    if (blockId === "type-tester") {
+      const data = d as TypeTesterBlockData | undefined;
+      return {
+        bg: data?.backgroundColor ?? "#ffffff",
+        text: data?.foregroundColor ?? "#000000",
+      };
+    }
+    return null;
   };
 
   const getBlockSummary = (
@@ -108,7 +167,7 @@ export default function BlockBuilder({
           axis="y"
           values={activeItems}
           onReorder={handleReorder}
-          className="flex flex-col gap-2 rounded-lg border border-neutral-300 bg-white p-6"
+          className="flex flex-col gap-2 rounded-lg border border-neutral-300 p-4"
         >
           {activeItems.map((item) => {
             // Blog block gets special inline rendering
@@ -137,55 +196,96 @@ export default function BlockBuilder({
 
             const repeatable = isRepeatable(item.blockId);
             const summary = getBlockSummary(item);
+            const colors = getBlockColors(item);
             const isSpacer = item.blockId === "spacer";
+            const isConfigurable =
+              CONFIGURABLE_BLOCKS.includes(item.blockId);
 
             return (
               <Reorder.Item
                 key={item.key}
                 value={item}
                 className={cn(
-                  "flex cursor-grab items-center gap-2 rounded-lg border bg-white transition-shadow active:cursor-grabbing active:shadow-md",
+                  "flex min-h-[96px] cursor-grab items-center gap-2 rounded-lg border bg-white transition-shadow active:cursor-grabbing active:shadow-md",
                   isSpacer
                     ? "border-blue-400 active:border-blue-600"
                     : "border-neutral-300 active:border-black"
                 )}
               >
-                <div className="shrink-0 cursor-grab py-3 pl-3">
+                <div className="shrink-0 cursor-grab py-6 pl-3">
                   <RiDraggable className="h-4 w-4 text-neutral-400" />
                 </div>
 
-                {repeatable ||
-                CONFIGURABLE_BLOCKS.includes(
-                  item.blockId
-                ) ? (
+                {repeatable || isConfigurable ? (
                   <button
                     type="button"
                     onClick={() => handleBlockClick(item)}
-                    className="flex flex-1 cursor-pointer items-center gap-2 py-3 text-left transition-colors hover:text-black"
+                    className={cn(
+                      "flex min-h-[96px] flex-1 cursor-pointer flex-col items-start justify-center gap-1 py-6 text-left transition-colors hover:text-black"
+                    )}
                   >
                     <span
                       className={cn(
-                        "font-medium font-whisper text-sm",
+                        "font-medium font-whisper text-lg",
                         isSpacer && "text-blue-500"
                       )}
                     >
                       {getLabelForId(item.blockId)}
                     </span>
-                    {summary && (
-                      <span
-                        className={cn(
-                          "font-whisper text-sm",
-                          isSpacer
-                            ? "text-blue-400"
-                            : "text-neutral-500"
+                    {(colors || summary) && (
+                      <span className="flex flex-wrap items-center gap-x-5 gap-y-1">
+                        {colors && (
+                          <>
+                            <span className="flex items-center gap-1.5">
+                              <span className="font-whisper text-neutral-500 text-xs">
+                                Background
+                              </span>
+                              <span
+                                className="h-3 w-3 shrink-0 rounded border border-neutral-300"
+                                style={{
+                                  backgroundColor:
+                                    colors.bg,
+                                }}
+                                title="Background"
+                              />
+                            </span>
+                            <span className="flex items-center gap-1.5">
+                              <span className="font-whisper text-neutral-500 text-xs">
+                                Text
+                              </span>
+                              <span
+                                className="h-3 w-3 shrink-0 rounded border border-neutral-300"
+                                style={{
+                                  backgroundColor:
+                                    colors.text,
+                                }}
+                                title="Text"
+                              />
+                            </span>
+                          </>
                         )}
-                      >
-                        — {summary}
+                        {summary && (
+                          <span
+                            className={cn(
+                              "font-whisper text-sm",
+                              isSpacer
+                                ? "text-blue-400"
+                                : "text-neutral-500"
+                            )}
+                          >
+                            — {summary}
+                          </span>
+                        )}
                       </span>
                     )}
                   </button>
                 ) : (
-                  <span className="flex-1 py-3 font-medium font-whisper text-sm">
+                  <span
+                    className={cn(
+                      "flex min-h-[96px] flex-1 items-center py-6 font-medium font-whisper text-lg",
+                      isSpacer && "text-blue-500"
+                    )}
+                  >
                     {getLabelForId(item.blockId)}
                   </span>
                 )}
@@ -194,7 +294,7 @@ export default function BlockBuilder({
                   type="button"
                   onClick={() => handleRemove(item.key)}
                   aria-label={`Remove ${getLabelForId(item.blockId)} block`}
-                  className="mr-3 cursor-pointer rounded p-1 transition-colors hover:bg-neutral-100"
+                  className="mr-3 shrink-0 rounded p-1 transition-colors hover:bg-neutral-100"
                 >
                   <RiCloseLine className="h-4 w-4 text-neutral-400 hover:text-black" />
                 </button>
@@ -279,6 +379,46 @@ export default function BlockBuilder({
           initialData={
             editingItem.data as
               | TypefaceListBlockData
+              | undefined
+          }
+        />
+      )}
+
+      {/* Fonts in Use modal */}
+      {editingItem?.blockId === "fonts-in-use" && (
+        <FontsInUseBlockModal
+          isOpen
+          onClose={() => setEditingItem(null)}
+          onSave={handleModalSave}
+          initialData={
+            editingItem.data as
+              | FontsInUseBlockData
+              | undefined
+          }
+        />
+      )}
+
+      {/* About modal */}
+      {editingItem?.blockId === "about" && (
+        <StudioAboutBlockModal
+          isOpen
+          onClose={() => setEditingItem(null)}
+          onSave={handleModalSave}
+          initialData={
+            editingItem.data as AboutBlockData | undefined
+          }
+        />
+      )}
+
+      {/* Type Tester modal */}
+      {editingItem?.blockId === "type-tester" && (
+        <TypeTesterBlockModal
+          isOpen
+          onClose={() => setEditingItem(null)}
+          onSave={handleModalSave}
+          initialData={
+            editingItem.data as
+              | TypeTesterBlockData
               | undefined
           }
         />

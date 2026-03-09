@@ -11,20 +11,29 @@ export default function StudioProfile({
   fonts,
   description,
   designers = [],
+  sectionStyle,
+  textSizeClass,
+  textAlignClass,
+  defaultMargin = true,
 }: {
   image: string;
   families: number;
   fonts: number;
   description: string;
   designers?: Designer[];
+  sectionStyle?: React.CSSProperties;
+  textSizeClass?: string;
+  textAlignClass?: string;
+  defaultMargin?: boolean;
 }) {
   const { displayFontFamily, textFontFamily } =
     useStudioFonts();
 
   return (
     <section
-      className="relative my-12 flex w-full flex-col gap-y-10 px-8 lg:my-32 lg:px-56"
+      className={`relative flex w-full flex-col gap-y-10 px-8 lg:px-56 ${defaultMargin ? "my-12 lg:my-32" : ""}`}
       id="about"
+      style={sectionStyle}
     >
       <div className="relative flex w-full flex-col items-stretch gap-x-12 gap-y-10 lg:flex-row lg:gap-x-12">
         <div className="relative h-[50vh] w-full shrink-0 overflow-hidden rounded-lg border border-black shadow-button lg:h-auto lg:w-1/3">
@@ -47,7 +56,7 @@ export default function StudioProfile({
           </header>
           <div className="relative my-4 h-px w-full bg-neutral-300" />
           <p
-            className="relative font-normal text-xl leading-relaxed"
+            className={`relative font-normal leading-relaxed ${textSizeClass || "text-xl"} ${textAlignClass || ""}`}
             style={{ fontFamily: textFontFamily }}
           >
             {description}

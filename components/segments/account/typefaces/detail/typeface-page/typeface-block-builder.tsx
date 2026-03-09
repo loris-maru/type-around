@@ -81,6 +81,49 @@ export default function TypefaceBlockBuilder({
     }
   };
 
+  const getBlockColors = (
+    item: TypefaceLayoutItem
+  ): { bg?: string; text?: string } | null => {
+    const blockId = item.blockId;
+    const d = item.data;
+    if (blockId === "type-tester") {
+      const data = d as TypeTesterBlockData | undefined;
+      return {
+        bg: data?.backgroundColor ?? "#ffffff",
+        text: data?.foregroundColor ?? "#000000",
+      };
+    }
+    if (blockId === "about") {
+      const data = d as AboutBlockData | undefined;
+      return {
+        bg: data?.backgroundColor ?? "#ffffff",
+        text: data?.textColor ?? "#000000",
+      };
+    }
+    if (blockId === "download") {
+      const data = d as DownloadBlockData | undefined;
+      return {
+        bg: data?.backgroundColor ?? "#ffffff",
+        text: data?.textColor ?? "#000000",
+      };
+    }
+    if (blockId === "updates") {
+      const data = d as UpdatesBlockData | undefined;
+      return {
+        bg: data?.backgroundColor ?? "#ffffff",
+        text: data?.textColor ?? "#000000",
+      };
+    }
+    if (blockId === "shop") {
+      const data = d as ShopBlockData | undefined;
+      return {
+        bg: data?.backgroundColor ?? "#ffffff",
+        text: data?.textColor ?? "#000000",
+      };
+    }
+    return null;
+  };
+
   const getBlockSummary = (
     item: TypefaceLayoutItem
   ): string | null => {
@@ -101,23 +144,10 @@ export default function TypefaceBlockBuilder({
       return d.title || (d.url ? "Uploaded" : null);
     }
     if (blockId === "about") {
-      const d = item.data as AboutBlockData;
-      return d.textAlign ||
-        d.textSize ||
-        d.textColor ||
-        d.backgroundColor ||
-        d.marginTop ||
-        d.marginRight ||
-        d.marginBottom ||
-        d.marginLeft
-        ? "Configured"
-        : null;
+      return null;
     }
     if (blockId === "character-set") {
-      const d = item.data as CharacterSetBlockData;
-      return d.backgroundColor || d.fontColor
-        ? "Configured"
-        : null;
+      return null;
     }
     if (blockId === "goodies-shop") {
       const d = item.data as StoreBlockData;
@@ -127,39 +157,22 @@ export default function TypefaceBlockBuilder({
         : null;
     }
     if (blockId === "download") {
-      const d = item.data as DownloadBlockData;
-      return d.showTrialFonts !== undefined ||
-        d.showSpecimen !== undefined ||
-        d.backgroundColor
-        ? "Configured"
-        : null;
+      return null;
     }
     if (blockId === "type-tester") {
-      const d = item.data as TypeTesterBlockData;
-      return d.backgroundColor || d.foregroundColor
-        ? "Configured"
-        : null;
+      return null;
     }
     if (blockId === "updates") {
-      const d = item.data as UpdatesBlockData;
-      return d.backgroundColor || d.textColor || d.margin
-        ? "Configured"
-        : null;
+      return null;
     }
     if (blockId === "shop") {
-      const d = item.data as ShopBlockData;
-      return d.backgroundColor ||
-        d.textColor ||
-        d.margin ||
-        (d.fontOrder?.length ?? 0) > 0
-        ? "Configured"
-        : null;
+      return null;
     }
     return null;
   };
 
   return (
-    <div className="col-span-3">
+    <div className="col-span-2">
       <h3 className="mb-3 font-normal font-whisper text-neutral-500 text-sm">
         Page content blocks
       </h3>
@@ -174,11 +187,12 @@ export default function TypefaceBlockBuilder({
           axis="y"
           values={activeItems}
           onReorder={handleReorder}
-          className="flex flex-col gap-2 rounded-lg border border-neutral-300 bg-white p-6"
+          className="flex flex-col gap-2 rounded-lg border border-neutral-300 p-4"
         >
           {activeItems.map((item) => {
             const repeatable = isRepeatable(item.blockId);
             const summary = getBlockSummary(item);
+            const colors = getBlockColors(item);
             const isConfigurable =
               CONFIGURABLE_TYPEFACE_BLOCKS.includes(
                 item.blockId
@@ -188,9 +202,9 @@ export default function TypefaceBlockBuilder({
               <Reorder.Item
                 key={item.key}
                 value={item}
-                className="flex cursor-grab items-center gap-2 rounded-lg border border-neutral-300 bg-white transition-shadow active:cursor-grabbing active:shadow-md"
+                className="flex min-h-[96px] cursor-grab items-center gap-2 rounded-lg border border-neutral-300 bg-white transition-shadow active:cursor-grabbing active:shadow-md"
               >
-                <div className="shrink-0 cursor-grab py-3 pl-3">
+                <div className="shrink-0 cursor-grab py-6 pl-3">
                   <RiDraggable className="h-4 w-4 text-neutral-400" />
                 </div>
 
@@ -198,19 +212,53 @@ export default function TypefaceBlockBuilder({
                   <button
                     type="button"
                     onClick={() => handleBlockClick(item)}
-                    className="flex flex-1 cursor-pointer items-center gap-2 py-3 text-left transition-colors hover:text-black"
+                    className="flex min-h-[96px] flex-1 cursor-pointer flex-col items-start justify-center gap-1 py-6 text-left transition-colors hover:text-black"
                   >
-                    <span className="font-medium font-whisper text-sm">
+                    <span className="font-bold font-whisper text-lg">
                       {getLabelForId(item.blockId)}
                     </span>
-                    {summary && (
-                      <span className="font-whisper text-neutral-500 text-sm">
-                        — {summary}
-                      </span>
+                    {(colors || summary) && (
+                      <div className="flex flex-row items-center gap-4">
+                        {colors && (
+                          <>
+                            <span className="flex items-center gap-1.5">
+                              <span className="font-whisper text-neutral-500 text-xs">
+                                Background
+                              </span>
+                              <span
+                                className="h-3 w-3 shrink-0 rounded border border-neutral-300"
+                                style={{
+                                  backgroundColor:
+                                    colors.bg,
+                                }}
+                                title="Background"
+                              />
+                            </span>
+                            <span className="flex items-center gap-1.5">
+                              <span className="font-whisper text-neutral-500 text-xs">
+                                Text
+                              </span>
+                              <span
+                                className="h-3 w-3 shrink-0 rounded border border-neutral-300"
+                                style={{
+                                  backgroundColor:
+                                    colors.text,
+                                }}
+                                title="Text"
+                              />
+                            </span>
+                          </>
+                        )}
+                        {summary && (
+                          <span className="font-whisper text-neutral-500 text-sm">
+                            — {summary}
+                          </span>
+                        )}
+                      </div>
                     )}
                   </button>
                 ) : (
-                  <span className="flex-1 py-3 font-medium font-whisper text-sm">
+                  <span className="flex min-h-[96px] flex-1 items-center py-6 font-medium font-whisper text-lg">
                     {getLabelForId(item.blockId)}
                   </span>
                 )}
@@ -219,7 +267,7 @@ export default function TypefaceBlockBuilder({
                   type="button"
                   onClick={() => handleRemove(item.key)}
                   aria-label={`Remove ${getLabelForId(item.blockId)} block`}
-                  className="mr-3 rounded p-1 transition-colors hover:bg-neutral-100"
+                  className="mr-3 shrink-0 rounded p-1 transition-colors hover:bg-neutral-100"
                 >
                   <RiCloseLine className="h-4 w-4 text-neutral-400 hover:text-black" />
                 </button>

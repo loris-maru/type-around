@@ -14,6 +14,7 @@ export default function DownloadButtons({
   showTrialFonts = true,
   showSpecimen = true,
   backgroundColor,
+  textColor,
 }: DownloadButtonsProps) {
   const handleDownloadTrialFonts = useCallback(async () => {
     if (!trialFontUrls?.length) return;
@@ -44,6 +45,7 @@ export default function DownloadButtons({
   const sectionStyle: React.CSSProperties = {};
   if (backgroundColor)
     sectionStyle.backgroundColor = backgroundColor;
+  if (textColor) sectionStyle.color = textColor;
 
   return (
     <div
@@ -61,7 +63,8 @@ export default function DownloadButtons({
             aria-label="Download trial fonts"
             name="download-trial-font"
             className={cn(
-              "download-button-hover flex cursor-pointer flex-row items-center justify-between gap-2 rounded-2xl border border-neutral-300 px-8 py-8 font-medium font-whisper text-black text-sm transition-all duration-300 ease-in-out hover:-translate-x-1 hover:-translate-y-1 hover:bg-white lg:px-16 lg:py-12",
+              "download-button-hover flex cursor-pointer flex-row items-center justify-between gap-2 rounded-2xl border border-neutral-300 px-8 py-8 font-medium font-whisper text-sm transition-all duration-300 ease-in-out hover:-translate-x-1 hover:-translate-y-1 hover:bg-white lg:px-16 lg:py-12",
+              !textColor && "text-black",
               hasSpecimen ? "w-full lg:w-1/2" : "w-full"
             )}
             onClick={handleDownloadTrialFonts}
@@ -78,7 +81,8 @@ export default function DownloadButtons({
             aria-label="Download specimen"
             name="download-specimen"
             className={cn(
-              "download-button-hover flex cursor-pointer flex-row items-center justify-between gap-x-2 rounded-2xl border border-neutral-300 px-24 py-12 font-medium font-whisper text-black text-sm transition-all duration-300 ease-in-out hover:-translate-x-1 hover:-translate-y-1 hover:bg-white",
+              "download-button-hover flex cursor-pointer flex-row items-center justify-between gap-x-2 rounded-2xl border border-neutral-300 px-24 py-12 font-medium font-whisper text-sm transition-all duration-300 ease-in-out hover:-translate-x-1 hover:-translate-y-1 hover:bg-white",
+              !textColor && "text-black",
               hasTrialFonts ? "w-1/2" : "w-full"
             )}
             onClick={handleDownloadSpecimen}

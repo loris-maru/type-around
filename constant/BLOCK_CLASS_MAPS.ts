@@ -42,10 +42,13 @@ export const SPACER_CLASS_MAP: Record<string, string> = {
 };
 
 export const CONFIGURABLE_BLOCKS: LayoutBlockId[] = [
+  "about",
+  "type-tester",
+  "typeface-list",
+  "fonts-in-use",
   "gallery",
   "image",
   "video",
   "spacer",
   "store",
-  "typeface-list",
 ];

@@ -84,6 +84,7 @@ export default function PageBackgroundBlock({
           options={SPECIMEN_BACKGROUND_TYPE_OPTIONS}
           onChange={handleTypeChange}
           className="w-full"
+          transparent
         />
       </div>
       <div className="flex flex-col justify-center">

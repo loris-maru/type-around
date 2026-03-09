@@ -3,6 +3,7 @@
 import { useCallback, useMemo } from "react";
 import type { FormValues } from "@/types/components";
 import type { FormField } from "@/types/forms";
+import { cn } from "@/utils/class-names";
 
 export default function AccountForm({
   title,
@@ -36,7 +37,7 @@ export default function AccountForm({
       <h2 className="font-bold font-ortank text-xl">
         {title}
       </h2>
-      <div className="grid grid-cols-2 gap-12">
+      <div className="grid grid-cols-3 gap-5">
         {FORM_FIELDS.map((field) => {
           const Icon = field.icon;
           const CustomComponent = field.customComponent;
@@ -112,7 +113,10 @@ export default function AccountForm({
                     handleChange(field.slug, e.target.value)
                   }
                   disabled={isLoading}
-                  className={`w-full border border-neutral-300 py-5 pr-6 placeholder:font-medium placeholder:font-whisper placeholder:text-base placeholder:text-black disabled:cursor-not-allowed disabled:bg-neutral-100 ${Icon ? "pl-12" : "pl-6"}`}
+                  className={cn(
+                    "w-full border border-neutral-300 py-5 pr-6 placeholder:font-medium placeholder:font-whisper placeholder:text-base placeholder:text-black disabled:cursor-not-allowed disabled:bg-neutral-100",
+                    Icon ? "pl-12" : "pl-6"
+                  )}
                 />
               </div>
             </div>

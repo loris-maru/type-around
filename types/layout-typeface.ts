@@ -26,6 +26,7 @@ export type DownloadBlockData = {
   showTrialFonts?: boolean;
   showSpecimen?: boolean;
   backgroundColor?: string;
+  textColor?: string;
 };
 
 export type TypeTesterBlockData = {
@@ -65,10 +66,8 @@ export type AboutBlockData = {
   textSize?: AboutBlockTextSize;
   textColor?: string;
   backgroundColor?: string;
-  marginTop?: string;
-  marginRight?: string;
-  marginBottom?: string;
-  marginLeft?: string;
+  /** Margin preset: S (16px), M (42px), L (10vw), XL (16vw) */
+  margin?: BlockMarginSize;
 };
 
 export type TypefaceLayoutItemData =

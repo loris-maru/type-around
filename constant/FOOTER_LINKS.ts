@@ -43,7 +43,7 @@ export const PRIMARY_LINKS: PrimaryLink[] = [
     body: "All fonts",
   },
   {
-    href: "/",
+    href: "/studios",
     label: "Browse",
     body: "All studios",
   },

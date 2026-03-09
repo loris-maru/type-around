@@ -25,6 +25,8 @@ export default function GlobalTypetesterBlock({
   canDelete = false,
   onDelete,
   typefaces = [],
+  initialBackgroundColor,
+  initialFontColor,
 }: GlobalTypetesterBlockProps) {
   const allFonts = useMemo(
     () => typefaces.flatMap((tf) => tf.fonts),
@@ -45,8 +47,8 @@ export default function GlobalTypetesterBlock({
     letterSpacing: 0,
     textAlign: "left",
     fontId: defaultFontId,
-    backgroundColor: "#FFFFFF",
-    fontColor: "#000000",
+    backgroundColor: initialBackgroundColor || "#FFFFFF",
+    fontColor: initialFontColor || "#000000",
   });
   const [showParams, setShowParams] = useState(false);
 

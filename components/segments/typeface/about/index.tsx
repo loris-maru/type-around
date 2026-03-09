@@ -1,3 +1,4 @@
+import { ABOUT_BLOCK_MARGIN_PRESET_MAP } from "@/constant/ABOUT_BLOCK_MARGIN_PRESETS";
 import type { AboutBlockData } from "@/types/layout-typeface";
 import { cn } from "@/utils/class-names";
 
@@ -34,22 +35,22 @@ export default function TypefaceAbout({
   const textSize = data?.textSize || "m";
   const textColor = data?.textColor;
   const backgroundColor = data?.backgroundColor;
-  const marginTop = data?.marginTop;
-  const marginRight = data?.marginRight;
-  const marginBottom = data?.marginBottom;
-  const marginLeft = data?.marginLeft;
+  const marginPreset = data?.margin;
+  const marginValue =
+    marginPreset &&
+    ABOUT_BLOCK_MARGIN_PRESET_MAP[marginPreset];
 
   const sectionStyle: React.CSSProperties = {};
   if (backgroundColor)
     sectionStyle.backgroundColor = backgroundColor;
-  if (marginTop) sectionStyle.marginTop = marginTop;
-  if (marginRight) sectionStyle.marginRight = marginRight;
-  if (marginBottom)
-    sectionStyle.marginBottom = marginBottom;
-  if (marginLeft) sectionStyle.marginLeft = marginLeft;
+  if (marginValue) {
+    sectionStyle.marginTop = marginValue;
+    sectionStyle.marginRight = marginValue;
+    sectionStyle.marginBottom = marginValue;
+    sectionStyle.marginLeft = marginValue;
+  }
 
-  const hasMarginOverride =
-    marginTop || marginRight || marginBottom || marginLeft;
+  const hasMarginOverride = !!marginValue;
 
   return (
     <section

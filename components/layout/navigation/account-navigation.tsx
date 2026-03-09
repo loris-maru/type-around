@@ -1,6 +1,7 @@
 "use client";
 
 import { SignOutButton, useUser } from "@clerk/nextjs";
+import { useLenis } from "lenis/react";
 import {
   usePathname,
   useRouter,
@@ -129,6 +130,7 @@ const SectionLink = ({
 };
 
 export default function AccountNavigation() {
+  const lenis = useLenis();
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -218,15 +220,12 @@ export default function AccountNavigation() {
       params.set("section", sectionId);
       router.push(`${pathname}?${params.toString()}`);
 
-      const element = document.getElementById(sectionId);
-      if (element) {
-        element.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
+      // Use Lenis for smooth scroll (native scrollIntoView doesn't work with Lenis)
+      requestAnimationFrame(() => {
+        lenis?.scrollTo(`#${sectionId}`, { offset: 120 });
+      });
     },
-    [searchParams, router, pathname]
+    [searchParams, router, pathname, lenis]
   );
 
   const handleReviewerNavChange = useCallback(

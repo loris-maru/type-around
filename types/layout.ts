@@ -70,8 +70,43 @@ export type VideoBlockData = {
 // --- Typeface list block ---
 
 export type TypefaceListBlockData = {
-  backgroundColor: string;
-  fontColor: string;
+  backgroundColor?: string;
+  fontColor?: string;
+};
+
+// --- Fonts in use block ---
+
+export type FontsInUseBlockData = {
+  backgroundColor?: string;
+  fontColor?: string;
+};
+
+// --- About block (Studio page) ---
+
+export type AboutBlockTextAlign =
+  | "left"
+  | "center"
+  | "right";
+export type AboutBlockTextSize =
+  | "s"
+  | "m"
+  | "l"
+  | "xl"
+  | "2xl";
+
+export type AboutBlockData = {
+  textAlign?: AboutBlockTextAlign;
+  textSize?: AboutBlockTextSize;
+  textColor?: string;
+  backgroundColor?: string;
+  margin?: "s" | "m" | "l" | "xl";
+};
+
+// --- Type tester block (Studio page) ---
+
+export type TypeTesterBlockData = {
+  backgroundColor?: string;
+  foregroundColor?: string;
 };
 
 export type SpacerSize = "s" | "m" | "l" | "xl";
@@ -118,6 +153,9 @@ export type LayoutItemData =
   | StoreBlockData
   | BlogBlockData
   | TypefaceListBlockData
+  | FontsInUseBlockData
+  | AboutBlockData
+  | TypeTesterBlockData
   | undefined;
 
 export type LayoutItem = {

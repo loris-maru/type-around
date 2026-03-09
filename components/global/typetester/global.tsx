@@ -9,6 +9,8 @@ import GlobalTypetesterBlock from "./global-block";
 
 export default function GlobalTypetester({
   typefaces = [],
+  backgroundColor,
+  fontColor,
 }: GlobalTypetesterProps) {
   const { displayFontFamily, textFontFamily } =
     useStudioFonts();
@@ -26,10 +28,20 @@ export default function GlobalTypetester({
 
   const canDelete = blockIds.length > 1;
 
+  const sectionStyle: React.CSSProperties = {};
+  if (backgroundColor)
+    sectionStyle.backgroundColor = backgroundColor;
+  if (fontColor) sectionStyle.color = fontColor;
+
   return (
     <div
       className="relative my-40 flex w-full flex-col gap-4 px-4 lg:px-16"
       id="tester"
+      style={
+        Object.keys(sectionStyle).length > 0
+          ? sectionStyle
+          : undefined
+      }
     >
       <div
         className="relative mb-2 font-bold text-xl"
@@ -44,6 +56,8 @@ export default function GlobalTypetester({
             canDelete={canDelete}
             onDelete={() => removeBlock(id)}
             typefaces={typefaces}
+            initialBackgroundColor={backgroundColor}
+            initialFontColor={fontColor}
           />
         ))}
       </div>

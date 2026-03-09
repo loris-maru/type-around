@@ -12,6 +12,7 @@ export default function LinksList({
           key={link.href}
           href={link.href}
           className="whitespace-nowrap font-whisper text-black text-xl lg:text-base"
+          suppressHydrationWarning
         >
           {link.label}
         </Link>

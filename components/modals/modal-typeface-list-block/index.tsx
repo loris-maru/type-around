@@ -6,6 +6,7 @@ import { ButtonModalSave } from "@/components/molecules/buttons";
 import ColorPicker from "@/components/molecules/color-picker";
 import { useModalOpen } from "@/hooks/use-modal-open";
 import type { TypefaceListBlockModalProps } from "@/types/components";
+import { handleHexChange } from "@/utils/color-utils";
 
 export default function TypefaceListBlockModal({
   isOpen,
@@ -13,21 +14,38 @@ export default function TypefaceListBlockModal({
   onSave,
   initialData,
 }: TypefaceListBlockModalProps) {
-  const [backgroundColor, setBackgroundColor] = useState(
-    initialData?.backgroundColor || ""
-  );
-  const [fontColor, setFontColor] = useState(
-    initialData?.fontColor || ""
-  );
-
-  const handleSave = () => {
-    onSave({ backgroundColor, fontColor });
-    onClose();
-  };
-
   useModalOpen(isOpen);
 
   if (!isOpen) return null;
+
+  return (
+    <TypefaceListBlockModalInner
+      onClose={onClose}
+      onSave={onSave}
+      initialData={initialData}
+    />
+  );
+}
+
+function TypefaceListBlockModalInner({
+  onClose,
+  onSave,
+  initialData,
+}: Omit<TypefaceListBlockModalProps, "isOpen">) {
+  const [backgroundColor, setBackgroundColor] = useState(
+    initialData?.backgroundColor || "#ffffff"
+  );
+  const [fontColor, setFontColor] = useState(
+    initialData?.fontColor || "#000000"
+  );
+
+  const handleSave = () => {
+    onSave({
+      backgroundColor: backgroundColor || undefined,
+      fontColor: fontColor || undefined,
+    });
+    onClose();
+  };
 
   return (
     <div
@@ -51,17 +69,20 @@ export default function TypefaceListBlockModal({
             type="button"
             onClick={onClose}
             aria-label="Close modal"
-            className="cursor-pointer rounded-lg p-1 transition-colors hover:bg-neutral-100"
+            className="rounded-lg p-1 transition-colors hover:bg-neutral-100"
           >
             <RiCloseLine className="h-6 w-6" />
           </button>
         </div>
 
-        <div className="min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain p-6">
-          {/* Colors */}
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <span className="mb-1 block font-semibold text-black text-sm">
+        <div className="min-h-0 flex-1 space-y-6 overflow-y-auto overscroll-contain p-6">
+          <p className="font-whisper text-neutral-600 text-sm">
+            Customize the typeface list section appearance.
+          </p>
+
+          <div className="flex flex-wrap gap-6">
+            <div className="min-w-0 flex-1">
+              <span className="mb-2 block font-semibold text-black text-sm">
                 Background color
               </span>
               <div className="flex items-center gap-2">
@@ -74,17 +95,20 @@ export default function TypefaceListBlockModal({
                   type="text"
                   value={backgroundColor}
                   onChange={(e) =>
-                    setBackgroundColor(e.target.value)
+                    handleHexChange(
+                      e.target.value,
+                      setBackgroundColor
+                    )
                   }
+                  maxLength={7}
                   placeholder="#ffffff"
-                  aria-label="Typeface list background color hex value"
-                  className="w-20 rounded-lg border border-neutral-300 px-2 py-2 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
+                  className="min-w-0 flex-1 rounded-lg border border-neutral-300 px-3 py-2 font-whisper text-sm uppercase"
                 />
               </div>
             </div>
-            <div>
-              <span className="mb-1 block font-semibold text-black text-sm">
-                Font color
+            <div className="min-w-0 flex-1">
+              <span className="mb-2 block font-semibold text-black text-sm">
+                Text color
               </span>
               <div className="flex items-center gap-2">
                 <ColorPicker
@@ -96,22 +120,24 @@ export default function TypefaceListBlockModal({
                   type="text"
                   value={fontColor}
                   onChange={(e) =>
-                    setFontColor(e.target.value)
+                    handleHexChange(
+                      e.target.value,
+                      setFontColor
+                    )
                   }
+                  maxLength={7}
                   placeholder="#000000"
-                  aria-label="Typeface list font color hex value"
-                  className="w-20 rounded-lg border border-neutral-300 px-2 py-2 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
+                  className="min-w-0 flex-1 rounded-lg border border-neutral-300 px-3 py-2 font-whisper text-sm uppercase"
                 />
               </div>
             </div>
           </div>
 
-          {/* Save */}
           <div className="pt-2">
             <ButtonModalSave
               type="button"
               onClick={handleSave}
-              label="Save Typeface List"
+              label="Save Typeface List Block"
               aria-label="Save typeface list block"
             />
           </div>

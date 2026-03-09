@@ -3,8 +3,10 @@ import type { ReactNode } from "react";
 import type { FontFormat } from "@/constant/FONT_FORMATS";
 import type { UploadFolder } from "@/lib/firebase/storage";
 import type {
+  AboutBlockData as LayoutAboutBlockData,
   BlogArticle,
   BlogBlockData,
+  FontsInUseBlockData,
   GalleryBlockData,
   ImageBlockData,
   LayoutBlock,
@@ -14,6 +16,7 @@ import type {
   SpacerBlockData,
   StoreBlockData,
   TypefaceListBlockData,
+  TypeTesterBlockData as LayoutTypeTesterBlockData,
   VideoBlockData,
 } from "./layout";
 import type {
@@ -613,6 +616,27 @@ export type TypefaceListBlockModalProps = {
   initialData?: TypefaceListBlockData;
 };
 
+export type FontsInUseBlockModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (data: FontsInUseBlockData) => void;
+  initialData?: FontsInUseBlockData;
+};
+
+export type StudioAboutBlockModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (data: LayoutAboutBlockData) => void;
+  initialData?: LayoutAboutBlockData;
+};
+
+export type StudioTypeTesterBlockModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (data: LayoutTypeTesterBlockData) => void;
+  initialData?: LayoutTypeTesterBlockData;
+};
+
 // ===========================================
 // Studio Preview Component Props
 // ===========================================
@@ -902,6 +926,7 @@ export type DownloadButtonsProps = {
   showTrialFonts?: boolean;
   showSpecimen?: boolean;
   backgroundColor?: string;
+  textColor?: string;
 };
 
 // Input components

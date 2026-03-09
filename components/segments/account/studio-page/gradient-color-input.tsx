@@ -68,11 +68,11 @@ export default function GradientColorInput({
         Gradient Color
       </span>
 
-      <div className="flex items-stretch gap-4">
+      <div className="flex w-full flex-col gap-4">
         {/* Color inputs column */}
-        <div className="flex flex-col gap-3">
+        <div className="grid grid-cols-2 gap-4">
           {/* Color 1 */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <ColorPicker
               id="gradient-color-1"
               value={color1}
@@ -89,13 +89,13 @@ export default function GradientColorInput({
               }
               maxLength={7}
               aria-label="Gradient color 1 hex value"
-              className="w-24 border border-neutral-300 px-3 py-2 font-whisper text-sm uppercase"
+              className="w-full border border-neutral-300 px-3 py-2 font-whisper text-sm uppercase"
               placeholder="#000000"
             />
           </div>
 
           {/* Color 2 */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <ColorPicker
               id="gradient-color-2"
               value={color2}
@@ -112,7 +112,7 @@ export default function GradientColorInput({
               }
               maxLength={7}
               aria-label="Gradient color 2 hex value"
-              className="w-24 border border-neutral-300 px-3 py-2 font-whisper text-sm uppercase"
+              className="w-full border border-neutral-300 px-3 py-2 font-whisper text-sm uppercase"
               placeholder="#FFFFFF"
             />
           </div>
