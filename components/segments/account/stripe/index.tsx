@@ -63,8 +63,14 @@ export default function AccountStripe() {
     setError(null);
     setSuccessMessage(null);
 
+    if (!studio?.id) {
+      setError("Studio not loaded");
+      setIsConnecting(false);
+      return;
+    }
+
     try {
-      const result = await getStripeConnectURL();
+      const result = await getStripeConnectURL(studio.id);
 
       if (result.success && result.url) {
         // Redirect to Stripe
@@ -91,8 +97,14 @@ export default function AccountStripe() {
     setError(null);
     setSuccessMessage(null);
 
+    if (!studio?.id) {
+      setError("Studio not loaded");
+      setIsConnecting(false);
+      return;
+    }
+
     try {
-      const result = await getStripeConnectURL();
+      const result = await getStripeConnectURL(studio.id);
 
       if (result.success && result.url) {
         // Open Stripe dashboard in new tab

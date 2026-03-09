@@ -2,6 +2,7 @@
 
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { createOrder } from "@/lib/firebase/orders";
+import { getStudioById } from "@/lib/firebase/studios";
 import { APP_URL, getStripe } from "@/lib/stripe/config";
 import type { CartItem } from "@/types/cart";
 import type { OrderItem } from "@/types/order";
@@ -85,9 +86,23 @@ export async function createCheckoutSession(
 
     const stripe = getStripe();
 
-    const session = await stripe.checkout.sessions.create({
-      mode: "payment",
-      payment_method_types: ["card"],
+    // Stripe Connect: if all items from same studio with connected Stripe, use destination charge
+    const studioIds = [
+      ...new Set(
+        items.map((i) => i.studioId).filter(Boolean)
+      ),
+    ];
+    const singleStudioId =
+      studioIds.length === 1 ? studioIds[0] : null;
+    const studio = singleStudioId
+      ? await getStudioById(singleStudioId)
+      : null;
+    const stripeAccountId =
+      studio?.stripeAccountId || undefined;
+
+    const baseParams = {
+      mode: "payment" as const,
+      payment_method_types: ["card" as const],
       line_items: items.map((item) => ({
         price_data: {
           currency: "krw",
@@ -103,7 +118,16 @@ export async function createCheckoutSession(
       cancel_url: `${APP_URL}/studio`,
       metadata: { orderId },
       customer_email: user.emailAddresses[0].emailAddress,
-    });
+    };
+
+    const session = stripeAccountId
+      ? await stripe.checkout.sessions.create({
+          ...baseParams,
+          payment_intent_data: {
+            transfer_data: { destination: stripeAccountId },
+          },
+        })
+      : await stripe.checkout.sessions.create(baseParams);
 
     if (!session.url) {
       return {

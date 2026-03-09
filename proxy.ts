@@ -27,6 +27,8 @@ export default clerkMiddleware(
         "connect-src": [
           "https://firebasestorage.googleapis.com",
           "https://*.googleapis.com",
+          "https://connect.stripe.com",
+          "https://api.stripe.com",
         ],
         "font-src": [
           "self",
@@ -38,8 +40,11 @@ export default clerkMiddleware(
         "img-src": [
           "self",
           "blob:",
+          "https://img.clerk.com",
           "https://firebasestorage.googleapis.com",
           "https://storage.googleapis.com",
+          "https://b.stripecdn.com",
+          "https://*.stripecdn.com",
         ],
         "trusted-types": ["default"],
       },

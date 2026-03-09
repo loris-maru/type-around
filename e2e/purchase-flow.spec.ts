@@ -1,6 +1,62 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Purchase flow", () => {
+  test.describe("Fonts → Cart → Checkout → Stripe redirect", () => {
+    test("full flow: add font to cart, proceed to checkout, redirects to Stripe", async ({
+      page,
+    }) => {
+      await page.goto("/studios");
+
+      const studioLink = page
+        .locator('a[href^="/studio/"]')
+        .first();
+      if ((await studioLink.count()) === 0) {
+        test.skip(true, "No studios available");
+      }
+      await studioLink.click();
+
+      const typefaceLink = page
+        .locator('a[href*="/typeface/"]')
+        .first();
+      if ((await typefaceLink.count()) === 0) {
+        test.skip(true, "No typefaces available");
+      }
+      await typefaceLink.click();
+
+      const addToCartBtn = page
+        .getByRole("button", { name: /add .+ to cart/i })
+        .first();
+      if ((await addToCartBtn.count()) === 0) {
+        test.skip(true, "No add-to-cart button");
+      }
+      await addToCartBtn.click();
+
+      await page
+        .getByRole("button", { name: /open cart/i })
+        .click();
+      await page
+        .getByRole("button", {
+          name: /proceed to checkout/i,
+        })
+        .click();
+
+      // Wait for redirect: sign-up (not signed in) or Stripe Checkout (signed in)
+      await page.waitForURL(
+        (u) =>
+          u.pathname.includes("/sign-up") ||
+          u.hostname.includes("stripe.com") ||
+          u.pathname.includes("/checkout"),
+        { timeout: 15000 }
+      );
+      const url = page.url();
+      expect(
+        url.includes("/sign-up") ||
+          url.includes("stripe.com") ||
+          url.includes("/checkout"),
+        `Expected redirect to sign-up, Stripe, or checkout, got: ${url}`
+      ).toBeTruthy();
+    });
+  });
   test.describe("Order page", () => {
     test("redirects to home when token is missing", async ({
       page,

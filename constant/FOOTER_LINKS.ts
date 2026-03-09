@@ -38,7 +38,7 @@ export interface PrimaryLink {
 
 export const PRIMARY_LINKS: PrimaryLink[] = [
   {
-    href: "/",
+    href: "/fonts",
     label: "Discover",
     body: "All fonts",
   },

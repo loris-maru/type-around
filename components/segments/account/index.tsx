@@ -10,7 +10,16 @@ import AccountFontsInUse from "./fonts-in-use";
 import AccountInformation from "./information";
 import AccountReviewerCalendar from "./reviewer/calendar";
 import AccountReviewerRequest from "./reviewer/request";
-import AccountStripe from "./stripe";
+
+const AccountStripe = dynamic(() => import("./stripe"), {
+  ssr: false,
+  loading: () => (
+    <div className="relative flex w-full items-center justify-center py-12">
+      <div className="h-6 w-6 animate-spin rounded-full border-2 border-neutral-300 border-t-black" />
+    </div>
+  ),
+});
+
 import AccountStudioPage from "./studio-page";
 import AccountTypefaces from "./typefaces";
 import TypefaceDetail from "./typefaces/typeface-detail";
