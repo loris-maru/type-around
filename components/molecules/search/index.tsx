@@ -98,25 +98,28 @@ export default function SearchPanel({
     }
   }, [isOpen, onClose]);
 
-  // Build Fuse index (name + meta + searchMeta for typeface vision)
+  // Build Fuse index (name, nameKo, meta, searchMeta for typeface vision)
   const fuse = useMemo(
     () =>
       new Fuse(items, {
         keys: [
           { name: "name", weight: 1 },
+          { name: "nameKo", weight: 1 },
           { name: "meta", weight: 0.4 },
           { name: "searchMeta", weight: 0.5 },
         ],
         threshold: 0.35,
         includeScore: true,
+        ignoreLocation: true,
       }),
     [items]
   );
 
   const results = useMemo(() => {
-    if (!queryStr.trim()) return [];
+    const normalized = queryStr.normalize("NFC").trim();
+    if (!normalized) return [];
     return fuse
-      .search(queryStr, { limit: 12 })
+      .search(normalized, { limit: 12 })
       .map((r) => r.item);
   }, [fuse, queryStr]);
 
@@ -160,6 +163,8 @@ export default function SearchPanel({
               onChange={(e) => setQueryStr(e.target.value)}
               placeholder="Search typefaces, studios, designers…"
               aria-label="Search typefaces, studios, and designers"
+              lang="ko"
+              autoComplete="off"
               className="w-full bg-transparent font-whisper text-base text-black outline-none placeholder:text-medium-gray"
             />
             {queryStr && (

@@ -22,6 +22,7 @@ export async function GET() {
     for (const docData of snapshot.docs) {
       const rawData = docData.data();
       const studioName = rawData.name || "";
+      const studioNameKo = rawData.hangeulName || "";
 
       if (!studioName) continue;
 
@@ -33,6 +34,7 @@ export async function GET() {
         name: studioName,
         type: "studio",
         href: `/studio/${studioSlug}`,
+        ...(studioNameKo && { nameKo: studioNameKo }),
       });
 
       // Add designers from the studio
@@ -66,6 +68,7 @@ export async function GET() {
               serif: typeface.visionSerif,
             }
           );
+          const typefaceNameKo = typeface.hangeulName || "";
 
           items.push({
             id: `typeface-${typeface.id}`,
@@ -74,6 +77,9 @@ export async function GET() {
             href: `/studio/${studioSlug}/typeface/${typefaceSlug}`,
             meta: studioName,
             searchMeta: visionSearch || undefined,
+            ...(typefaceNameKo && {
+              nameKo: typefaceNameKo,
+            }),
           });
         }
       }

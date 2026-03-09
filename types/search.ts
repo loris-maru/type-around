@@ -12,6 +12,8 @@ export type SearchableItem = {
   meta?: string;
   /** Searchable string for typeface vision (usage, contrast, width, playful) */
   searchMeta?: string;
+  /** Korean name for search (hangeul) */
+  nameKo?: string;
 };
 
 export type SearchPanelProps = {
