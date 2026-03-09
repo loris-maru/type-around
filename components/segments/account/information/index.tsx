@@ -1,18 +1,22 @@
 "use client";
 
-import { AnimatePresence, motion } from "motion/react";
 import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
-import { ButtonSaveChanges } from "@/components/molecules/buttons";
+import { useAutosave } from "@/hooks/use-autosave";
 import { useStudio } from "@/hooks/use-studio";
+import ChangesSavedPill from "../changes-saved-pill";
 import AccountForm from "../form";
+import SaveErrorPill from "../save-error-pill";
 import ACCOUNT_FORM from "./ACCOUNT_FORM";
 import SOCIAL_FORM from "./SOCIAL_FORM";
 import StudioImages from "./studio-images";
+
+const STORAGE_KEY_PREFIX = "account-info-";
 
 export default function AccountInformation() {
   const {
@@ -28,10 +32,15 @@ export default function AccountInformation() {
   const [socialValues, setSocialValues] = useState<
     Record<string, string>
   >({});
-  const [isSaving, setIsSaving] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
+  const studioValuesRef = useRef(studioValues);
+  const socialValuesRef = useRef(socialValues);
 
-  // Map studio data to initial form values
+  useEffect(() => {
+    studioValuesRef.current = studioValues;
+    socialValuesRef.current = socialValues;
+  }, [studioValues, socialValues]);
+
   const studioInitialValues = useMemo((): Record<
     string,
     string
@@ -71,48 +80,60 @@ export default function AccountInformation() {
     };
   }, [studio]);
 
-  // Initialize form values when studio loads
+  // Initialize: restore from localStorage or use studio data
   useEffect(() => {
-    if (studio && !isInitialized) {
-      setStudioValues(studioInitialValues);
-      setSocialValues(socialInitialValues);
+    if (
+      !studio?.id ||
+      Object.keys(studioInitialValues).length === 0
+    )
+      return;
+
+    const storageKey = `${STORAGE_KEY_PREFIX}${studio.id}`;
+
+    const applyState = () => {
+      try {
+        const stored = localStorage.getItem(storageKey);
+        if (stored) {
+          const parsed = JSON.parse(stored) as {
+            studio: Record<string, string>;
+            social: Record<string, string>;
+          };
+          setStudioValues({
+            ...studioInitialValues,
+            ...parsed?.studio,
+          });
+          setSocialValues({
+            ...socialInitialValues,
+            ...parsed?.social,
+          });
+        } else {
+          setStudioValues(studioInitialValues);
+          setSocialValues(socialInitialValues);
+        }
+      } catch {
+        setStudioValues(studioInitialValues);
+        setSocialValues(socialInitialValues);
+      }
       setIsInitialized(true);
-    }
-  }, [
-    studio,
-    studioInitialValues,
-    socialInitialValues,
-    isInitialized,
-  ]);
+    };
 
-  // Reset to initial values after save (when studio updates)
-  useEffect(() => {
-    if (studio && isInitialized && !isSaving) {
-      setStudioValues(studioInitialValues);
-      setSocialValues(socialInitialValues);
-    }
+    queueMicrotask(applyState);
   }, [
-    studio,
-    isInitialized,
-    isSaving,
+    studio?.id,
     studioInitialValues,
     socialInitialValues,
   ]);
 
-  // Check if there are unsaved changes
   const hasChanges = useMemo(() => {
     if (!isInitialized) return false;
-
     const studioChanged = Object.keys(studioValues).some(
       (key) =>
         studioValues[key] !== studioInitialValues[key]
     );
-
     const socialChanged = Object.keys(socialValues).some(
       (key) =>
         socialValues[key] !== socialInitialValues[key]
     );
-
     return studioChanged || socialChanged;
   }, [
     studioValues,
@@ -122,56 +143,89 @@ export default function AccountInformation() {
     isInitialized,
   ]);
 
+  const persistToStorage = useCallback(
+    (
+      studioData: Record<string, string>,
+      social: Record<string, string>
+    ) => {
+      if (!studio?.id) return;
+      try {
+        localStorage.setItem(
+          `${STORAGE_KEY_PREFIX}${studio.id}`,
+          JSON.stringify({ studio: studioData, social })
+        );
+      } catch {
+        // Ignore quota errors
+      }
+    },
+    [studio]
+  );
+
   const handleStudioChange = useCallback(
     (values: Record<string, string>) => {
+      persistToStorage(values, socialValuesRef.current);
       setStudioValues(values);
     },
-    []
+    [persistToStorage]
   );
 
   const handleSocialChange = useCallback(
     (values: Record<string, string>) => {
+      persistToStorage(studioValuesRef.current, values);
       setSocialValues(values);
     },
-    []
+    [persistToStorage]
   );
 
-  const handleSaveAll = async () => {
-    setIsSaving(true);
-    try {
-      // Save studio information
+  const saveToFirebase = useCallback(
+    async (data: {
+      studio: Record<string, string>;
+      social: Record<string, string>;
+    }) => {
       await updateInformation({
-        name: studioValues.name,
-        hangeulName: studioValues.hangeulName,
-        location: studioValues.location,
-        foundedIn: studioValues.foundedIn,
-        contactEmail: studioValues.email,
-        website: studioValues.website,
-        description: studioValues.description,
+        name: data.studio.name,
+        hangeulName: data.studio.hangeulName,
+        location: data.studio.location,
+        foundedIn: data.studio.foundedIn,
+        contactEmail: data.studio.email,
+        website: data.studio.website,
+        description: data.studio.description,
       });
 
-      // Save social media
       const socialMedia = [
         {
           name: "instagram",
-          url: socialValues.instagram || "",
+          url: data.social.instagram || "",
         },
-        { name: "twitter", url: socialValues.x || "" },
+        { name: "twitter", url: data.social.x || "" },
         {
           name: "linkedin",
-          url: socialValues.linkedin || "",
+          url: data.social.linkedin || "",
         },
         {
           name: "behance",
-          url: socialValues.behance || "",
+          url: data.social.behance || "",
         },
       ].filter((s) => s.url);
 
       await updateSocialMedia(socialMedia);
-    } finally {
-      setIsSaving(false);
-    }
-  };
+    },
+    [updateInformation, updateSocialMedia]
+  );
+
+  const combinedData = useMemo(
+    () => ({ studio: studioValues, social: socialValues }),
+    [studioValues, socialValues]
+  );
+
+  const { showSaved, saveError, retry } = useAutosave({
+    storageKey: studio?.id
+      ? `${STORAGE_KEY_PREFIX}${studio.id}`
+      : "",
+    data: combinedData,
+    saveFn: saveToFirebase,
+    enabled: hasChanges && !!studio?.id,
+  });
 
   return (
     <div className="relative flex w-full flex-col gap-y-12">
@@ -191,29 +245,13 @@ export default function AccountInformation() {
         isLoading={isLoading}
       />
 
-      {/* Global Save Button with spring animation */}
-      <AnimatePresence>
-        {hasChanges && (
-          <motion.div
-            className="fixed right-6 bottom-6 z-50"
-            initial={{ y: 100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 100, opacity: 0 }}
-            transition={{
-              type: "spring",
-              stiffness: 400,
-              damping: 25,
-            }}
-          >
-            <ButtonSaveChanges
-              onClick={handleSaveAll}
-              disabled={isSaving}
-              label="Save Changes"
-              loadingLabel="Saving..."
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <ChangesSavedPill show={showSaved} />
+      {saveError && (
+        <SaveErrorPill
+          message={saveError}
+          onRetry={retry}
+        />
+      )}
     </div>
   );
 }

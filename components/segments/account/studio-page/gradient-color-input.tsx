@@ -1,12 +1,66 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback } from "react";
 import ColorPicker from "@/components/molecules/color-picker";
 import { handleHexChange } from "@/utils/color-utils";
 
-export default function GradientColorInput() {
-  const [color1, setColor1] = useState("#FFF8E8");
-  const [color2, setColor2] = useState("#F2F2F2");
+const DEFAULT_FROM = "#FFF8E8";
+const DEFAULT_TO = "#F2F2F2";
+
+function parseGradientValue(value: string | undefined): {
+  from: string;
+  to: string;
+} {
+  if (!value) return { from: DEFAULT_FROM, to: DEFAULT_TO };
+  try {
+    const parsed = JSON.parse(value) as {
+      from?: string;
+      to?: string;
+    };
+    return {
+      from: parsed.from || DEFAULT_FROM,
+      to: parsed.to || DEFAULT_TO,
+    };
+  } catch {
+    return { from: DEFAULT_FROM, to: DEFAULT_TO };
+  }
+}
+
+export default function GradientColorInput({
+  value,
+  onChange,
+}: {
+  value?: string;
+  onChange?: (value: string) => void;
+}) {
+  const { from: color1, to: color2 } =
+    parseGradientValue(value);
+
+  const notifyChange = useCallback(
+    (from: string, to: string) => {
+      onChange?.(
+        JSON.stringify({
+          from,
+          to,
+        })
+      );
+    },
+    [onChange]
+  );
+
+  const handleColor1Change = useCallback(
+    (newColor: string) => {
+      notifyChange(newColor, color2);
+    },
+    [color2, notifyChange]
+  );
+
+  const handleColor2Change = useCallback(
+    (newColor: string) => {
+      notifyChange(color1, newColor);
+    },
+    [color1, notifyChange]
+  );
 
   return (
     <div className="relative w-full">
@@ -22,13 +76,16 @@ export default function GradientColorInput() {
             <ColorPicker
               id="gradient-color-1"
               value={color1}
-              onChange={setColor1}
+              onChange={handleColor1Change}
             />
             <input
               type="text"
               value={color1}
               onChange={(e) =>
-                handleHexChange(e.target.value, setColor1)
+                handleHexChange(
+                  e.target.value,
+                  handleColor1Change
+                )
               }
               maxLength={7}
               aria-label="Gradient color 1 hex value"
@@ -42,13 +99,16 @@ export default function GradientColorInput() {
             <ColorPicker
               id="gradient-color-2"
               value={color2}
-              onChange={setColor2}
+              onChange={handleColor2Change}
             />
             <input
               type="text"
               value={color2}
               onChange={(e) =>
-                handleHexChange(e.target.value, setColor2)
+                handleHexChange(
+                  e.target.value,
+                  handleColor2Change
+                )
               }
               maxLength={7}
               aria-label="Gradient color 2 hex value"

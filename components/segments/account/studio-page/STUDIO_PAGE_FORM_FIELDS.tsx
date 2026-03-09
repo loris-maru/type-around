@@ -37,7 +37,7 @@ const STUDIO_PAGE_FORM_FIELDS: FormField[] = [
   },
   {
     label: "Gradient Color",
-    slug: "gradientColor",
+    slug: "gradient",
     type: "custom",
     placeholder: "",
     customComponent: GradientColorInput,
