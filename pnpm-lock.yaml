@@ -152,6 +152,9 @@ importers:
       "@types/mailchimp__mailchimp_marketing":
         specifier: ^3.0.22
         version: 3.0.22
+      "@types/markdown-it":
+        specifier: ^14.1.2
+        version: 14.1.2
       "@types/node":
         specifier: ^20
         version: 20.19.30
