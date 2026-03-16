@@ -1,9 +1,26 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
 import type { TagInputProps } from "@/types/components";
 import { cn } from "@/utils/class-names";
+
+function addTagIfValid(
+  trimmedValue: string,
+  value: string[],
+  onChange: (tags: string[]) => void
+): boolean {
+  if (!trimmedValue) return false;
+  if (
+    value.some(
+      (v) => v.toLowerCase() === trimmedValue.toLowerCase()
+    )
+  ) {
+    return true; // duplicate, consider it "handled"
+  }
+  onChange([...value, trimmedValue]);
+  return true;
+}
 
 export default function TagInput({
   label,
@@ -16,43 +33,61 @@ export default function TagInput({
   const [inputValue, setInputValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const pendingAddRef = useRef(false);
+
+  const commitTag = useCallback(
+    (text: string) => {
+      const trimmed = text.trim();
+      if (addTagIfValid(trimmed, value, onChange)) {
+        setInputValue("");
+      }
+      pendingAddRef.current = false;
+    },
+    [value, onChange]
+  );
+
+  const handleCompositionEnd = (
+    e: React.CompositionEvent<HTMLInputElement>
+  ) => {
+    if (pendingAddRef.current) {
+      pendingAddRef.current = false;
+      // Defer to next tick so DOM/React has the final value after IME commit
+      const input = e.target as HTMLInputElement;
+      queueMicrotask(() => {
+        const finalValue =
+          inputRef.current?.value ?? input.value;
+        commitTag(finalValue);
+      });
+    }
+  };
 
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>
   ) => {
+    // IME composition: keydown fires before composition commits, so inputValue
+    // lacks the final character. Defer add until compositionend.
+    if (e.nativeEvent.isComposing) {
+      if (e.key === "Enter" || e.key === ",") {
+        e.preventDefault();
+        pendingAddRef.current = true;
+      }
+      return;
+    }
+
     const trimmedValue = inputValue.trim();
 
     if (e.key === "Enter" && trimmedValue) {
       e.preventDefault();
-      // Don't add duplicates (case-insensitive)
-      if (
-        !value.some(
-          (v) =>
-            v.toLowerCase() === trimmedValue.toLowerCase()
-        )
-      ) {
-        onChange([...value, trimmedValue]);
-      }
-      setInputValue("");
+      commitTag(trimmedValue);
     } else if (
       e.key === "Backspace" &&
       !inputValue &&
       value.length > 0
     ) {
-      // Remove last tag when backspace is pressed on empty input
       onChange(value.slice(0, -1));
     } else if (e.key === "," && trimmedValue) {
-      // Also allow comma as separator
       e.preventDefault();
-      if (
-        !value.some(
-          (v) =>
-            v.toLowerCase() === trimmedValue.toLowerCase()
-        )
-      ) {
-        onChange([...value, trimmedValue]);
-      }
-      setInputValue("");
+      commitTag(trimmedValue);
     }
   };
 
@@ -132,6 +167,7 @@ export default function TagInput({
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
+          onCompositionEnd={handleCompositionEnd}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           placeholder={

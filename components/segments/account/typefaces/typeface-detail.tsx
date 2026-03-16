@@ -30,6 +30,7 @@ import type {
   StudioTypeface,
 } from "@/types/studio";
 import { slugify } from "@/utils/slugify";
+import ChangesSavedPill from "../changes-saved-pill";
 import {
   AssetsSection,
   BasicInformationSection,
@@ -91,6 +92,8 @@ export default function TypefaceDetail({
     Partial<StudioTypeface>
   >({});
   const [hasChanges, setHasChanges] = useState(false);
+  const [showLayoutSaved, setShowLayoutSaved] =
+    useState(false);
   const formDataRef = useRef(formData);
   formDataRef.current = formData;
 
@@ -465,13 +468,15 @@ export default function TypefaceDetail({
   }, []);
 
   const handleTypefacePageLayoutChange = useCallback(
-    (layout: TypefaceLayoutItem[]) => {
+    async (layout: TypefaceLayoutItem[]) => {
       const next = {
         ...formDataRef.current,
         typefacePageLayout: layout,
       };
       setFormData(next);
-      saveToFirebase(next);
+      await saveToFirebase(next);
+      setShowLayoutSaved(true);
+      setTimeout(() => setShowLayoutSaved(false), 2000);
     },
     [saveToFirebase]
   );
@@ -858,6 +863,8 @@ export default function TypefaceDetail({
         onClose={() => setIsEulaModalOpen(false)}
         studioId={studio?.id || ""}
       />
+
+      <ChangesSavedPill show={showLayoutSaved} />
     </div>
   );
 }

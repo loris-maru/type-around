@@ -30,8 +30,13 @@ export default function StudioAboutBlock({
   studio: Studio;
   data?: AboutBlockData;
 }) {
-  const totalFonts = studio.typefaces.reduce(
-    (sum, tf) => sum + tf.fonts.length,
+  const typefaces = Array.isArray(studio?.typefaces)
+    ? studio.typefaces
+    : [];
+  const totalFonts = typefaces.reduce(
+    (sum, tf) =>
+      sum +
+      (Array.isArray(tf?.fonts) ? tf.fonts.length : 0),
     0
   );
   const marginPreset = data?.margin;
@@ -55,12 +60,12 @@ export default function StudioAboutBlock({
       image={
         studio.thumbnail ||
         studio.avatar ||
-        "/placeholders/studio_image_placeholder.webp"
+        "/placeholders/studio_image_placeholder.svg"
       }
-      families={studio.typefaces.length}
+      families={typefaces.length}
       fonts={totalFonts}
       description={studio.description || ""}
-      designers={studio.designers}
+      designers={studio.designers ?? []}
       sectionStyle={
         Object.keys(sectionStyle).length > 0
           ? sectionStyle

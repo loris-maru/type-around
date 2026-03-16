@@ -19,31 +19,39 @@ export default function SmallTypefaceCard({
   return (
     <Link
       href={url}
-      className="relative flex flex-col justify-between p-5 rounded-xl border border-neutral-300"
+      className="relative flex flex-col justify-between rounded-xl border border-neutral-300 p-5"
     >
-      <div className="font-whisper text-base font-normal text-black mb-8">
+      <div className="mb-8 font-normal font-whisper text-base text-black">
         Discover more
       </div>
 
-      <div className="relative w-full flex flex-row flex-nowrap">
+      <div className="relative flex w-full flex-row flex-nowrap">
         <div className="w-[40%] overflow-hidden">
-          <Image
-            src={icon}
-            alt={name}
-            width={100}
-            height={100}
-            className="w-full h-auto object-cover"
-          />
+          {icon?.trim() ? (
+            <Image
+              src={icon.trim()}
+              alt={name}
+              width={100}
+              height={100}
+              className="h-auto w-full object-cover"
+            />
+          ) : (
+            <div className="flex h-[100px] w-full items-center justify-center bg-neutral-200">
+              <span className="font-black font-ortank text-2xl text-neutral-400">
+                {name.charAt(0) || "?"}
+              </span>
+            </div>
+          )}
         </div>
-        <aside className="w-[60%] text-black  pl-5">
-          <div className="font-ortank text-xl font-black text-black capitalize mb-3">
+        <aside className="w-[60%] pl-5 text-black">
+          <div className="mb-3 font-black font-ortank text-black text-xl capitalize">
             {name}
           </div>
-          <div className="flex flex-col gap-y-1 font-whisper text-sm font-normal text-black">
+          <div className="flex flex-col gap-y-1 font-normal font-whisper text-black text-sm">
             <div>{category}</div>
-            <div className="block w-full h-px bg-neutral-300 my-0.5" />
+            <div className="my-0.5 block h-px w-full bg-neutral-300" />
             <div>{weights} weights</div>
-            <div className="block w-full h-px bg-neutral-300 my-0.5" />
+            <div className="my-0.5 block h-px w-full bg-neutral-300" />
             <div>{glyphs} glyphs</div>
           </div>
         </aside>

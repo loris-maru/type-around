@@ -9,8 +9,8 @@ import {
   RiUploadCloud2Line,
 } from "react-icons/ri";
 import {
-  ACCEPTED_FONT_FORMATS,
-  ACCEPTED_FONT_FORMATS_STRING,
+  STUDIO_PAGE_FONT_FORMATS,
+  STUDIO_PAGE_FONT_FORMATS_STRING,
 } from "@/constant/ACCEPTED_FONT_FORMATS";
 import { MAX_FONT_FILE_SIZE } from "@/constant/FILE_UPLOAD_LIMITS";
 import { useStudio } from "@/hooks/use-studio";
@@ -38,8 +38,8 @@ export default function FontUploadInput({
 
   const validateFile = (file: File): string | null => {
     const extension = `.${file.name.split(".").pop()?.toLowerCase()}`;
-    if (!ACCEPTED_FONT_FORMATS.includes(extension)) {
-      return `Invalid format. Accepted: ${ACCEPTED_FONT_FORMATS.join(", ")}`;
+    if (!STUDIO_PAGE_FONT_FORMATS.includes(extension)) {
+      return `Invalid format. Please upload only woff2 files.`;
     }
     if (file.size > MAX_FONT_FILE_SIZE) {
       return "File size exceeds 5MB limit";
@@ -150,14 +150,19 @@ export default function FontUploadInput({
 
   return (
     <div className="relative w-full">
-      <span className="mb-2 block font-normal font-whisper text-black text-sm">
-        {label}
-      </span>
+      <div className="mb-2 flex flex-col gap-0.5">
+        <span className="block font-normal font-whisper text-black text-sm">
+          {label}
+        </span>
+        <span className="block text-neutral-400 text-xs">
+          Upload only woff2 files.
+        </span>
+      </div>
 
       <input
         ref={inputRef}
         type="file"
-        accept={ACCEPTED_FONT_FORMATS_STRING}
+        accept={STUDIO_PAGE_FONT_FORMATS_STRING}
         onChange={handleInputChange}
         className="hidden"
         aria-label={`Upload ${label.toLowerCase()} file`}
@@ -236,7 +241,7 @@ export default function FontUploadInput({
             </p>
           </div>
           <p className="text-neutral-400 text-xs">
-            {ACCEPTED_FONT_FORMATS.join(", ")} (max 5MB)
+            {STUDIO_PAGE_FONT_FORMATS.join(", ")} (max 5MB)
           </p>
         </button>
       )}

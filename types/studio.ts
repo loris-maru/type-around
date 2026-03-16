@@ -377,8 +377,14 @@ export const StudioSchema = z.object({
   typefaces: z.array(StudioTypefaceSchema),
   specimens: z.array(StudioSpecimenSchema).default([]),
   fontsInUse: z.array(FontInUseSchema).default([]),
-  // Stripe Connect
-  stripeAccountId: z.string().optional().default(""),
+  // Payment payouts (designers receive payouts)
+  tossSubMerchantId: z.string().optional().default(""),
+  paypalEmail: z
+    .string()
+    .email()
+    .or(z.literal(""))
+    .optional()
+    .default(""),
   // Team members with access to the studio
   members: z.array(StudioMemberSchema).default([]),
   // Reviewer availability: userId -> date (YYYY-MM-DD) -> slots
@@ -567,7 +573,8 @@ export const DEFAULT_STUDIO: Omit<
   typefaces: [],
   specimens: [],
   fontsInUse: [],
-  stripeAccountId: "",
+  tossSubMerchantId: "",
+  paypalEmail: "",
   members: [],
   reviewerAvailability: {},
 };

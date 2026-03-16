@@ -9,13 +9,12 @@ import {
   RiEyeLine,
 } from "react-icons/ri";
 import CollapsibleSection from "@/components/global/collapsible-section";
-import {
-  InputDate,
-  InputNumber,
-  InputText,
-  InputTextarea,
-} from "@/components/global/inputs";
+import InputDate from "@/components/global/inputs/input-date";
+import InputLanguageSelect from "@/components/global/inputs/input-language-select";
+import InputNumber from "@/components/global/inputs/input-number";
+import InputText from "@/components/global/inputs/input-text";
 import TagInput from "@/components/global/tag-input";
+import TiptapEditor from "@/components/TiptapEditor";
 import type { BasicInformationSectionProps } from "@/types/components";
 import FontSelector from "../font-selector";
 import FontLineText from "./font-line-text";
@@ -189,19 +188,24 @@ export default function BasicInformationSection({
           />
         </div>
 
-        <InputTextarea
+        <TiptapEditor
           label="Description"
-          name="description"
           value={description}
-          onChange={onInputChange}
-          rows={4}
+          onChange={(value) =>
+            onInputChange({
+              target: {
+                name: "description",
+                value,
+              },
+            } as React.ChangeEvent<HTMLTextAreaElement>)
+          }
         />
 
-        <TagInput
+        <InputLanguageSelect
           label="Supported Languages"
           value={supportedLanguages}
           onChange={onLanguagesChange}
-          placeholder="Type a language and press Enter..."
+          placeholder="Type to search languages..."
           theme="light"
         />
 
@@ -215,37 +219,37 @@ export default function BasicInformationSection({
           onUsageChange={(v) =>
             onTypefaceVisionChange({
               ...typefaceVision,
-              usage: v,
+              usage: v.join(", "),
             })
           }
           onContrastChange={(v) =>
             onTypefaceVisionChange({
               ...typefaceVision,
-              contrast: v,
+              contrast: v.join(", "),
             })
           }
           onWidthChange={(v) =>
             onTypefaceVisionChange({
               ...typefaceVision,
-              width: v,
+              width: v.join(", "),
             })
           }
           onPlayfulChange={(v) =>
             onTypefaceVisionChange({
               ...typefaceVision,
-              playful: v,
+              playful: v.join(", "),
             })
           }
           onFrameChange={(v) =>
             onTypefaceVisionChange({
               ...typefaceVision,
-              frame: v,
+              frame: v.join(", "),
             })
           }
           onSerifChange={(v) =>
             onTypefaceVisionChange({
               ...typefaceVision,
-              serif: v,
+              serif: v.join(", "),
             })
           }
         />

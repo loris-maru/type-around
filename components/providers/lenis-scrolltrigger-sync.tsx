@@ -3,9 +3,7 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLenis } from "lenis/react";
-import { useEffect } from "react";
-
-gsap.registerPlugin(ScrollTrigger);
+import { useEffect, useRef } from "react";
 
 /**
  * Syncs Lenis smooth scroll with GSAP ScrollTrigger.
@@ -13,8 +11,14 @@ gsap.registerPlugin(ScrollTrigger);
  */
 export default function LenisScrollTriggerSync() {
   const lenis = useLenis();
+  const registered = useRef(false);
 
   useEffect(() => {
+    if (!registered.current) {
+      gsap.registerPlugin(ScrollTrigger);
+      registered.current = true;
+    }
+
     if (!lenis) return;
 
     ScrollTrigger.scrollerProxy(document.body, {

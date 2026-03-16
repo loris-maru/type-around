@@ -61,37 +61,55 @@ export type TypefaceVision = {
   serif?: string;
 };
 
+function splitVisionValue(
+  value: string | undefined
+): string[] {
+  if (!value) return [];
+  return value
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
 /**
  * Build a searchable string from typeface vision for matching
  * queries like "playful font", "wide headline font", "high contrast"
+ * Supports multi-select values (comma-separated)
  */
 export function typefaceVisionToSearchString(
   vision: TypefaceVision | null | undefined
 ): string {
   if (!vision) return "";
   const parts: string[] = [];
-  if (vision.usage)
-    parts.push(vision.usage, vision.usage.toLowerCase());
-  if (vision.contrast) {
-    parts.push(
-      vision.contrast,
-      `${vision.contrast} contrast`
-    );
+
+  for (const usage of splitVisionValue(vision.usage)) {
+    parts.push(usage, usage.toLowerCase());
   }
-  if (vision.width) parts.push(vision.width);
-  const playfulLower = vision.playful?.toLowerCase();
-  if (playfulLower === "yes")
-    parts.push("playful", "playful font");
-  if (playfulLower === "no")
-    parts.push("serious", "formal");
-  if (vision.frame) {
-    const frameLower = vision.frame.toLowerCase();
-    parts.push(vision.frame, frameLower);
+  for (const contrast of splitVisionValue(
+    vision.contrast
+  )) {
+    parts.push(contrast, `${contrast} contrast`);
+  }
+  for (const width of splitVisionValue(vision.width)) {
+    parts.push(width);
+  }
+  for (const playful of splitVisionValue(vision.playful)) {
+    const playfulLower = playful.toLowerCase();
+    if (playfulLower === "yes")
+      parts.push("playful", "playful font");
+    if (playfulLower === "no")
+      parts.push("serious", "formal");
+  }
+  for (const frame of splitVisionValue(vision.frame)) {
+    const frameLower = frame.toLowerCase();
+    parts.push(frame, frameLower);
     if (frameLower.includes("in"))
       parts.push("in frame", "inframe");
     if (frameLower.includes("out"))
       parts.push("out of frame", "outframe");
   }
-  if (vision.serif) parts.push(vision.serif);
+  for (const serif of splitVisionValue(vision.serif)) {
+    parts.push(serif);
+  }
   return parts.join(" ");
 }

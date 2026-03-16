@@ -11,14 +11,17 @@ import AccountInformation from "./information";
 import AccountReviewerCalendar from "./reviewer/calendar";
 import AccountReviewerRequest from "./reviewer/request";
 
-const AccountStripe = dynamic(() => import("./stripe"), {
-  ssr: false,
-  loading: () => (
-    <div className="relative flex w-full items-center justify-center py-12">
-      <div className="h-6 w-6 animate-spin rounded-full border-2 border-neutral-300 border-t-black" />
-    </div>
-  ),
-});
+const AccountPayments = dynamic(
+  () => import("./payments"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="relative flex w-full items-center justify-center py-12">
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-neutral-300 border-t-black" />
+      </div>
+    ),
+  }
+);
 
 import AccountStudioPage from "./studio-page";
 import AccountTypefaces from "./typefaces";
@@ -43,7 +46,8 @@ const NAV_COMPONENTS: Record<string, ComponentType> = {
   typefaces: AccountTypefaces,
   feedback: AccountFeedback,
   "fonts-in-use": AccountFontsInUse,
-  stripe: AccountStripe,
+  payments: AccountPayments,
+  stripe: AccountPayments,
 };
 
 const REVIEWER_COMPONENTS: Record<string, ComponentType> = {

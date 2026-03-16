@@ -31,7 +31,7 @@ export default function CharacterSetBlockModal({
 
   return (
     <div
-      className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden"
+      className="fixed inset-0 z-modal flex items-center justify-center overflow-hidden"
       data-modal
       data-lenis-prevent
     >

@@ -72,21 +72,29 @@ export default function PreviewBlockRenderer({
 }: PreviewBlockRendererProps) {
   switch (block.blockId) {
     case "about": {
-      const totalFonts = studio.typefaces.reduce(
-        (sum, tf) => sum + tf.fonts.length,
+      const typefaces = Array.isArray(studio?.typefaces)
+        ? studio.typefaces
+        : [];
+      const totalFonts = typefaces.reduce(
+        (sum, tf) =>
+          sum +
+          (Array.isArray(tf?.fonts) ? tf.fonts.length : 0),
         0
       );
+      const designers = Array.isArray(studio?.designers)
+        ? studio.designers
+        : [];
       return (
         <StudioProfile
           image={
-            studio.thumbnail ||
-            studio.avatar ||
-            "/placeholders/studio_image_placeholder.webp"
+            studio?.thumbnail ||
+            studio?.avatar ||
+            "/placeholders/studio_image_placeholder.svg"
           }
-          families={studio.typefaces.length}
+          families={typefaces.length}
           fonts={totalFonts}
-          description={studio.description || ""}
-          designers={studio.designers}
+          description={studio?.description || ""}
+          designers={designers}
         />
       );
     }

@@ -1,3 +1,4 @@
+import TiptapEditor from "@/components/TiptapEditor";
 import type { FormField } from "@/types/forms";
 
 const FORM_FIELDS: FormField[] = [
@@ -42,6 +43,7 @@ const FORM_FIELDS: FormField[] = [
     slug: "description",
     type: "textarea",
     placeholder: "Describe your studio...",
+    customComponent: TiptapEditor,
   },
 ];
 

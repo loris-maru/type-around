@@ -16,6 +16,9 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  experimental: {
+    turbopackFileSystemCacheForDev: false,
+  },
   productionBrowserSourceMaps: true,
   async headers() {
     return [

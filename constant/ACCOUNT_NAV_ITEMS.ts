@@ -5,7 +5,7 @@ export const ACCOUNT_NAV_ITEMS: string[] = [
   "Typefaces",
   "Feedback",
   "Fonts in use",
-  "Stripe",
+  "Payments",
 ];
 
 export const DEFAULT_ACCOUNT_NAV = "about";

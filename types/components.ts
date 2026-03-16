@@ -3,20 +3,20 @@ import type { ReactNode } from "react";
 import type { FontFormat } from "@/constant/FONT_FORMATS";
 import type { UploadFolder } from "@/lib/firebase/storage";
 import type {
-  AboutBlockData as LayoutAboutBlockData,
   BlogArticle,
   BlogBlockData,
   FontsInUseBlockData,
   GalleryBlockData,
   ImageBlockData,
+  AboutBlockData as LayoutAboutBlockData,
   LayoutBlock,
   LayoutBlockId,
   LayoutItem,
   LayoutItemData,
+  TypeTesterBlockData as LayoutTypeTesterBlockData,
   SpacerBlockData,
   StoreBlockData,
   TypefaceListBlockData,
-  TypeTesterBlockData as LayoutTypeTesterBlockData,
   VideoBlockData,
 } from "./layout";
 import type {
@@ -911,12 +911,12 @@ export type TypefaceVisionBlockProps = {
   playful: string;
   frame: string;
   serif: string;
-  onUsageChange: (value: string) => void;
-  onContrastChange: (value: string) => void;
-  onWidthChange: (value: string) => void;
-  onPlayfulChange: (value: string) => void;
-  onFrameChange: (value: string) => void;
-  onSerifChange: (value: string) => void;
+  onUsageChange: (value: string[]) => void;
+  onContrastChange: (value: string[]) => void;
+  onWidthChange: (value: string[]) => void;
+  onPlayfulChange: (value: string[]) => void;
+  onFrameChange: (value: string[]) => void;
+  onSerifChange: (value: string[]) => void;
 };
 
 export type DownloadButtonsProps = {
@@ -1008,11 +1008,6 @@ export type ButtonDeleteFileProps = {
   onClick: () => void;
 };
 
-export type ButtonConnectStripeProps = {
-  onClick: () => void;
-  disabled?: boolean;
-};
-
 export type ButtonAddCardProps = {
   label: string;
   onClick: () => void;
@@ -1029,11 +1024,6 @@ export type ButtonDismissErrorProps = {
 export type ButtonSendRequestProps = {
   onClick: () => void;
   className?: string;
-};
-
-export type ButtonViewStripeDashboardProps = {
-  onClick: () => void;
-  disabled?: boolean;
 };
 
 export type ButtonSelectSlotProps = {

@@ -178,5 +178,11 @@ export function useAutosave<
       );
   }, [storageKey]);
 
-  return { showSaved, saveError, retry };
+  return {
+    showSaved,
+    saveError,
+    retry,
+    triggerSaved: triggerSavedPill,
+    setSaveError,
+  };
 }

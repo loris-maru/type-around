@@ -28,6 +28,12 @@ importers:
       "@nylas/react":
         specifier: ^3.1.3
         version: 3.1.3(@stencil/core@4.36.3)(@types/react@19.2.9)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(rollup@4.58.0)(tailwindcss@4.1.18)(use-sync-external-store@1.6.0(react@19.2.3))
+      "@paypal/checkout-server-sdk":
+        specifier: ^1.0.3
+        version: 1.0.3
+      "@paypal/react-paypal-js":
+        specifier: ^9.0.1
+        version: 9.0.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       "@react-hooks-library/core":
         specifier: ^0.6.2
         version: 0.6.2(react@19.2.3)
@@ -58,6 +64,9 @@ importers:
       "@tiptap/starter-kit":
         specifier: ^3.19.0
         version: 3.19.0
+      "@tosspayments/payment-sdk":
+        specifier: ^1.9.2
+        version: 1.9.2
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -85,6 +94,9 @@ importers:
       lenis:
         specifier: ^1.3.17
         version: 1.3.17(react@19.2.3)
+      markdown-it:
+        specifier: ^14.1.1
+        version: 14.1.1
       motion:
         specifier: ^12.28.1
         version: 12.28.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -106,12 +118,12 @@ importers:
       react-icons:
         specifier: ^5.5.0
         version: 5.5.0(react@19.2.3)
-      stripe:
-        specifier: ^20.2.0
-        version: 20.2.0(@types/node@20.19.30)
       tailwind-merge:
         specifier: ^3.4.0
         version: 3.4.0
+      tiptap-markdown:
+        specifier: ^0.9.0
+        version: 0.9.0(@tiptap/core@3.19.0(@tiptap/pm@3.19.0))
       wawoff2:
         specifier: ^2.0.1
         version: 2.0.1
@@ -134,6 +146,9 @@ importers:
       "@tailwindcss/postcss":
         specifier: ^4
         version: 4.1.18
+      "@tailwindcss/typography":
+        specifier: ^0.5.19
+        version: 0.5.19(tailwindcss@4.1.18)
       "@types/mailchimp__mailchimp_marketing":
         specifier: ^3.0.22
         version: 3.0.22
@@ -1744,6 +1759,42 @@ packages:
       }
     engines: { node: ">=8.0.0" }
 
+  "@paypal/checkout-server-sdk@1.0.3":
+    resolution:
+      {
+        integrity: sha512-UEdq8akEdMz0Vs4qoQFU2gMp8PpyE/HKyMwiZuK4vIWUKl8jfd1fWKjQN5cDFm9NkFUIp5U7h++rdMOVj9WMNA==,
+      }
+    engines: { node: ">=8" }
+    deprecated: "Package no longer supported. The author suggests using the @paypal/paypal-server-sdk package instead: https://www.npmjs.com/package/@paypal/paypal-server-sdk. Contact Support at https://www.npmjs.com/support for more info."
+
+  "@paypal/paypal-js@9.4.0":
+    resolution:
+      {
+        integrity: sha512-iPJIkEgzuUt9AW9d41xcltLYdcJvQ0qf+wWWuJ+wnJYnx4H6Yf1Pm98eBRnTNej4XHMSEDDb33ERsB4v/siORQ==,
+      }
+
+  "@paypal/paypalhttp@1.0.1":
+    resolution:
+      {
+        integrity: sha512-DC7AHxTT7drF6dUi3YaFdPVuT15sIkpD5H2eHmdtFgxM4UanS1o1ZDfMhR9mpxd8o+X6pz2r+EZVRRq+n1cssQ==,
+      }
+    engines: { node: ">=4" }
+
+  "@paypal/react-paypal-js@9.0.1":
+    resolution:
+      {
+        integrity: sha512-cqX0l0wSOlWlovH0dnbVksZNfkoVxoQ5qYSoOQrqiXyibgrNCNT+loYqQ26F3rdCz+qPEQwf4+euKxgw8M1bNQ==,
+      }
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18 || ^19
+      react-dom: ^16.8.0 || ^17 || ^18 || ^19
+
+  "@paypal/sdk-constants@1.0.157":
+    resolution:
+      {
+        integrity: sha512-BjxWT9rK6dM1AOffSpvHYY47/8BY775jgEYYiwH6eL4YaqU5Epcw7zOtwQ8L4UaEn4FCAjZ2EWxaS83dCN7SpA==,
+      }
+
   "@playwright/test@1.58.2":
     resolution:
       {
@@ -2443,6 +2494,14 @@ packages:
         integrity: sha512-Ce0GFnzAOuPyfV5SxjXGn0CubwGcuDB0zcdaPuCSzAa/2vII24JTkH+I6jcbXLb1ctjZMZZI6OjDaLPJQL1S0g==,
       }
 
+  "@tailwindcss/typography@0.5.19":
+    resolution:
+      {
+        integrity: sha512-w31dd8HOx3k9vPtcQh5QHP9GwKcgbMp87j58qi6xgiBnFFtKEAgCWnDw4qUT8aHwkCp8bKvb/KGKWWHedP0AAg==,
+      }
+    peerDependencies:
+      tailwindcss: ">=3.0.0 || insiders || >=4.0.0-alpha.20 || >=4.0.0-beta.1"
+
   "@tiptap/core@3.19.0":
     resolution:
       {
@@ -2707,6 +2766,24 @@ packages:
       }
     engines: { node: ">= 10" }
 
+  "@tosspayments/payment-sdk@1.9.2":
+    resolution:
+      {
+        integrity: sha512-le0NatZUSH40ZS70l6UFAdapBAoCaibfK+gPI//sfIbGYBh6KWQ58HHif0M1kSkDEbiL6B0yrhkGG3HWd2jkig==,
+      }
+
+  "@tosspayments/payment__types@1.69.0":
+    resolution:
+      {
+        integrity: sha512-EbU36vLEWfhRpX/g4V0DyRiUmTkNeeVDYjJamD9aJiLmRbLl9PVdXi5QOQTMYma2RGRgA8drHY4yDMsjvKFwCg==,
+      }
+
+  "@tosspayments/sdk-constants@0.2.2":
+    resolution:
+      {
+        integrity: sha512-qTIcD9JnVtN65/yiW5sPAlvK5fpQtDluv4IEyslubncbQLQKE+ePSnGZU1fLNPxcchv6QTnwmgj9Ndm6EN/Ymg==,
+      }
+
   "@ts-morph/common@0.23.0":
     resolution:
       {
@@ -2761,6 +2838,12 @@ packages:
         integrity: sha512-asx5hIG9Qmf/1oStypjanR7iKTv0gXQ1Ov/jfrX6kS/EO0OFni8orbmGCn0672NHR3kXHwpAwR+B368ZGN/2rA==,
       }
 
+  "@types/linkify-it@3.0.5":
+    resolution:
+      {
+        integrity: sha512-yg6E+u0/+Zjva+buc3EIb+29XEg4wltq7cSmd4Uc2EE/1nUVmxyzpX6gUXD0V8jIrG0r7YeOGVIbYRkxeooCtw==,
+      }
+
   "@types/linkify-it@5.0.0":
     resolution:
       {
@@ -2779,10 +2862,22 @@ packages:
         integrity: sha512-zvVrjNWMB2sYCLjRLOc3xImqFpFJcOn1TVTcyw5t1fwbN8dAJxTbNfd0e25bQGjfIiDbsNaNt+kburboABK93A==,
       }
 
+  "@types/markdown-it@13.0.9":
+    resolution:
+      {
+        integrity: sha512-1XPwR0+MgXLWfTn9gCsZ55AHOKW1WN+P9vr0PaQh5aerR9LLQXUbjfEAFhjmEmyoYFWAyuN2Mqkn40MZ4ukjBw==,
+      }
+
   "@types/markdown-it@14.1.2":
     resolution:
       {
         integrity: sha512-promo4eFwuiW+TfGxhi+0x3czqTYJkG8qB17ZUJiVF10Xm7NLVRSLUsfRTU/6h1e24VvRnXCx+hG7li58lkzog==,
+      }
+
+  "@types/mdurl@1.0.5":
+    resolution:
+      {
+        integrity: sha512-6L6VymKTzYSrEf4Nev4Xa1LCHKrlTlYCBMTlQKFuddo1CvQcE52I0mwfOJayueUC7MJuXOeHTcIU683lzd0cUA==,
       }
 
   "@types/mdurl@2.0.0":
@@ -3605,6 +3700,14 @@ packages:
       {
         integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==,
       }
+
+  cssesc@3.0.0:
+    resolution:
+      {
+        integrity: sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==,
+      }
+    engines: { node: ">=4" }
+    hasBin: true
 
   csstype@3.1.3:
     resolution:
@@ -4629,6 +4732,12 @@ packages:
         integrity: sha512-6pEjquH3rqaI6cYAXYPcz9MS4rY6R4ngRgrgfDshRptUZIc3lw0MCIJIGDj9++mfySOuPTHB4nrSW99BCvOPIA==,
       }
 
+  hi-base32@0.5.1:
+    resolution:
+      {
+        integrity: sha512-EmBBpvdYh/4XxsnUybsPag6VikPYnN30td+vQk+GI3qpahVEG9+gTkG0aXVxTjBqQ5T6ijbWIu77O+C5WFWsnA==,
+      }
+
   hsl-to-hex@1.0.0:
     resolution:
       {
@@ -5463,10 +5572,16 @@ packages:
         integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==,
       }
 
-  markdown-it@14.1.0:
+  markdown-it-task-lists@2.1.1:
     resolution:
       {
-        integrity: sha512-a54IwgWPaeBCAAsv13YgmALOF1elABB08FxO9i+r4VFk5Vl4pKokRPeX8u5TCgSsPi6ec1otfLjdOpVcgbpshg==,
+        integrity: sha512-TxFAc76Jnhb2OUu+n3yz9RMu4CwGfaT788br6HhEDlvWfdeJcLUsxk1Hgw2yJio0OXsxv7pyIPmvECY7bMbluA==,
+      }
+
+  markdown-it@14.1.1:
+    resolution:
+      {
+        integrity: sha512-BuU2qnTti9YKgK5N+IeMubp14ZUKUUw7yeJbkjtosvHiP0AZ5c8IAgEMk79D0eC8F23r4Ac/q8cAIFdm2FtyoA==,
       }
     hasBin: true
 
@@ -5904,6 +6019,13 @@ packages:
       }
     engines: { node: ">= 0.4" }
 
+  postcss-selector-parser@6.0.10:
+    resolution:
+      {
+        integrity: sha512-IQ7TZdoaqbT+LCpShg46jnZVlhWD2w6iQYAcYXfHARZ7X1t/UGhhceQDs5X0cGqKvYlHNOuv7Oa1xmb0oQuA3w==,
+      }
+    engines: { node: ">=4" }
+
   postcss-value-parser@4.2.0:
     resolution:
       {
@@ -5955,6 +6077,12 @@ packages:
     resolution:
       {
         integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==,
+      }
+
+  promise-polyfill@8.3.0:
+    resolution:
+      {
+        integrity: sha512-H5oELycFml5yto/atYqmjyigJoAo3+OXwolYiH7OfQuYlAqhxNvTfiNMbV9hsC6Yp83yE5r2KTVmtrG6R9i6Pg==,
       }
 
   prop-types@15.8.1:
@@ -6602,18 +6730,6 @@ packages:
         integrity: sha512-8r3mkIM/2+PpjHoOtiAW8Rg3jJLHaV7xPwG+YRGrv6FP0wwk/toTpATxWYOW0BKdWwl82VT2tFYi5DlROa0Mxg==,
       }
 
-  stripe@20.2.0:
-    resolution:
-      {
-        integrity: sha512-m8niTfdm3nPP/yQswRWMwQxqEUcTtB3RTJQ9oo6NINDzgi7aPOadsH/fPXIIfL1Sc5+lqQFKSk7WiO6CXmvaeA==,
-      }
-    engines: { node: ">=16" }
-    peerDependencies:
-      "@types/node": ">=16"
-    peerDependenciesMeta:
-      "@types/node":
-        optional: true
-
   strnum@2.1.2:
     resolution:
       {
@@ -6777,6 +6893,14 @@ packages:
       }
     engines: { node: ">=14.0.0" }
 
+  tiptap-markdown@0.9.0:
+    resolution:
+      {
+        integrity: sha512-dKLQ9iiuGNgrlGVjrNauF/UBzWu4LYOx5pkD0jNkmQt/GOwfCJsBuzZTsf1jZ204ANHOm572mZ9PYvGh1S7tpQ==,
+      }
+    peerDependencies:
+      "@tiptap/core": ^3.0.1
+
   to-regex-range@5.0.1:
     resolution:
       {
@@ -6829,6 +6953,13 @@ packages:
         integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==,
       }
     engines: { node: ">= 0.8.0" }
+
+  type-fest@2.19.0:
+    resolution:
+      {
+        integrity: sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==,
+      }
+    engines: { node: ">=12.20" }
 
   typed-array-buffer@1.0.3:
     resolution:
@@ -8291,6 +8422,28 @@ snapshots:
   "@opentelemetry/api@1.9.0":
     optional: true
 
+  "@paypal/checkout-server-sdk@1.0.3":
+    dependencies:
+      "@paypal/paypalhttp": 1.0.1
+
+  "@paypal/paypal-js@9.4.0":
+    dependencies:
+      promise-polyfill: 8.3.0
+
+  "@paypal/paypalhttp@1.0.1": {}
+
+  "@paypal/react-paypal-js@9.0.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)":
+    dependencies:
+      "@paypal/paypal-js": 9.4.0
+      "@paypal/sdk-constants": 1.0.157
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
+      server-only: 0.0.1
+
+  "@paypal/sdk-constants@1.0.157":
+    dependencies:
+      hi-base32: 0.5.1
+
   "@playwright/test@1.58.2":
     dependencies:
       playwright: 1.58.2
@@ -8674,6 +8827,11 @@ snapshots:
       postcss: 8.5.6
       tailwindcss: 4.1.18
 
+  "@tailwindcss/typography@0.5.19(tailwindcss@4.1.18)":
+    dependencies:
+      postcss-selector-parser: 6.0.10
+      tailwindcss: 4.1.18
+
   "@tiptap/core@3.19.0(@tiptap/pm@3.19.0)":
     dependencies:
       "@tiptap/pm": 3.19.0
@@ -8865,6 +9023,18 @@ snapshots:
 
   "@tootallnate/once@2.0.0": {}
 
+  "@tosspayments/payment-sdk@1.9.2":
+    dependencies:
+      "@tosspayments/payment__types": 1.69.0
+
+  "@tosspayments/payment__types@1.69.0":
+    dependencies:
+      "@tosspayments/sdk-constants": 0.2.2
+
+  "@tosspayments/sdk-constants@0.2.2":
+    dependencies:
+      type-fest: 2.19.0
+
   "@ts-morph/common@0.23.0":
     dependencies:
       fast-glob: 3.3.3
@@ -8897,6 +9067,8 @@ snapshots:
       "@types/ms": 2.1.0
       "@types/node": 20.19.30
 
+  "@types/linkify-it@3.0.5": {}
+
   "@types/linkify-it@5.0.0": {}
 
   "@types/long@4.0.2":
@@ -8904,10 +9076,17 @@ snapshots:
 
   "@types/mailchimp__mailchimp_marketing@3.0.22": {}
 
+  "@types/markdown-it@13.0.9":
+    dependencies:
+      "@types/linkify-it": 3.0.5
+      "@types/mdurl": 1.0.5
+
   "@types/markdown-it@14.1.2":
     dependencies:
       "@types/linkify-it": 5.0.0
       "@types/mdurl": 2.0.0
+
+  "@types/mdurl@1.0.5": {}
 
   "@types/mdurl@2.0.0": {}
 
@@ -9404,6 +9583,8 @@ snapshots:
       which: 2.0.2
 
   crypto-js@4.2.0: {}
+
+  cssesc@3.0.0: {}
 
   csstype@3.1.3: {}
 
@@ -10237,6 +10418,8 @@ snapshots:
     dependencies:
       hermes-estree: 0.25.1
 
+  hi-base32@0.5.1: {}
+
   hsl-to-hex@1.0.0:
     dependencies:
       hsl-to-rgb-for-reals: 1.1.1
@@ -10688,7 +10871,9 @@ snapshots:
     dependencies:
       "@jridgewell/sourcemap-codec": 1.5.5
 
-  markdown-it@14.1.0:
+  markdown-it-task-lists@2.1.1: {}
+
+  markdown-it@14.1.1:
     dependencies:
       argparse: 2.0.1
       entities: 4.5.0
@@ -10913,6 +11098,11 @@ snapshots:
 
   possible-typed-array-names@1.1.0: {}
 
+  postcss-selector-parser@6.0.10:
+    dependencies:
+      cssesc: 3.0.0
+      util-deprecate: 1.0.2
+
   postcss-value-parser@4.2.0: {}
 
   postcss@8.4.31:
@@ -10940,6 +11130,8 @@ snapshots:
   prettier@3.8.1: {}
 
   process-nextick-args@2.0.1: {}
+
+  promise-polyfill@8.3.0: {}
 
   prop-types@15.8.1:
     dependencies:
@@ -10994,7 +11186,7 @@ snapshots:
   prosemirror-markdown@1.13.4:
     dependencies:
       "@types/markdown-it": 14.1.2
-      markdown-it: 14.1.0
+      markdown-it: 14.1.1
       prosemirror-model: 1.25.4
 
   prosemirror-menu@1.2.5:
@@ -11461,12 +11653,6 @@ snapshots:
     dependencies:
       js-tokens: 9.0.1
 
-  stripe@20.2.0(@types/node@20.19.30):
-    dependencies:
-      qs: 6.14.1
-    optionalDependencies:
-      "@types/node": 20.19.30
-
   strnum@2.1.2: {}
 
   stubs@3.0.0: {}
@@ -11556,6 +11742,14 @@ snapshots:
 
   tinyspy@4.0.4: {}
 
+  tiptap-markdown@0.9.0(@tiptap/core@3.19.0(@tiptap/pm@3.19.0)):
+    dependencies:
+      "@tiptap/core": 3.19.0(@tiptap/pm@3.19.0)
+      "@types/markdown-it": 13.0.9
+      markdown-it: 14.1.1
+      markdown-it-task-lists: 2.1.1
+      prosemirror-markdown: 1.13.4
+
   to-regex-range@5.0.1:
     dependencies:
       is-number: 7.0.0
@@ -11585,6 +11779,8 @@ snapshots:
   type-check@0.4.0:
     dependencies:
       prelude-ls: 1.2.1
+
+  type-fest@2.19.0: {}
 
   typed-array-buffer@1.0.3:
     dependencies:

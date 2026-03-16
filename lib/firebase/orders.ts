@@ -60,13 +60,23 @@ export async function getOrdersByUserId(
 export async function updateOrderStatus(
   orderId: string,
   status: Order["status"],
-  stripeSessionId?: string,
-  stripePaymentIntentId?: string
+  paymentData?: {
+    paymentProvider?: "toss" | "paypal";
+    tossPaymentKey?: string;
+    paypalOrderId?: string;
+  }
 ): Promise<void> {
   const ref = doc(ordersDb, COLLECTION_NAME, orderId);
   await updateDoc(ref, {
     status,
-    ...(stripeSessionId && { stripeSessionId }),
-    ...(stripePaymentIntentId && { stripePaymentIntentId }),
+    ...(paymentData?.paymentProvider && {
+      paymentProvider: paymentData.paymentProvider,
+    }),
+    ...(paymentData?.tossPaymentKey && {
+      tossPaymentKey: paymentData.tossPaymentKey,
+    }),
+    ...(paymentData?.paypalOrderId && {
+      paypalOrderId: paymentData.paypalOrderId,
+    }),
   });
 }

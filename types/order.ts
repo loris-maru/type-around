@@ -23,8 +23,9 @@ export const OrderSchema = z.object({
   status: z
     .enum(["pending", "paid", "failed"])
     .default("pending"),
-  stripePaymentIntentId: z.string().optional(),
-  stripeSessionId: z.string().optional(),
+  paymentProvider: z.enum(["toss", "paypal"]).optional(),
+  tossPaymentKey: z.string().optional(),
+  paypalOrderId: z.string().optional(),
   downloadToken: z.string(),
   createdAt: z.string(), // ISO
 });

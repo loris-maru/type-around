@@ -47,13 +47,15 @@ export default function AccountForm({
             return (
               <div
                 key={field.slug}
-                className="relative w-full"
+                className="relative col-span-2 w-full"
               >
                 <CustomComponent
                   value={values[field.slug]}
                   onChange={(value: string) =>
                     handleChange(field.slug, value)
                   }
+                  label={field.label}
+                  disabled={isLoading}
                 />
               </div>
             );

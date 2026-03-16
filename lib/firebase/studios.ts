@@ -424,13 +424,23 @@ export async function getOrCreateStudio(
 }
 
 /**
- * Update studio Stripe account ID
+ * Update studio Toss sub-merchant ID (for payouts)
  */
-export async function updateStudioStripeAccountId(
+export async function updateStudioTossSubMerchantId(
   studioId: string,
-  stripeAccountId: string
+  tossSubMerchantId: string
 ): Promise<void> {
-  await updateStudio(studioId, { stripeAccountId });
+  await updateStudio(studioId, { tossSubMerchantId });
+}
+
+/**
+ * Update studio PayPal email (for payouts)
+ */
+export async function updateStudioPaypalEmail(
+  studioId: string,
+  paypalEmail: string
+): Promise<void> {
+  await updateStudio(studioId, { paypalEmail });
 }
 
 /**
@@ -684,7 +694,7 @@ export async function getAllStudiosForDisplay(): Promise<
         image:
           rawData.thumbnail ||
           rawData.avatar ||
-          "/placeholders/studio_image_placeholder.webp",
+          "/placeholders/studio_image_placeholder.svg",
         gradient: studioGradient,
         typefaces: (typefaces as StudioTypeface[]).map(
           (t) => {

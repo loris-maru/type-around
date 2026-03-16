@@ -14,8 +14,12 @@ export default function DesignerCardProfile({
 }: DesignerCardProfileProps) {
   const { displayFontFamily, textFontFamily } =
     useStudioFonts();
+
+  if (!designer || typeof designer !== "object")
+    return null;
+
   const fullName =
-    `${designer.firstName} ${designer.lastName}`.trim();
+    `${designer.firstName ?? ""} ${designer.lastName ?? ""}`.trim();
 
   return (
     <div className="flex items-start gap-5 rounded-lg border border-neutral-300 bg-transparent p-5">
@@ -38,8 +42,8 @@ export default function DesignerCardProfile({
             className="flex h-full w-full items-center justify-center font-bold text-neutral-400 text-xl lg:text-lg"
             style={{ fontFamily: displayFontFamily }}
           >
-            {designer.firstName.charAt(0)}
-            {designer.lastName.charAt(0)}
+            {(designer.firstName ?? "").charAt(0)}
+            {(designer.lastName ?? "").charAt(0)}
           </div>
         )}
       </div>
@@ -80,18 +84,31 @@ export default function DesignerCardProfile({
             </a>
           )}
 
-          {designer.socialMedia.map((sm) => (
-            <a
-              key={sm.name}
-              href={sm.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`${fullName} on ${sm.name}`}
-              className="text-neutral-500 text-xs capitalize transition-colors hover:text-black"
-            >
-              {sm.name}
-            </a>
-          ))}
+          {(() => {
+            const raw = designer?.socialMedia;
+            const smList = Array.isArray(raw)
+              ? Array.from(raw)
+              : [];
+            const safeList = Array.isArray(smList)
+              ? smList
+              : [];
+            return safeList
+              .filter(
+                (sm) => sm != null && typeof sm === "object"
+              )
+              .map((sm) => (
+                <a
+                  key={sm.name}
+                  href={sm.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${fullName} on ${sm?.name ?? "social"}`}
+                  className="text-neutral-500 text-xs capitalize transition-colors hover:text-black"
+                >
+                  {sm?.name ?? ""}
+                </a>
+              ));
+          })()}
         </div>
       </div>
     </div>

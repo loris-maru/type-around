@@ -2,16 +2,23 @@
 
 import { useEffect } from "react";
 
+// Store the truly original console.error once, before any HMR re-mounts
+const nativeConsoleError =
+  typeof window !== "undefined" ? console.error : undefined;
+
 export function ErrorLogger({
   children,
 }: {
   children: React.ReactNode;
 }) {
   useEffect(() => {
-    const originalError = console.error;
-    console.error = (...args) => {
-      originalError.apply(console, args);
-      // Log to a more visible place during development
+    if (!nativeConsoleError) return;
+
+    // Always restore from the native reference to avoid chaining wrappers
+    console.error = (
+      ...args: Parameters<typeof console.error>
+    ) => {
+      nativeConsoleError.apply(console, args);
       if (process.env.NODE_ENV === "development") {
         console.warn("🔴 ERROR DETECTED:", ...args);
       }
@@ -43,7 +50,7 @@ export function ErrorLogger({
     );
 
     return () => {
-      console.error = originalError;
+      console.error = nativeConsoleError;
       window.removeEventListener("error", handleError);
       window.removeEventListener(
         "unhandledrejection",

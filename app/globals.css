@@ -24,6 +24,9 @@
 }
 
 @theme inline {
+  /* Z-index: modals must appear above navigation (z-40) */
+  --z-modal: 9999;
+
   /* Colors*/
   --color-light-gray: #f2f2f2;
   --color-medium-gray: #c9c9c9;
@@ -40,6 +43,11 @@
   --shadow-button-hover: 7px 7px 0 -4px rgba(0, 0, 0, 1);
   --shadow-button-inactive: 0 0 0 0 rgba(0, 0, 0, 1);
   --shadow-medium-gray: 3px 3px 0 0 rgba(201, 201, 201, 1);
+}
+
+/* Modal overlay: above navigation (z-40) */
+.z-modal {
+  z-index: var(--z-modal);
 }
 
 /* Button shadow classes */
@@ -149,6 +157,72 @@
   to {
     height: 0;
   }
+}
+
+/* Prose-like typography for rich text (replaces @tailwindcss/typography) */
+.prose {
+  font-size: 1rem;
+  line-height: 1.75;
+}
+.prose p {
+  margin-top: 0;
+  margin-bottom: 0.75em;
+}
+.prose p:last-child {
+  margin-bottom: 0;
+}
+.prose strong {
+  font-weight: 700;
+}
+.prose h2 {
+  font-size: 1.5em;
+  font-weight: 700;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+.prose h3 {
+  font-size: 1.25em;
+  font-weight: 600;
+  margin-top: 1.25em;
+  margin-bottom: 0.5em;
+}
+.prose h4 {
+  font-size: 1.125em;
+  font-weight: 600;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+.prose ul {
+  list-style-type: disc;
+  padding-left: 1.5em;
+  margin-bottom: 0.75em;
+}
+.prose ol {
+  list-style-type: decimal;
+  padding-left: 1.5em;
+  margin-bottom: 0.75em;
+}
+.prose li {
+  margin-bottom: 0.25em;
+}
+.prose a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+.prose a:hover {
+  color: #1d4ed8;
+}
+.prose-sm {
+  font-size: 0.875rem;
+}
+.prose-sm h2 {
+  font-size: 1.25em;
+}
+.prose-sm h3 {
+  font-size: 1.125em;
+}
+.prose-sm h4 {
+  font-size: 1em;
 }
 
 html {

@@ -1,6 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import {
+  startTransition,
+  useEffect,
+  useState,
+} from "react";
 import { LAYOUT_BLOCKS } from "@/constant/LAYOUT_BLOCKS";
 import type { LayoutBuilderProps } from "@/types/components";
 import type {
@@ -20,6 +24,13 @@ export default function LayoutBuilder({
   const [activeItems, setActiveItems] = useState<
     LayoutItem[]
   >(value || []);
+
+  // Sync activeItems when value changes from parent (e.g. load from Firebase)
+  useEffect(() => {
+    if (value) {
+      startTransition(() => setActiveItems(value));
+    }
+  }, [value]);
 
   // Unique blocks that are already in the layout
   const usedUniqueIds = activeItems

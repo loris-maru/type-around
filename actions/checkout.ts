@@ -2,20 +2,24 @@
 
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { createOrder } from "@/lib/firebase/orders";
-import { getStudioById } from "@/lib/firebase/studios";
-import { APP_URL, getStripe } from "@/lib/stripe/config";
 import type { CartItem } from "@/types/cart";
 import type { OrderItem } from "@/types/order";
 
-export type CheckoutResult = {
+export type PaymentMethod = "local" | "global";
+
+export type CreatePendingOrderResult = {
   success: boolean;
-  url?: string;
+  orderId?: string;
+  downloadToken?: string;
+  totalAmount?: number;
+  orderName?: string;
   error?: string;
 };
 
-export async function createCheckoutSession(
-  items: CartItem[]
-): Promise<CheckoutResult> {
+export async function createPendingOrder(
+  items: CartItem[],
+  paymentMethod: PaymentMethod
+): Promise<CreatePendingOrderResult> {
   try {
     const { userId } = await auth();
     const user = await currentUser();
@@ -24,17 +28,11 @@ export async function createCheckoutSession(
       !userId ||
       !user?.emailAddresses?.[0]?.emailAddress
     ) {
-      return {
-        success: false,
-        error: "sign_in_required",
-      };
+      return { success: false, error: "sign_in_required" };
     }
 
     if (items.length === 0) {
-      return {
-        success: false,
-        error: "Cart is empty",
-      };
+      return { success: false, error: "Cart is empty" };
     }
 
     const invalidItems = items.filter(
@@ -71,6 +69,11 @@ export async function createCheckoutSession(
       orderItems.reduce((sum, i) => sum + i.price, 0)
     );
 
+    const orderName =
+      items.length === 1
+        ? `${items[0]?.typefaceName ?? ""} – ${items[0]?.fullName ?? items[0]?.name}`
+        : `${items[0]?.typefaceName ?? "Fonts"} and ${items.length - 1} more`;
+
     const order = {
       id: orderId,
       userId,
@@ -78,76 +81,30 @@ export async function createCheckoutSession(
       items: orderItems,
       totalCents: totalWon,
       status: "pending" as const,
+      paymentProvider: (paymentMethod === "local"
+        ? "toss"
+        : "paypal") as "toss" | "paypal",
       downloadToken,
       createdAt: new Date().toISOString(),
     };
 
     await createOrder(order);
 
-    const stripe = getStripe();
-
-    // Stripe Connect: if all items from same studio with connected Stripe, use destination charge
-    const studioIds = [
-      ...new Set(
-        items.map((i) => i.studioId).filter(Boolean)
-      ),
-    ];
-    const singleStudioId =
-      studioIds.length === 1 ? studioIds[0] : null;
-    const studio = singleStudioId
-      ? await getStudioById(singleStudioId)
-      : null;
-    const stripeAccountId =
-      studio?.stripeAccountId || undefined;
-
-    const baseParams = {
-      mode: "payment" as const,
-      payment_method_types: ["card" as const],
-      line_items: items.map((item) => ({
-        price_data: {
-          currency: "krw",
-          product_data: {
-            name: `${item.typefaceName || ""} – ${item.fullName || item.name}`,
-            description: `Font: ${item.fullName || item.name}`,
-          },
-          unit_amount: Math.round(item.price),
-        },
-        quantity: 1,
-      })),
-      success_url: `${APP_URL}/order/${orderId}?token=${downloadToken}`,
-      cancel_url: `${APP_URL}/studio`,
-      metadata: { orderId },
-      customer_email: user.emailAddresses[0].emailAddress,
-    };
-
-    const session = stripeAccountId
-      ? await stripe.checkout.sessions.create({
-          ...baseParams,
-          payment_intent_data: {
-            transfer_data: { destination: stripeAccountId },
-          },
-        })
-      : await stripe.checkout.sessions.create(baseParams);
-
-    if (!session.url) {
-      return {
-        success: false,
-        error: "Failed to create checkout session",
-      };
-    }
-
     return {
       success: true,
-      url: session.url,
+      orderId,
+      downloadToken,
+      totalAmount: totalWon,
+      orderName,
     };
   } catch (err) {
-    console.error("Checkout error:", err);
+    console.error("Create order error:", err);
     return {
       success: false,
       error:
         err instanceof Error
           ? err.message
-          : "Checkout failed",
+          : "Failed to create order",
     };
   }
 }

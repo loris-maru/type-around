@@ -121,13 +121,30 @@ export default function TypefaceCard({
                 compact ? "w-[160px]" : "w-[200px]"
               }
             >
-              <Image
-                src={typeface.icon}
-                alt={typeface.name}
-                width={100}
-                height={100}
-                className="h-auto w-full object-contain"
-              />
+              {(() => {
+                const iconSrc = typeface.icon?.trim();
+                if (!iconSrc) {
+                  return (
+                    <div
+                      className="flex h-[100px] w-full items-center justify-center bg-neutral-200"
+                      aria-hidden
+                    >
+                      <span className="font-black font-ortank text-4xl text-neutral-400">
+                        {typeface.name.charAt(0) || "?"}
+                      </span>
+                    </div>
+                  );
+                }
+                return (
+                  <Image
+                    src={iconSrc}
+                    alt={typeface.name}
+                    width={100}
+                    height={100}
+                    className="h-auto w-full object-contain"
+                  />
+                );
+              })()}
             </motion.div>
           ) : (
             <motion.div

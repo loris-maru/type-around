@@ -66,7 +66,8 @@ const DEFAULT_STUDIO = {
   },
   typefaces: [],
   fontsInUse: [],
-  stripeAccountId: "",
+  tossSubMerchantId: "",
+  paypalEmail: "",
   members: [],
 };
 

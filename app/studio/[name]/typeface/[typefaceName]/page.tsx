@@ -173,7 +173,7 @@ export default async function TypefacePage({
     image:
       firebaseStudio.thumbnail ||
       firebaseStudio.avatar ||
-      "/placeholders/studio_image_placeholder.webp",
+      "/placeholders/studio_image_placeholder.svg",
     website: firebaseStudio.website,
     email: firebaseStudio.contactEmail,
     imageCover: firebaseStudio.thumbnail || "",

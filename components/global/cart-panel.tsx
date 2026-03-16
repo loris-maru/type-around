@@ -7,9 +7,7 @@ import { useCallback, useState } from "react";
 import {
   RiCloseLine,
   RiDeleteBinLine,
-  RiLoader4Line,
 } from "react-icons/ri";
-import { createCheckoutSession } from "@/actions/checkout";
 import { useCartStore } from "@/stores/cart";
 import { getCartItemKey } from "@/types/cart";
 
@@ -27,7 +25,6 @@ export default function CartPanel({
     (s) => s.removeFromCart
   );
   const clearCart = useCartStore((s) => s.clearCart);
-  const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [checkoutError, setCheckoutError] = useState<
     string | null
   >(null);
@@ -45,7 +42,7 @@ export default function CartPanel({
       i.studioSlug
   );
 
-  const handleCheckout = useCallback(async () => {
+  const handleCheckout = useCallback(() => {
     if (!canCheckout) {
       setCheckoutError(
         "Some items cannot be purchased. Please remove them and re-add from the typeface page."
@@ -53,25 +50,16 @@ export default function CartPanel({
       return;
     }
     setCheckoutError(null);
-    setIsCheckingOut(true);
-    try {
-      if (!isSignedIn) {
-        router.push(
-          `/sign-up?redirect_url=${encodeURIComponent("/checkout")}`
-        );
-        onClose();
-        return;
-      }
-      const result = await createCheckoutSession(cart);
-      if (result.success && result.url) {
-        window.location.href = result.url;
-      } else {
-        setCheckoutError(result.error || "Checkout failed");
-      }
-    } finally {
-      setIsCheckingOut(false);
+    if (!isSignedIn) {
+      router.push(
+        `/sign-up?redirect_url=${encodeURIComponent("/checkout")}`
+      );
+      onClose();
+      return;
     }
-  }, [cart, canCheckout, isSignedIn, router, onClose]);
+    onClose();
+    router.push("/checkout");
+  }, [canCheckout, isSignedIn, router, onClose]);
 
   return (
     <AnimatePresence>
@@ -179,23 +167,11 @@ export default function CartPanel({
                       <button
                         type="button"
                         onClick={handleCheckout}
-                        disabled={
-                          isCheckingOut || !canCheckout
-                        }
+                        disabled={!canCheckout}
                         className="flex cursor-pointer items-center gap-2 rounded-lg bg-black px-12 py-4 font-medium font-whisper text-lg text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-60"
                         aria-label="Proceed to checkout"
                       >
-                        {isCheckingOut ? (
-                          <>
-                            <RiLoader4Line
-                              size={20}
-                              className="animate-spin"
-                            />
-                            Redirecting…
-                          </>
-                        ) : (
-                          "Checkout"
-                        )}
+                        Proceed to checkout
                       </button>
                     </div>
                   </div>

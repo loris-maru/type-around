@@ -39,12 +39,12 @@ export default function StudioPageBlocks({
 
   const typetesterTypefaces: TypetesterTypeface[] =
     useMemo(() => {
-      return studio.typefaces
+      return (studio.typefaces ?? [])
         .filter((tf) => tf.published)
         .map((tf) => ({
           id: tf.id,
           name: tf.name,
-          fonts: tf.fonts
+          fonts: (tf.fonts ?? [])
             .filter((f) => f.file)
             .map((f) => ({
               id: f.id,
@@ -169,6 +169,7 @@ export default function StudioPageBlocks({
               <StoreBlock
                 key={block.key}
                 data={storeData}
+                studio={studio}
               />
             );
           }

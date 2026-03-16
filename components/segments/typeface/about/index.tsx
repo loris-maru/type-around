@@ -1,3 +1,4 @@
+import RichTextContent from "@/components/global/rich-text/rich-text-content";
 import { ABOUT_BLOCK_MARGIN_PRESET_MAP } from "@/constant/ABOUT_BLOCK_MARGIN_PRESETS";
 import type { AboutBlockData } from "@/types/layout-typeface";
 import { cn } from "@/utils/class-names";
@@ -68,7 +69,8 @@ export default function TypefaceAbout({
       <h2 className="mb-4 font-black font-ortank text-2xl text-black">
         About
       </h2>
-      <p
+      <RichTextContent
+        content={description}
         className={cn(
           "hyphens-auto font-whisper leading-relaxed",
           TEXT_SIZE_CLASSES[textSize],
@@ -76,9 +78,7 @@ export default function TypefaceAbout({
           !textColor && "text-neutral-700"
         )}
         style={textColor ? { color: textColor } : undefined}
-      >
-        {description}
-      </p>
+      />
     </section>
   );
 }

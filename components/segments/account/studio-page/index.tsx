@@ -199,25 +199,18 @@ export default function AccountStudioPage() {
     [persistToStorage]
   );
 
-  const handleLayoutChange = useCallback(
-    (layout: LayoutItem[]) => {
-      persistToStorage(formValuesRef.current, layout);
-      setPageLayout(layout);
-      // Immediately save to Firebase when layout changes (e.g. from modal save)
-      saveToFirebase({
-        form: formValuesRef.current,
-        layout,
-      });
-    },
-    [persistToStorage, saveToFirebase]
-  );
-
   const combinedData = useMemo(
     () => ({ form: formValues, layout: pageLayout }),
     [formValues, pageLayout]
   );
 
-  const { showSaved, saveError, retry } = useAutosave({
+  const {
+    showSaved,
+    saveError,
+    retry,
+    triggerSaved,
+    setSaveError,
+  } = useAutosave({
     storageKey: studio?.id
       ? `${STORAGE_KEY_PREFIX}${studio.id}`
       : "",
@@ -225,6 +218,32 @@ export default function AccountStudioPage() {
     saveFn: saveToFirebase,
     enabled: hasChanges && !!studio?.id,
   });
+
+  const handleLayoutChange = useCallback(
+    (layout: LayoutItem[]) => {
+      persistToStorage(formValuesRef.current, layout);
+      setPageLayout(layout);
+      // Immediately save to Firebase when layout changes (add block, modal save, etc.)
+      saveToFirebase({
+        form: formValuesRef.current,
+        layout,
+      })
+        .then(() => triggerSaved())
+        .catch((err) => {
+          setSaveError(
+            err instanceof Error
+              ? err.message
+              : "Failed to save"
+          );
+        });
+    },
+    [
+      persistToStorage,
+      saveToFirebase,
+      triggerSaved,
+      setSaveError,
+    ]
+  );
 
   const handlePreview = () => {
     if (!studio?.id) return;

@@ -120,13 +120,13 @@ export default function FileDropZone({
   return (
     <div>
       {label && (
-        <div className="flex flex-row gap-x-2">
-          <span className="mb-1 block font-medium text-black text-sm">
+        <div className="mb-1 flex flex-col gap-0.5">
+          <span className="block font-medium text-black text-sm">
             {label}
           </span>
-          {!instruction && (
-            <span className="text-neutral-400 text-xs">
-              {instruction}
+          {(description || instruction) && (
+            <span className="block text-neutral-400 text-xs">
+              {description || instruction}
             </span>
           )}
         </div>
@@ -202,11 +202,6 @@ export default function FileDropZone({
               <span className="text-neutral-500 text-sm">
                 Drop file or click to browse
               </span>
-              {description && (
-                <span className="text-neutral-400 text-xs">
-                  {description}
-                </span>
-              )}
             </div>
           )}
         </button>

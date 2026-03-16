@@ -1,8 +1,8 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Purchase flow", () => {
-  test.describe("Fonts → Cart → Checkout → Stripe redirect", () => {
-    test("full flow: add font to cart, proceed to checkout, redirects to Stripe", async ({
+  test.describe("Fonts → Cart → Checkout", () => {
+    test("full flow: add font to cart, proceed to checkout, redirects to checkout page", async ({
       page,
     }) => {
       await page.goto("/studios");
@@ -40,20 +40,18 @@ test.describe("Purchase flow", () => {
         })
         .click();
 
-      // Wait for redirect: sign-up (not signed in) or Stripe Checkout (signed in)
+      // Wait for redirect: sign-up (not signed in) or checkout page (signed in)
       await page.waitForURL(
         (u) =>
           u.pathname.includes("/sign-up") ||
-          u.hostname.includes("stripe.com") ||
           u.pathname.includes("/checkout"),
         { timeout: 15000 }
       );
       const url = page.url();
       expect(
         url.includes("/sign-up") ||
-          url.includes("stripe.com") ||
           url.includes("/checkout"),
-        `Expected redirect to sign-up, Stripe, or checkout, got: ${url}`
+        `Expected redirect to sign-up or checkout, got: ${url}`
       ).toBeTruthy();
     });
   });

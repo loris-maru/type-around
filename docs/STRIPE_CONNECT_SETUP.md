@@ -37,6 +37,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
 > Use the **Connect client ID** (`ca_...`), not your Stripe account ID (`acct_...`).
+> **No trailing slash:** Use `https://type-around.xyz` not `https://type-around.xyz/` — a trailing slash can produce a double slash in the redirect URI and cause Stripe to return 400.
 
 ## 3. Debugging a 400 Error
 

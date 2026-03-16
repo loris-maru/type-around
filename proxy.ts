@@ -27,8 +27,10 @@ export default clerkMiddleware(
         "connect-src": [
           "https://firebasestorage.googleapis.com",
           "https://*.googleapis.com",
-          "https://connect.stripe.com",
-          "https://api.stripe.com",
+          "https://api.tosspayments.com",
+          "https://js.tosspayments.com",
+          "https://www.paypal.com",
+          "https://api.paypal.com",
         ],
         "font-src": [
           "self",
@@ -43,10 +45,8 @@ export default clerkMiddleware(
           "https://img.clerk.com",
           "https://firebasestorage.googleapis.com",
           "https://storage.googleapis.com",
-          "https://b.stripecdn.com",
-          "https://*.stripecdn.com",
         ],
-        "trusted-types": ["default"],
+        "trusted-types": ["default", "nextjs#bundler"],
       },
     },
   }

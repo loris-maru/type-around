@@ -5,7 +5,7 @@ export const LAYOUT_BLOCKS_TYPEFACE: TypefaceLayoutBlock[] =
     {
       id: "type-tester",
       label: "Type tester",
-      unique: true,
+      unique: false,
     },
     { id: "shop", label: "Shop", unique: true },
     { id: "updates", label: "Updates", unique: true },

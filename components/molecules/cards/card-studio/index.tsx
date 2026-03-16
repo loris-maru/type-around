@@ -39,8 +39,8 @@ export default function StudioCard({
       >
         <Image
           src={
-            studio.image ||
-            "/placeholders/studio_image_placeholder.webp"
+            studio.image?.trim() ||
+            "/placeholders/studio_image_placeholder.svg"
           }
           alt={studio.name}
           fill

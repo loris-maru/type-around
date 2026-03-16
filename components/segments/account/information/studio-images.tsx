@@ -52,7 +52,7 @@ export default function StudioImages() {
           accept=".png,.jpg,.jpeg,.webp"
           value={studio.thumbnail || ""}
           onChange={handleThumbnailChange}
-          description="PNG, JPEG, or WebP. Used as your studio cover image."
+          description="PNG, JPEG, or WebP. Used as your studio cover image on cards. Recommended: 1200 × 800 px for high quality on all screens."
           icon="image"
           studioId={studio.id}
           folder="images"

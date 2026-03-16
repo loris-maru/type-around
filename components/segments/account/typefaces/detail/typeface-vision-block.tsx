@@ -1,6 +1,6 @@
 "use client";
 
-import { InputDropdown } from "@/components/global/inputs";
+import InputMultiSelect from "@/components/global/inputs/input-multi-select";
 import {
   TYPEFACE_VISION_CONTRAST,
   TYPEFACE_VISION_FRAME,
@@ -11,41 +11,39 @@ import {
 } from "@/constant/TYPEFACE_VISION";
 import type { TypefaceVisionBlockProps } from "@/types/components";
 
-function SelectDropdown({
+function parseVisionValue(value: string): string[] {
+  return value
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+function VisionMultiSelect({
   label,
   value,
   options,
   onChange,
-  id,
 }: {
   label: string;
   value: string;
   options: readonly string[];
-  onChange: (value: string) => void;
-  id: string;
+  onChange: (value: string[]) => void;
 }) {
+  const valueArray = parseVisionValue(value);
+  const optionItems = options.map((opt) => ({
+    value: opt,
+    label: opt,
+  }));
+
   return (
-    <div>
-      <label
-        htmlFor={id}
-        className="mb-2 block font-normal font-whisper text-black text-sm"
-      >
-        {label}
-      </label>
-      <InputDropdown
-        value={value}
-        options={[
-          { value: "", label: "Select…" },
-          ...options.map((opt) => ({
-            value: opt,
-            label: opt,
-          })),
-        ]}
-        onChange={onChange}
-        className="w-full"
-        transparent
-      />
-    </div>
+    <InputMultiSelect
+      label={label}
+      value={valueArray}
+      options={optionItems}
+      onChange={onChange}
+      placeholder="Select…"
+      showTags
+    />
   );
 }
 
@@ -69,43 +67,37 @@ export default function TypefaceVisionBlock({
         Typeface vision
       </span>
       <div className="grid grid-cols-4 gap-4">
-        <SelectDropdown
-          id="vision-usage"
+        <VisionMultiSelect
           label="Usage"
           value={usage}
           options={[...TYPEFACE_VISION_USAGE]}
           onChange={onUsageChange}
         />
-        <SelectDropdown
-          id="vision-contrast"
+        <VisionMultiSelect
           label="Contrast"
           value={contrast}
           options={[...TYPEFACE_VISION_CONTRAST]}
           onChange={onContrastChange}
         />
-        <SelectDropdown
-          id="vision-width"
+        <VisionMultiSelect
           label="Width"
           value={width}
           options={[...TYPEFACE_VISION_WIDTH]}
           onChange={onWidthChange}
         />
-        <SelectDropdown
-          id="vision-playful"
+        <VisionMultiSelect
           label="Am I playful"
           value={playful}
           options={[...TYPEFACE_VISION_PLAYFUL]}
           onChange={onPlayfulChange}
         />
-        <SelectDropdown
-          id="vision-frame"
+        <VisionMultiSelect
           label="Frame"
           value={frame}
           options={[...TYPEFACE_VISION_FRAME]}
           onChange={onFrameChange}
         />
-        <SelectDropdown
-          id="vision-serif"
+        <VisionMultiSelect
           label="Serif"
           value={serif}
           options={[...TYPEFACE_VISION_SERIF]}
