@@ -17,6 +17,6 @@ export const LAYOUT_BLOCKS: LayoutBlock[] = [
   { id: "image", label: "Image", unique: false },
   { id: "video", label: "Video", unique: false },
   { id: "spacer", label: "Spacer", unique: false },
-  { id: "store", label: "Store", unique: false },
-  { id: "blog", label: "Blog", unique: false },
+  { id: "store", label: "Store", unique: true },
+  { id: "blog", label: "Blog", unique: true },
 ];

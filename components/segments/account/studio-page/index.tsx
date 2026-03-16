@@ -21,8 +21,12 @@ import STUDIO_PAGE_FORM_FIELDS from "./STUDIO_PAGE_FORM_FIELDS";
 const STORAGE_KEY_PREFIX = "account-studio-page-";
 
 export default function AccountStudioPage() {
-  const { studio, isLoading, updateStudioPageSettings } =
-    useStudio();
+  const {
+    studio,
+    isLoading,
+    refetchStudio,
+    updateStudioPageSettings,
+  } = useStudio();
 
   const [formValues, setFormValues] = useState<
     Record<string, string>
@@ -62,7 +66,7 @@ export default function AccountStudioPage() {
     [studio]
   );
 
-  // Initialize: restore from localStorage or use studio data
+  // Initialize: use Firebase layout as source of truth; localStorage only for form draft
   useEffect(() => {
     if (!studio?.id || !studioFormDefaults) return;
 
@@ -71,24 +75,19 @@ export default function AccountStudioPage() {
     const applyState = () => {
       try {
         const stored = localStorage.getItem(storageKey);
-        if (stored) {
-          const parsed = JSON.parse(stored) as {
-            form: Record<string, string>;
-            layout: LayoutItem[];
-          };
-          setFormValues({
-            ...studioFormDefaults,
-            ...parsed?.form,
-          });
-          setPageLayout(
-            parsed?.layout?.length
-              ? parsed.layout
-              : studioLayout
-          );
-        } else {
-          setFormValues(studioFormDefaults);
-          setPageLayout(studioLayout);
-        }
+        const parsed = stored
+          ? (JSON.parse(stored) as {
+              form?: Record<string, string>;
+              layout?: LayoutItem[];
+            })
+          : null;
+
+        setFormValues({
+          ...studioFormDefaults,
+          ...parsed?.form,
+        });
+        // Always use studioLayout (Firebase) for layout - avoids stale localStorage overwriting
+        setPageLayout(studioLayout);
       } catch {
         setFormValues(studioFormDefaults);
         setPageLayout(studioLayout);
@@ -228,7 +227,20 @@ export default function AccountStudioPage() {
         form: formValuesRef.current,
         layout,
       })
-        .then(() => triggerSaved())
+        .then(async () => {
+          triggerSaved();
+          // Refetch to ensure we have canonical data from Firebase (avoids stale/cache issues)
+          await refetchStudio();
+          if (studio?.id) {
+            try {
+              localStorage.removeItem(
+                `${STORAGE_KEY_PREFIX}${studio.id}`
+              );
+            } catch {
+              // Ignore
+            }
+          }
+        })
         .catch((err) => {
           setSaveError(
             err instanceof Error
@@ -242,6 +254,8 @@ export default function AccountStudioPage() {
       saveToFirebase,
       triggerSaved,
       setSaveError,
+      refetchStudio,
+      studio,
     ]
   );
 

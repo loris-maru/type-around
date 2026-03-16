@@ -492,6 +492,7 @@ export type StudioContextValue = {
   studio: Studio | null;
   isLoading: boolean;
   error: Error | null;
+  refetchStudio: () => Promise<void>;
   updateInformation: (data: {
     name?: string;
     hangeulName?: string;

@@ -27,6 +27,7 @@ const STUDIO_PAGE_FORM_FIELDS: FormField[] = [
     type: "custom",
     placeholder: "",
     customComponent: DisplayFontInput,
+    colSpan: 1,
   },
   {
     label: "Text font",
@@ -34,6 +35,7 @@ const STUDIO_PAGE_FORM_FIELDS: FormField[] = [
     type: "custom",
     placeholder: "",
     customComponent: TextFontInput,
+    colSpan: 1,
   },
   {
     label: "Gradient Color",
@@ -41,6 +43,7 @@ const STUDIO_PAGE_FORM_FIELDS: FormField[] = [
     type: "custom",
     placeholder: "",
     customComponent: GradientColorInput,
+    colSpan: 1,
   },
 ];
 

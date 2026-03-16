@@ -117,12 +117,20 @@ export type SpacerBlockData = {
 
 // --- Store block ---
 
+export type StoreProductVariant = {
+  key: string;
+  title: string;
+  price: number;
+};
+
 export type StoreProduct = {
   key: string;
   name: string;
   description: string;
   images: string[];
-  price: number;
+  /** @deprecated Use variants instead. Kept for backward compatibility. */
+  price?: number;
+  variants?: StoreProductVariant[];
 };
 
 export type StoreBlockData = {

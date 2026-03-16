@@ -48,22 +48,29 @@ export function StudioProvider({
 
   const studioIdFromUrl = params?.id as string | undefined;
 
+  const refetchStudio = useCallback(async () => {
+    if (!studioIdFromUrl) return;
+    try {
+      const fetchedStudio =
+        await getStudioById(studioIdFromUrl);
+      setStudio(fetchedStudio);
+      setError(null);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err
+          : new Error("Failed to fetch studio")
+      );
+    }
+  }, [studioIdFromUrl]);
+
   // Fetch or create studio on mount
   useEffect(() => {
     async function fetchStudio() {
       if (studioIdFromUrl) {
         try {
           setIsLoading(true);
-          const fetchedStudio =
-            await getStudioById(studioIdFromUrl);
-          setStudio(fetchedStudio);
-          setError(null);
-        } catch (err) {
-          setError(
-            err instanceof Error
-              ? err
-              : new Error("Failed to fetch studio")
-          );
+          await refetchStudio();
         } finally {
           setIsLoading(false);
         }
@@ -100,7 +107,7 @@ export function StudioProvider({
     }
 
     fetchStudio();
-  }, [user, isLoaded, studioIdFromUrl]);
+  }, [user, isLoaded, studioIdFromUrl, refetchStudio]);
 
   const updateInformation = useCallback(
     async (data: {
@@ -323,6 +330,7 @@ export function StudioProvider({
       studio,
       isLoading,
       error,
+      refetchStudio,
       updateInformation,
       updateSocialMedia,
       updateStudioPageSettings,
@@ -337,6 +345,7 @@ export function StudioProvider({
       studio,
       isLoading,
       error,
+      refetchStudio,
       updateInformation,
       updateSocialMedia,
       updateStudioPageSettings,

@@ -44,10 +44,16 @@ export default function AccountForm({
 
           // Render custom component if provided
           if (CustomComponent) {
+            const colSpan = field.colSpan ?? 2;
             return (
               <div
                 key={field.slug}
-                className="relative col-span-2 w-full"
+                className={cn(
+                  "relative w-full",
+                  colSpan === 2
+                    ? "col-span-2"
+                    : "col-span-1"
+                )}
               >
                 <CustomComponent
                   value={values[field.slug]}

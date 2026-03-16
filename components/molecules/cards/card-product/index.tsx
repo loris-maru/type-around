@@ -40,16 +40,27 @@ export default function CardProduct({
     );
   };
 
+  const variantPrices =
+    product.variants?.map((v) => v.price ?? 0) ?? [];
+  const displayPrice =
+    variantPrices.length > 0
+      ? Math.min(...variantPrices)
+      : (product.price ?? 0);
+
   const handleAddToCart = () => {
+    const price =
+      product.variants?.[0]?.price ?? product.price ?? 0;
+    const variantName =
+      product.variants?.[0]?.title ?? product.name;
     addToCart({
       fontId: product.key,
       typefaceSlug: "store",
       typefaceName: product.name,
       studioId,
       studioSlug,
-      name: product.name,
+      name: variantName,
       fullName: product.name,
-      price: product.price,
+      price,
       text: product.description || product.name,
       weight: 400,
       style: "normal",
@@ -155,7 +166,7 @@ export default function CardProduct({
         )}
         <div className="flex flex-row justify-between">
           <p className="mt-2 font-bold font-whisper text-black text-lg">
-            {product.price.toLocaleString()}₩
+            {displayPrice.toLocaleString()}₩
           </p>
           <button
             type="button"
