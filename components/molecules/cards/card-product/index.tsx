@@ -155,7 +155,7 @@ export default function CardProduct({
         )}
         <div className="flex flex-row justify-between">
           <p className="mt-2 font-bold font-whisper text-black text-lg">
-            ${product.price.toFixed(2)}
+            {product.price.toLocaleString()}₩
           </p>
           <button
             type="button"

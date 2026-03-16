@@ -272,11 +272,11 @@ function ProductItem({
             min={0}
             step={0.01}
             placeholder="Price"
-            aria-label="Product price in dollars"
+            aria-label="Product price in won"
             className="w-full rounded-lg border border-neutral-300 px-3 py-1.5 pr-8 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
           />
           <span className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-neutral-400 text-sm">
-            $
+            ₩
           </span>
         </div>
 

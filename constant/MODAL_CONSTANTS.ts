@@ -112,4 +112,3 @@ export const MESSAGE_ALL_FONTS_ADDED =
 
 // Currency
 export const CURRENCY_WON = "₩";
-export const CURRENCY_DOLLAR = "$";
