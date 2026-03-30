@@ -30,15 +30,58 @@ export default function TypefaceHeader({
   studio,
   typeface,
   hangeulName = "오흐탕크",
+  displayFontUrl,
+  pageTitleFontUrl,
 }: {
   studio: string;
   typeface: Typeface;
   hangeulName: string;
+  displayFontUrl?: string;
+  pageTitleFontUrl?: string;
 }) {
   const [gyroOffset, setGyroOffset] = useState(0);
   const [beta, setBeta] = useState(0);
   const [permissionGranted, setPermissionGranted] =
     useState(false);
+  const [fontLoaded, setFontLoaded] = useState(false);
+
+  const titleFontUrl = pageTitleFontUrl || displayFontUrl;
+
+  useEffect(() => {
+    if (!titleFontUrl) return;
+    let cancelled = false;
+    const familyName = "typeface-header-display";
+    const existing = Array.from(document.fonts).find(
+      (f) => f.family === familyName
+    );
+    if (existing) {
+      queueMicrotask(() => {
+        if (!cancelled) setFontLoaded(true);
+      });
+      return () => {
+        cancelled = true;
+      };
+    }
+    const face = new FontFace(
+      familyName,
+      `url(${titleFontUrl})`,
+      {
+        weight: "100 900",
+        style: "normal",
+      }
+    );
+    face
+      .load()
+      .then((loaded) => {
+        if (cancelled) return;
+        document.fonts.add(loaded);
+        setFontLoaded(true);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [titleFontUrl]);
 
   const isMobile = useSyncExternalStore(
     useCallback((cb: () => void) => {
@@ -130,7 +173,14 @@ export default function TypefaceHeader({
           <IconTriangle className="h-2 w-2" />
           {typeface.name}
         </div>
-        <h1 className="whitespace-nowrap font-black font-ortank text-7xl">
+        <h1
+          className="whitespace-nowrap font-black text-8xl!"
+          style={{
+            fontFamily: fontLoaded
+              ? '"typeface-header-display", var(--font-ortank)'
+              : "var(--font-ortank)",
+          }}
+        >
           {hangeulName}
         </h1>
       </aside>

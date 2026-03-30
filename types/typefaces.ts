@@ -24,6 +24,8 @@ export type Typeface = {
   typefaceCardContent?: string;
   /** Font file URL for typeface card display (from typefaceCardDisplayFontId) */
   typefaceCardDisplayFontFile?: string;
+  pageTitleFont?: string;
+  pageTextFont?: string;
 };
 
 export type Studio = {
@@ -48,6 +50,7 @@ export type TypefaceWithMeta = Typeface & {
   displayFontFile?: string;
   fontLineText?: string;
   specimenUrl?: string;
+  trialFontUrl?: string;
 };
 
 export type TypefaceMeta = {
@@ -55,4 +58,5 @@ export type TypefaceMeta = {
   displayFontFile: string;
   fontLineText: string;
   specimenUrl: string;
+  trialFontUrl: string;
 };

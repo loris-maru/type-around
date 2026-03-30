@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import {
   RiArrowLeftSFill,
   RiArrowRightSFill,
@@ -25,6 +25,14 @@ export default function CardProduct({
     useState<boolean>(false);
   const [currentImageIndex, setCurrentImageIndex] =
     useState(0);
+  const [isClamped, setIsClamped] = useState(false);
+  const descRef = useRef<HTMLParagraphElement>(null);
+
+  useLayoutEffect(() => {
+    const el = descRef.current;
+    if (!el) return;
+    setIsClamped(el.scrollHeight > el.clientHeight);
+  }, []);
 
   const images = product.images ?? [];
   const hasMultipleImages = images.length > 1;
@@ -69,7 +77,7 @@ export default function CardProduct({
   };
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-lg border border-neutral-200 bg-white">
+    <div className="group flex flex-col overflow-hidden rounded-lg border border-neutral-200 bg-white">
       {/* Product images */}
       {images.length > 0 && (
         <div className="relative">
@@ -87,7 +95,7 @@ export default function CardProduct({
                   type="button"
                   onClick={goPrev}
                   aria-label="Previous image"
-                  className="absolute top-1/2 left-2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white transition-colors hover:bg-black/70"
+                  className="absolute top-1/2 left-2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white opacity-0 transition-all hover:bg-black/70 group-hover:opacity-100"
                 >
                   <RiArrowLeftSFill className="h-5 w-5" />
                 </button>
@@ -95,7 +103,7 @@ export default function CardProduct({
                   type="button"
                   onClick={goNext}
                   aria-label="Next image"
-                  className="absolute top-1/2 right-2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white transition-colors hover:bg-black/70"
+                  className="absolute top-1/2 right-2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white opacity-0 transition-all hover:bg-black/70 group-hover:opacity-100"
                 >
                   <RiArrowRightSFill className="h-5 w-5" />
                 </button>
@@ -140,6 +148,7 @@ export default function CardProduct({
         {product.description && (
           <div>
             <p
+              ref={descRef}
               className={cn(
                 "font-whisper text-neutral-600 text-sm",
                 isDescriptionExpanded
@@ -149,19 +158,21 @@ export default function CardProduct({
             >
               {product.description}
             </p>
-            <button
-              type="button"
-              onClick={() =>
-                setIsDescriptionExpanded(
-                  !isDescriptionExpanded
-                )
-              }
-              className="rounded-full border border-neutral-300 px-3 py-1 font-whisper text-neutral-500 text-sm"
-            >
-              {isDescriptionExpanded
-                ? "Read less"
-                : "Read more"}
-            </button>
+            {(isClamped || isDescriptionExpanded) && (
+              <button
+                type="button"
+                onClick={() =>
+                  setIsDescriptionExpanded(
+                    !isDescriptionExpanded
+                  )
+                }
+                className="rounded-full border border-neutral-300 px-3 py-1 font-whisper text-neutral-500 text-sm"
+              >
+                {isDescriptionExpanded
+                  ? "Read less"
+                  : "Read more"}
+              </button>
+            )}
           </div>
         )}
         <div className="flex flex-row justify-between">

@@ -1,6 +1,6 @@
 import TypefaceShop from "@/components/segments/typeface/shop";
-import type { Font } from "@/types/typefaces";
 import type { ShopBlockData } from "@/types/layout-typeface";
+import type { Font } from "@/types/typefaces";
 
 export default function ShopBlock({
   typefaceFonts,

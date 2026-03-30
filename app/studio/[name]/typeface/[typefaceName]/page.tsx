@@ -233,6 +233,17 @@ export default async function TypefacePage({
         studio={firebaseStudio.name}
         typeface={typeface}
         hangeulName={hangeulName}
+        displayFontUrl={
+          rawTypeface.displayFontId
+            ? rawTypeface.fonts.find(
+                (f) => f.id === rawTypeface.displayFontId
+              )?.file || ""
+            : ""
+        }
+        pageTitleFontUrl={
+          (rawTypeface as { pageTitleFont?: string })
+            .pageTitleFont || ""
+        }
       />
       <TypefacePageBlocks
         blocks={blocks}
@@ -244,7 +255,33 @@ export default async function TypefacePage({
         typetesterFonts={typetesterFonts}
         typefaceFonts={typeface.fonts}
       />
-      <MoreContent studio={studioWithTypefaces} />
+      <MoreContent
+        studio={studioWithTypefaces}
+        currentTypefaceSlug={typefaceName}
+        rawTypefaces={firebaseStudio.typefaces}
+        titleFontUrl={
+          (
+            rawTypeface as {
+              pageTitleFontSameAsText?: boolean;
+            }
+          ).pageTitleFontSameAsText
+            ? (rawTypeface as { pageTextFont?: string })
+                .pageTextFont || ""
+            : (rawTypeface as { pageTitleFont?: string })
+                .pageTitleFont || ""
+        }
+        textFontUrl={
+          (
+            rawTypeface as {
+              pageTextFontSameAsTitle?: boolean;
+            }
+          ).pageTextFontSameAsTitle
+            ? (rawTypeface as { pageTitleFont?: string })
+                .pageTitleFont || ""
+            : (rawTypeface as { pageTextFont?: string })
+                .pageTextFont || ""
+        }
+      />
       <Footer />
     </div>
   );

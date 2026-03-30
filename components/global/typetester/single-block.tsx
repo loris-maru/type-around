@@ -113,38 +113,34 @@ export default function SingleTypetesterBlock({
           color: params.fontColor,
         }}
       >
-        {/* Top bar — overflow-visible so VerticalSlider expand popup isn't clipped */}
+        {/* Top bar */}
         <div className="relative z-10 flex items-center gap-4 overflow-visible px-5 pt-4">
-          {/* When params closed: font selector + size */}
-          {!showParams && (
-            <div className="flex flex-1 items-center gap-2">
-              {fonts.length > 0 && (
-                <FontDropdown
-                  fonts={fonts}
-                  selectedId={params.fontId}
-                  onChange={updateFontId}
-                />
-              )}
-              <span className="font-normal font-whisper text-base text-neutral-500 lg:text-xs">
-                — {params.fontSize}px
-              </span>
-            </div>
-          )}
-
-          {/* When params open: inline parameter controls (desktop only) */}
-          {showParams && (
-            <div className="hidden flex-1 lg:flex">
-              <TypetesterParameters
-                params={params}
-                onChange={setParams}
-                variant="desktop"
+          {/* Font selector */}
+          <div className="flex items-center gap-2">
+            {fonts.length > 0 && (
+              <FontDropdown
+                fonts={fonts}
+                selectedId={params.fontId}
+                onChange={updateFontId}
               />
-            </div>
-          )}
+            )}
+            <span className="font-normal font-whisper text-base text-neutral-500 lg:hidden lg:text-xs">
+              — {params.fontSize}px
+            </span>
+          </div>
+
+          {/* Desktop: always-visible parameters */}
+          <div className="hidden flex-1 lg:flex">
+            <TypetesterParameters
+              params={params}
+              onChange={setParams}
+              variant="desktop"
+            />
+          </div>
 
           {/* Action buttons */}
           <div className="flex shrink-0 items-center gap-1">
-            {!showParams && canDelete && onDelete && (
+            {canDelete && onDelete && (
               <button
                 type="button"
                 onClick={onDelete}
@@ -154,11 +150,12 @@ export default function SingleTypetesterBlock({
                 <RiDeleteBinLine size={18} />
               </button>
             )}
+            {/* Tablet/mobile only: toggle params button */}
             <button
               type="button"
               onClick={toggleParams}
               className={cn(
-                "rounded-md p-2 transition-colors",
+                "rounded-md p-2 transition-colors lg:hidden",
                 showParams
                   ? "bg-black text-white"
                   : "text-black hover:bg-neutral-100 hover:text-black"
@@ -173,22 +170,6 @@ export default function SingleTypetesterBlock({
             </button>
           </div>
         </div>
-
-        {/* Font selector + info bar — visible below params when open */}
-        {showParams && (
-          <div className="flex items-center gap-2 px-5 pt-3">
-            {fonts.length > 0 && (
-              <FontDropdown
-                fonts={fonts}
-                selectedId={params.fontId}
-                onChange={updateFontId}
-              />
-            )}
-            <span className="font-normal font-whisper text-base text-neutral-500 lg:text-xs">
-              — {params.fontSize}px
-            </span>
-          </div>
-        )}
 
         {/* Editable text area — overflow-hidden for rounded corners clipping */}
         {/* biome-ignore lint/a11y/useSemanticElements: contentEditable div is required for rich inline editing */}

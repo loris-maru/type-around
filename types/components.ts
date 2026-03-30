@@ -705,6 +705,18 @@ export type PageBackgroundBlockProps = {
   studioId: string;
 };
 
+export type PageFontsBlockProps = {
+  titleFont: string;
+  textFont: string;
+  titleFontSameAsText: boolean;
+  textFontSameAsTitle: boolean;
+  onTitleFontChange: (url: string) => void;
+  onTextFontChange: (url: string) => void;
+  onTitleFontSameAsTextChange: (value: boolean) => void;
+  onTextFontSameAsTitleChange: (value: boolean) => void;
+  studioId: string;
+};
+
 export type TypefacePageSectionProps = {
   typefacePageLayout: import("./layout-typeface").TypefaceLayoutItem[];
   onLayoutChange: (
@@ -714,6 +726,14 @@ export type TypefacePageSectionProps = {
   onPageBackgroundChange: (
     value: import("./studio").TypefacePageBackground
   ) => void;
+  pageTitleFont: string;
+  pageTextFont: string;
+  pageTitleFontSameAsText: boolean;
+  pageTextFontSameAsTitle: boolean;
+  onPageTitleFontChange: (url: string) => void;
+  onPageTextFontChange: (url: string) => void;
+  onPageTitleFontSameAsTextChange: (value: boolean) => void;
+  onPageTextFontSameAsTitleChange: (value: boolean) => void;
   studioId: string;
   typefaceId: string;
   typefaceFonts: {

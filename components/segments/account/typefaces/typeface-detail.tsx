@@ -185,6 +185,30 @@ export default function TypefaceDetail({
           type: "color",
           color: "#ffffff",
         },
+        pageTitleFont:
+          (
+            typeface as StudioTypeface & {
+              pageTitleFont?: string;
+            }
+          ).pageTitleFont || "",
+        pageTextFont:
+          (
+            typeface as StudioTypeface & {
+              pageTextFont?: string;
+            }
+          ).pageTextFont || "",
+        pageTitleFontSameAsText:
+          (
+            typeface as StudioTypeface & {
+              pageTitleFontSameAsText?: boolean;
+            }
+          ).pageTitleFontSameAsText ?? false,
+        pageTextFontSameAsTitle:
+          (
+            typeface as StudioTypeface & {
+              pageTextFontSameAsTitle?: boolean;
+            }
+          ).pageTextFontSameAsTitle ?? false,
       });
       setHasChanges(false);
     }
@@ -505,6 +529,14 @@ export default function TypefaceDetail({
     []
   );
 
+  const handlePageFontChange = useCallback(
+    (field: string) => (value: string | boolean) => {
+      setFormData((prev) => ({ ...prev, [field]: value }));
+      setHasChanges(true);
+    },
+    []
+  );
+
   // ── Version handlers ──
   const handleSaveVersion = useCallback(
     (version: TypefaceVersion) => {
@@ -716,6 +748,42 @@ export default function TypefaceDetail({
           }
           onPageBackgroundChange={
             handlePageBackgroundChange
+          }
+          pageTitleFont={
+            ((formData as Record<string, unknown>)
+              .pageTitleFont as string) ?? ""
+          }
+          pageTextFont={
+            ((formData as Record<string, unknown>)
+              .pageTextFont as string) ?? ""
+          }
+          pageTitleFontSameAsText={
+            ((formData as Record<string, unknown>)
+              .pageTitleFontSameAsText as boolean) ?? false
+          }
+          pageTextFontSameAsTitle={
+            ((formData as Record<string, unknown>)
+              .pageTextFontSameAsTitle as boolean) ?? false
+          }
+          onPageTitleFontChange={
+            handlePageFontChange("pageTitleFont") as (
+              url: string
+            ) => void
+          }
+          onPageTextFontChange={
+            handlePageFontChange("pageTextFont") as (
+              url: string
+            ) => void
+          }
+          onPageTitleFontSameAsTextChange={
+            handlePageFontChange(
+              "pageTitleFontSameAsText"
+            ) as (value: boolean) => void
+          }
+          onPageTextFontSameAsTitleChange={
+            handlePageFontChange(
+              "pageTextFontSameAsTitle"
+            ) as (value: boolean) => void
           }
           studioId={studio?.id || ""}
           typefaceId={typeface?.id || ""}

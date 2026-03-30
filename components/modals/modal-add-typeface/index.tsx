@@ -107,6 +107,10 @@ export default function AddTypefaceModal({
         appPrice: 0,
         packages: [],
         typefacePageLayout: [],
+        pageTitleFont: "",
+        pageTextFont: "",
+        pageTitleFontSameAsText: false,
+        pageTextFontSameAsTitle: false,
         typefacePageBackground: {
           type: "color",
           color: "#ffffff",

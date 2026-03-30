@@ -35,33 +35,44 @@ export default async function FontsPage() {
   const mappedTypefaces: Array<{
     studioName: string;
     typeface: Typeface;
-  }> = typefaces.map((t) => ({
-    studioName: t.studioName,
-    typeface: {
-      id: Number(t.id) || 0,
-      category: t.category,
-      name: t.name,
-      hangeulName: t.hangeulName,
-      slug: t.slug,
-      description: t.description,
-      icon:
-        t.heroLetter ||
-        t.headerImage ||
-        "/mock/typefaces/icn_ortank.svg",
-      fonts: t.fonts.map((f) => ({
-        price: f.printPrice || f.price || 0,
-        text: f.text || "",
-        fullName: f.fullName || f.styleName,
-        name: f.name || f.styleName,
-        weight: f.weight,
-        style:
-          f.style || (f.isItalic ? "italic" : "normal"),
-      })),
-      characters: t.characters,
-      releaseDate: t.releaseDate,
-      studio: t.studioName,
-    },
-  }));
+  }> = typefaces.map((t) => {
+    const cardDisplayFont = t.typefaceCardDisplayFontId
+      ? (t.fonts ?? []).find(
+          (f) => f.id === t.typefaceCardDisplayFontId
+        )
+      : null;
+
+    return {
+      studioName: t.studioName,
+      typeface: {
+        id: Number(t.id) || 0,
+        category: t.category,
+        name: t.name,
+        hangeulName: t.hangeulName,
+        slug: t.slug,
+        description: t.description,
+        icon:
+          t.heroLetter ||
+          t.headerImage ||
+          "/mock/typefaces/icn_ortank.svg",
+        fonts: t.fonts.map((f) => ({
+          price: f.printPrice || f.price || 0,
+          text: f.text || "",
+          fullName: f.fullName || f.styleName,
+          name: f.name || f.styleName,
+          weight: f.weight,
+          style:
+            f.style || (f.isItalic ? "italic" : "normal"),
+        })),
+        characters: t.characters,
+        releaseDate: t.releaseDate,
+        studio: t.studioName,
+        typefaceCardContent: t.typefaceCardContent ?? "",
+        typefaceCardDisplayFontFile:
+          cardDisplayFont?.file ?? "",
+      },
+    };
+  });
 
   if (mappedTypefaces.length === 0) {
     return (

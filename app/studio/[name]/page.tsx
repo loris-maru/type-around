@@ -111,11 +111,20 @@ export default async function StudioPage({
           (f) => f.id === t.displayFontId
         )
       : null;
+    const hasTrialFonts = (t.fonts || []).some(
+      (f) => f.trialFiles && f.trialFiles.length > 0
+    );
+    const firstTrialFile = hasTrialFonts
+      ? (t.fonts || [])
+          .flatMap((f) => f.trialFiles || [])
+          .find((url) => url) || ""
+      : "";
     return {
       slug: t.slug,
       displayFontFile: displayFont?.file || "",
       fontLineText: t.fontLineText || "",
       specimenUrl: t.specimen || "",
+      trialFontUrl: firstTrialFile,
     };
   });
 

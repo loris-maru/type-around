@@ -9,7 +9,6 @@ import {
 import { TypefaceCard } from "@/components/molecules/cards";
 import type { FontsListProps } from "@/types/fonts-list";
 import type { Studio, Typeface } from "@/types/typefaces";
-import { cn } from "@/utils/class-names";
 
 export default function FontsList({
   studios: initialStudios,

@@ -159,6 +159,17 @@ export const StudioTypefaceSchema = z.object({
   appPrice: z.number().min(0).optional().default(0),
   // Packages (font bundles)
   packages: z.array(PackageSchema).optional().default([]),
+  // Typeface page fonts (woff2 files for title/text on public page)
+  pageTitleFont: z.string().optional().default(""),
+  pageTextFont: z.string().optional().default(""),
+  pageTitleFontSameAsText: z
+    .boolean()
+    .optional()
+    .default(false),
+  pageTextFontSameAsTitle: z
+    .boolean()
+    .optional()
+    .default(false),
   // Typeface page layout (block order for public typeface page)
   typefacePageLayout: z
     .array(

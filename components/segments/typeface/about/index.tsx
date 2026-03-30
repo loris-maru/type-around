@@ -56,7 +56,7 @@ export default function TypefaceAbout({
   return (
     <section
       className={cn(
-        "relative flex w-full flex-col px-5 lg:px-24",
+        "relative flex w-full flex-col px-5 py-12 lg:px-24",
         !hasMarginOverride && "my-20"
       )}
       id="about"

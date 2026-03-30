@@ -56,7 +56,7 @@ export default function TypefaceShop({
   return (
     <div
       className={cn(
-        "relative flex w-full flex-col gap-y-1",
+        "relative flex w-full flex-col gap-y-1 py-12",
         marginClass
       )}
       id="shop"
@@ -66,6 +66,9 @@ export default function TypefaceShop({
           : undefined
       }
     >
+      <h2 className="mb-12 mb-4 px-5 font-black font-ortank text-2xl text-black lg:px-10">
+        Shop
+      </h2>
       {orderedFonts.map((font, index: number) => (
         <div
           key={
