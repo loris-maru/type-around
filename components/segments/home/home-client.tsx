@@ -8,13 +8,12 @@ import HeaderHome from "@/components/segments/home/header";
 import HighlightPoints from "@/components/segments/home/highlight-points";
 import Studios from "@/components/segments/home/studios";
 
-const HorizontalSection = dynamic(
-  () =>
-    import("@/components/segments/home/horizontal-section"),
+const FontsList = dynamic(
+  () => import("@/components/segments/home/fonts-list"),
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-screen w-full items-center justify-center bg-light-gray">
+      <div className="flex min-h-[50vh] w-full items-center justify-center bg-light-gray">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-current border-t-transparent" />
       </div>
     ),
@@ -57,7 +56,7 @@ export default function HomeClient({
         />
       </section>
 
-      <HorizontalSection studios={studios} />
+      <FontsList studios={studios} />
 
       <HighlightPoints />
 
