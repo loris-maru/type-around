@@ -75,8 +75,7 @@ export function FontDropdown({
         <div
           className="absolute top-full left-0 z-20 mt-1 max-h-48 min-w-[180px] overflow-y-auto rounded-lg border border-neutral-200 shadow-lg"
           style={{
-            backgroundColor:
-              backgroundColor ?? "transparent",
+            backgroundColor: backgroundColor ?? "#ffffff",
           }}
         >
           {fonts.map((font) => (
@@ -158,8 +157,7 @@ export function GroupedFontDropdown({
         <div
           className="absolute top-full left-0 z-20 mt-1 max-h-64 min-w-[220px] overflow-y-auto rounded-lg border border-neutral-200 shadow-lg"
           style={{
-            backgroundColor:
-              backgroundColor ?? "transparent",
+            backgroundColor: backgroundColor ?? "#ffffff",
           }}
         >
           {typefaces.map((tf) => (

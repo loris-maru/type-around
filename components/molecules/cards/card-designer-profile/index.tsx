@@ -49,9 +49,9 @@ export default function DesignerCardProfile({
       </div>
 
       {/* Info */}
-      <div className="flex min-w-0 flex-1 flex-col gap-1">
+      <div className="flex min-w-0 flex-1 flex-col">
         <h3
-          className="font-bold text-black text-xl"
+          className="font-bold text-2xl! text-black"
           style={{ fontFamily: displayFontFamily }}
         >
           {fullName}

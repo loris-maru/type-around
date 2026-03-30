@@ -87,7 +87,7 @@ export default function StudioGallery({
 
   return (
     <div
-      className="relative my-12 w-full px-0 lg:my-[20vh] lg:px-10"
+      className="relative my-12 w-full px-0 py-20 lg:my-[20vh] lg:px-10"
       style={sectionStyle}
     >
       <header className="relative mb-10 flex w-full flex-row items-center justify-between">
@@ -117,7 +117,7 @@ export default function StudioGallery({
           {images.map((img) => (
             <div
               key={img.key}
-              className="relative min-w-[90vw] shrink-0 flex-[0_0_90vw] pr-4 first:pl-0 lg:min-w-0 lg:flex-[0_0_28.57%]"
+              className="relative min-w-[90vw] flex-[0_0_90vw] shrink-0 pr-4 first:pl-0 lg:min-w-0 lg:flex-[0_0_28.57%]"
             >
               <GalleryCard image={img} />
             </div>

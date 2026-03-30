@@ -140,6 +140,7 @@ export default async function StudioPage({
 
   return (
     <StudioFontsProvider
+      key={name}
       displayFontUrl={displayFontUrl || undefined}
       textFontUrl={textFontUrl || undefined}
     >

@@ -25,7 +25,7 @@ export default function RichTextContent({
   return (
     <div
       className={cn(
-        "prose prose-sm max-w-none [&_p:last-child]:mb-0 [&_p]:mb-2 [&_strong]:font-bold",
+        "prose prose-sm max-w-none [&_p:last-child]:mb-0 [&_p]:mb-2 [&_p]:text-[22px] [&_strong]:font-bold",
         className
       )}
       /* biome-ignore lint/security/noDangerouslySetInnerHtml: rich text from editor, markdown rendered server-side */

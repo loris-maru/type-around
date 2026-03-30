@@ -2,10 +2,10 @@
 
 import {
   createContext,
-  useCallback,
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import type { StudioFontsContextValue } from "@/types/contexts";
@@ -18,6 +18,14 @@ const TEXT_FALLBACK = '"Whisper", monospace';
 const CUSTOM_DISPLAY_NAME = "studio-display-font";
 const CUSTOM_TEXT_NAME = "studio-text-font";
 
+function removeFontFamily(familyName: string) {
+  for (const face of Array.from(document.fonts)) {
+    if (face.family === familyName) {
+      document.fonts.delete(face);
+    }
+  }
+}
+
 export function StudioFontsProvider({
   displayFontUrl,
   textFontUrl,
@@ -29,49 +37,70 @@ export function StudioFontsProvider({
 }) {
   const [displayLoaded, setDisplayLoaded] = useState(false);
   const [textLoaded, setTextLoaded] = useState(false);
-
-  const loadFont = useCallback(
-    (url: string, familyName: string): Promise<boolean> => {
-      return new Promise((resolve) => {
-        const existing = Array.from(document.fonts).find(
-          (f) => f.family === familyName
-        );
-        if (existing) {
-          resolve(true);
-          return;
-        }
-
-        const face = new FontFace(
-          familyName,
-          `url(${url})`,
-          { weight: "100 900", style: "normal" }
-        );
-
-        face
-          .load()
-          .then((loaded) => {
-            document.fonts.add(loaded);
-            resolve(true);
-          })
-          .catch(() => resolve(false));
-      });
-    },
-    []
+  const prevDisplayUrl = useRef<string | undefined>(
+    undefined
   );
+  const prevTextUrl = useRef<string | undefined>(undefined);
+
+  // Clean up fonts from document.fonts on unmount
+  useEffect(() => {
+    return () => {
+      removeFontFamily(CUSTOM_DISPLAY_NAME);
+      removeFontFamily(CUSTOM_TEXT_NAME);
+    };
+  }, []);
 
   useEffect(() => {
     if (!displayFontUrl) return;
-    loadFont(displayFontUrl, CUSTOM_DISPLAY_NAME).then(
-      setDisplayLoaded
+    if (displayFontUrl === prevDisplayUrl.current) return;
+    prevDisplayUrl.current = displayFontUrl;
+
+    removeFontFamily(CUSTOM_DISPLAY_NAME);
+
+    let cancelled = false;
+    const face = new FontFace(
+      CUSTOM_DISPLAY_NAME,
+      `url(${displayFontUrl})`,
+      { weight: "100 900", style: "normal" }
     );
-  }, [displayFontUrl, loadFont]);
+    face
+      .load()
+      .then((loaded) => {
+        if (cancelled) return;
+        document.fonts.add(loaded);
+        setDisplayLoaded(true);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [displayFontUrl]);
 
   useEffect(() => {
     if (!textFontUrl) return;
-    loadFont(textFontUrl, CUSTOM_TEXT_NAME).then(
-      setTextLoaded
+    if (textFontUrl === prevTextUrl.current) return;
+    prevTextUrl.current = textFontUrl;
+
+    removeFontFamily(CUSTOM_TEXT_NAME);
+
+    let cancelled = false;
+    const face = new FontFace(
+      CUSTOM_TEXT_NAME,
+      `url(${textFontUrl})`,
+      { weight: "100 900", style: "normal" }
     );
-  }, [textFontUrl, loadFont]);
+    face
+      .load()
+      .then((loaded) => {
+        if (cancelled) return;
+        document.fonts.add(loaded);
+        setTextLoaded(true);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [textFontUrl]);
 
   const value = useMemo<StudioFontsContextValue>(() => {
     const useCustomDisplay =

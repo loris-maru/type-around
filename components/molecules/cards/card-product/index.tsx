@@ -1,11 +1,19 @@
 "use client";
 
 import Image from "next/image";
-import { useLayoutEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import { createPortal } from "react-dom";
 import {
   RiArrowLeftSFill,
   RiArrowRightSFill,
+  RiCloseLine,
   RiShoppingCart2Fill,
+  RiZoomInLine,
 } from "react-icons/ri";
 import { useCartStore } from "@/stores/cart";
 import type { StoreProduct } from "@/types/layout";
@@ -26,6 +34,7 @@ export default function CardProduct({
   const [currentImageIndex, setCurrentImageIndex] =
     useState(0);
   const [isClamped, setIsClamped] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const descRef = useRef<HTMLParagraphElement>(null);
 
   useLayoutEffect(() => {
@@ -33,6 +42,19 @@ export default function CardProduct({
     if (!el) return;
     setIsClamped(el.scrollHeight > el.clientHeight);
   }, []);
+
+  useEffect(() => {
+    if (!isFullscreen) return;
+    document.body.style.overflow = "hidden";
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsFullscreen(false);
+    };
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [isFullscreen]);
 
   const images = product.images ?? [];
   const hasMultipleImages = images.length > 1;
@@ -89,6 +111,14 @@ export default function CardProduct({
               className="object-cover"
               unoptimized
             />
+            <button
+              type="button"
+              onClick={() => setIsFullscreen(true)}
+              aria-label="View fullscreen"
+              className="absolute top-2 right-2 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white opacity-0 transition-all hover:bg-black/70 group-hover:opacity-100"
+            >
+              <RiZoomInLine className="h-5 w-5" />
+            </button>
             {hasMultipleImages && (
               <>
                 <button
@@ -190,6 +220,40 @@ export default function CardProduct({
           </button>
         </div>
       </div>
+
+      {isFullscreen &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-99999 flex items-center justify-center bg-black/70"
+            onClick={() => setIsFullscreen(false)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape")
+                setIsFullscreen(false);
+            }}
+            role="dialog"
+            aria-label="Fullscreen image viewer"
+            tabIndex={-1}
+          >
+            <button
+              type="button"
+              onClick={() => setIsFullscreen(false)}
+              aria-label="Close fullscreen"
+              className="absolute top-6 right-6 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+            >
+              <RiCloseLine className="h-7 w-7" />
+            </button>
+            <Image
+              src={images[currentImageIndex]}
+              alt={`${product.name || "Product"} - fullscreen`}
+              width={1200}
+              height={1200}
+              className="max-h-[90vh] max-w-[90vw] object-contain"
+              unoptimized
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>,
+          document.body
+        )}
     </div>
   );
 }

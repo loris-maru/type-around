@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { DesignerCardProfile } from "@/components/molecules/cards";
 import RichTextContent from "@/components/global/rich-text/rich-text-content";
+import { DesignerCardProfile } from "@/components/molecules/cards";
 import { useStudioFonts } from "@/contexts/studio-fonts-context";
 import type { Designer } from "@/types/studio";
 import { cn } from "@/utils/class-names";
@@ -69,7 +69,7 @@ export default function StudioProfile({
         </div>
         <div className="relative w-full lg:w-2/3">
           <header
-            className="relative flex flex-row items-center justify-between gap-2"
+            className="relative flex flex-row items-center justify-between gap-2 text-lg"
             style={{ fontFamily: displayFontFamily }}
           >
             <div>About our studio</div>
