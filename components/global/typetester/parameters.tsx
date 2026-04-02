@@ -1,5 +1,6 @@
 "use client";
 
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { useState } from "react";
 import {
   RiAlignJustify,
@@ -73,30 +74,35 @@ export function FontDropdown({
 
       {open && (
         <div
-          className="absolute top-full left-0 z-20 mt-1 max-h-48 min-w-[180px] overflow-y-auto rounded-lg border border-neutral-200 shadow-lg"
+          className="absolute top-full left-0 z-20 mt-1 max-h-48 min-w-[180px] rounded-lg border border-neutral-200 shadow-lg"
           style={{
             backgroundColor: backgroundColor ?? "#ffffff",
           }}
         >
-          {fonts.map((font) => (
-            <button
-              key={font.id}
-              type="button"
-              onClick={() => {
-                onChange(font.id);
-                setOpen(false);
-              }}
-              className={cn(
-                "w-full px-3 py-2 text-left font-whisper text-xs transition-colors hover:bg-neutral-50",
-                font.id === selectedId
-                  ? "bg-neutral-100 font-medium text-black"
-                  : "text-neutral-600"
-              )}
-            >
-              {font.styleName}
-              {font.isItalic ? " Italic" : ""}
-            </button>
-          ))}
+          <OverlayScrollbarsComponent
+            options={{ scrollbars: { autoHide: "move" } }}
+            className="max-h-48"
+          >
+            {fonts.map((font) => (
+              <button
+                key={font.id}
+                type="button"
+                onClick={() => {
+                  onChange(font.id);
+                  setOpen(false);
+                }}
+                className={cn(
+                  "w-full px-3 py-2 text-left font-whisper text-xs transition-colors hover:bg-neutral-50",
+                  font.id === selectedId
+                    ? "bg-neutral-100 font-medium text-black"
+                    : "text-neutral-600"
+                )}
+              >
+                {font.styleName}
+                {font.isItalic ? " Italic" : ""}
+              </button>
+            ))}
+          </OverlayScrollbarsComponent>
         </div>
       )}
     </div>
@@ -155,61 +161,66 @@ export function GroupedFontDropdown({
 
       {open && (
         <div
-          className="absolute top-full left-0 z-20 mt-1 max-h-64 min-w-[220px] overflow-y-auto rounded-lg border border-neutral-200 shadow-lg"
+          className="absolute top-full left-0 z-20 mt-1 max-h-64 min-w-[220px] rounded-lg border border-neutral-200 shadow-lg"
           style={{
             backgroundColor: backgroundColor ?? "#ffffff",
           }}
         >
-          {typefaces.map((tf) => (
-            <div key={tf.id}>
-              <button
-                type="button"
-                onClick={() =>
-                  setExpandedTypeface((prev) =>
-                    prev === tf.id ? null : tf.id
-                  )
-                }
-                className="flex w-full items-center justify-between px-3 py-2 font-whisper text-xs transition-colors hover:bg-neutral-50"
-              >
-                <span className="font-medium text-black">
-                  {tf.name}
-                </span>
-                <RiArrowDropRightLine
-                  size={18}
-                  className={cn(
-                    "shrink-0 text-neutral-400 transition-transform",
-                    expandedTypeface === tf.id &&
-                      "rotate-90"
-                  )}
-                />
-              </button>
+          <OverlayScrollbarsComponent
+            options={{ scrollbars: { autoHide: "move" } }}
+            className="max-h-64"
+          >
+            {typefaces.map((tf) => (
+              <div key={tf.id}>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setExpandedTypeface((prev) =>
+                      prev === tf.id ? null : tf.id
+                    )
+                  }
+                  className="flex w-full items-center justify-between px-3 py-2 font-whisper text-xs transition-colors hover:bg-neutral-50"
+                >
+                  <span className="font-medium text-black">
+                    {tf.name}
+                  </span>
+                  <RiArrowDropRightLine
+                    size={18}
+                    className={cn(
+                      "shrink-0 text-neutral-400 transition-transform",
+                      expandedTypeface === tf.id &&
+                        "rotate-90"
+                    )}
+                  />
+                </button>
 
-              {expandedTypeface === tf.id && (
-                <div className="ml-2 border-neutral-100 border-l-2">
-                  {tf.fonts.map((font) => (
-                    <button
-                      key={font.id}
-                      type="button"
-                      onClick={() => {
-                        onChange(font.id);
-                        setOpen(false);
-                        setExpandedTypeface(null);
-                      }}
-                      className={cn(
-                        "w-full py-1.5 pr-3 pl-4 text-left font-whisper text-base transition-colors hover:bg-neutral-50 lg:text-xs",
-                        font.id === selectedId
-                          ? "bg-neutral-100 font-medium text-black"
-                          : "text-neutral-500"
-                      )}
-                    >
-                      {font.styleName}
-                      {font.isItalic ? " Italic" : ""}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
+                {expandedTypeface === tf.id && (
+                  <div className="ml-2 border-neutral-100 border-l-2">
+                    {tf.fonts.map((font) => (
+                      <button
+                        key={font.id}
+                        type="button"
+                        onClick={() => {
+                          onChange(font.id);
+                          setOpen(false);
+                          setExpandedTypeface(null);
+                        }}
+                        className={cn(
+                          "w-full py-1.5 pr-3 pl-4 text-left font-whisper text-base transition-colors hover:bg-neutral-50 lg:text-xs",
+                          font.id === selectedId
+                            ? "bg-neutral-100 font-medium text-black"
+                            : "text-neutral-500"
+                        )}
+                      >
+                        {font.styleName}
+                        {font.isItalic ? " Italic" : ""}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </OverlayScrollbarsComponent>
         </div>
       )}
     </div>

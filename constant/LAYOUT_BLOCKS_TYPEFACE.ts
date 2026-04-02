@@ -24,4 +24,9 @@ export const LAYOUT_BLOCKS_TYPEFACE: TypefaceLayoutBlock[] =
       label: "Character set",
       unique: true,
     },
+    {
+      id: "more-content",
+      label: "More content",
+      unique: true,
+    },
   ];

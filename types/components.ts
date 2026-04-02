@@ -541,6 +541,7 @@ export type TypefacePageLayoutBuilderProps = {
     styleName?: string;
     weight?: number;
   }[];
+  studioTypefaces: { slug: string; name: string }[];
 };
 
 export type TypefaceBlockBuilderProps = {
@@ -562,6 +563,7 @@ export type TypefaceBlockBuilderProps = {
     styleName?: string;
     weight?: number;
   }[];
+  studioTypefaces: { slug: string; name: string }[];
 };
 
 export type GalleryBlockModalProps = {
@@ -741,6 +743,7 @@ export type TypefacePageSectionProps = {
     styleName?: string;
     weight?: number;
   }[];
+  studioTypefaces: { slug: string; name: string }[];
 };
 
 export type AddVersionFormData = Omit<

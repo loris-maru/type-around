@@ -794,6 +794,12 @@ export default function TypefaceDetail({
               weight: f.weight,
             })
           )}
+          studioTypefaces={(studio?.typefaces || []).map(
+            (t) => ({
+              slug: t.slug,
+              name: t.name,
+            })
+          )}
         />
       </div>
 

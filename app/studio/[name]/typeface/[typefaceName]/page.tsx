@@ -254,6 +254,31 @@ export default async function TypefacePage({
         studioSlug={name}
         typetesterFonts={typetesterFonts}
         typefaceFonts={typeface.fonts}
+        studio={studioWithTypefaces}
+        rawTypefaces={firebaseStudio.typefaces}
+        currentTypefaceSlug={typefaceName}
+        titleFontUrl={
+          (
+            rawTypeface as {
+              pageTitleFontSameAsText?: boolean;
+            }
+          ).pageTitleFontSameAsText
+            ? (rawTypeface as { pageTextFont?: string })
+                .pageTextFont || ""
+            : (rawTypeface as { pageTitleFont?: string })
+                .pageTitleFont || ""
+        }
+        textFontUrl={
+          (
+            rawTypeface as {
+              pageTextFontSameAsTitle?: boolean;
+            }
+          ).pageTextFontSameAsTitle
+            ? (rawTypeface as { pageTitleFont?: string })
+                .pageTitleFont || ""
+            : (rawTypeface as { pageTextFont?: string })
+                .pageTextFont || ""
+        }
       />
       <MoreContent
         studio={studioWithTypefaces}

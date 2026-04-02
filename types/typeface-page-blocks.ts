@@ -1,5 +1,5 @@
 import type { TypefaceLayoutItem } from "./layout-typeface";
-import type { Font } from "./typefaces";
+import type { Font, Studio } from "./typefaces";
 import type { TypetesterFont } from "./typetester";
 
 export type RawTypefaceForBlocks = {
@@ -16,6 +16,18 @@ export type RawTypefaceForBlocks = {
   }[];
 };
 
+export type MoreContentRawTypeface = {
+  name: string;
+  slug?: string;
+  category?: string[];
+  fonts: { id: string; file?: string }[];
+  characters?: number;
+  heroLetter?: string;
+  headerImage?: string;
+  icon?: string;
+  published?: boolean;
+};
+
 export type TypefacePageBlocksProps = {
   blocks: TypefaceLayoutItem[];
   rawTypeface: RawTypefaceForBlocks;
@@ -28,4 +40,9 @@ export type TypefacePageBlocksProps = {
     id?: string;
     salesFiles?: string[];
   })[];
+  studio?: Studio;
+  rawTypefaces?: MoreContentRawTypeface[];
+  currentTypefaceSlug?: string;
+  titleFontUrl?: string;
+  textFontUrl?: string;
 };

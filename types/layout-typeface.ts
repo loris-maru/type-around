@@ -14,7 +14,8 @@ export type TypefaceLayoutBlockId =
   | "image"
   | "video"
   | "gallery"
-  | "character-set";
+  | "character-set"
+  | "more-content";
 
 export type CharacterSetBlockData = {
   sampleText?: string;
@@ -70,6 +71,11 @@ export type AboutBlockData = {
   margin?: BlockMarginSize;
 };
 
+export type MoreContentBlockData = {
+  recommendedTypeface1?: string;
+  recommendedTypeface2?: string;
+};
+
 export type TypefaceLayoutItemData =
   | GalleryBlockData
   | ImageBlockData
@@ -80,6 +86,7 @@ export type TypefaceLayoutItemData =
   | TypeTesterBlockData
   | UpdatesBlockData
   | ShopBlockData
+  | MoreContentBlockData
   | import("./layout").StoreBlockData
   | undefined;
 

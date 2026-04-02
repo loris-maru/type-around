@@ -10,6 +10,7 @@ import type {
   AboutBlockData,
   CharacterSetBlockData,
   DownloadBlockData,
+  MoreContentBlockData,
   ShopBlockData,
   TypeTesterBlockData,
   UpdatesBlockData,
@@ -21,6 +22,7 @@ import DownloadBlock from "./download-block";
 import GalleryBlock from "./gallery-block";
 import GoodiesShopBlock from "./goodies-shop-block";
 import ImageBlock from "./image-block";
+import MoreContentBlock from "./more-content-block";
 import ShopBlock from "./shop-block";
 import TypeTesterBlock from "./type-tester-block";
 import UpdatesBlock from "./updates-block";
@@ -35,6 +37,11 @@ export default function TypefacePageBlocks({
   studioSlug,
   typetesterFonts,
   typefaceFonts,
+  studio,
+  rawTypefaces,
+  currentTypefaceSlug,
+  titleFontUrl,
+  textFontUrl,
 }: TypefacePageBlocksProps) {
   const galleryImages = (
     rawTypeface.galleryImages || []
@@ -174,6 +181,26 @@ export default function TypefacePageBlocks({
                 key={block.key}
                 data={charData}
                 fonts={rawTypeface.fonts}
+              />
+            );
+          }
+
+          case "more-content": {
+            if (!studio || !rawTypefaces) return null;
+            const mcData = block.data as
+              | MoreContentBlockData
+              | undefined;
+            return (
+              <MoreContentBlock
+                key={block.key}
+                data={mcData}
+                studio={studio}
+                rawTypefaces={rawTypefaces}
+                currentTypefaceSlug={
+                  currentTypefaceSlug ?? typefaceSlug
+                }
+                titleFontUrl={titleFontUrl}
+                textFontUrl={textFontUrl}
               />
             );
           }

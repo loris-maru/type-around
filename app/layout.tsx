@@ -7,6 +7,7 @@ import {
   SITE_NAME,
   SITE_URL,
 } from "@/constant/SEO_METADATA";
+import "overlayscrollbars/overlayscrollbars.css";
 import "./globals.css";
 
 export const metadata: Metadata = {

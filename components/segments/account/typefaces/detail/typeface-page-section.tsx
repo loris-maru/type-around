@@ -22,6 +22,7 @@ export default function TypefacePageSection({
   studioId,
   typefaceId,
   typefaceFonts,
+  studioTypefaces,
 }: TypefacePageSectionProps) {
   return (
     <CollapsibleSection title="Typeface page">
@@ -59,6 +60,7 @@ export default function TypefacePageSection({
           studioId={studioId}
           typefaceId={typefaceId}
           typefaceFonts={typefaceFonts}
+          studioTypefaces={studioTypefaces}
         />
       </div>
     </CollapsibleSection>

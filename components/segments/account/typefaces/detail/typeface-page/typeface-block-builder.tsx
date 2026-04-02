@@ -8,6 +8,7 @@ import CharacterSetBlockModal from "@/components/modals/modal-character-set-bloc
 import DownloadBlockModal from "@/components/modals/modal-download-block";
 import GalleryBlockModal from "@/components/modals/modal-gallery-block";
 import MediaBlockModal from "@/components/modals/modal-media-block";
+import MoreContentBlockModal from "@/components/modals/modal-more-content-block";
 import ShopBlockModal from "@/components/modals/modal-shop-block";
 import StoreBlockModal from "@/components/modals/modal-store-block";
 import TypeTesterBlockModal from "@/components/modals/modal-type-tester-block";
@@ -24,6 +25,7 @@ import type {
   AboutBlockData,
   CharacterSetBlockData,
   DownloadBlockData,
+  MoreContentBlockData,
   ShopBlockData,
   TypefaceLayoutBlockId,
   TypefaceLayoutItem,
@@ -44,6 +46,7 @@ const CONFIGURABLE_TYPEFACE_BLOCKS: TypefaceLayoutBlockId[] =
     "video",
     "character-set",
     "goodies-shop",
+    "more-content",
   ];
 
 export default function TypefaceBlockBuilder({
@@ -54,6 +57,7 @@ export default function TypefaceBlockBuilder({
   getLabelForId,
   studioId,
   typefaceFonts,
+  studioTypefaces,
 }: TypefaceBlockBuilderProps) {
   const [editingItem, setEditingItem] =
     useState<TypefaceLayoutItem | null>(null);
@@ -397,6 +401,20 @@ export default function TypefaceBlockBuilder({
             editingItem.data as StoreBlockData | undefined
           }
           studioId={studioId}
+        />
+      )}
+
+      {editingItem?.blockId === "more-content" && (
+        <MoreContentBlockModal
+          isOpen
+          onClose={() => setEditingItem(null)}
+          onSave={(d) => handleModalSave(d)}
+          initialData={
+            editingItem.data as
+              | MoreContentBlockData
+              | undefined
+          }
+          studioTypefaces={studioTypefaces}
         />
       )}
     </div>
