@@ -14,7 +14,8 @@ import { StudioFontsProvider } from "@/contexts/studio-fonts-context";
 import { getStudioBySlug } from "@/lib/firebase/studios";
 import type { LayoutItem } from "@/types/layout";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
+export const preferredRegion = ["icn1"];
 
 export async function generateMetadata({
   params,

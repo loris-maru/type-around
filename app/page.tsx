@@ -10,7 +10,10 @@ import {
 import { getAllStudiosForDisplay } from "@/lib/firebase/studios";
 import type { Studio } from "@/types/typefaces";
 
-export const dynamic = "force-dynamic";
+// Cache at the edge (Vercel CDN) for 1h so Korean visitors get HTML from the
+// closest PoP (Seoul/Tokyo) instead of round-tripping to the origin.
+export const revalidate = 3600;
+export const preferredRegion = ["icn1"];
 
 export const metadata: Metadata = {
   title: `${SITE_NAME} – 독립적인 한국 타입 팩토리의 미래`,

@@ -10,7 +10,8 @@ import {
 import { getAllStudiosForDisplay } from "@/lib/firebase/studios";
 import type { Studio } from "@/types/typefaces";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
+export const preferredRegion = ["icn1"];
 
 export const metadata: Metadata = {
   title: "스튜디오",

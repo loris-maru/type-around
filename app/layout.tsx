@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import LayoutRoot from "@/components/layout/layout-root";
+
+// Run all server routes that inherit from this layout in Seoul to minimise
+// latency for South-Korean visitors. Individual routes can still override.
+export const preferredRegion = ["icn1"];
 import {
   DEFAULT_OPEN_GRAPH,
   DEFAULT_TWITTER,

@@ -10,7 +10,8 @@ import {
 import { getAllPublishedTypefaces } from "@/lib/firebase/studios";
 import type { Typeface } from "@/types/typefaces";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
+export const preferredRegion = ["icn1"];
 
 export const metadata: Metadata = {
   title: "전체 글꼴",
