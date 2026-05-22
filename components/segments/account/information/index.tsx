@@ -7,9 +7,8 @@ import {
   useRef,
   useState,
 } from "react";
-import { useAutosave } from "@/hooks/use-autosave";
 import { useStudio } from "@/hooks/use-studio";
-import ChangesSavedPill from "../changes-saved-pill";
+import AccountSaveBar from "../account-save-bar";
 import AccountForm from "../form";
 import SaveErrorPill from "../save-error-pill";
 import ACCOUNT_FORM from "./ACCOUNT_FORM";
@@ -33,6 +32,10 @@ export default function AccountInformation() {
     Record<string, string>
   >({});
   const [isInitialized, setIsInitialized] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(
+    null
+  );
   const studioValuesRef = useRef(studioValues);
   const socialValuesRef = useRef(socialValues);
 
@@ -213,19 +216,46 @@ export default function AccountInformation() {
     [updateInformation, updateSocialMedia]
   );
 
-  const combinedData = useMemo(
-    () => ({ studio: studioValues, social: socialValues }),
-    [studioValues, socialValues]
-  );
+  const handleSave = useCallback(async () => {
+    if (!hasChanges || !studio?.id || isSaving) return;
 
-  const { showSaved, saveError, retry } = useAutosave({
-    storageKey: studio?.id
-      ? `${STORAGE_KEY_PREFIX}${studio.id}`
-      : "",
-    data: combinedData,
-    saveFn: saveToFirebase,
-    enabled: hasChanges && !!studio?.id,
-  });
+    setIsSaving(true);
+    setSaveError(null);
+
+    try {
+      await saveToFirebase({
+        studio: studioValues,
+        social: socialValues,
+      });
+      try {
+        localStorage.removeItem(
+          `${STORAGE_KEY_PREFIX}${studio.id}`
+        );
+      } catch {
+        // Ignore
+      }
+    } catch (err) {
+      setSaveError(
+        err instanceof Error
+          ? err.message
+          : "Failed to save"
+      );
+    } finally {
+      setIsSaving(false);
+    }
+  }, [
+    hasChanges,
+    studio?.id,
+    isSaving,
+    saveToFirebase,
+    studioValues,
+    socialValues,
+  ]);
+
+  const handleRetry = useCallback(() => {
+    setSaveError(null);
+    void handleSave();
+  }, [handleSave]);
 
   return (
     <div className="relative flex w-full flex-col gap-y-12">
@@ -245,11 +275,17 @@ export default function AccountInformation() {
         isLoading={isLoading}
       />
 
-      <ChangesSavedPill show={showSaved} />
+      <div className="fixed right-6 bottom-6 z-50">
+        <AccountSaveBar
+          visible={hasChanges}
+          isSaving={isSaving}
+          onSave={handleSave}
+        />
+      </div>
       {saveError && (
         <SaveErrorPill
           message={saveError}
-          onRetry={retry}
+          onRetry={handleRetry}
         />
       )}
     </div>

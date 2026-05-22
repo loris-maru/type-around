@@ -287,8 +287,8 @@ export async function updateMemberRole(
     }
 
     // Update the member's role
-    const updatedMembers = (studio.members || []).map(
-      (m) => (m.id === memberId ? { ...m, role } : m)
+    const updatedMembers = (studio.members || []).map((m) =>
+      m.id === memberId ? { ...m, role } : m
     );
     await updateStudio(studioId, {
       members: updatedMembers,
@@ -310,18 +310,61 @@ export async function updateMemberRole(
   }
 }
 
+type MemberProfileUpdate = {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  imageUrl?: string;
+  website?: string;
+  socialMedia?: { name: string; url: string }[];
+  biography?: string;
+};
+
+function applyProfileUpdate(
+  member: StudioMember,
+  profile: MemberProfileUpdate
+): StudioMember {
+  return {
+    ...member,
+    firstName:
+      profile.firstName !== undefined
+        ? profile.firstName.trim()
+        : member.firstName,
+    lastName:
+      profile.lastName !== undefined
+        ? profile.lastName.trim()
+        : member.lastName,
+    email:
+      profile.email !== undefined
+        ? profile.email.trim()
+        : member.email,
+    imageUrl:
+      profile.imageUrl !== undefined
+        ? profile.imageUrl
+        : member.imageUrl,
+    website:
+      profile.website !== undefined
+        ? profile.website.trim()
+        : (member.website ?? ""),
+    socialMedia:
+      profile.socialMedia !== undefined
+        ? profile.socialMedia
+        : (member.socialMedia ?? []),
+    biography:
+      profile.biography !== undefined
+        ? profile.biography
+        : (member.biography ?? ""),
+  };
+}
+
 /**
- * Update a member's profile (biography, website, social media)
+ * Update a member's profile
  * Members can edit their own profile; owners/admins can edit any member's profile
  */
 export async function updateMemberProfile(
   studioId: string,
   memberId: string,
-  profile: {
-    biography?: string;
-    website?: string;
-    socialMedia?: { name: string; url: string }[];
-  }
+  profile: MemberProfileUpdate
 ): Promise<MemberActionResult> {
   try {
     const { userId } = await auth();
@@ -387,38 +430,27 @@ export async function updateMemberProfile(
         (isOwnerId &&
           m.email.toLowerCase() ===
             studio.ownerEmail.toLowerCase())
-          ? {
-              ...m,
-              biography:
-                profile.biography !== undefined
-                  ? profile.biography
-                  : (m.biography ?? ""),
-              website:
-                profile.website !== undefined
-                  ? profile.website
-                  : (m.website ?? ""),
-              socialMedia:
-                profile.socialMedia !== undefined
-                  ? profile.socialMedia
-                  : (m.socialMedia ?? []),
-            }
+          ? applyProfileUpdate(m, profile)
           : m
       );
     } else if (isOwnerId && isOwner) {
       // Owner not in members yet - add them with profile data (use userId as id)
-      const ownerProfile = {
-        id: userId,
-        email: studio.ownerEmail,
-        firstName: currentUser.firstName ?? "",
-        lastName: currentUser.lastName ?? "",
-        imageUrl: currentUser.imageUrl ?? "",
-        role: "owner" as const,
-        addedAt: new Date().toISOString(),
-        isReviewer: false,
-        biography: profile.biography ?? "",
-        website: profile.website ?? "",
-        socialMedia: profile.socialMedia ?? [],
-      };
+      const ownerProfile = applyProfileUpdate(
+        {
+          id: userId,
+          email: studio.ownerEmail,
+          firstName: currentUser.firstName ?? "",
+          lastName: currentUser.lastName ?? "",
+          imageUrl: currentUser.imageUrl ?? "",
+          role: "owner",
+          addedAt: new Date().toISOString(),
+          isReviewer: false,
+          biography: "",
+          website: "",
+          socialMedia: [],
+        },
+        profile
+      );
       updatedMembers = [...members, ownerProfile];
     } else {
       return { success: false, error: "Member not found" };
@@ -490,8 +522,8 @@ export async function updateMemberIsReviewer(
       };
     }
 
-    const updatedMembers = (studio.members || []).map(
-      (m) => (m.id === memberId ? { ...m, isReviewer } : m)
+    const updatedMembers = (studio.members || []).map((m) =>
+      m.id === memberId ? { ...m, isReviewer } : m
     );
     await updateStudio(studioId, {
       members: updatedMembers,

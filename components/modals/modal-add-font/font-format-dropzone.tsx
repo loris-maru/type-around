@@ -21,9 +21,15 @@ export default function FontFormatDropzone({
       <span className="mb-1 block font-normal font-whisper text-black text-sm">
         {format.toUpperCase()}
       </span>
-      {/* biome-ignore lint/a11y/noStaticElementInteractions: drop zone */}
-      {/* biome-ignore lint/a11y/useKeyWithClickEvents: drop zone */}
       <div
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onTriggerClick();
+          }
+        }}
         onDragOver={(e) => e.preventDefault()}
         onDrop={onDrop}
         onClick={onTriggerClick}

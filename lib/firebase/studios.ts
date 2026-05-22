@@ -22,6 +22,7 @@ import {
   UpdateStudioInfoSchema,
   UpdateStudioPageSchema,
 } from "@/types/studio";
+import { normalizeReleaseYear } from "@/utils/release-year";
 import { slugify } from "@/utils/slugify";
 import { db } from "./config";
 
@@ -102,6 +103,9 @@ function normalizeTypefaces(
         fonts: Array.isArray(t.fonts)
           ? normalizeFonts(t.fonts)
           : [],
+        releaseDate: normalizeReleaseYear(
+          t.releaseDate as string | undefined
+        ),
       };
     }
     return typeface;
@@ -593,39 +597,61 @@ export async function getAllPublishedTypefaces(): Promise<
   return allTypefaces;
 }
 
+function buildStudioFromDoc(
+  docId: string,
+  rawData: Record<string, unknown>
+): Studio {
+  const data = {
+    ...rawData,
+    id: docId,
+    typefaces: rawData.typefaces
+      ? normalizeTypefaces(rawData.typefaces as unknown[])
+      : [],
+  };
+  const result = StudioSchema.safeParse(data);
+  if (result.success) {
+    return result.data;
+  }
+  return data as Studio;
+}
+
 /**
- * Get a studio by its slug (for public display pages)
+ * Get a studio by its slug (for public display pages).
+ * Matches slugified studio name or document id (e.g. /studio/eighttype).
  */
 export async function getStudioBySlug(
   slug: string
 ): Promise<Studio | null> {
-  const allStudiosQuery = query(
-    collection(db, COLLECTION_NAME)
-  );
-  const snapshot = await getDocs(allStudiosQuery);
+  const normalizedSlug = slug.toLowerCase().trim();
+  if (!normalizedSlug) return null;
 
-  for (const docData of snapshot.docs) {
-    const rawData = docData.data();
-    const name = rawData.name || "";
-    const studioSlug = slugify(name);
+  try {
+    const snapshot = await getDocs(
+      query(collection(db, COLLECTION_NAME))
+    );
 
-    if (studioSlug === slug) {
-      const data = {
-        ...rawData,
-        id: docData.id,
-        typefaces: rawData.typefaces
-          ? normalizeTypefaces(rawData.typefaces)
-          : [],
-      };
-      const result = StudioSchema.safeParse(data);
-      if (result.success) {
-        return result.data;
+    for (const docSnap of snapshot.docs) {
+      const rawData = docSnap.data() as Record<
+        string,
+        unknown
+      >;
+      const name = (rawData.name as string) || "";
+      const studioSlug = slugify(name);
+      const docId = docSnap.id.toLowerCase();
+
+      if (
+        studioSlug === normalizedSlug ||
+        docId === normalizedSlug
+      ) {
+        return buildStudioFromDoc(docSnap.id, rawData);
       }
-      return data as Studio;
     }
-  }
 
-  return null;
+    return null;
+  } catch (error) {
+    console.error("[getStudioBySlug]", error);
+    throw error;
+  }
 }
 
 /**

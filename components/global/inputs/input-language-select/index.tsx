@@ -140,9 +140,14 @@ export default function InputLanguageSelect({
       >
         {label}
       </label>
-      {/* biome-ignore lint/a11y/useKeyWithClickEvents: click delegates focus to inner input */}
-      {/* biome-ignore lint/a11y/noStaticElementInteractions: container delegates focus to inner input */}
+      {/*
+        Click on the chip area focuses the underlying <input>; the inner
+        input (and the <label htmlFor> above it) provides the real keyboard
+        interaction. role="presentation" signals this container has no
+        independent semantics.
+      */}
       <div
+        role="presentation"
         onClick={() => inputRef.current?.focus()}
         className={cn(
           "min-h-[48px] w-full cursor-text rounded-lg border px-3 py-2 transition-colors",

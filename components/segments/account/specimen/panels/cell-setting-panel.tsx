@@ -737,8 +737,15 @@ export default function CellSettingPanel({
 
   return (
     <>
-      {/* biome-ignore lint/a11y/noStaticElementInteractions: mousedown captures selection before blur when clicking panel controls */}
+      {/*
+        Panel container needs an onMouseDown handler that fires before any
+        focusable child receives focus, so the rich-text editor's text
+        selection can be captured before blur. There is no user-facing
+        interaction on the container itself — all controls inside have
+        their own keyboard handlers — so role="presentation" is correct.
+      */}
       <div
+        role="presentation"
         className="flex h-full min-h-0 w-[300px] shrink-0 flex-col overflow-y-auto rounded-lg border border-neutral-300 bg-white p-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         onMouseDown={handlePanelMouseDown}
       >

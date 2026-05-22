@@ -125,7 +125,12 @@ export const StudioTypefaceSchema = z.object({
   icon: z.string(),
   fonts: z.array(FontSchema),
   characters: z.number().int().min(0),
-  releaseDate: z.string(),
+  releaseDate: z
+    .string()
+    .refine(
+      (val) => !val || /^\d{4}$/.test(val),
+      "Release year must be a 4-digit year"
+    ),
   studio: z.string(),
   gradient: z.string().optional(),
   status: TypefaceStatusEnum.default("in progress"),

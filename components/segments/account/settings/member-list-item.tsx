@@ -97,8 +97,7 @@ export default function MemberListItem({
               {ROLE_LABELS[member.role]}
             </span>
           )}
-          {isCurrentUser &&
-            canEditProfile &&
+          {canEditProfile &&
             (onProfileUpdate || onError) && (
               <button
                 type="button"
@@ -106,8 +105,8 @@ export default function MemberListItem({
                   setIsProfileExpanded((prev) => !prev)
                 }
                 className="rounded-lg p-2 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-black"
-                title="Edit profile"
-                aria-label="Edit profile"
+                title="Edit member profile"
+                aria-label="Edit member profile"
               >
                 <RiEditLine className="h-4 w-4" />
               </button>
@@ -149,10 +148,10 @@ export default function MemberListItem({
       {/* Delete confirmation modal */}
       {showDeleteConfirm && (
         <div className="fixed inset-0 z-modal flex items-center justify-center overflow-hidden">
-          {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop click to dismiss */}
-          {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop click to dismiss */}
-          <div
-            className="absolute inset-0 bg-black/50"
+          <button
+            type="button"
+            aria-label="Close modal"
+            className="absolute inset-0 cursor-default bg-black/50"
             onClick={() => setShowDeleteConfirm(false)}
           />
           <div

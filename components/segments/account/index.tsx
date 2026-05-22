@@ -1,10 +1,19 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useSearchParams } from "next/navigation";
+import {
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import type { ComponentType } from "react";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
+import {
+  DEFAULT_TYPEFACE_SUBSECTION,
+  isValidTypefaceSubsection,
+} from "@/constant/TYPEFACE_SECTIONS";
 import { DEFAULT_ACCOUNT_NAV } from "@/constant/UI_LAYOUT";
+import { getTypefaceSubsectionFromSearchParams } from "@/utils/typeface-subsection";
 import AccountFeedback from "./feedback";
 import AccountFontsInUse from "./fonts-in-use";
 import AccountInformation from "./information";
@@ -57,13 +66,46 @@ const REVIEWER_COMPONENTS: Record<string, ComponentType> = {
 
 function AccountContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
   const nav =
     searchParams.get("nav") || DEFAULT_ACCOUNT_NAV;
   const typefaceSlug = searchParams.get("typeface");
   const reviewerSection = searchParams.get("reviewer");
+  const activeSubsection =
+    getTypefaceSubsectionFromSearchParams(searchParams);
+
+  useEffect(() => {
+    if (nav !== "typefaces" || !typefaceSlug) return;
+
+    const subsection = searchParams.get("subsection");
+    const legacySection = searchParams.get("section");
+
+    if (isValidTypefaceSubsection(subsection)) return;
+
+    const params = new URLSearchParams(
+      searchParams.toString()
+    );
+    params.set(
+      "subsection",
+      isValidTypefaceSubsection(legacySection)
+        ? legacySection
+        : DEFAULT_TYPEFACE_SUBSECTION
+    );
+    params.delete("section");
+    router.replace(`${pathname}?${params.toString()}`, {
+      scroll: false,
+    });
+  }, [nav, typefaceSlug, pathname, router, searchParams]);
 
   if (nav === "typefaces" && typefaceSlug) {
-    return <TypefaceDetail typefaceSlug={typefaceSlug} />;
+    return (
+      <TypefaceDetail
+        key={`${typefaceSlug}-${activeSubsection}`}
+        typefaceSlug={typefaceSlug}
+        activeSubsection={activeSubsection}
+      />
+    );
   }
 
   if (nav === "reviewer") {

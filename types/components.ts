@@ -181,6 +181,7 @@ export type AllFontsProps = {
 
 export type TypefaceDetailProps = {
   typefaceSlug: string;
+  activeSubsection: string;
 };
 
 export type TypefaceDetailHeaderProps = {
@@ -211,8 +212,6 @@ export type BasicInformationSectionProps = {
     frame: string;
     serif: string;
   };
-  designerIds: string[];
-  studioDesigners: Designer[];
   onInputChange: (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement
@@ -228,7 +227,6 @@ export type BasicInformationSectionProps = {
     frame?: string;
     serif?: string;
   }) => void;
-  onDesignerIdsChange: (ids: string[]) => void;
   // Font line (at bottom of Information section)
   fonts: Font[];
   displayFontId: string;
@@ -238,6 +236,12 @@ export type BasicInformationSectionProps = {
   typefaceCardDisplayFontId: string;
   typefaceCardContent: string;
   onTypefaceCardDisplayFontChange: (fontId: string) => void;
+};
+
+export type DesignersSectionProps = {
+  designerIds: string[];
+  studioDesigners: Designer[];
+  onDesignerIdsChange: (ids: string[]) => void;
   backgroundColor?: string;
 };
 

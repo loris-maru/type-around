@@ -7,6 +7,7 @@ import {
 } from "next/navigation";
 import { useCallback } from "react";
 import { TypefaceCardAccount } from "@/components/molecules/cards";
+import { DEFAULT_TYPEFACE_SUBSECTION } from "@/constant/TYPEFACE_SECTIONS";
 import { useStudio } from "@/hooks/use-studio";
 import AddTypeface from "./add-typeface";
 
@@ -23,6 +24,8 @@ export default function AccountTypefaces() {
       );
       params.set("nav", "typefaces");
       params.set("typeface", typefaceSlug);
+      params.set("subsection", DEFAULT_TYPEFACE_SUBSECTION);
+      params.delete("section");
       router.push(`${pathname}?${params.toString()}`);
     },
     [searchParams, router, pathname]

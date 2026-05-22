@@ -20,9 +20,15 @@ export default function TypeTesterDropzone({
       >
         Font file for type tester (woff2)
       </label>
-      {/* biome-ignore lint/a11y/noStaticElementInteractions: drop zone triggers file input */}
-      {/* biome-ignore lint/a11y/useKeyWithClickEvents: drop zone triggers file input */}
       <div
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            inputRef.current?.click();
+          }
+        }}
         onDragOver={(e) => e.preventDefault()}
         onDrop={onDrop}
         onClick={() => inputRef.current?.click()}

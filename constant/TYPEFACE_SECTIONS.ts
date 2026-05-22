@@ -5,6 +5,7 @@ export interface TypefaceSection {
 
 export const TYPEFACE_SECTIONS: TypefaceSection[] = [
   { id: "information", label: "Information" },
+  { id: "designers", label: "Designers" },
   { id: "typeface-page", label: "Typeface page" },
   { id: "versions", label: "Versions" },
   { id: "shop", label: "Shop" },
@@ -14,3 +15,15 @@ export const TYPEFACE_SECTIONS: TypefaceSection[] = [
   { id: "specimen", label: "Specimen" },
   { id: "assets", label: "Assets" },
 ];
+
+export const DEFAULT_TYPEFACE_SUBSECTION =
+  TYPEFACE_SECTIONS[0].id;
+
+export function isValidTypefaceSubsection(
+  id: string | null | undefined
+): id is TypefaceSection["id"] {
+  return (
+    !!id &&
+    TYPEFACE_SECTIONS.some((section) => section.id === id)
+  );
+}

@@ -31,9 +31,15 @@ export default function FontInUseImageUpload({
       >
         Images <span className="text-red-500">*</span>
       </label>
-      {/* biome-ignore lint/a11y/noStaticElementInteractions: drop zone triggers file input */}
-      {/* biome-ignore lint/a11y/useKeyWithClickEvents: drop zone triggers file input */}
       <div
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onTriggerClick();
+          }
+        }}
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         onDrop={onDrop}

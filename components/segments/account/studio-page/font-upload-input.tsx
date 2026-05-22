@@ -3,20 +3,28 @@
 import { useRef, useState } from "react";
 import {
   RiDeleteBinLine,
-  RiFontSize,
   RiLoader4Line,
   RiRefreshLine,
   RiUploadCloud2Line,
 } from "react-icons/ri";
+import StudioPageFontFace from "@/components/global/studio-page-font-face";
 import {
   STUDIO_PAGE_FONT_FORMATS,
   STUDIO_PAGE_FONT_FORMATS_STRING,
 } from "@/constant/ACCEPTED_FONT_FORMATS";
 import { MAX_FONT_FILE_SIZE } from "@/constant/FILE_UPLOAD_LIMITS";
+import {
+  STUDIO_DISPLAY_FONT_PREVIEW_FAMILY,
+  STUDIO_TEXT_FONT_PREVIEW_FAMILY,
+} from "@/constant/STUDIO_PAGE_FONT_FAMILIES";
 import { useStudio } from "@/hooks/use-studio";
 import { uploadFile } from "@/lib/firebase/storage";
 import type { FontUploadInputProps } from "@/types/components";
 import { cn } from "@/utils/class-names";
+
+const DISPLAY_FALLBACK = "Ortank, sans-serif";
+const TEXT_FALLBACK = '"Whisper", monospace';
+const FONT_PREVIEW_SAMPLE = "AaBbCc 123 가나다";
 
 export default function FontUploadInput({
   field,
@@ -35,6 +43,15 @@ export default function FontUploadInput({
     (field === "headerFont"
       ? studio?.headerFont
       : studio?.textFont) || "";
+
+  const previewFamily =
+    field === "headerFont"
+      ? STUDIO_DISPLAY_FONT_PREVIEW_FAMILY
+      : STUDIO_TEXT_FONT_PREVIEW_FAMILY;
+  const previewFallback =
+    field === "headerFont"
+      ? DISPLAY_FALLBACK
+      : TEXT_FALLBACK;
 
   const validateFile = (file: File): string | null => {
     const extension = `.${file.name.split(".").pop()?.toLowerCase()}`;
@@ -177,13 +194,42 @@ export default function FontUploadInput({
         </div>
       ) : currentValue ? (
         <div className="flex flex-col gap-3">
-          {/* Preview zone with icon and filename */}
-          <div className="relative flex min-h-[120px] w-full flex-col items-center justify-center gap-3 rounded-lg border border-neutral-200 bg-neutral-50 p-6">
-            <RiFontSize className="h-24 w-24 text-black" />
-            <p className="max-w-full truncate font-medium font-whisper text-neutral-700 text-sm">
-              {displayName}
-            </p>
-          </div>
+          <StudioPageFontFace
+            family={previewFamily}
+            url={currentValue}
+            fallbackFamily={previewFallback}
+          >
+            {({ ready, error, fontFamily }) => (
+              <div className="relative flex min-h-[120px] w-full flex-col items-center justify-center gap-3 rounded-lg border border-neutral-200 bg-neutral-50 p-6">
+                {error ? (
+                  <p className="font-whisper text-red-500 text-sm">
+                    Failed to load font preview
+                  </p>
+                ) : (
+                  <>
+                    <p
+                      className="text-center text-3xl text-black"
+                      style={{
+                        fontFamily: ready
+                          ? fontFamily
+                          : previewFallback,
+                      }}
+                    >
+                      {FONT_PREVIEW_SAMPLE}
+                    </p>
+                    {!ready && (
+                      <p className="font-whisper text-neutral-400 text-xs">
+                        Loading font…
+                      </p>
+                    )}
+                  </>
+                )}
+                <p className="max-w-full truncate font-medium font-whisper text-neutral-700 text-sm">
+                  {displayName}
+                </p>
+              </div>
+            )}
+          </StudioPageFontFace>
 
           {/* Replace & Delete buttons */}
           <div className="flex gap-2">

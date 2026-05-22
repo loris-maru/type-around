@@ -86,10 +86,10 @@ export default function VersionCard({
       {/* Delete Confirmation Modal */}
       {showConfirm && (
         <div className="fixed inset-0 z-modal flex items-center justify-center overflow-hidden">
-          {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop click to dismiss */}
-          {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop click to dismiss */}
-          <div
-            className="absolute inset-0 bg-black/50"
+          <button
+            type="button"
+            aria-label="Close modal"
+            className="absolute inset-0 cursor-default bg-black/50"
             onClick={handleCancel}
           />
           <div className="relative mx-4 w-full max-w-sm rounded-lg bg-white p-6 shadow-xl">

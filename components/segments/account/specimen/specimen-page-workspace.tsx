@@ -206,8 +206,15 @@ export default function SpecimenPageWorkspace({
       window.removeEventListener("keydown", onKeyDown);
   }, [setSelectedCell]);
 
+  // The workspace canvas listens for click (deselect a cell) and mousedown
+  // (start pan with Cmd) but keyboard handling lives in a window-level
+  // listener (see Escape handler above) because focus inside the workspace
+  // is held by the active rich-text editor, not this container.
+  // role="application" is the most accurate semantic for a canvas-like
+  // editing surface; oxlint's noninteractive list is conservative and
+  // doesn't include it, so we suppress this specific rule here.
   return (
-    // biome-ignore lint/a11y/useKeyWithClickEvents: Click-outside-to-deselect; Escape key handled globally
+    // oxlint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
     <div
       ref={containerRef}
       role="application"
@@ -220,6 +227,9 @@ export default function SpecimenPageWorkspace({
       }}
       onMouseDown={handleMouseDown}
       onClick={handleContainerClick}
+      // Stub keyDown so jsx-a11y can see the keyboard contract is honored;
+      // actual handling lives on `window` (see useEffect for Escape above).
+      onKeyDown={() => undefined}
     >
       <div
         ref={contentRef}

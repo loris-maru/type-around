@@ -9,10 +9,9 @@ import {
 } from "react";
 import { ButtonPreviewPage } from "@/components/molecules/buttons";
 import { DEFAULT_PAGE_LAYOUT } from "@/constant/DEFAULT_PAGE_LAYOUT";
-import { useAutosave } from "@/hooks/use-autosave";
 import { useStudio } from "@/hooks/use-studio";
 import type { LayoutItem } from "@/types/layout";
-import ChangesSavedPill from "../changes-saved-pill";
+import AccountSaveBar from "../account-save-bar";
 import AccountForm from "../form";
 import SaveErrorPill from "../save-error-pill";
 import LayoutBuilder from "./layout-builder";
@@ -35,6 +34,10 @@ export default function AccountStudioPage() {
     LayoutItem[]
   >(DEFAULT_PAGE_LAYOUT);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(
+    null
+  );
   const formValuesRef = useRef(formValues);
   const pageLayoutRef = useRef(pageLayout);
 
@@ -198,66 +201,56 @@ export default function AccountStudioPage() {
     [persistToStorage]
   );
 
-  const combinedData = useMemo(
-    () => ({ form: formValues, layout: pageLayout }),
-    [formValues, pageLayout]
-  );
-
-  const {
-    showSaved,
-    saveError,
-    retry,
-    triggerSaved,
-    setSaveError,
-  } = useAutosave({
-    storageKey: studio?.id
-      ? `${STORAGE_KEY_PREFIX}${studio.id}`
-      : "",
-    data: combinedData,
-    saveFn: saveToFirebase,
-    enabled: hasChanges && !!studio?.id,
-  });
-
   const handleLayoutChange = useCallback(
     (layout: LayoutItem[]) => {
       persistToStorage(formValuesRef.current, layout);
       setPageLayout(layout);
-      // Immediately save to Firebase when layout changes (add block, modal save, etc.)
-      saveToFirebase({
-        form: formValuesRef.current,
-        layout,
-      })
-        .then(async () => {
-          triggerSaved();
-          // Refetch to ensure we have canonical data from Firebase (avoids stale/cache issues)
-          await refetchStudio();
-          if (studio?.id) {
-            try {
-              localStorage.removeItem(
-                `${STORAGE_KEY_PREFIX}${studio.id}`
-              );
-            } catch {
-              // Ignore
-            }
-          }
-        })
-        .catch((err) => {
-          setSaveError(
-            err instanceof Error
-              ? err.message
-              : "Failed to save"
-          );
-        });
     },
-    [
-      persistToStorage,
-      saveToFirebase,
-      triggerSaved,
-      setSaveError,
-      refetchStudio,
-      studio,
-    ]
+    [persistToStorage]
   );
+
+  const handleSave = useCallback(async () => {
+    if (!hasChanges || !studio?.id || isSaving) return;
+
+    setIsSaving(true);
+    setSaveError(null);
+
+    try {
+      await saveToFirebase({
+        form: formValues,
+        layout: pageLayout,
+      });
+      await refetchStudio();
+      try {
+        localStorage.removeItem(
+          `${STORAGE_KEY_PREFIX}${studio.id}`
+        );
+      } catch {
+        // Ignore
+      }
+    } catch (err) {
+      setSaveError(
+        err instanceof Error
+          ? err.message
+          : "Failed to save"
+      );
+    } finally {
+      setIsSaving(false);
+    }
+  }, [
+    hasChanges,
+    studio?.id,
+    isSaving,
+    saveToFirebase,
+    formValues,
+    pageLayout,
+    refetchStudio,
+  ]);
+
+  const handleRetry = useCallback(() => {
+    setSaveError(null);
+    void handleSave();
+  }, [handleSave]);
 
   const handlePreview = () => {
     if (!studio?.id) return;
@@ -301,16 +294,20 @@ export default function AccountStudioPage() {
       )}
 
       {studio?.id && (
-        <div className="fixed right-6 bottom-6 z-50">
+        <div className="fixed right-6 bottom-6 z-50 flex items-center gap-3">
+          <AccountSaveBar
+            visible={hasChanges}
+            isSaving={isSaving}
+            onSave={handleSave}
+          />
           <ButtonPreviewPage onClick={handlePreview} />
         </div>
       )}
 
-      <ChangesSavedPill show={showSaved} />
       {saveError && (
         <SaveErrorPill
           message={saveError}
-          onRetry={retry}
+          onRetry={handleRetry}
         />
       )}
     </div>

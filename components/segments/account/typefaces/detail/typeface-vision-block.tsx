@@ -9,6 +9,7 @@ import {
   TYPEFACE_VISION_USAGE,
   TYPEFACE_VISION_WIDTH,
 } from "@/constant/TYPEFACE_VISION";
+import { TYPEFACE_VISION_DESCRIPTION } from "@/constant/TYPEFACE_VISION_DESCRIPTION";
 import type { TypefaceVisionBlockProps } from "@/types/components";
 
 function parseVisionValue(value: string): string[] {
@@ -63,9 +64,12 @@ export default function TypefaceVisionBlock({
 }: TypefaceVisionBlockProps) {
   return (
     <div className="rounded-lg border border-neutral-200 p-6">
-      <span className="mb-4 block font-extrabold font-ortank text-black text-lg">
+      <span className="mb-2 block font-extrabold font-ortank text-black text-lg">
         Typeface vision
       </span>
+      <p className="mb-4 font-whisper text-neutral-500 text-sm">
+        {TYPEFACE_VISION_DESCRIPTION}
+      </p>
       <div className="grid grid-cols-4 gap-4">
         <VisionMultiSelect
           label="Usage"

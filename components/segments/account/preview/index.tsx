@@ -1,7 +1,7 @@
 "use client";
 
 import Footer from "@/components/global/footer";
-import { StudioFontsProvider } from "@/contexts/studio-fonts-context";
+import StudioPublicPage from "@/components/segments/studio/studio-public-page";
 import StudioHeader from "@/components/segments/studio/header";
 import { DEFAULT_PAGE_LAYOUT } from "@/constant/DEFAULT_PAGE_LAYOUT";
 import { useStudio } from "@/hooks/use-studio";
@@ -37,9 +37,9 @@ export default function StudioPreview() {
     : DEFAULT_PAGE_LAYOUT;
 
   return (
-    <StudioFontsProvider
-      displayFontUrl={studio.headerFont || undefined}
-      textFontUrl={studio.textFont || undefined}
+    <StudioPublicPage
+      headerFont={studio.headerFont || undefined}
+      textFont={studio.textFont || undefined}
     >
       <div className="relative flex min-h-screen w-full flex-col">
         <StudioHeader
@@ -60,6 +60,6 @@ export default function StudioPreview() {
         </div>
         <Footer />
       </div>
-    </StudioFontsProvider>
+    </StudioPublicPage>
   );
 }

@@ -25,9 +25,12 @@ export default function LayoutRoot({
     type: "font/woff2",
     crossOrigin: "anonymous",
   });
-  ReactDOM.preconnect("https://firebasestorage.googleapis.com", {
-    crossOrigin: "anonymous",
-  });
+  ReactDOM.preconnect(
+    "https://firebasestorage.googleapis.com",
+    {
+      crossOrigin: "anonymous",
+    }
+  );
   ReactDOM.preconnect("https://storage.googleapis.com", {
     crossOrigin: "anonymous",
   });

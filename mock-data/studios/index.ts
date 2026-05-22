@@ -31,7 +31,7 @@ const STUDIOS = [
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_giparan.svg",
         characters: 1456,
-        releaseDate: "2024-01-01",
+        releaseDate: "2024",
         category: ["sans-serif"],
         studio: "lo-ol type",
         fonts:
@@ -45,7 +45,7 @@ const STUDIOS = [
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_arvana.svg",
         characters: 1024,
-        releaseDate: "2024-01-01",
+        releaseDate: "2024",
         category: ["serif"],
         studio: "lo-ol type",
         fonts:
@@ -59,7 +59,7 @@ const STUDIOS = [
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_ortank.svg",
         characters: 2800,
-        releaseDate: "2024-01-01",
+        releaseDate: "2024",
         category: ["sans-serif"],
         studio: "lo-ol type",
         fonts:
@@ -73,7 +73,7 @@ const STUDIOS = [
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_banya.svg",
         characters: 1456,
-        releaseDate: "2024-01-01",
+        releaseDate: "2024",
         category: ["serif"],
         studio: "lo-ol type",
         fonts:
@@ -113,7 +113,7 @@ const STUDIOS = [
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_giparan.svg",
         characters: 1456,
-        releaseDate: "2024-01-01",
+        releaseDate: "2024",
         category: ["sans-serif"],
         studio: "Minjoo Type",
         fonts:
@@ -127,7 +127,7 @@ const STUDIOS = [
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_arvana.svg",
         characters: 1024,
-        releaseDate: "2024-01-01",
+        releaseDate: "2024",
         category: ["serif"],
         studio: "Minjoo Type",
         fonts:
@@ -141,7 +141,7 @@ const STUDIOS = [
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_ortank.svg",
         characters: 2800,
-        releaseDate: "2024-01-01",
+        releaseDate: "2024",
         category: ["sans-serif"],
         studio: "Minjoo Type",
         fonts:
@@ -155,7 +155,7 @@ const STUDIOS = [
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_banya.svg",
         characters: 1456,
-        releaseDate: "2024-01-01",
+        releaseDate: "2024",
         category: ["serif"],
         studio: "Minjoo Type",
         fonts:
@@ -195,7 +195,7 @@ const STUDIOS = [
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_giparan.svg",
         characters: 1456,
-        releaseDate: "2024-01-01",
+        releaseDate: "2024",
         category: ["sans-serif"],
         studio: "Font Pia",
         fonts:
@@ -209,7 +209,7 @@ const STUDIOS = [
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_arvana.svg",
         characters: 1024,
-        releaseDate: "2024-01-01",
+        releaseDate: "2024",
         category: ["serif"],
         studio: "Font Pia",
         fonts:
@@ -223,7 +223,7 @@ const STUDIOS = [
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_ortank.svg",
         characters: 2800,
-        releaseDate: "2024-01-01",
+        releaseDate: "2024",
         category: ["sans-serif"],
         studio: "Font Pia",
         fonts:
@@ -237,7 +237,7 @@ const STUDIOS = [
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_banya.svg",
         characters: 1456,
-        releaseDate: "2024-01-01",
+        releaseDate: "2024",
         category: ["serif"],
         studio: "Font Pia",
         fonts:
@@ -277,7 +277,7 @@ const STUDIOS = [
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_giparan.svg",
         characters: 1456,
-        releaseDate: "2024-01-01",
+        releaseDate: "2024",
         category: ["sans-serif"],
         studio: "Moa Design",
         fonts:
@@ -291,7 +291,7 @@ const STUDIOS = [
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_arvana.svg",
         characters: 1024,
-        releaseDate: "2024-01-01",
+        releaseDate: "2024",
         category: ["serif"],
         studio: "Moa Design",
         fonts:
@@ -305,7 +305,7 @@ const STUDIOS = [
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_ortank.svg",
         characters: 2800,
-        releaseDate: "2024-01-01",
+        releaseDate: "2024",
         category: ["sans-serif"],
         studio: "Moa Design",
         fonts:
@@ -319,7 +319,7 @@ const STUDIOS = [
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_banya.svg",
         characters: 1456,
-        releaseDate: "2024-01-01",
+        releaseDate: "2024",
         category: ["serif"],
         studio: "Moa Design",
         fonts:
@@ -359,7 +359,7 @@ const STUDIOS = [
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_giparan.svg",
         characters: 1456,
-        releaseDate: "2024-01-01",
+        releaseDate: "2024",
         category: ["sans-serif"],
         studio: "Mijin Letters",
         fonts:
@@ -373,7 +373,7 @@ const STUDIOS = [
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_arvana.svg",
         characters: 1024,
-        releaseDate: "2024-01-01",
+        releaseDate: "2024",
         category: ["serif"],
         studio: "Mijin Letters",
         fonts:
@@ -387,7 +387,7 @@ const STUDIOS = [
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_ortank.svg",
         characters: 2800,
-        releaseDate: "2024-01-01",
+        releaseDate: "2024",
         category: ["sans-serif"],
         studio: "Mijin Letters",
         fonts:
@@ -401,7 +401,7 @@ const STUDIOS = [
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_banya.svg",
         characters: 1456,
-        releaseDate: "2024-01-01",
+        releaseDate: "2024",
         category: ["serif"],
         studio: "Mijin Letters",
         fonts:
@@ -441,7 +441,7 @@ const STUDIOS = [
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_giparan.svg",
         characters: 1456,
-        releaseDate: "2024-01-01",
+        releaseDate: "2024",
         category: ["sans-serif"],
         studio: "Suyeong Han Studio",
         fonts:
@@ -455,7 +455,7 @@ const STUDIOS = [
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_arvana.svg",
         characters: 1024,
-        releaseDate: "2024-01-01",
+        releaseDate: "2024",
         category: ["serif"],
         studio: "Suyeong Han Studio",
         fonts:
@@ -469,7 +469,7 @@ const STUDIOS = [
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_ortank.svg",
         characters: 2800,
-        releaseDate: "2024-01-01",
+        releaseDate: "2024",
         category: ["sans-serif"],
         studio: "Suyeong Han Studio",
         fonts:
@@ -483,7 +483,7 @@ const STUDIOS = [
           "Lorem ipsum dolor sit amet fermentum curabitur urna est luctus justo massa.",
         icon: "/mock/typefaces/icn_banya.svg",
         characters: 1456,
-        releaseDate: "2024-01-01",
+        releaseDate: "2024",
         category: ["serif"],
         studio: "Suyeong Han Studio",
         fonts:

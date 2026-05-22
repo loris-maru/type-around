@@ -2,12 +2,15 @@
 
 import { useState } from "react";
 import { RiArrowLeftLine } from "react-icons/ri";
+import { useStudioFonts } from "@/contexts/studio-fonts-context";
 import type { StudioBlogBlockProps } from "@/types/components";
 import type { BlogArticle } from "@/types/layout";
 
 export default function StudioBlogBlock({
   data,
 }: StudioBlogBlockProps) {
+  const { displayFontFamily, textFontFamily } =
+    useStudioFonts();
   const [activeArticle, setActiveArticle] =
     useState<BlogArticle | null>(null);
 
@@ -20,22 +23,30 @@ export default function StudioBlogBlock({
         <button
           type="button"
           onClick={() => setActiveArticle(null)}
-          className="flex items-center gap-2 text-sm font-whisper text-neutral-600 hover:text-black transition-colors mb-6 cursor-pointer"
+          className="mb-6 flex cursor-pointer items-center gap-2 text-neutral-600 text-sm transition-colors hover:text-black"
+          style={{ fontFamily: textFontFamily }}
         >
           <RiArrowLeftLine className="w-4 h-4" />
           Back to articles
         </button>
         <article className="max-w-3xl">
-          <h2 className="text-3xl font-ortank font-bold mb-4">
+          <h2
+            className="mb-4 font-bold text-3xl"
+            style={{ fontFamily: displayFontFamily }}
+          >
             {activeArticle.name}
           </h2>
           {activeArticle.introduction && (
-            <p className="text-lg font-whisper text-neutral-700 mb-8 leading-relaxed">
+            <p
+              className="mb-8 text-lg text-neutral-700 leading-relaxed"
+              style={{ fontFamily: textFontFamily }}
+            >
               {activeArticle.introduction}
             </p>
           )}
           <div
-            className="prose prose-neutral max-w-none font-whisper"
+            className="prose prose-neutral max-w-none"
+            style={{ fontFamily: textFontFamily }}
             /* biome-ignore lint/security/noDangerouslySetInnerHtml: rich text content from editor */
             dangerouslySetInnerHTML={{
               __html: activeArticle.content,
@@ -43,10 +54,16 @@ export default function StudioBlogBlock({
           />
           {activeArticle.authors.length > 0 && (
             <div className="mt-8 pt-6 border-t border-neutral-200">
-              <span className="text-xs font-whisper text-neutral-500 uppercase tracking-wider">
+              <span
+                className="text-neutral-500 text-xs uppercase tracking-wider"
+                style={{ fontFamily: textFontFamily }}
+              >
                 By
               </span>
-              <p className="text-sm font-whisper font-medium text-black mt-1">
+              <p
+                className="mt-1 font-medium text-black text-sm"
+                style={{ fontFamily: textFontFamily }}
+              >
                 {activeArticle.authors.join(", ")}
               </p>
             </div>
@@ -56,7 +73,8 @@ export default function StudioBlogBlock({
               {activeArticle.keywords.map((kw) => (
                 <span
                   key={kw}
-                  className="text-xs font-whisper px-3 py-1 bg-neutral-100 rounded-full text-neutral-600"
+                  className="rounded-full bg-neutral-100 px-3 py-1 text-neutral-600 text-xs"
+                  style={{ fontFamily: textFontFamily }}
                 >
                   {kw}
                 </span>
@@ -71,7 +89,10 @@ export default function StudioBlogBlock({
   return (
     <section className="relative w-full px-10 py-12">
       {data.title && (
-        <h3 className="text-2xl font-ortank font-bold mb-8">
+        <h3
+          className="mb-8 font-bold text-2xl"
+          style={{ fontFamily: displayFontFamily }}
+        >
           {data.title}
         </h3>
       )}
@@ -83,16 +104,25 @@ export default function StudioBlogBlock({
             onClick={() => setActiveArticle(article)}
             className="flex flex-col p-5 border border-neutral-200 rounded-lg bg-white hover:border-black transition-colors text-left cursor-pointer"
           >
-            <h4 className="text-base font-whisper font-semibold text-black mb-2">
+            <h4
+              className="mb-2 font-semibold text-base text-black"
+              style={{ fontFamily: displayFontFamily }}
+            >
               {article.name || "Untitled"}
             </h4>
             {article.introduction && (
-              <p className="text-sm font-whisper text-neutral-600 line-clamp-3">
+              <p
+                className="line-clamp-3 text-neutral-600 text-sm"
+                style={{ fontFamily: textFontFamily }}
+              >
                 {article.introduction}
               </p>
             )}
             {article.authors.length > 0 && (
-              <p className="text-xs font-whisper text-neutral-400 mt-auto pt-3">
+              <p
+                className="mt-auto pt-3 text-neutral-400 text-xs"
+                style={{ fontFamily: textFontFamily }}
+              >
                 {article.authors.join(", ")}
               </p>
             )}

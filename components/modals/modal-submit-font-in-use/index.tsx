@@ -242,10 +242,10 @@ export default function SubmitFontInUseModal({
       data-modal
       data-lenis-prevent
     >
-      {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop dismiss */}
-      {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop dismiss */}
-      <div
-        className="absolute inset-0 bg-black/50"
+      <button
+        type="button"
+        aria-label="Close modal"
+        className="absolute inset-0 cursor-default bg-black/50"
         onClick={handleClose}
       />
 
@@ -354,9 +354,15 @@ export default function SubmitFontInUseModal({
             >
               Images <span className="text-red-500">*</span>
             </label>
-            {/* biome-ignore lint/a11y/noStaticElementInteractions: drop zone triggers file input */}
-            {/* biome-ignore lint/a11y/useKeyWithClickEvents: drop zone triggers file input */}
             <div
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  fileInputRef.current?.click();
+                }
+              }}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}

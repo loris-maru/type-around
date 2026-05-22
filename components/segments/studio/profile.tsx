@@ -61,7 +61,10 @@ export default function StudioProfile({
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-neutral-200">
-              <span className="font-black font-ortank text-4xl text-neutral-400">
+              <span
+                className="font-black text-4xl text-neutral-400"
+                style={{ fontFamily: displayFontFamily }}
+              >
                 Studio
               </span>
             </div>

@@ -34,10 +34,10 @@ export default function SpacerBlockModal({
       data-modal
       data-lenis-prevent
     >
-      {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop dismiss */}
-      {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop dismiss */}
-      <div
-        className="absolute inset-0 bg-black/50"
+      <button
+        type="button"
+        aria-label="Close modal"
+        className="absolute inset-0 cursor-default bg-black/50"
         onClick={onClose}
       />
 

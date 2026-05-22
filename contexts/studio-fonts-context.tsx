@@ -3,11 +3,14 @@
 import {
   createContext,
   useContext,
-  useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
+import StudioPageFontFace from "@/components/global/studio-page-font-face";
+import {
+  STUDIO_DISPLAY_FONT_FAMILY,
+  STUDIO_TEXT_FONT_FAMILY,
+} from "@/constant/STUDIO_PAGE_FONT_FAMILIES";
 import type { StudioFontsContextValue } from "@/types/contexts";
 
 const StudioFontsContext =
@@ -15,16 +18,6 @@ const StudioFontsContext =
 
 const DISPLAY_FALLBACK = "Ortank, sans-serif";
 const TEXT_FALLBACK = '"Whisper", monospace';
-const CUSTOM_DISPLAY_NAME = "studio-display-font";
-const CUSTOM_TEXT_NAME = "studio-text-font";
-
-function removeFontFamily(familyName: string) {
-  for (const face of Array.from(document.fonts)) {
-    if (face.family === familyName) {
-      document.fonts.delete(face);
-    }
-  }
-}
 
 export function StudioFontsProvider({
   displayFontUrl,
@@ -35,95 +28,60 @@ export function StudioFontsProvider({
   textFontUrl?: string;
   children: React.ReactNode;
 }) {
-  const [displayLoaded, setDisplayLoaded] = useState(false);
-  const [textLoaded, setTextLoaded] = useState(false);
-  const prevDisplayUrl = useRef<string | undefined>(
-    undefined
-  );
-  const prevTextUrl = useRef<string | undefined>(undefined);
-
-  // Clean up fonts from document.fonts on unmount
-  useEffect(() => {
-    return () => {
-      removeFontFamily(CUSTOM_DISPLAY_NAME);
-      removeFontFamily(CUSTOM_TEXT_NAME);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!displayFontUrl) return;
-    if (displayFontUrl === prevDisplayUrl.current) return;
-    prevDisplayUrl.current = displayFontUrl;
-
-    removeFontFamily(CUSTOM_DISPLAY_NAME);
-
-    let cancelled = false;
-    const face = new FontFace(
-      CUSTOM_DISPLAY_NAME,
-      `url(${displayFontUrl})`,
-      { weight: "100 900", style: "normal" }
-    );
-    face
-      .load()
-      .then((loaded) => {
-        if (cancelled) return;
-        document.fonts.add(loaded);
-        setDisplayLoaded(true);
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, [displayFontUrl]);
-
-  useEffect(() => {
-    if (!textFontUrl) return;
-    if (textFontUrl === prevTextUrl.current) return;
-    prevTextUrl.current = textFontUrl;
-
-    removeFontFamily(CUSTOM_TEXT_NAME);
-
-    let cancelled = false;
-    const face = new FontFace(
-      CUSTOM_TEXT_NAME,
-      `url(${textFontUrl})`,
-      { weight: "100 900", style: "normal" }
-    );
-    face
-      .load()
-      .then((loaded) => {
-        if (cancelled) return;
-        document.fonts.add(loaded);
-        setTextLoaded(true);
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, [textFontUrl]);
+  const [displayReady, setDisplayReady] = useState(false);
+  const [textReady, setTextReady] = useState(false);
 
   const value = useMemo<StudioFontsContextValue>(() => {
-    const useCustomDisplay =
-      displayFontUrl && displayLoaded;
-    const useCustomText = textFontUrl && textLoaded;
+    const useCustomDisplay = displayFontUrl && displayReady;
+    const useCustomText = textFontUrl && textReady;
     return {
       displayFontFamily: useCustomDisplay
-        ? `"${CUSTOM_DISPLAY_NAME}", ${DISPLAY_FALLBACK}`
+        ? `"${STUDIO_DISPLAY_FONT_FAMILY}", ${DISPLAY_FALLBACK}`
         : DISPLAY_FALLBACK,
       textFontFamily: useCustomText
-        ? `"${CUSTOM_TEXT_NAME}", ${TEXT_FALLBACK}`
+        ? `"${STUDIO_TEXT_FONT_FAMILY}", ${TEXT_FALLBACK}`
         : TEXT_FALLBACK,
     };
   }, [
     displayFontUrl,
     textFontUrl,
-    displayLoaded,
-    textLoaded,
+    displayReady,
+    textReady,
   ]);
+
+  const fontStyle = {
+    ["--studio-display-font-family" as string]:
+      value.displayFontFamily,
+    ["--studio-text-font-family" as string]:
+      value.textFontFamily,
+  } as React.CSSProperties;
 
   return (
     <StudioFontsContext.Provider value={value}>
-      {children}
+      {displayFontUrl ? (
+        <StudioPageFontFace
+          key={displayFontUrl}
+          family={STUDIO_DISPLAY_FONT_FAMILY}
+          url={displayFontUrl}
+          fallbackFamily={DISPLAY_FALLBACK}
+          onReadyChange={setDisplayReady}
+        />
+      ) : null}
+      {textFontUrl ? (
+        <StudioPageFontFace
+          key={textFontUrl}
+          family={STUDIO_TEXT_FONT_FAMILY}
+          url={textFontUrl}
+          fallbackFamily={TEXT_FALLBACK}
+          onReadyChange={setTextReady}
+        />
+      ) : null}
+      <div
+        className="studio-page-fonts"
+        style={fontStyle}
+      >
+        {children}
+      </div>
     </StudioFontsContext.Provider>
   );
 }

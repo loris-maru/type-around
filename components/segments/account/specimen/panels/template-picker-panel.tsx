@@ -39,9 +39,8 @@ export default function TemplatePickerPanel({
       pageId,
       pageName
     );
-    const updatedPages: SpecimenPage[] = pages.map(
-      (p, i) =>
-        i === pageIndex ? { ...p, ...pageFields } : p
+    const updatedPages: SpecimenPage[] = pages.map((p, i) =>
+      i === pageIndex ? { ...p, ...pageFields } : p
     );
     updateSpecimen(specimenId, { pages: updatedPages });
     setTemplatePickerOpen(false);

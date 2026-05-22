@@ -1,11 +1,5 @@
 "use client";
 
-import { useLenis } from "lenis/react";
-import {
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
 import {
   useCallback,
   useEffect,
@@ -17,7 +11,6 @@ import AddFontModal from "@/components/modals/modal-add-font";
 import AddPackageModal from "@/components/modals/modal-add-package";
 import AddVersionModal from "@/components/modals/modal-add-version";
 import EulaGeneratorModal from "@/components/modals/modal-eula-generator";
-import { TYPEFACE_SECTIONS } from "@/constant/TYPEFACE_SECTIONS";
 import { useStudio } from "@/hooks/use-studio";
 import type {
   TypefaceDetailProps,
@@ -29,11 +22,13 @@ import type {
   Package,
   StudioTypeface,
 } from "@/types/studio";
+import { normalizeReleaseYear } from "@/utils/release-year";
 import { slugify } from "@/utils/slugify";
 import ChangesSavedPill from "../changes-saved-pill";
 import {
   AssetsSection,
   BasicInformationSection,
+  DesignersSection,
   EulaSection,
   FontsListSection,
   PackagesListSection,
@@ -44,16 +39,11 @@ import {
   VersionsListSection,
 } from "./detail";
 
-const SECTION_OFFSET = 120;
-
 export default function TypefaceDetail({
   typefaceSlug,
+  activeSubsection,
 }: TypefaceDetailProps) {
   const { studio, isLoading, updateTypeface } = useStudio();
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const scrollUpdateScheduled = useRef(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isFontModalOpen, setIsFontModalOpen] =
     useState(false);
@@ -109,7 +99,9 @@ export default function TypefaceDetail({
         hangeulName: typeface.hangeulName || "",
         category: typeface.category || [],
         characters: typeface.characters,
-        releaseDate: typeface.releaseDate,
+        releaseDate: normalizeReleaseYear(
+          typeface.releaseDate
+        ),
         description: typeface.description,
         supportedLanguages:
           typeface.supportedLanguages || [],
@@ -214,49 +206,11 @@ export default function TypefaceDetail({
     }
   }, [typeface]);
 
-  // Update active section in URL when scrolling (scroll-spy)
-  const updateActiveSection = useCallback(() => {
-    if (!typeface) return;
-    if (scrollUpdateScheduled.current) return;
-    scrollUpdateScheduled.current = true;
-
-    requestAnimationFrame(() => {
-      scrollUpdateScheduled.current = false;
-      let activeId: string | null = null;
-      for (const section of TYPEFACE_SECTIONS) {
-        const el = document.getElementById(section.id);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= SECTION_OFFSET) {
-            activeId = section.id;
-          }
-        }
-      }
-      if (!activeId && TYPEFACE_SECTIONS.length > 0) {
-        activeId = TYPEFACE_SECTIONS[0].id;
-      }
-      if (
-        activeId &&
-        activeId !== searchParams.get("section")
-      ) {
-        const params = new URLSearchParams(
-          searchParams.toString()
-        );
-        params.set("section", activeId);
-        router.replace(`${pathname}?${params.toString()}`, {
-          scroll: false,
-        });
-      }
-    });
-  }, [typeface, pathname, router, searchParams]);
-
-  useLenis(() => {
-    if (typeface) updateActiveSection();
-  }, [typeface, updateActiveSection]);
-
+  // biome-ignore lint/correctness/useExhaustiveDependencies: scroll to top when subsection changes
   useEffect(() => {
-    if (typeface) updateActiveSection();
-  }, [typeface, updateActiveSection]);
+    if (!typeface) return;
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [activeSubsection, typeface]);
 
   const saveToFirebase = useCallback(
     async (dataToSave: Partial<StudioTypeface>) => {
@@ -265,6 +219,13 @@ export default function TypefaceDetail({
       try {
         await updateTypeface(typeface.id, {
           ...dataToSave,
+          ...(dataToSave.releaseDate !== undefined
+            ? {
+                releaseDate: normalizeReleaseYear(
+                  String(dataToSave.releaseDate)
+                ),
+              }
+            : {}),
           characters:
             parseInt(
               dataToSave.characters?.toString() || "0",
@@ -602,6 +563,9 @@ export default function TypefaceDetail({
     try {
       await updateTypeface(typeface.id, {
         ...updatedFormData,
+        releaseDate: normalizeReleaseYear(
+          String(updatedFormData.releaseDate ?? "")
+        ),
         characters:
           parseInt(
             updatedFormData.characters?.toString() || "0",
@@ -628,6 +592,9 @@ export default function TypefaceDetail({
     try {
       await updateTypeface(typeface.id, {
         ...formData,
+        releaseDate: normalizeReleaseYear(
+          String(formData.releaseDate ?? "")
+        ),
         characters:
           parseInt(
             formData.characters?.toString() || "0",
@@ -661,7 +628,7 @@ export default function TypefaceDetail({
   }
 
   return (
-    <div className="relative flex w-full flex-col gap-y-28 pb-20">
+    <div className="relative flex w-full flex-col gap-y-8 pb-20">
       <TypefaceDetailHeader
         typefaceName={typeface.name}
         status={currentStatus}
@@ -674,10 +641,7 @@ export default function TypefaceDetail({
         onTogglePublish={handleTogglePublish}
       />
 
-      <div
-        id="information"
-        className="scroll-mt-8"
-      >
+      {activeSubsection === "information" && (
         <BasicInformationSection
           name={formData.name || ""}
           hangeulName={formData.hangeulName || ""}
@@ -696,15 +660,12 @@ export default function TypefaceDetail({
             frame: formData.visionFrame || "",
             serif: formData.visionSerif || "",
           }}
-          designerIds={formData.designerIds || []}
-          studioDesigners={studio?.designers || []}
           onInputChange={handleInputChange}
           onCategoriesChange={handleCategoriesChange}
           onLanguagesChange={handleLanguagesChange}
           onTypefaceVisionChange={
             handleTypefaceVisionChange
           }
-          onDesignerIdsChange={handleDesignerIdsChange}
           fonts={formData.fonts || []}
           displayFontId={formData.displayFontId || ""}
           fontLineText={formData.fontLineText || ""}
@@ -719,12 +680,17 @@ export default function TypefaceDetail({
             handleTypefaceCardDisplayFontChange
           }
         />
-      </div>
+      )}
 
-      <div
-        id="typeface-page"
-        className="scroll-mt-8"
-      >
+      {activeSubsection === "designers" && (
+        <DesignersSection
+          designerIds={formData.designerIds || []}
+          studioDesigners={studio?.designers || []}
+          onDesignerIdsChange={handleDesignerIdsChange}
+        />
+      )}
+
+      {activeSubsection === "typeface-page" && (
         <TypefacePageSection
           typefacePageLayout={
             (
@@ -801,12 +767,9 @@ export default function TypefaceDetail({
             })
           )}
         />
-      </div>
+      )}
 
-      <div
-        id="versions"
-        className="scroll-mt-8"
-      >
+      {activeSubsection === "versions" && (
         <VersionsListSection
           versions={versions}
           onAddVersionClick={() =>
@@ -815,36 +778,27 @@ export default function TypefaceDetail({
           onEditVersion={handleEditVersion}
           onRemoveVersion={handleRemoveVersion}
         />
-      </div>
+      )}
 
-      <div
-        id="shop"
-        className="scroll-mt-8"
-      >
+      {activeSubsection === "shop" && (
         <ShopSection
           printPrice={String(formData.printPrice ?? 0)}
           webPrice={String(formData.webPrice ?? 0)}
           appPrice={String(formData.appPrice ?? 0)}
           onInputChange={handleInputChange}
         />
-      </div>
+      )}
 
-      <div
-        id="fonts"
-        className="scroll-mt-8"
-      >
+      {activeSubsection === "fonts" && (
         <FontsListSection
           fonts={formData.fonts || []}
           onRemoveFont={handleRemoveFont}
           onEditFont={handleEditFont}
           onAddFontClick={() => setIsFontModalOpen(true)}
         />
-      </div>
+      )}
 
-      <div
-        id="packages"
-        className="scroll-mt-8"
-      >
+      {activeSubsection === "packages" && (
         <PackagesListSection
           packages={formData.packages || []}
           fonts={formData.fonts || []}
@@ -856,12 +810,9 @@ export default function TypefaceDetail({
           onSavePackage={handleSavePackage}
           onRemovePackage={handleRemovePackage}
         />
-      </div>
+      )}
 
-      <div
-        id="eula"
-        className="scroll-mt-8"
-      >
+      {activeSubsection === "eula" && (
         <EulaSection
           studioId={studio?.id || ""}
           eula={formData.eula || ""}
@@ -870,24 +821,18 @@ export default function TypefaceDetail({
             setIsEulaModalOpen(true)
           }
         />
-      </div>
+      )}
 
-      <div
-        id="specimen"
-        className="scroll-mt-8"
-      >
+      {activeSubsection === "specimen" && (
         <SpecimenSection
           studioId={studio?.id || ""}
           typefaceSlug={typefaceSlug}
           specimen={formData.specimen || ""}
           onSpecimenChange={handleFileChange("specimen")}
         />
-      </div>
+      )}
 
-      <div
-        id="assets"
-        className="scroll-mt-8"
-      >
+      {activeSubsection === "assets" && (
         <AssetsSection
           studioId={studio?.id || ""}
           heroLetter={formData.heroLetter || ""}
@@ -901,7 +846,7 @@ export default function TypefaceDetail({
           )}
           onGalleryImagesChange={handleGalleryImagesChange}
         />
-      </div>
+      )}
 
       <AddFontModal
         isOpen={isFontModalOpen}

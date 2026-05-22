@@ -109,9 +109,16 @@ export default function TagInput({
       >
         {label}
       </label>
-      {/* biome-ignore lint/a11y/useKeyWithClickEvents: click delegates focus to inner input */}
-      {/* biome-ignore lint/a11y/noStaticElementInteractions: container delegates focus to inner input */}
+      {/*
+        The container is a click-target that simply delegates focus to the
+        inner <input>; clicking the visible <label htmlFor="..."> above does
+        the same via native browser behavior, so the wrapper itself has no
+        independent keyboard semantics. role="presentation" + tabIndex={-1}
+        keeps it out of the tab order while the inner input handles all
+        real keyboard interaction (Enter/Comma to add, Backspace to remove).
+      */}
       <div
+        role="presentation"
         onClick={handleContainerClick}
         className={cn(
           "min-h-[48px] w-full cursor-text rounded-lg border px-3 py-2 transition-colors",

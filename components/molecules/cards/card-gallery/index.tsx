@@ -98,6 +98,11 @@ export default function GalleryCard({
 
       {isOpen &&
         createPortal(
+          // The dialog itself acts as a backdrop click-target to dismiss
+          // (in addition to Escape, handled in useEffect above) and Enter/
+          // Space on focus. The dialog role is the most accurate semantic
+          // even though jsx-a11y treats `role="dialog"` as non-interactive.
+          // oxlint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
           <div
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
             onClick={close}
@@ -125,8 +130,13 @@ export default function GalleryCard({
               <RiCloseLine size={24} />
             </button>
 
-            {/* biome-ignore lint/a11y/useKeyWithClickEvents: key handler on parent dialog */}
-            {/* biome-ignore lint/a11y/noStaticElementInteractions: stopPropagation only, not interactive */}
+            {/*
+              Inner image wrapper only stops propagation so clicking the
+              image doesn't dismiss the dialog. It's purely structural,
+              not an interactive control — keyboard interaction lives on
+              the parent dialog.
+            */}
+            {/* oxlint-disable-next-line jsx-a11y/click-events-have-key-events jsx-a11y/no-static-element-interactions */}
             <div
               className="relative max-h-[90vh] max-w-[90vw]"
               onClick={(e) => e.stopPropagation()}

@@ -15,6 +15,7 @@ import {
   RiShoppingCart2Fill,
   RiZoomInLine,
 } from "react-icons/ri";
+import { useStudioFonts } from "@/contexts/studio-fonts-context";
 import { useCartStore } from "@/stores/cart";
 import type { StoreProduct } from "@/types/layout";
 import { cn } from "@/utils/class-names";
@@ -28,6 +29,8 @@ export default function CardProduct({
   studioId?: string;
   studioSlug?: string;
 }) {
+  const { displayFontFamily, textFontFamily } =
+    useStudioFonts();
   const addToCart = useCartStore((s) => s.addToCart);
   const [isDescriptionExpanded, setIsDescriptionExpanded] =
     useState<boolean>(false);
@@ -172,7 +175,10 @@ export default function CardProduct({
 
       {/* Product info */}
       <div className="flex flex-col gap-1 p-4">
-        <h4 className="font-bold font-whisper text-black text-lg">
+        <h4
+          className="font-bold text-black text-lg"
+          style={{ fontFamily: displayFontFamily }}
+        >
           {product.name}
         </h4>
         {product.description && (
@@ -180,11 +186,12 @@ export default function CardProduct({
             <p
               ref={descRef}
               className={cn(
-                "font-whisper text-neutral-600 text-sm",
+                "text-neutral-600 text-sm",
                 isDescriptionExpanded
                   ? "line-clamp-none"
                   : "line-clamp-3"
               )}
+              style={{ fontFamily: textFontFamily }}
             >
               {product.description}
             </p>
@@ -196,7 +203,8 @@ export default function CardProduct({
                     !isDescriptionExpanded
                   )
                 }
-                className="rounded-full border border-neutral-300 px-3 py-1 font-whisper text-neutral-500 text-sm"
+                className="rounded-full border border-neutral-300 px-3 py-1 text-neutral-500 text-sm"
+                style={{ fontFamily: textFontFamily }}
               >
                 {isDescriptionExpanded
                   ? "Read less"
@@ -206,7 +214,10 @@ export default function CardProduct({
           </div>
         )}
         <div className="flex flex-row justify-between">
-          <p className="mt-2 font-bold font-whisper text-black text-lg">
+          <p
+            className="mt-2 font-bold text-black text-lg"
+            style={{ fontFamily: displayFontFamily }}
+          >
             {displayPrice.toLocaleString()}₩
           </p>
           <button
@@ -214,7 +225,8 @@ export default function CardProduct({
             name="add-to-cart"
             aria-label="Add to cart"
             onClick={handleAddToCart}
-            className="rounded-full border border-neutral-300 px-3 py-1 font-whisper text-neutral-500 text-sm transition-colors hover:border-neutral-400 hover:text-neutral-700"
+            className="rounded-full border border-neutral-300 px-3 py-1 text-neutral-500 text-sm transition-colors hover:border-neutral-400 hover:text-neutral-700"
+            style={{ fontFamily: textFontFamily }}
           >
             <RiShoppingCart2Fill className="h-5 w-5" />
           </button>
@@ -223,6 +235,9 @@ export default function CardProduct({
 
       {isFullscreen &&
         createPortal(
+          // Dialog acts as backdrop click-target to dismiss. `role="dialog"`
+          // is correct semantically but jsx-a11y treats it as non-interactive.
+          // oxlint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
           <div
             className="fixed inset-0 z-99999 flex items-center justify-center bg-black/70"
             onClick={() => setIsFullscreen(false)}

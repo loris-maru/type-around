@@ -197,10 +197,10 @@ export default function AddVersionModal({
       data-modal
       data-lenis-prevent
     >
-      {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop click to dismiss */}
-      {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop click to dismiss */}
-      <div
-        className="absolute inset-0 bg-black/50"
+      <button
+        type="button"
+        aria-label="Close modal"
+        className="absolute inset-0 cursor-default bg-black/50"
         onClick={onClose}
       />
       <div className="pointer-events-auto relative mx-4 flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden rounded-lg bg-white shadow-xl">

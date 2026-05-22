@@ -10,11 +10,11 @@ import {
   SITE_NAME,
   SITE_URL,
 } from "@/constant/SEO_METADATA";
-import { StudioFontsProvider } from "@/contexts/studio-fonts-context";
+import StudioPublicPage from "@/components/segments/studio/studio-public-page";
 import { getStudioBySlug } from "@/lib/firebase/studios";
 import type { LayoutItem } from "@/types/layout";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 export const preferredRegion = ["icn1"];
 
 export async function generateMetadata({
@@ -70,18 +70,47 @@ export default async function StudioPage({
   params: Promise<{ name: string }>;
 }) {
   const { name } = await params;
-  const firebaseStudio = await getStudioBySlug(name);
+
+  let firebaseStudio: Awaited<
+    ReturnType<typeof getStudioBySlug>
+  >;
+  try {
+    firebaseStudio = await getStudioBySlug(name);
+  } catch {
+    return (
+      <div className="flex min-h-screen w-full items-center justify-center px-6">
+        <div className="max-w-md text-center">
+          <h1 className="mb-4 font-bold font-ortank text-3xl">
+            Unable to load studio
+          </h1>
+          <p className="font-whisper text-neutral-500">
+            The studio directory could not be reached. Check
+            that Firebase is configured in{" "}
+            <code className="text-sm">.env.local</code> and
+            that the dev server is running.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   if (!firebaseStudio) {
     return (
-      <div className="flex min-h-screen w-full items-center justify-center">
-        <div className="text-center">
+      <div className="flex min-h-screen w-full items-center justify-center px-6">
+        <div className="max-w-md text-center">
           <h1 className="mb-4 font-bold font-ortank text-3xl">
             Studio not found
           </h1>
           <p className="font-whisper text-neutral-500">
-            The studio you&apos;re looking for doesn&apos;t
-            exist.
+            No studio matches{" "}
+            <span className="font-medium text-black">
+              /studio/{name}
+            </span>
+            . Use the slug from the studio name (e.g.{" "}
+            <span className="font-medium text-black">
+              eighttype
+            </span>{" "}
+            for studio &quot;eighttype&quot;).
           </p>
         </div>
       </div>
@@ -106,44 +135,45 @@ export default async function StudioPage({
     : DEFAULT_PAGE_LAYOUT;
 
   // Build metadata for each typeface (display font file + font line text)
-  const typefaceMeta = firebaseStudio.typefaces.map((t) => {
-    const displayFont = t.displayFontId
-      ? (t.fonts || []).find(
-          (f) => f.id === t.displayFontId
-        )
-      : null;
-    const hasTrialFonts = (t.fonts || []).some(
-      (f) => f.trialFiles && f.trialFiles.length > 0
-    );
-    const firstTrialFile = hasTrialFonts
-      ? (t.fonts || [])
-          .flatMap((f) => f.trialFiles || [])
-          .find((url) => url) || ""
-      : "";
-    return {
-      slug: t.slug,
-      displayFontFile: displayFont?.file || "",
-      fontLineText: t.fontLineText || "",
-      specimenUrl: t.specimen || "",
-      trialFontUrl: firstTrialFile,
-    };
-  });
+  const typefaceMeta = (firebaseStudio.typefaces ?? []).map(
+    (t) => {
+      const displayFont = t.displayFontId
+        ? (t.fonts || []).find(
+            (f) => f.id === t.displayFontId
+          )
+        : null;
+      const hasTrialFonts = (t.fonts || []).some(
+        (f) => f.trialFiles && f.trialFiles.length > 0
+      );
+      const firstTrialFile = hasTrialFonts
+        ? (t.fonts || [])
+            .flatMap((f) => f.trialFiles || [])
+            .find((url) => url) || ""
+        : "";
+      return {
+        slug: t.slug,
+        displayFontFile: displayFont?.file || "",
+        fontLineText: t.fontLineText || "",
+        specimenUrl: t.specimen || "",
+        trialFontUrl: firstTrialFile,
+      };
+    }
+  );
 
   // Serialize the studio data for the client component
   const studioData = JSON.parse(
     JSON.stringify(firebaseStudio)
   );
 
-  const displayFontUrl =
-    (firebaseStudio.headerFont as string) || "";
-  const textFontUrl =
-    (firebaseStudio.textFont as string) || "";
+  // Display & text fonts from account → studio-page (headerFont / textFont)
+  const headerFont = firebaseStudio.headerFont || "";
+  const textFont = firebaseStudio.textFont || "";
 
   return (
-    <StudioFontsProvider
+    <StudioPublicPage
       key={name}
-      displayFontUrl={displayFontUrl || undefined}
-      textFontUrl={textFontUrl || undefined}
+      headerFont={headerFont || undefined}
+      textFont={textFont || undefined}
     >
       <div className="relative w-full">
         <StudioHeader
@@ -160,6 +190,6 @@ export default async function StudioPage({
         />
         <Footer />
       </div>
-    </StudioFontsProvider>
+    </StudioPublicPage>
   );
 }

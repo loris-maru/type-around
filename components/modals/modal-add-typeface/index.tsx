@@ -6,7 +6,12 @@ import TagInput from "@/components/global/tag-input";
 import { useModalOpen } from "@/hooks/use-modal-open";
 import type { AddTypefaceModalProps } from "@/types/components";
 import type { StudioTypeface } from "@/types/studio";
+import {
+  RELEASE_YEAR_MAX,
+  RELEASE_YEAR_MIN,
+} from "@/constant/RELEASE_YEAR_BOUNDS";
 import { generateUUID } from "@/utils/generate-uuid";
+import { normalizeReleaseYear } from "@/utils/release-year";
 import { slugify } from "@/utils/slugify";
 
 export default function AddTypefaceModal({
@@ -79,8 +84,8 @@ export default function AddTypefaceModal({
         fonts: [],
         characters: parseInt(formData.characters, 10) || 0,
         releaseDate:
-          formData.releaseDate ||
-          new Date().toISOString().split("T")[0],
+          normalizeReleaseYear(formData.releaseDate) ||
+          String(new Date().getFullYear()),
         studio: studio.name || studio.id,
         status: "in progress",
         published: false,
@@ -155,10 +160,10 @@ export default function AddTypefaceModal({
       data-modal
       data-lenis-prevent
     >
-      {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop dismiss */}
-      {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop dismiss */}
-      <div
-        className="absolute inset-0 bg-black/50"
+      <button
+        type="button"
+        aria-label="Close modal"
+        className="absolute inset-0 cursor-default bg-black/50"
         onClick={handleClose}
       />
 
@@ -256,20 +261,24 @@ export default function AddTypefaceModal({
             placeholder="Type a category and press Enter..."
           />
 
-          {/* Release Date */}
+          {/* Release year */}
           <div>
             <label
               htmlFor="releaseDate"
               className="mb-2 block font-normal font-whisper text-black text-sm"
             >
-              Release Date
+              Release year
             </label>
             <input
-              type="date"
+              type="number"
               id="releaseDate"
               name="releaseDate"
               value={formData.releaseDate}
               onChange={handleInputChange}
+              min={RELEASE_YEAR_MIN}
+              max={RELEASE_YEAR_MAX}
+              step={1}
+              placeholder="e.g. 2024"
               className="w-full rounded-lg border border-neutral-300 px-4 py-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
             />
           </div>

@@ -94,9 +94,18 @@ function LogoUpload({ studioId }: { studioId: string }) {
           </button>
         </div>
       ) : (
-        // biome-ignore lint/a11y/useKeyWithClickEvents: drop zone
-        // biome-ignore lint/a11y/noStaticElementInteractions: drop zone
         <div
+          role="button"
+          tabIndex={isUploading ? -1 : 0}
+          onKeyDown={(e) => {
+            if (
+              !isUploading &&
+              (e.key === "Enter" || e.key === " ")
+            ) {
+              e.preventDefault();
+              fileInputRef.current?.click();
+            }
+          }}
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleDrop}
           onClick={() =>

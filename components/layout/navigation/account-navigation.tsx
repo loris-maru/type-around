@@ -1,7 +1,6 @@
 "use client";
 
 import { SignOutButton, useUser } from "@clerk/nextjs";
-import { useLenis } from "lenis/react";
 import {
   usePathname,
   useRouter,
@@ -17,10 +16,14 @@ import {
   DEFAULT_ACCOUNT_NAV,
 } from "@/constant/ACCOUNT_NAV_ITEMS";
 import { REVIEWER_SECTIONS } from "@/constant/REVIEWER_SECTIONS";
-import { TYPEFACE_SECTIONS } from "@/constant/TYPEFACE_SECTIONS";
+import {
+  DEFAULT_TYPEFACE_SUBSECTION,
+  TYPEFACE_SECTIONS,
+} from "@/constant/TYPEFACE_SECTIONS";
 import { useStudio } from "@/hooks/use-studio";
 import { cn } from "@/utils/class-names";
 import { slugify } from "@/utils/slugify";
+import { getTypefaceSubsectionFromSearchParams } from "@/utils/typeface-subsection";
 
 const NavigationButton = ({
   label,
@@ -130,7 +133,6 @@ const SectionLink = ({
 };
 
 export default function AccountNavigation() {
-  const lenis = useLenis();
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -140,8 +142,8 @@ export default function AccountNavigation() {
   const activeNav =
     searchParams.get("nav") || DEFAULT_ACCOUNT_NAV;
   const activeTypeface = searchParams.get("typeface");
-  const activeTypefaceSection =
-    searchParams.get("section") || TYPEFACE_SECTIONS[0]?.id;
+  const activeTypefaceSubsection =
+    getTypefaceSubsectionFromSearchParams(searchParams);
   const activeReviewerSection =
     searchParams.get("reviewer");
   const isTypefacesExpanded = activeNav === "typefaces";
@@ -190,6 +192,8 @@ export default function AccountNavigation() {
       );
       params.set("nav", slug);
       params.delete("typeface");
+      params.delete("subsection");
+      params.delete("section");
       if (slug === "reviewer" && !params.get("reviewer")) {
         params.set("reviewer", "calendar");
       } else if (slug !== "reviewer") {
@@ -207,25 +211,27 @@ export default function AccountNavigation() {
       );
       params.set("nav", "typefaces");
       params.set("typeface", typefaceSlug);
+      params.set("subsection", DEFAULT_TYPEFACE_SUBSECTION);
+      params.delete("section");
       router.push(`${pathname}?${params.toString()}`);
     },
     [searchParams, router, pathname]
   );
 
-  const handleSectionClick = useCallback(
-    (sectionId: string) => {
-      const params = new URLSearchParams(
-        searchParams.toString()
-      );
-      params.set("section", sectionId);
-      router.push(`${pathname}?${params.toString()}`);
+  const handleSubsectionClick = useCallback(
+    (subsectionId: string) => {
+      const typefaceSlug = searchParams.get("typeface");
+      if (!typefaceSlug) return;
 
-      // Use Lenis for smooth scroll (native scrollIntoView doesn't work with Lenis)
-      requestAnimationFrame(() => {
-        lenis?.scrollTo(`#${sectionId}`, { offset: 120 });
+      const params = new URLSearchParams();
+      params.set("nav", "typefaces");
+      params.set("typeface", typefaceSlug);
+      params.set("subsection", subsectionId);
+      router.push(`${pathname}?${params.toString()}`, {
+        scroll: false,
       });
     },
-    [searchParams, router, pathname, lenis]
+    [searchParams, router, pathname]
   );
 
   const handleReviewerNavChange = useCallback(
@@ -297,12 +303,12 @@ export default function AccountNavigation() {
                                   key={section.id}
                                   label={section.label}
                                   onClick={() =>
-                                    handleSectionClick(
+                                    handleSubsectionClick(
                                       section.id
                                     )
                                   }
                                   isActive={
-                                    activeTypefaceSection ===
+                                    activeTypefaceSubsection ===
                                     section.id
                                   }
                                 />

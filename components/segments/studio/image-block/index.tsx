@@ -6,12 +6,16 @@ import {
   MARGIN_CLASS_MAP,
   SIZE_CLASS_MAP,
 } from "@/constant/BLOCK_CLASS_MAPS";
+import { useStudioFonts } from "@/contexts/studio-fonts-context";
 import type { StudioImageBlockProps } from "@/types/components";
 import { cn } from "@/utils/class-names";
 
 export default function StudioImageBlock({
   data,
 }: StudioImageBlockProps) {
+  const { displayFontFamily, textFontFamily } =
+    useStudioFonts();
+
   if (!data.url) return null;
 
   const sectionStyle: React.CSSProperties = {};
@@ -50,12 +54,18 @@ export default function StudioImageBlock({
           />
         </div>
         {data.title && (
-          <h4 className="mt-3 font-semibold font-whisper text-sm">
+          <h4
+            className="mt-3 font-semibold text-sm"
+            style={{ fontFamily: displayFontFamily }}
+          >
             {data.title}
           </h4>
         )}
         {data.description && (
-          <p className="mt-1 font-whisper text-sm opacity-70">
+          <p
+            className="mt-1 text-sm opacity-70"
+            style={{ fontFamily: textFontFamily }}
+          >
             {data.description}
           </p>
         )}

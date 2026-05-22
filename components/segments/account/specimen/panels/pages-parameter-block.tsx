@@ -48,7 +48,11 @@ function EditablePageName({
   };
 
   return isEditing ? (
+    // The wrapper only stops click/key propagation so the parent <Reorder.Item>
+    // doesn't pick up edit-mode key/click events. role="presentation" makes the
+    // semantics clear: real input + button interactions live inside.
     <fieldset
+      role="presentation"
       className="flex min-w-0 flex-1 items-center gap-1 border-0 p-0"
       onClick={(e) => e.stopPropagation()}
       onKeyDown={(e) => e.stopPropagation()}
@@ -164,10 +168,10 @@ export default function PagesParameterBlock({
       {/* Delete confirmation modal */}
       {deletePageId && (
         <div className="fixed inset-0 z-modal flex items-center justify-center overflow-hidden">
-          {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop click to dismiss */}
-          {/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop click to dismiss */}
-          <div
-            className="absolute inset-0 bg-black/50"
+          <button
+            type="button"
+            aria-label="Close modal"
+            className="absolute inset-0 cursor-default bg-black/50"
             onClick={() => setDeletePageId(null)}
           />
           <div

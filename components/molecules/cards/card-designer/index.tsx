@@ -21,11 +21,30 @@ export default function DesignerCard({
   const fullName =
     `${designer.firstName} ${designer.lastName}`.trim();
 
+  const handleCardKeyDown = (
+    e: React.KeyboardEvent<HTMLDivElement>
+  ) => {
+    if (e.key === "Enter" || e.key === " ") {
+      // Don't trigger when focus is on a nested interactive (e.g. delete btn).
+      if (
+        e.target instanceof HTMLElement &&
+        (e.target.closest("button") ||
+          e.target.closest("a"))
+      ) {
+        return;
+      }
+      e.preventDefault();
+      onEdit(designer);
+    }
+  };
+
   return (
-    // biome-ignore lint/a11y/noStaticElementInteractions: card click to edit
-    // biome-ignore lint/a11y/useKeyWithClickEvents: card click to edit
     <div
+      role="button"
+      tabIndex={0}
       onClick={handleCardClick}
+      onKeyDown={handleCardKeyDown}
+      aria-label={`Edit designer ${fullName}`}
       className="relative flex cursor-pointer flex-col justify-between rounded-lg border border-black bg-white p-4 shadow-button transition-all duration-300 ease-in-out hover:-translate-x-1 hover:-translate-y-1 hover:shadow-button-hover"
     >
       <div className="relative mb-3 h-24 w-24 shrink-0 overflow-hidden rounded-full bg-neutral-100">

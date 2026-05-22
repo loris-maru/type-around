@@ -10,12 +10,15 @@ import {
   MARGIN_CLASS_MAP,
   SIZE_CLASS_MAP,
 } from "@/constant/BLOCK_CLASS_MAPS";
+import { useStudioFonts } from "@/contexts/studio-fonts-context";
 import type { StudioVideoBlockProps } from "@/types/components";
 import { cn } from "@/utils/class-names";
 
 export default function StudioVideoBlock({
   data,
 }: StudioVideoBlockProps) {
+  const { displayFontFamily, textFontFamily } =
+    useStudioFonts();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
 
@@ -89,12 +92,18 @@ export default function StudioVideoBlock({
           </button>
         </div>
         {data.title && (
-          <h4 className="mt-3 font-semibold font-whisper text-sm">
+          <h4
+            className="mt-3 font-semibold text-sm"
+            style={{ fontFamily: displayFontFamily }}
+          >
             {data.title}
           </h4>
         )}
         {data.description && (
-          <p className="mt-1 font-whisper text-sm opacity-70">
+          <p
+            className="mt-1 text-sm opacity-70"
+            style={{ fontFamily: textFontFamily }}
+          >
             {data.description}
           </p>
         )}
