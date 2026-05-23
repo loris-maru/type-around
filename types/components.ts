@@ -14,6 +14,7 @@ import type {
   LayoutItem,
   LayoutItemData,
   TypeTesterBlockData as LayoutTypeTesterBlockData,
+  SocialsBlockData,
   SpacerBlockData,
   StoreBlockData,
   TypefaceListBlockData,
@@ -510,10 +511,20 @@ export type AddMemberFormProps = {
 // Layout Builder Component Props
 // ===========================================
 
+export type StudioPageSafariHeroProps = {
+  studioHangeulName: string;
+  headerFont: string;
+};
+
 export type LayoutBuilderProps = {
   value: LayoutItem[];
   onChange: (layout: LayoutItem[]) => void;
   studioId: string;
+  studioName: string;
+  studioHangeulName: string;
+  headerFont: string;
+  gradientFrom: string;
+  gradientTo: string;
 };
 
 export type BlockBuilderProps = {
@@ -526,11 +537,23 @@ export type BlockBuilderProps = {
   ) => void;
   getLabelForId: (id: LayoutBlockId) => string;
   studioId: string;
+  studioName: string;
+  studioHangeulName: string;
+  headerFont: string;
+  gradientFrom: string;
+  gradientTo: string;
 };
 
 export type BlocksListProps = {
   availableBlocks: LayoutBlock[];
   handleAdd: (blockId: LayoutBlockId) => void;
+};
+
+export type TypefacePageSafariHeroProps = {
+  typefaceHangeulName: string;
+  pageTitleFont: string;
+  pageTextFont: string;
+  pageTitleFontSameAsText: boolean;
 };
 
 export type TypefacePageLayoutBuilderProps = {
@@ -540,6 +563,11 @@ export type TypefacePageLayoutBuilderProps = {
   ) => void;
   studioId: string;
   typefaceId: string;
+  typefaceHangeulName: string;
+  pageTitleFont: string;
+  pageTextFont: string;
+  pageTitleFontSameAsText: boolean;
+  typefacePageBackground?: import("./studio").TypefacePageBackground;
   typefaceFonts: {
     id: string;
     styleName?: string;
@@ -562,6 +590,12 @@ export type TypefaceBlockBuilderProps = {
     id: import("@/types/layout-typeface").TypefaceLayoutBlockId
   ) => string;
   studioId: string;
+  studioName: string;
+  typefaceHangeulName: string;
+  pageTitleFont: string;
+  pageTextFont: string;
+  pageTitleFontSameAsText: boolean;
+  typefacePageBackground?: import("./studio").TypefacePageBackground;
   typefaceFonts: {
     id: string;
     styleName?: string;
@@ -627,6 +661,13 @@ export type FontsInUseBlockModalProps = {
   onClose: () => void;
   onSave: (data: FontsInUseBlockData) => void;
   initialData?: FontsInUseBlockData;
+};
+
+export type SocialsBlockModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (data: SocialsBlockData) => void;
+  initialData?: SocialsBlockData;
 };
 
 export type StudioAboutBlockModalProps = {
@@ -742,6 +783,7 @@ export type TypefacePageSectionProps = {
   onPageTextFontSameAsTitleChange: (value: boolean) => void;
   studioId: string;
   typefaceId: string;
+  typefaceHangeulName: string;
   typefaceFonts: {
     id: string;
     styleName?: string;

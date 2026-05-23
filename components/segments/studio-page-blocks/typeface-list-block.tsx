@@ -4,6 +4,7 @@ import type {
   Studio as DisplayStudio,
   TypefaceMeta,
 } from "@/types/typefaces";
+import { applyBlockBackgroundColor } from "@/utils/block-background-color";
 
 export default function StudioTypefaceListBlock({
   displayStudio,
@@ -15,8 +16,7 @@ export default function StudioTypefaceListBlock({
   data: TypefaceListBlockData | undefined;
 }) {
   const style: React.CSSProperties = {};
-  if (data?.backgroundColor)
-    style.backgroundColor = data.backgroundColor;
+  applyBlockBackgroundColor(style, data?.backgroundColor);
   if (data?.fontColor) style.color = data.fontColor;
 
   return (

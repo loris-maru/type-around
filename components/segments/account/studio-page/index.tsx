@@ -289,6 +289,27 @@ export default function AccountStudioPage() {
             value={pageLayout}
             onChange={handleLayoutChange}
             studioId={studio.id}
+            studioName={studio.name ?? ""}
+            studioHangeulName={
+              studio.hangeulName?.trim() ||
+              studio.name ||
+              ""
+            }
+            headerFont={
+              formValues.headerFont ??
+              studioFormDefaults?.headerFont ??
+              ""
+            }
+            gradientFrom={
+              formValues.gradientFrom ??
+              studioFormDefaults?.gradientFrom ??
+              "#FFF8E8"
+            }
+            gradientTo={
+              formValues.gradientTo ??
+              studioFormDefaults?.gradientTo ??
+              "#F2F2F2"
+            }
           />
         </div>
       )}

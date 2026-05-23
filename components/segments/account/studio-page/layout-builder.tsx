@@ -20,6 +20,11 @@ export default function LayoutBuilder({
   value,
   onChange,
   studioId,
+  studioName,
+  studioHangeulName,
+  headerFont,
+  gradientFrom,
+  gradientTo,
 }: LayoutBuilderProps) {
   const [activeItems, setActiveItems] = useState<
     LayoutItem[]
@@ -85,22 +90,28 @@ export default function LayoutBuilder({
     LAYOUT_BLOCKS.find((b) => b.id === id)?.label || id;
 
   return (
-    <div className="grid grid-cols-4 gap-8">
-      {/* Left column: Available blocks */}
-      <BlocksList
-        availableBlocks={availableBlocks}
-        handleAdd={handleAdd}
-      />
-
-      {/* Right column: Active blocks (draggable) */}
-      <BlockBuilder
-        activeItems={activeItems}
-        handleRemove={handleRemove}
-        handleReorder={handleReorder}
-        handleUpdateData={handleUpdateData}
-        getLabelForId={getLabelForId}
-        studioId={studioId}
-      />
+    <div className="grid grid-cols-10 gap-8">
+      <div className="col-span-3">
+        <BlocksList
+          availableBlocks={availableBlocks}
+          handleAdd={handleAdd}
+        />
+      </div>
+      <div className="col-span-7">
+        <BlockBuilder
+          activeItems={activeItems}
+          handleRemove={handleRemove}
+          handleReorder={handleReorder}
+          handleUpdateData={handleUpdateData}
+          getLabelForId={getLabelForId}
+          studioId={studioId}
+          studioName={studioName}
+          studioHangeulName={studioHangeulName}
+          headerFont={headerFont}
+          gradientFrom={gradientFrom}
+          gradientTo={gradientTo}
+        />
+      </div>
     </div>
   );
 }

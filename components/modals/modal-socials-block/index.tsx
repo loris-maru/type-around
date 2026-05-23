@@ -2,26 +2,26 @@
 
 import { useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
-import BlockBackgroundColorField from "@/components/molecules/block-background-color-field";
 import { ButtonModalSave } from "@/components/molecules/buttons";
+import BlockBackgroundColorField from "@/components/molecules/block-background-color-field";
 import ColorPicker from "@/components/molecules/color-picker";
 import { useModalOpen } from "@/hooks/use-modal-open";
-import type { FontsInUseBlockModalProps } from "@/types/components";
+import type { SocialsBlockModalProps } from "@/types/components";
 import { getInitialBlockBackgroundColor } from "@/utils/block-background-color";
 import { handleHexChange } from "@/utils/color-utils";
 
-export default function FontsInUseBlockModal({
+export default function SocialsBlockModal({
   isOpen,
   onClose,
   onSave,
   initialData,
-}: FontsInUseBlockModalProps) {
+}: SocialsBlockModalProps) {
   useModalOpen(isOpen);
 
   if (!isOpen) return null;
 
   return (
-    <FontsInUseBlockModalInner
+    <SocialsBlockModalInner
       onClose={onClose}
       onSave={onSave}
       initialData={initialData}
@@ -29,11 +29,11 @@ export default function FontsInUseBlockModal({
   );
 }
 
-function FontsInUseBlockModalInner({
+function SocialsBlockModalInner({
   onClose,
   onSave,
   initialData,
-}: Omit<FontsInUseBlockModalProps, "isOpen">) {
+}: Omit<SocialsBlockModalProps, "isOpen">) {
   const [backgroundColor, setBackgroundColor] = useState(
     () =>
       getInitialBlockBackgroundColor(
@@ -68,7 +68,7 @@ function FontsInUseBlockModalInner({
       <div className="relative mx-4 flex max-h-[90vh] w-full max-w-lg flex-col rounded-lg bg-white">
         <div className="flex shrink-0 items-center justify-between border-neutral-200 border-b p-6">
           <h2 className="font-bold font-ortank text-xl">
-            Fonts in Use Block
+            Socials Block
           </h2>
           <button
             type="button"
@@ -82,12 +82,13 @@ function FontsInUseBlockModalInner({
 
         <div className="min-h-0 flex-1 space-y-6 overflow-y-auto overscroll-contain p-6">
           <p className="font-whisper text-neutral-600 text-sm">
-            Customize the fonts in use section appearance.
+            Social links are loaded from your studio Account
+            settings. Customize section colors here.
           </p>
 
           <div className="flex flex-wrap gap-6">
             <BlockBackgroundColorField
-              id="fiu-bg-color"
+              id="socials-bg-color"
               value={backgroundColor}
               onChange={setBackgroundColor}
               className="min-w-0 flex-1"
@@ -98,7 +99,7 @@ function FontsInUseBlockModalInner({
               </span>
               <div className="flex items-center gap-2">
                 <ColorPicker
-                  id="fiu-text-color"
+                  id="socials-text-color"
                   value={fontColor || "#000000"}
                   onChange={setFontColor}
                 />
@@ -123,8 +124,8 @@ function FontsInUseBlockModalInner({
             <ButtonModalSave
               type="button"
               onClick={handleSave}
-              label="Save Fonts in Use Block"
-              aria-label="Save fonts in use block"
+              label="Save Socials Block"
+              aria-label="Save socials block"
             />
           </div>
         </div>

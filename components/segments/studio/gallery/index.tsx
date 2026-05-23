@@ -13,6 +13,7 @@ import { GalleryCard } from "@/components/molecules/cards";
 import GalleryNavigator from "@/components/molecules/gallery/navigator";
 import { useStudioFonts } from "@/contexts/studio-fonts-context";
 import type { StudioGalleryProps } from "@/types/components";
+import { applyBlockBackgroundColor } from "@/utils/block-background-color";
 
 export default function StudioGallery({
   data,
@@ -81,8 +82,10 @@ export default function StudioGallery({
   if (!images || images.length === 0) return null;
 
   const sectionStyle: React.CSSProperties = {};
-  if (data.backgroundColor)
-    sectionStyle.backgroundColor = data.backgroundColor;
+  applyBlockBackgroundColor(
+    sectionStyle,
+    data.backgroundColor
+  );
   if (data.fontColor) sectionStyle.color = data.fontColor;
 
   return (

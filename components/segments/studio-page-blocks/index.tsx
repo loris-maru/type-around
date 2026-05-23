@@ -7,6 +7,7 @@ import type {
   FontsInUseBlockData,
   GalleryBlockData,
   ImageBlockData,
+  SocialsBlockData,
   SpacerBlockData,
   StoreBlockData,
   TypefaceListBlockData,
@@ -20,6 +21,7 @@ import BlogBlock from "./blog-block";
 import FontsInUseBlock from "./fonts-in-use-block";
 import GalleryBlock from "./gallery-block";
 import ImageBlock from "./image-block";
+import SocialsBlock from "./socials-block";
 import SpacerBlock from "./spacer-block";
 import StoreBlock from "./store-block";
 import { toDisplayStudio } from "./to-display-studio";
@@ -182,6 +184,19 @@ export default function StudioPageBlocks({
               <BlogBlock
                 key={block.key}
                 data={blogData}
+              />
+            );
+          }
+
+          case "socials": {
+            const socialsData = block.data as
+              | SocialsBlockData
+              | undefined;
+            return (
+              <SocialsBlock
+                key={block.key}
+                studio={studio}
+                data={socialsData}
               />
             );
           }

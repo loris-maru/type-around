@@ -21,6 +21,7 @@ export default function TypefacePageSection({
   onPageTextFontSameAsTitleChange,
   studioId,
   typefaceId,
+  typefaceHangeulName,
   typefaceFonts,
   studioTypefaces,
 }: TypefacePageSectionProps) {
@@ -59,6 +60,11 @@ export default function TypefacePageSection({
           onChange={onLayoutChange}
           studioId={studioId}
           typefaceId={typefaceId}
+          typefaceHangeulName={typefaceHangeulName}
+          pageTitleFont={pageTitleFont}
+          pageTextFont={pageTextFont}
+          pageTitleFontSameAsText={pageTitleFontSameAsText}
+          typefacePageBackground={typefacePageBackground}
           typefaceFonts={typefaceFonts}
           studioTypefaces={studioTypefaces}
         />

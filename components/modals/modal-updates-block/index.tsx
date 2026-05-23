@@ -3,12 +3,14 @@
 import { useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
 import { ButtonModalSave } from "@/components/molecules/buttons";
+import BlockBackgroundColorField from "@/components/molecules/block-background-color-field";
 import ColorPicker from "@/components/molecules/color-picker";
 import { SPACER_SIZE_OPTIONS } from "@/constant/BLOCK_OPTIONS";
 import { useModalOpen } from "@/hooks/use-modal-open";
 import type { UpdatesBlockModalProps } from "@/types/components";
 import type { BlockMarginSize } from "@/types/layout-typeface";
 import { cn } from "@/utils/class-names";
+import { getInitialBlockBackgroundColor } from "@/utils/block-background-color";
 import { handleHexChange } from "@/utils/color-utils";
 
 export default function UpdatesBlockModal({
@@ -36,7 +38,10 @@ function UpdatesBlockModalInner({
   initialData,
 }: Omit<UpdatesBlockModalProps, "isOpen">) {
   const [backgroundColor, setBackgroundColor] = useState(
-    initialData?.backgroundColor || "#ffffff"
+    () =>
+      getInitialBlockBackgroundColor(
+        initialData?.backgroundColor
+      )
   );
   const [textColor, setTextColor] = useState(
     initialData?.textColor || "#000000"
@@ -88,31 +93,12 @@ function UpdatesBlockModalInner({
           </p>
 
           <div className="flex flex-wrap gap-6">
-            <div className="min-w-0 flex-1">
-              <span className="mb-2 block font-semibold text-black text-sm">
-                Background color
-              </span>
-              <div className="flex items-center gap-2">
-                <ColorPicker
-                  id="updates-bg-color"
-                  value={backgroundColor || "#ffffff"}
-                  onChange={setBackgroundColor}
-                />
-                <input
-                  type="text"
-                  value={backgroundColor}
-                  onChange={(e) =>
-                    handleHexChange(
-                      e.target.value,
-                      setBackgroundColor
-                    )
-                  }
-                  maxLength={7}
-                  placeholder="#ffffff"
-                  className="min-w-0 flex-1 rounded-lg border border-neutral-300 px-3 py-2 font-whisper text-sm uppercase"
-                />
-              </div>
-            </div>
+            <BlockBackgroundColorField
+              id="updates-bg-color"
+              value={backgroundColor}
+              onChange={setBackgroundColor}
+              className="min-w-0 flex-1"
+            />
 
             <div className="min-w-0 flex-1">
               <span className="mb-2 block font-semibold text-black text-sm">

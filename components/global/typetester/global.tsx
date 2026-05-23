@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import { RiAddLine } from "react-icons/ri";
 import { useStudioFonts } from "@/contexts/studio-fonts-context";
 import type { GlobalTypetesterProps } from "@/types/typetester";
+import { applyBlockBackgroundColor } from "@/utils/block-background-color";
 import { generateUUID } from "@/utils/generate-uuid";
 import GlobalTypetesterBlock from "./global-block";
 
@@ -29,8 +30,7 @@ export default function GlobalTypetester({
   const canDelete = blockIds.length > 1;
 
   const sectionStyle: React.CSSProperties = {};
-  if (backgroundColor)
-    sectionStyle.backgroundColor = backgroundColor;
+  applyBlockBackgroundColor(sectionStyle, backgroundColor);
   if (fontColor) sectionStyle.color = fontColor;
 
   return (

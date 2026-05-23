@@ -31,7 +31,7 @@ export default function BlocksList({
   );
 
   return (
-    <div className="col-span-1 flex flex-col gap-6">
+    <div className="flex flex-col gap-6">
       <div>
         <h3 className="mb-3 font-normal font-whisper text-neutral-500 text-sm">
           Available blocks

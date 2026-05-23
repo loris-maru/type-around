@@ -1,5 +1,8 @@
 import type { NextConfig } from "next";
 
+type WebpackConfigFn = NonNullable<NextConfig["webpack"]>;
+type WebpackConfig = Parameters<WebpackConfigFn>[0];
+
 const securityHeaders = [
   {
     key: "Cross-Origin-Opener-Policy",
@@ -52,6 +55,23 @@ const nextConfig: NextConfig = {
         ],
       },
     ];
+  },
+  // Filter out the noisy `Critical dependency: the request of a dependency is
+  // an expression` warning emitted by @protobufjs/inquire (pulled in via
+  // @firebase/firestore -> @grpc/proto-loader -> protobufjs). The warning is
+  // benign — inquire's dynamic require() is intentional and the modules it
+  // tries to load are optional. This is a long-standing Firebase + webpack
+  // interaction and only affects log output.
+  webpack: (config: WebpackConfig) => {
+    config.ignoreWarnings = [
+      ...(config.ignoreWarnings ?? []),
+      {
+        module: /@protobufjs[\\/]inquire/,
+        message:
+          /the request of a dependency is an expression/,
+      },
+    ];
+    return config;
   },
   images: {
     // Serve modern formats first for much smaller payloads over slow

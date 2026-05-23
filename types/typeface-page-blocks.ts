@@ -12,6 +12,7 @@ export type RawTypefaceForBlocks = {
     weight?: number;
     isItalic?: boolean;
     file?: string;
+    trialFiles?: string[];
     salesFiles?: string[];
   }[];
 };

@@ -1,5 +1,6 @@
 import FontsInUseList from "@/components/segments/studio/fonts-in-use-list";
 import type { FontsInUseBlockData } from "@/types/layout";
+import { applyBlockBackgroundColor } from "@/utils/block-background-color";
 
 export default function StudioFontsInUseBlock({
   data,
@@ -7,8 +8,7 @@ export default function StudioFontsInUseBlock({
   data?: FontsInUseBlockData;
 }) {
   const style: React.CSSProperties = {};
-  if (data?.backgroundColor)
-    style.backgroundColor = data.backgroundColor;
+  applyBlockBackgroundColor(style, data?.backgroundColor);
   if (data?.fontColor) style.color = data.fontColor;
 
   return (

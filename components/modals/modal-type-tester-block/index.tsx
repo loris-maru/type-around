@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
+import BlockBackgroundColorField from "@/components/molecules/block-background-color-field";
 import { ButtonModalSave } from "@/components/molecules/buttons";
 import ColorPicker from "@/components/molecules/color-picker";
 import { useModalOpen } from "@/hooks/use-modal-open";
 import type { TypeTesterBlockModalProps } from "@/types/components";
+import { getInitialBlockBackgroundColor } from "@/utils/block-background-color";
 import { handleHexChange } from "@/utils/color-utils";
 
 export default function TypeTesterBlockModal({
@@ -33,7 +35,10 @@ function TypeTesterBlockModalInner({
   initialData,
 }: Omit<TypeTesterBlockModalProps, "isOpen">) {
   const [backgroundColor, setBackgroundColor] = useState(
-    initialData?.backgroundColor || "#ffffff"
+    () =>
+      getInitialBlockBackgroundColor(
+        initialData?.backgroundColor
+      )
   );
   const [foregroundColor, setForegroundColor] = useState(
     initialData?.foregroundColor || "#000000"
@@ -81,31 +86,12 @@ function TypeTesterBlockModalInner({
           </p>
 
           <div className="flex flex-wrap gap-6">
-            <div className="min-w-0 flex-1">
-              <span className="mb-2 block font-semibold text-black text-sm">
-                Background color
-              </span>
-              <div className="flex items-center gap-2">
-                <ColorPicker
-                  id="tt-bg-color"
-                  value={backgroundColor || "#ffffff"}
-                  onChange={setBackgroundColor}
-                />
-                <input
-                  type="text"
-                  value={backgroundColor}
-                  onChange={(e) =>
-                    handleHexChange(
-                      e.target.value,
-                      setBackgroundColor
-                    )
-                  }
-                  maxLength={7}
-                  placeholder="#ffffff"
-                  className="min-w-0 flex-1 rounded-lg border border-neutral-300 px-3 py-2 font-whisper text-sm uppercase"
-                />
-              </div>
-            </div>
+            <BlockBackgroundColorField
+              id="tt-bg-color"
+              value={backgroundColor}
+              onChange={setBackgroundColor}
+              className="min-w-0 flex-1"
+            />
 
             <div className="min-w-0 flex-1">
               <span className="mb-2 block font-semibold text-black text-sm">

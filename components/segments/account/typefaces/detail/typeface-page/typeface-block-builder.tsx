@@ -3,6 +3,7 @@
 import { Reorder } from "motion/react";
 import { useState } from "react";
 import { RiCloseLine, RiDraggable } from "react-icons/ri";
+import SafariBrowserFrame from "@/components/global/safari-browser-frame";
 import AboutBlockModal from "@/components/modals/modal-about-block";
 import CharacterSetBlockModal from "@/components/modals/modal-character-set-block";
 import DownloadBlockModal from "@/components/modals/modal-download-block";
@@ -13,7 +14,9 @@ import ShopBlockModal from "@/components/modals/modal-shop-block";
 import StoreBlockModal from "@/components/modals/modal-store-block";
 import TypeTesterBlockModal from "@/components/modals/modal-type-tester-block";
 import UpdatesBlockModal from "@/components/modals/modal-updates-block";
+import TypefacePageSafariHero from "@/components/segments/account/typefaces/detail/typeface-page/typeface-page-safari-hero";
 import { LAYOUT_BLOCKS_TYPEFACE } from "@/constant/LAYOUT_BLOCKS_TYPEFACE";
+import { getBlockBackgroundSwatchColor } from "@/utils/block-background-color";
 import type { TypefaceBlockBuilderProps } from "@/types/components";
 import type {
   GalleryBlockData,
@@ -33,6 +36,10 @@ import type {
   TypeTesterBlockData,
   UpdatesBlockData,
 } from "@/types/layout-typeface";
+import {
+  getTypefacePageBackgroundStyle,
+  resolveTypefacePageTitleFontUrl,
+} from "@/utils/typeface-page-background";
 
 const CONFIGURABLE_TYPEFACE_BLOCKS: TypefaceLayoutBlockId[] =
   [
@@ -56,11 +63,19 @@ export default function TypefaceBlockBuilder({
   handleUpdateData,
   getLabelForId,
   studioId,
+  studioName,
+  typefaceHangeulName,
+  pageTitleFont,
+  pageTextFont,
+  pageTitleFontSameAsText,
+  typefacePageBackground,
   typefaceFonts,
   studioTypefaces,
 }: TypefaceBlockBuilderProps) {
   const [editingItem, setEditingItem] =
     useState<TypefaceLayoutItem | null>(null);
+  const pageBackgroundStyle =
+    getTypefacePageBackgroundStyle(typefacePageBackground);
 
   const isRepeatable = (blockId: TypefaceLayoutBlockId) => {
     const block = LAYOUT_BLOCKS_TYPEFACE.find(
@@ -93,35 +108,45 @@ export default function TypefaceBlockBuilder({
     if (blockId === "type-tester") {
       const data = d as TypeTesterBlockData | undefined;
       return {
-        bg: data?.backgroundColor ?? "#ffffff",
+        bg: getBlockBackgroundSwatchColor(
+          data?.backgroundColor
+        ),
         text: data?.foregroundColor ?? "#000000",
       };
     }
     if (blockId === "about") {
       const data = d as AboutBlockData | undefined;
       return {
-        bg: data?.backgroundColor ?? "#ffffff",
+        bg: getBlockBackgroundSwatchColor(
+          data?.backgroundColor
+        ),
         text: data?.textColor ?? "#000000",
       };
     }
     if (blockId === "download") {
       const data = d as DownloadBlockData | undefined;
       return {
-        bg: data?.backgroundColor ?? "#ffffff",
+        bg: getBlockBackgroundSwatchColor(
+          data?.backgroundColor
+        ),
         text: data?.textColor ?? "#000000",
       };
     }
     if (blockId === "updates") {
       const data = d as UpdatesBlockData | undefined;
       return {
-        bg: data?.backgroundColor ?? "#ffffff",
+        bg: getBlockBackgroundSwatchColor(
+          data?.backgroundColor
+        ),
         text: data?.textColor ?? "#000000",
       };
     }
     if (blockId === "shop") {
       const data = d as ShopBlockData | undefined;
       return {
-        bg: data?.backgroundColor ?? "#ffffff",
+        bg: getBlockBackgroundSwatchColor(
+          data?.backgroundColor
+        ),
         text: data?.textColor ?? "#000000",
       };
     }
@@ -176,110 +201,143 @@ export default function TypefaceBlockBuilder({
   };
 
   return (
-    <div className="col-span-2">
+    <div>
       <h3 className="mb-3 font-normal font-whisper text-neutral-500 text-sm">
         Page content blocks
       </h3>
-      {activeItems.length === 0 ? (
-        <div className="flex h-32 items-center justify-center rounded-lg border border-neutral-300 border-dashed">
-          <p className="font-whisper text-neutral-400 text-sm">
-            Click a block to add it here
-          </p>
-        </div>
-      ) : (
-        <Reorder.Group
-          axis="y"
-          values={activeItems}
-          onReorder={handleReorder}
-          className="flex flex-col gap-2 rounded-lg border border-neutral-300 p-4"
-        >
-          {activeItems.map((item) => {
-            const repeatable = isRepeatable(item.blockId);
-            const summary = getBlockSummary(item);
-            const colors = getBlockColors(item);
-            const isConfigurable =
-              CONFIGURABLE_TYPEFACE_BLOCKS.includes(
-                item.blockId
-              );
+      <p className="mb-3 font-whisper text-neutral-400 text-xs">
+        Drag blocks to set the order they appear on the
+        public typeface page.
+      </p>
+      <SafariBrowserFrame
+        url={studioName}
+        contentStyle={pageBackgroundStyle}
+      >
+        <header className="w-full">
+          <TypefacePageSafariHero
+            key={
+              resolveTypefacePageTitleFontUrl(
+                pageTitleFont,
+                pageTextFont,
+                pageTitleFontSameAsText
+              ) || "no-title-font"
+            }
+            typefaceHangeulName={typefaceHangeulName}
+            pageTitleFont={pageTitleFont}
+            pageTextFont={pageTextFont}
+            pageTitleFontSameAsText={
+              pageTitleFontSameAsText
+            }
+          />
+        </header>
+        <div className="w-full border-neutral-200 border-t">
+          {activeItems.length === 0 ? (
+            <div className="flex min-h-[120px] items-center justify-center p-6">
+              <p className="text-center font-whisper text-neutral-500 text-sm">
+                Click a block on the left to add it to the
+                page
+              </p>
+            </div>
+          ) : (
+            <Reorder.Group
+              axis="y"
+              values={activeItems}
+              onReorder={handleReorder}
+              className="flex flex-col gap-2 p-4"
+            >
+              {activeItems.map((item) => {
+                const repeatable = isRepeatable(
+                  item.blockId
+                );
+                const summary = getBlockSummary(item);
+                const colors = getBlockColors(item);
+                const isConfigurable =
+                  CONFIGURABLE_TYPEFACE_BLOCKS.includes(
+                    item.blockId
+                  );
 
-            return (
-              <Reorder.Item
-                key={item.key}
-                value={item}
-                className="flex min-h-[96px] cursor-grab items-center gap-2 rounded-lg border border-neutral-300 bg-white transition-shadow active:cursor-grabbing active:shadow-md"
-              >
-                <div className="shrink-0 cursor-grab py-6 pl-3">
-                  <RiDraggable className="h-4 w-4 text-neutral-400" />
-                </div>
-
-                {repeatable || isConfigurable ? (
-                  <button
-                    type="button"
-                    onClick={() => handleBlockClick(item)}
-                    className="flex min-h-[96px] flex-1 cursor-pointer flex-col items-start justify-center gap-1 py-6 text-left transition-colors hover:text-black"
+                return (
+                  <Reorder.Item
+                    key={item.key}
+                    value={item}
+                    className="flex min-h-[96px] cursor-grab items-center gap-2 rounded-lg border border-neutral-300 bg-white transition-shadow active:cursor-grabbing active:shadow-md"
                   >
-                    <span className="font-bold font-whisper text-lg">
-                      {getLabelForId(item.blockId)}
-                    </span>
-                    {(colors || summary) && (
-                      <div className="flex flex-row items-center gap-4">
-                        {colors && (
-                          <>
-                            <span className="flex items-center gap-1.5">
-                              <span className="font-whisper text-neutral-500 text-xs">
-                                Background
-                              </span>
-                              <span
-                                className="h-3 w-3 shrink-0 rounded border border-neutral-300"
-                                style={{
-                                  backgroundColor:
-                                    colors.bg,
-                                }}
-                                title="Background"
-                              />
-                            </span>
-                            <span className="flex items-center gap-1.5">
-                              <span className="font-whisper text-neutral-500 text-xs">
-                                Text
-                              </span>
-                              <span
-                                className="h-3 w-3 shrink-0 rounded border border-neutral-300"
-                                style={{
-                                  backgroundColor:
-                                    colors.text,
-                                }}
-                                title="Text"
-                              />
-                            </span>
-                          </>
-                        )}
-                        {summary && (
-                          <span className="font-whisper text-neutral-500 text-sm">
-                            — {summary}
-                          </span>
-                        )}
-                      </div>
-                    )}
-                  </button>
-                ) : (
-                  <span className="flex min-h-[96px] flex-1 items-center py-6 font-medium font-whisper text-lg">
-                    {getLabelForId(item.blockId)}
-                  </span>
-                )}
+                    <div className="shrink-0 cursor-grab py-6 pl-3">
+                      <RiDraggable className="h-4 w-4 text-neutral-400" />
+                    </div>
 
-                <button
-                  type="button"
-                  onClick={() => handleRemove(item.key)}
-                  aria-label={`Remove ${getLabelForId(item.blockId)} block`}
-                  className="mr-3 shrink-0 rounded p-1 transition-colors hover:bg-neutral-100"
-                >
-                  <RiCloseLine className="h-4 w-4 text-neutral-400 hover:text-black" />
-                </button>
-              </Reorder.Item>
-            );
-          })}
-        </Reorder.Group>
-      )}
+                    {repeatable || isConfigurable ? (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleBlockClick(item)
+                        }
+                        className="flex min-h-[96px] flex-1 cursor-pointer flex-col items-start justify-center gap-1 py-6 text-left transition-colors hover:text-black"
+                      >
+                        <span className="font-bold font-whisper text-lg">
+                          {getLabelForId(item.blockId)}
+                        </span>
+                        {(colors || summary) && (
+                          <div className="flex flex-row items-center gap-4">
+                            {colors && (
+                              <>
+                                <span className="flex items-center gap-1.5">
+                                  <span className="font-whisper text-neutral-500 text-xs">
+                                    Background
+                                  </span>
+                                  <span
+                                    className="h-3 w-3 shrink-0 rounded border border-neutral-300"
+                                    style={{
+                                      backgroundColor:
+                                        colors.bg,
+                                    }}
+                                    title="Background"
+                                  />
+                                </span>
+                                <span className="flex items-center gap-1.5">
+                                  <span className="font-whisper text-neutral-500 text-xs">
+                                    Text
+                                  </span>
+                                  <span
+                                    className="h-3 w-3 shrink-0 rounded border border-neutral-300"
+                                    style={{
+                                      backgroundColor:
+                                        colors.text,
+                                    }}
+                                    title="Text"
+                                  />
+                                </span>
+                              </>
+                            )}
+                            {summary && (
+                              <span className="font-whisper text-neutral-500 text-sm">
+                                — {summary}
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </button>
+                    ) : (
+                      <span className="flex min-h-[96px] flex-1 items-center py-6 font-medium font-whisper text-lg">
+                        {getLabelForId(item.blockId)}
+                      </span>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={() => handleRemove(item.key)}
+                      aria-label={`Remove ${getLabelForId(item.blockId)} block`}
+                      className="mr-3 shrink-0 rounded p-1 transition-colors hover:bg-neutral-100"
+                    >
+                      <RiCloseLine className="h-4 w-4 text-neutral-400 hover:text-black" />
+                    </button>
+                  </Reorder.Item>
+                );
+              })}
+            </Reorder.Group>
+          )}
+        </div>
+      </SafariBrowserFrame>
 
       {editingItem?.blockId === "type-tester" && (
         <TypeTesterBlockModal

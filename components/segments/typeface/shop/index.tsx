@@ -1,6 +1,7 @@
 import { BLOCK_MARGIN_CLASS_MAP } from "@/constant/BLOCK_CLASS_MAPS";
 import type { ShopBlockData } from "@/types/layout-typeface";
 import type { Font } from "@/types/typefaces";
+import { applyBlockBackgroundColor } from "@/utils/block-background-color";
 import { cn } from "@/utils/class-names";
 import FontLine from "./font-line";
 
@@ -49,8 +50,10 @@ export default function TypefaceShop({
       ? BLOCK_MARGIN_CLASS_MAP[data.margin]
       : "my-[20vh]";
   const sectionStyle: React.CSSProperties = {};
-  if (data?.backgroundColor)
-    sectionStyle.backgroundColor = data.backgroundColor;
+  applyBlockBackgroundColor(
+    sectionStyle,
+    data?.backgroundColor
+  );
   if (data?.textColor) sectionStyle.color = data.textColor;
 
   return (

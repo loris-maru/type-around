@@ -1,6 +1,7 @@
 import RichTextContent from "@/components/global/rich-text/rich-text-content";
 import { ABOUT_BLOCK_MARGIN_PRESET_MAP } from "@/constant/ABOUT_BLOCK_MARGIN_PRESETS";
 import type { AboutBlockData } from "@/types/layout-typeface";
+import { applyBlockBackgroundColor } from "@/utils/block-background-color";
 import { cn } from "@/utils/class-names";
 
 const TEXT_SIZE_CLASSES: Record<
@@ -42,8 +43,7 @@ export default function TypefaceAbout({
     ABOUT_BLOCK_MARGIN_PRESET_MAP[marginPreset];
 
   const sectionStyle: React.CSSProperties = {};
-  if (backgroundColor)
-    sectionStyle.backgroundColor = backgroundColor;
+  applyBlockBackgroundColor(sectionStyle, backgroundColor);
   if (marginValue) {
     sectionStyle.marginTop = marginValue;
     sectionStyle.marginRight = marginValue;

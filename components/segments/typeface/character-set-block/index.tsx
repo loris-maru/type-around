@@ -13,6 +13,7 @@ import {
   getDefaultCharacterSet,
   getParseableFontUrl,
 } from "@/utils/font-character-set";
+import { applyBlockBackgroundColor } from "@/utils/block-background-color";
 import CharactersGrid from "./characters-grid";
 import FontSelector from "./font-selector";
 import CharacterSetBlockNavigation from "./navigation";
@@ -163,8 +164,10 @@ export default function TypefaceCharacterSetBlock({
   );
 
   const sectionStyle: React.CSSProperties = {};
-  if (data?.backgroundColor)
-    sectionStyle.backgroundColor = data.backgroundColor;
+  applyBlockBackgroundColor(
+    sectionStyle,
+    data?.backgroundColor
+  );
   if (data?.fontColor) sectionStyle.color = data.fontColor;
 
   if (fonts.length === 0) return null;

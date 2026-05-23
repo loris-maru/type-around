@@ -8,6 +8,7 @@ import {
 } from "@/constant/BLOCK_CLASS_MAPS";
 import { useStudioFonts } from "@/contexts/studio-fonts-context";
 import type { StudioImageBlockProps } from "@/types/components";
+import { applyBlockBackgroundColor } from "@/utils/block-background-color";
 import { cn } from "@/utils/class-names";
 
 export default function StudioImageBlock({
@@ -19,8 +20,10 @@ export default function StudioImageBlock({
   if (!data.url) return null;
 
   const sectionStyle: React.CSSProperties = {};
-  if (data.backgroundColor)
-    sectionStyle.backgroundColor = data.backgroundColor;
+  applyBlockBackgroundColor(
+    sectionStyle,
+    data.backgroundColor
+  );
   if (data.fontColor) sectionStyle.color = data.fontColor;
 
   const isNoMargin = (data.margin || "m") === "none";

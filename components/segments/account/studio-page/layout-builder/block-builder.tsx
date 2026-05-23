@@ -3,9 +3,11 @@
 import { Reorder } from "motion/react";
 import { useState } from "react";
 import { RiCloseLine, RiDraggable } from "react-icons/ri";
+import SafariBrowserFrame from "@/components/global/safari-browser-frame";
 import FontsInUseBlockModal from "@/components/modals/modal-fonts-in-use-block";
 import GalleryBlockModal from "@/components/modals/modal-gallery-block";
 import MediaBlockModal from "@/components/modals/modal-media-block";
+import SocialsBlockModal from "@/components/modals/modal-socials-block";
 import SpacerBlockModal from "@/components/modals/modal-spacer-block";
 import StoreBlockModal from "@/components/modals/modal-store-block";
 import StudioAboutBlockModal from "@/components/modals/modal-studio-about-block";
@@ -23,14 +25,18 @@ import type {
   LayoutBlockId,
   LayoutItem,
   LayoutItemData,
+  SocialsBlockData,
   SpacerBlockData,
   StoreBlockData,
   TypefaceListBlockData,
   TypeTesterBlockData,
   VideoBlockData,
 } from "@/types/layout";
+import { getBlockBackgroundSwatchColor } from "@/utils/block-background-color";
+import { getStudioPageBackgroundStyle } from "@/utils/studio-page-background";
 import { cn } from "@/utils/class-names";
 import BlogBlockInline from "./blog-block-inline";
+import StudioPageSafariHero from "./studio-page-safari-hero";
 
 export default function BlockBuilder({
   activeItems,
@@ -39,9 +45,18 @@ export default function BlockBuilder({
   handleUpdateData,
   getLabelForId,
   studioId,
+  studioName,
+  studioHangeulName,
+  headerFont,
+  gradientFrom,
+  gradientTo,
 }: BlockBuilderProps) {
   const [editingItem, setEditingItem] =
     useState<LayoutItem | null>(null);
+  const pageBackgroundStyle = getStudioPageBackgroundStyle(
+    gradientFrom,
+    gradientTo
+  );
 
   const isRepeatable = (blockId: LayoutBlockId) => {
     const block = LAYOUT_BLOCKS.find(
@@ -73,7 +88,9 @@ export default function BlockBuilder({
     if (blockId === "gallery") {
       const data = d as GalleryBlockData | undefined;
       return {
-        bg: data?.backgroundColor ?? "#ffffff",
+        bg: getBlockBackgroundSwatchColor(
+          data?.backgroundColor
+        ),
         text: data?.fontColor ?? "#000000",
       };
     }
@@ -83,35 +100,54 @@ export default function BlockBuilder({
         | VideoBlockData
         | undefined;
       return {
-        bg: data?.backgroundColor ?? "#ffffff",
+        bg: getBlockBackgroundSwatchColor(
+          data?.backgroundColor
+        ),
         text: data?.fontColor ?? "#000000",
       };
     }
     if (blockId === "typeface-list") {
       const data = d as TypefaceListBlockData | undefined;
       return {
-        bg: data?.backgroundColor ?? "#ffffff",
+        bg: getBlockBackgroundSwatchColor(
+          data?.backgroundColor
+        ),
         text: data?.fontColor ?? "#000000",
       };
     }
     if (blockId === "fonts-in-use") {
       const data = d as FontsInUseBlockData | undefined;
       return {
-        bg: data?.backgroundColor ?? "#ffffff",
+        bg: getBlockBackgroundSwatchColor(
+          data?.backgroundColor
+        ),
+        text: data?.fontColor ?? "#000000",
+      };
+    }
+    if (blockId === "socials") {
+      const data = d as SocialsBlockData | undefined;
+      return {
+        bg: getBlockBackgroundSwatchColor(
+          data?.backgroundColor
+        ),
         text: data?.fontColor ?? "#000000",
       };
     }
     if (blockId === "about") {
       const data = d as AboutBlockData | undefined;
       return {
-        bg: data?.backgroundColor ?? "#ffffff",
+        bg: getBlockBackgroundSwatchColor(
+          data?.backgroundColor
+        ),
         text: data?.textColor ?? "#000000",
       };
     }
     if (blockId === "type-tester") {
       const data = d as TypeTesterBlockData | undefined;
       return {
-        bg: data?.backgroundColor ?? "#ffffff",
+        bg: getBlockBackgroundSwatchColor(
+          data?.backgroundColor
+        ),
         text: data?.foregroundColor ?? "#000000",
       };
     }
@@ -152,157 +188,184 @@ export default function BlockBuilder({
   };
 
   return (
-    <div className="col-span-3">
+    <div>
       <h3 className="mb-3 font-normal font-whisper text-neutral-500 text-sm">
         Page content blocks
       </h3>
-      {activeItems.length === 0 ? (
-        <div className="flex h-32 items-center justify-center rounded-lg border border-neutral-300 border-dashed">
-          <p className="font-whisper text-neutral-400 text-sm">
-            Click a block to add it here
-          </p>
-        </div>
-      ) : (
-        <Reorder.Group
-          axis="y"
-          values={activeItems}
-          onReorder={handleReorder}
-          className="flex flex-col gap-2 rounded-lg border border-neutral-300 p-4"
-        >
-          {activeItems.map((item) => {
-            // Blog block gets special inline rendering
-            if (item.blockId === "blog") {
-              return (
-                <Reorder.Item
-                  key={item.key}
-                  value={item}
-                  className="cursor-grab transition-shadow active:cursor-grabbing active:shadow-md"
-                >
-                  <BlogBlockInline
-                    data={
-                      (item.data as BlogBlockData) || {
-                        title: "",
-                        articles: [],
-                      }
-                    }
-                    onUpdateData={(data) =>
-                      handleUpdateData(item.key, data)
-                    }
-                    onRemove={() => handleRemove(item.key)}
-                  />
-                </Reorder.Item>
-              );
-            }
+      <p className="mb-3 font-whisper text-neutral-400 text-xs">
+        Drag blocks to set the order they appear on the
+        public studio page.
+      </p>
+      <SafariBrowserFrame
+        url={studioName}
+        contentStyle={pageBackgroundStyle}
+      >
+        <header className="w-full">
+          <StudioPageSafariHero
+            key={headerFont.trim() || "no-header-font"}
+            studioHangeulName={studioHangeulName}
+            headerFont={headerFont}
+          />
+        </header>
+        <div className="w-full border-neutral-200 border-t">
+          {activeItems.length === 0 ? (
+            <div className="flex min-h-[120px] items-center justify-center p-6">
+              <p className="text-center font-whisper text-neutral-500 text-sm">
+                Click a block on the left to add it to the
+                page
+              </p>
+            </div>
+          ) : (
+            <Reorder.Group
+              axis="y"
+              values={activeItems}
+              onReorder={handleReorder}
+              className="flex flex-col gap-2 p-4"
+            >
+              {activeItems.map((item) => {
+                // Blog block gets special inline rendering
+                if (item.blockId === "blog") {
+                  return (
+                    <Reorder.Item
+                      key={item.key}
+                      value={item}
+                      className="cursor-grab transition-shadow active:cursor-grabbing active:shadow-md"
+                    >
+                      <BlogBlockInline
+                        data={
+                          (item.data as BlogBlockData) || {
+                            title: "",
+                            articles: [],
+                          }
+                        }
+                        onUpdateData={(data) =>
+                          handleUpdateData(item.key, data)
+                        }
+                        onRemove={() =>
+                          handleRemove(item.key)
+                        }
+                      />
+                    </Reorder.Item>
+                  );
+                }
 
-            const repeatable = isRepeatable(item.blockId);
-            const summary = getBlockSummary(item);
-            const colors = getBlockColors(item);
-            const isSpacer = item.blockId === "spacer";
-            const isConfigurable =
-              CONFIGURABLE_BLOCKS.includes(item.blockId);
+                const repeatable = isRepeatable(
+                  item.blockId
+                );
+                const summary = getBlockSummary(item);
+                const colors = getBlockColors(item);
+                const isSpacer = item.blockId === "spacer";
+                const isConfigurable =
+                  CONFIGURABLE_BLOCKS.includes(
+                    item.blockId
+                  );
 
-            return (
-              <Reorder.Item
-                key={item.key}
-                value={item}
-                className={cn(
-                  "flex min-h-[96px] cursor-grab items-center gap-2 rounded-lg border bg-white transition-shadow active:cursor-grabbing active:shadow-md",
-                  isSpacer
-                    ? "border-blue-400 active:border-blue-600"
-                    : "border-neutral-300 active:border-black"
-                )}
-              >
-                <div className="shrink-0 cursor-grab py-6 pl-3">
-                  <RiDraggable className="h-4 w-4 text-neutral-400" />
-                </div>
-
-                {repeatable || isConfigurable ? (
-                  <button
-                    type="button"
-                    onClick={() => handleBlockClick(item)}
+                return (
+                  <Reorder.Item
+                    key={item.key}
+                    value={item}
                     className={cn(
-                      "flex min-h-[96px] flex-1 cursor-pointer flex-col items-start justify-center gap-1 py-6 text-left transition-colors hover:text-black"
+                      "flex min-h-[96px] cursor-grab items-center gap-2 rounded-lg border bg-white transition-shadow active:cursor-grabbing active:shadow-md",
+                      isSpacer
+                        ? "border-blue-400 active:border-blue-600"
+                        : "border-neutral-300 active:border-black"
                     )}
                   >
-                    <span
-                      className={cn(
-                        "font-medium font-whisper text-lg",
-                        isSpacer && "text-blue-500"
-                      )}
-                    >
-                      {getLabelForId(item.blockId)}
-                    </span>
-                    {(colors || summary) && (
-                      <span className="flex flex-wrap items-center gap-x-5 gap-y-1">
-                        {colors && (
-                          <>
-                            <span className="flex items-center gap-1.5">
-                              <span className="font-whisper text-neutral-500 text-xs">
-                                Background
-                              </span>
-                              <span
-                                className="h-3 w-3 shrink-0 rounded border border-neutral-300"
-                                style={{
-                                  backgroundColor:
-                                    colors.bg,
-                                }}
-                                title="Background"
-                              />
-                            </span>
-                            <span className="flex items-center gap-1.5">
-                              <span className="font-whisper text-neutral-500 text-xs">
-                                Text
-                              </span>
-                              <span
-                                className="h-3 w-3 shrink-0 rounded border border-neutral-300"
-                                style={{
-                                  backgroundColor:
-                                    colors.text,
-                                }}
-                                title="Text"
-                              />
-                            </span>
-                          </>
+                    <div className="shrink-0 cursor-grab py-6 pl-3">
+                      <RiDraggable className="h-4 w-4 text-neutral-400" />
+                    </div>
+
+                    {repeatable || isConfigurable ? (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleBlockClick(item)
+                        }
+                        className={cn(
+                          "flex min-h-[96px] flex-1 cursor-pointer flex-col items-start justify-center gap-1 py-6 text-left transition-colors hover:text-black"
                         )}
-                        {summary && (
-                          <span
-                            className={cn(
-                              "font-whisper text-sm",
-                              isSpacer
-                                ? "text-blue-400"
-                                : "text-neutral-500"
+                      >
+                        <span
+                          className={cn(
+                            "font-medium font-whisper text-lg",
+                            isSpacer && "text-blue-500"
+                          )}
+                        >
+                          {getLabelForId(item.blockId)}
+                        </span>
+                        {(colors || summary) && (
+                          <span className="flex flex-wrap items-center gap-x-5 gap-y-1">
+                            {colors && (
+                              <>
+                                <span className="flex items-center gap-1.5">
+                                  <span className="font-whisper text-neutral-500 text-xs">
+                                    Background
+                                  </span>
+                                  <span
+                                    className="h-3 w-3 shrink-0 rounded border border-neutral-300"
+                                    style={{
+                                      backgroundColor:
+                                        colors.bg,
+                                    }}
+                                    title="Background"
+                                  />
+                                </span>
+                                <span className="flex items-center gap-1.5">
+                                  <span className="font-whisper text-neutral-500 text-xs">
+                                    Text
+                                  </span>
+                                  <span
+                                    className="h-3 w-3 shrink-0 rounded border border-neutral-300"
+                                    style={{
+                                      backgroundColor:
+                                        colors.text,
+                                    }}
+                                    title="Text"
+                                  />
+                                </span>
+                              </>
                             )}
-                          >
-                            — {summary}
+                            {summary && (
+                              <span
+                                className={cn(
+                                  "font-whisper text-sm",
+                                  isSpacer
+                                    ? "text-blue-400"
+                                    : "text-neutral-500"
+                                )}
+                              >
+                                — {summary}
+                              </span>
+                            )}
                           </span>
                         )}
+                      </button>
+                    ) : (
+                      <span
+                        className={cn(
+                          "flex min-h-[96px] flex-1 items-center py-6 font-medium font-whisper text-lg",
+                          isSpacer && "text-blue-500"
+                        )}
+                      >
+                        {getLabelForId(item.blockId)}
                       </span>
                     )}
-                  </button>
-                ) : (
-                  <span
-                    className={cn(
-                      "flex min-h-[96px] flex-1 items-center py-6 font-medium font-whisper text-lg",
-                      isSpacer && "text-blue-500"
-                    )}
-                  >
-                    {getLabelForId(item.blockId)}
-                  </span>
-                )}
 
-                <button
-                  type="button"
-                  onClick={() => handleRemove(item.key)}
-                  aria-label={`Remove ${getLabelForId(item.blockId)} block`}
-                  className="mr-3 shrink-0 rounded p-1 transition-colors hover:bg-neutral-100"
-                >
-                  <RiCloseLine className="h-4 w-4 text-neutral-400 hover:text-black" />
-                </button>
-              </Reorder.Item>
-            );
-          })}
-        </Reorder.Group>
-      )}
+                    <button
+                      type="button"
+                      onClick={() => handleRemove(item.key)}
+                      aria-label={`Remove ${getLabelForId(item.blockId)} block`}
+                      className="mr-3 shrink-0 rounded p-1 transition-colors hover:bg-neutral-100"
+                    >
+                      <RiCloseLine className="h-4 w-4 text-neutral-400 hover:text-black" />
+                    </button>
+                  </Reorder.Item>
+                );
+              })}
+            </Reorder.Group>
+          )}
+        </div>
+      </SafariBrowserFrame>
 
       {/* Gallery modal */}
       {editingItem?.blockId === "gallery" && (
@@ -394,6 +457,18 @@ export default function BlockBuilder({
             editingItem.data as
               | FontsInUseBlockData
               | undefined
+          }
+        />
+      )}
+
+      {/* Socials modal */}
+      {editingItem?.blockId === "socials" && (
+        <SocialsBlockModal
+          isOpen
+          onClose={() => setEditingItem(null)}
+          onSave={handleModalSave}
+          initialData={
+            editingItem.data as SocialsBlockData | undefined
           }
         />
       )}

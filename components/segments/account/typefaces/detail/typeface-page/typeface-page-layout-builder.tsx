@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { DEFAULT_TYPEFACE_PAGE_LAYOUT } from "@/constant/DEFAULT_TYPEFACE_PAGE_LAYOUT";
 import { LAYOUT_BLOCKS_TYPEFACE } from "@/constant/LAYOUT_BLOCKS_TYPEFACE";
+import { useStudio } from "@/hooks/use-studio";
 import type { TypefacePageLayoutBuilderProps } from "@/types/components";
 import type {
   TypefaceLayoutBlockId,
@@ -17,9 +18,15 @@ export default function TypefacePageLayoutBuilder({
   value,
   onChange,
   studioId,
+  pageTitleFont,
+  pageTextFont,
+  pageTitleFontSameAsText,
+  typefaceHangeulName,
+  typefacePageBackground,
   typefaceFonts,
   studioTypefaces,
 }: TypefacePageLayoutBuilderProps) {
+  const { studio } = useStudio();
   const activeItems = useMemo(
     () =>
       value?.length ? value : DEFAULT_TYPEFACE_PAGE_LAYOUT,
@@ -79,21 +86,31 @@ export default function TypefacePageLayoutBuilder({
       ?.label || id;
 
   return (
-    <div className="grid grid-cols-3 gap-8">
-      <TypefaceBlocksList
-        availableBlocks={availableBlocks}
-        handleAdd={handleAdd}
-      />
-      <TypefaceBlockBuilder
-        activeItems={activeItems}
-        handleRemove={handleRemove}
-        handleReorder={handleReorder}
-        handleUpdateData={handleUpdateData}
-        getLabelForId={getLabelForId}
-        studioId={studioId}
-        typefaceFonts={typefaceFonts}
-        studioTypefaces={studioTypefaces}
-      />
+    <div className="grid grid-cols-10 gap-8">
+      <div className="col-span-3">
+        <TypefaceBlocksList
+          availableBlocks={availableBlocks}
+          handleAdd={handleAdd}
+        />
+      </div>
+      <div className="col-span-7">
+        <TypefaceBlockBuilder
+          activeItems={activeItems}
+          handleRemove={handleRemove}
+          handleReorder={handleReorder}
+          handleUpdateData={handleUpdateData}
+          getLabelForId={getLabelForId}
+          studioId={studioId}
+          studioName={studio?.name ?? ""}
+          typefaceHangeulName={typefaceHangeulName}
+          pageTitleFont={pageTitleFont}
+          pageTextFont={pageTextFont}
+          pageTitleFontSameAsText={pageTitleFontSameAsText}
+          typefacePageBackground={typefacePageBackground}
+          typefaceFonts={typefaceFonts}
+          studioTypefaces={studioTypefaces}
+        />
+      </div>
     </div>
   );
 }

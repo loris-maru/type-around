@@ -12,8 +12,10 @@ import {
   RiUploadCloud2Line,
 } from "react-icons/ri";
 import { ButtonModalSave } from "@/components/molecules/buttons";
+import BlockBackgroundColorField from "@/components/molecules/block-background-color-field";
 import ColorPicker from "@/components/molecules/color-picker";
 import { useModalOpen } from "@/hooks/use-modal-open";
+import { getInitialBlockBackgroundColor } from "@/utils/block-background-color";
 import { uploadFile } from "@/lib/firebase/storage";
 import type { GalleryBlockModalProps } from "@/types/components";
 import type { GalleryImage } from "@/types/layout";
@@ -32,7 +34,11 @@ export default function GalleryBlockModal({
     initialData?.gap ?? 0
   );
   const [backgroundColor, setBackgroundColor] = useState(
-    initialData?.backgroundColor || ""
+    () =>
+      getInitialBlockBackgroundColor(
+        initialData?.backgroundColor,
+        ""
+      )
   );
   const [fontColor, setFontColor] = useState(
     initialData?.fontColor || ""
@@ -212,28 +218,12 @@ export default function GalleryBlockModal({
                 </span>
               </div>
             </div>
-            <div>
-              <span className="mb-1 block font-semibold text-black text-sm">
-                Background color
-              </span>
-              <div className="flex items-center gap-2">
-                <ColorPicker
-                  id="gallery-bg-color"
-                  value={backgroundColor || "#ffffff"}
-                  onChange={setBackgroundColor}
-                />
-                <input
-                  type="text"
-                  value={backgroundColor}
-                  onChange={(e) =>
-                    setBackgroundColor(e.target.value)
-                  }
-                  placeholder="#ffffff"
-                  aria-label="Gallery background color hex value"
-                  className="w-20 rounded-lg border border-neutral-300 px-2 py-2 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
-                />
-              </div>
-            </div>
+            <BlockBackgroundColorField
+              id="gallery-bg-color"
+              value={backgroundColor}
+              onChange={setBackgroundColor}
+              compact
+            />
             <div>
               <span className="mb-1 block font-semibold text-black text-sm">
                 Font color

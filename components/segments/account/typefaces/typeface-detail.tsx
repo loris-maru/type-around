@@ -753,6 +753,11 @@ export default function TypefaceDetail({
           }
           studioId={studio?.id || ""}
           typefaceId={typeface?.id || ""}
+          typefaceHangeulName={
+            formData.hangeulName?.trim() ||
+            formData.name?.trim() ||
+            typeface.name
+          }
           typefaceFonts={(formData.fonts || []).map(
             (f) => ({
               id: f.id,

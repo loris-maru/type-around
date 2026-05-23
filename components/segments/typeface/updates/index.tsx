@@ -14,6 +14,7 @@ import GalleryNavigator from "@/components/molecules/gallery/navigator";
 import { BLOCK_MARGIN_CLASS_MAP } from "@/constant/BLOCK_CLASS_MAPS";
 import { TYPE_UPDATES } from "@/mock-data/type-status";
 import type { UpdatesBlockData } from "@/types/layout-typeface";
+import { applyBlockBackgroundColor } from "@/utils/block-background-color";
 import { cn } from "@/utils/class-names";
 
 export default function TypefaceUpdates({
@@ -91,8 +92,10 @@ export default function TypefaceUpdates({
       ? BLOCK_MARGIN_CLASS_MAP[data.margin]
       : "my-12 lg:my-[20vh]";
   const sectionStyle: React.CSSProperties = {};
-  if (data?.backgroundColor)
-    sectionStyle.backgroundColor = data.backgroundColor;
+  applyBlockBackgroundColor(
+    sectionStyle,
+    data?.backgroundColor
+  );
   if (data?.textColor) sectionStyle.color = data.textColor;
 
   return (

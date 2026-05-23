@@ -8,7 +8,8 @@ export type LayoutBlockId =
   | "video"
   | "spacer"
   | "store"
-  | "blog";
+  | "blog"
+  | "socials";
 
 export type LayoutBlock = {
   id: LayoutBlockId;
@@ -77,6 +78,11 @@ export type TypefaceListBlockData = {
 // --- Fonts in use block ---
 
 export type FontsInUseBlockData = {
+  backgroundColor?: string;
+  fontColor?: string;
+};
+
+export type SocialsBlockData = {
   backgroundColor?: string;
   fontColor?: string;
 };
@@ -162,6 +168,7 @@ export type LayoutItemData =
   | BlogBlockData
   | TypefaceListBlockData
   | FontsInUseBlockData
+  | SocialsBlockData
   | AboutBlockData
   | TypeTesterBlockData
   | undefined;

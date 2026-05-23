@@ -19,4 +19,5 @@ export const LAYOUT_BLOCKS: LayoutBlock[] = [
   { id: "spacer", label: "Spacer", unique: false },
   { id: "store", label: "Store", unique: true },
   { id: "blog", label: "Blog", unique: true },
+  { id: "socials", label: "Socials", unique: true },
 ];

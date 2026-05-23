@@ -5,6 +5,7 @@ import FontsInUseList from "@/components/segments/studio/fonts-in-use-list";
 import StudioGallery from "@/components/segments/studio/gallery";
 import StudioImageBlock from "@/components/segments/studio/image-block";
 import StudioProfile from "@/components/segments/studio/profile";
+import StudioSocialsBlock from "@/components/segments/studio/socials-block";
 import StudioSpacerBlock from "@/components/segments/studio/spacer-block";
 import StudioStoreBlock from "@/components/segments/studio/store-block";
 import TypefacesList from "@/components/segments/studio/typefaces-list";
@@ -15,6 +16,7 @@ import type {
   BlogBlockData,
   GalleryBlockData,
   ImageBlockData,
+  SocialsBlockData,
   SpacerBlockData,
   StoreBlockData,
   TypefaceListBlockData,
@@ -22,6 +24,7 @@ import type {
 } from "@/types/layout";
 import type { Studio } from "@/types/studio";
 import type { Studio as MockStudio } from "@/types/typefaces";
+import { applyBlockBackgroundColor } from "@/utils/block-background-color";
 
 function toMockStudio(studio: Studio): MockStudio {
   return {
@@ -107,8 +110,10 @@ export default function PreviewBlockRenderer({
         | TypefaceListBlockData
         | undefined;
       const tfStyle: React.CSSProperties = {};
-      if (tfData?.backgroundColor)
-        tfStyle.backgroundColor = tfData.backgroundColor;
+      applyBlockBackgroundColor(
+        tfStyle,
+        tfData?.backgroundColor
+      );
       if (tfData?.fontColor)
         tfStyle.color = tfData.fontColor;
       return (
@@ -177,6 +182,19 @@ export default function PreviewBlockRenderer({
         | undefined;
       if (!blogData) return null;
       return <StudioBlogBlock data={blogData} />;
+    }
+
+    case "socials": {
+      const socialsData = block.data as
+        | SocialsBlockData
+        | undefined;
+      return (
+        <StudioSocialsBlock
+          socialMedia={studio.socialMedia ?? []}
+          displayFontUrl={studio.headerFont}
+          data={socialsData}
+        />
+      );
     }
 
     default:

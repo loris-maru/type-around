@@ -33,7 +33,7 @@ export default function TypefaceBlocksList({
   );
 
   return (
-    <div className="col-span-1 flex flex-col gap-6">
+    <div className="flex flex-col gap-6">
       <div>
         <h3 className="mb-3 font-normal font-whisper text-neutral-500 text-sm">
           Available blocks
@@ -49,7 +49,7 @@ export default function TypefaceBlocksList({
                 <h4 className="mb-2 font-medium font-whisper text-neutral-600 text-xs uppercase tracking-wide">
                   Unique
                 </h4>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 gap-2">
                   {uniqueBlocks.map((block) => (
                     <BlockButton
                       key={block.id}
@@ -65,7 +65,7 @@ export default function TypefaceBlocksList({
                 <h4 className="mb-2 font-medium font-whisper text-neutral-600 text-xs uppercase tracking-wide">
                   Repeatable
                 </h4>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 gap-2">
                   {repeatableBlocks.map((block) => (
                     <BlockButton
                       key={block.id}

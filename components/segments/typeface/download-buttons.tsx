@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import IconDownload from "@/components/icons/icon-download";
 import type { DownloadButtonsProps } from "@/types/components";
+import { applyBlockBackgroundColor } from "@/utils/block-background-color";
 import { cn } from "@/utils/class-names";
 import { downloadFile } from "@/utils/download-file";
 import { slugify } from "@/utils/slugify";
@@ -16,15 +17,32 @@ export default function DownloadButtons({
   backgroundColor,
   textColor,
 }: DownloadButtonsProps) {
+  const availableTrialFonts = useMemo(
+    () =>
+      trialFontUrls?.filter((font) => font.file?.trim()) ??
+      [],
+    [trialFontUrls]
+  );
+
+  const showTrialButton = showTrialFonts ?? true;
+  const canDownloadTrialFonts =
+    availableTrialFonts.length > 0;
+  const showSpecimenButton =
+    showSpecimen && !!specimenUrl?.trim();
+
   const handleDownloadTrialFonts = useCallback(async () => {
-    if (!trialFontUrls?.length) return;
-    for (const font of trialFontUrls) {
+    if (!canDownloadTrialFonts) return;
+    for (const font of availableTrialFonts) {
       await downloadFile(
         font.file,
         `${slugify(typefaceName)}-${slugify(font.styleName)}-trial.woff2`
       );
     }
-  }, [trialFontUrls, typefaceName]);
+  }, [
+    availableTrialFonts,
+    canDownloadTrialFonts,
+    typefaceName,
+  ]);
 
   const handleDownloadSpecimen = useCallback(async () => {
     if (!specimenUrl) return;
@@ -34,17 +52,10 @@ export default function DownloadButtons({
     );
   }, [specimenUrl, typefaceName]);
 
-  const hasTrialFonts =
-    showTrialFonts &&
-    trialFontUrls &&
-    trialFontUrls.length > 0;
-  const hasSpecimen = showSpecimen && !!specimenUrl;
-
-  if (!hasTrialFonts && !hasSpecimen) return null;
+  if (!showTrialButton && !showSpecimenButton) return null;
 
   const sectionStyle: React.CSSProperties = {};
-  if (backgroundColor)
-    sectionStyle.backgroundColor = backgroundColor;
+  applyBlockBackgroundColor(sectionStyle, backgroundColor);
   if (textColor) sectionStyle.color = textColor;
 
   return (
@@ -57,15 +68,22 @@ export default function DownloadButtons({
       }
     >
       <div className="relative flex w-full flex-row">
-        {hasTrialFonts && (
+        {showTrialButton && (
           <button
             type="button"
             aria-label="Download trial fonts"
+            aria-disabled={!canDownloadTrialFonts}
+            disabled={!canDownloadTrialFonts}
             name="download-trial-font"
             className={cn(
-              "download-button-hover flex cursor-pointer flex-row items-center justify-between gap-2 rounded-2xl border border-neutral-300 px-8 py-8 font-medium font-whisper text-sm transition-all duration-300 ease-in-out hover:-translate-x-1 hover:-translate-y-1 hover:bg-white lg:px-16 lg:py-12",
+              "download-button-hover flex flex-row items-center justify-between gap-2 rounded-2xl border border-neutral-300 px-8 py-8 font-medium font-whisper text-sm transition-all duration-300 ease-in-out lg:px-16 lg:py-12",
               !textColor && "text-black",
-              hasSpecimen ? "w-full lg:w-1/2" : "w-full"
+              showSpecimenButton
+                ? "w-full lg:w-1/2"
+                : "w-full",
+              canDownloadTrialFonts
+                ? "cursor-pointer hover:-translate-x-1 hover:-translate-y-1 hover:bg-white"
+                : "cursor-not-allowed opacity-50"
             )}
             onClick={handleDownloadTrialFonts}
           >
@@ -75,7 +93,7 @@ export default function DownloadButtons({
             <IconDownload className="h-6 w-6" />
           </button>
         )}
-        {hasSpecimen && (
+        {showSpecimenButton && (
           <button
             type="button"
             aria-label="Download specimen"
@@ -83,7 +101,7 @@ export default function DownloadButtons({
             className={cn(
               "download-button-hover flex cursor-pointer flex-row items-center justify-between gap-x-2 rounded-2xl border border-neutral-300 px-24 py-12 font-medium font-whisper text-sm transition-all duration-300 ease-in-out hover:-translate-x-1 hover:-translate-y-1 hover:bg-white",
               !textColor && "text-black",
-              hasTrialFonts ? "w-1/2" : "w-full"
+              showTrialButton ? "w-1/2" : "w-full"
             )}
             onClick={handleDownloadSpecimen}
           >

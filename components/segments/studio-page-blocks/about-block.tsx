@@ -2,6 +2,7 @@ import StudioProfile from "@/components/segments/studio/profile";
 import { ABOUT_BLOCK_MARGIN_PRESET_MAP } from "@/constant/ABOUT_BLOCK_MARGIN_PRESETS";
 import type { AboutBlockData } from "@/types/layout";
 import type { Studio } from "@/types/studio";
+import { applyBlockBackgroundColor } from "@/utils/block-background-color";
 
 const TEXT_SIZE_CLASSES: Record<
   NonNullable<AboutBlockData["textSize"]>,
@@ -45,8 +46,10 @@ export default function StudioAboutBlock({
     ABOUT_BLOCK_MARGIN_PRESET_MAP[marginPreset];
 
   const sectionStyle: React.CSSProperties = {};
-  if (data?.backgroundColor)
-    sectionStyle.backgroundColor = data.backgroundColor;
+  applyBlockBackgroundColor(
+    sectionStyle,
+    data?.backgroundColor
+  );
   if (data?.textColor) sectionStyle.color = data.textColor;
   if (marginValue) {
     sectionStyle.marginTop = marginValue;

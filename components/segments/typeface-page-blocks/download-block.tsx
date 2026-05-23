@@ -15,12 +15,16 @@ export default function DownloadBlock({
     <DownloadButtons
       typefaceName={typefaceName}
       specimenUrl={rawTypeface.specimen || undefined}
-      trialFontUrls={rawTypeface.fonts
-        .filter((f) => f.file)
-        .map((f) => ({
-          styleName: f.styleName || "",
-          file: f.file || "",
-        }))}
+      trialFontUrls={rawTypeface.fonts.flatMap((font) => {
+        const styleName = font.styleName || "";
+        const trialFiles =
+          font.trialFiles?.filter((url) => url?.trim()) ??
+          [];
+        return trialFiles.map((file) => ({
+          styleName,
+          file,
+        }));
+      })}
       showTrialFonts={data?.showTrialFonts}
       showSpecimen={data?.showSpecimen}
       backgroundColor={data?.backgroundColor}
