@@ -1,20 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { RiAddLine } from "react-icons/ri";
 import { useStudio } from "@/hooks/use-studio";
 import { cn } from "@/utils/class-names";
 
 export default function AccountBlog() {
   const { studio, isLoading } = useStudio();
-  const router = useRouter();
+  const params = useParams();
+  const studioIdFromUrl = params?.id as string | undefined;
   const articles = studio?.blogArticles ?? [];
-
-  const handleCreate = () => {
-    if (!studio?.id) return;
-    router.push(`/account/${studio.id}/blog/new`);
-  };
+  const newArticleHref = studioIdFromUrl
+    ? `/account/${studioIdFromUrl}/blog/new`
+    : undefined;
 
   if (isLoading) {
     return (
@@ -36,15 +35,26 @@ export default function AccountBlog() {
             block.
           </p>
         </div>
-        <button
-          type="button"
-          aria-label="New article"
-          onClick={handleCreate}
-          className="flex shrink-0 cursor-pointer items-center gap-2 rounded-lg border border-black bg-transparent px-4 py-3 font-medium font-whisper text-black shadow-button transition-all duration-300 ease-in-out hover:bg-white hover:shadow-button-hover"
-        >
-          <RiAddLine className="h-4 w-4" />
-          New article
-        </button>
+        {newArticleHref ? (
+          <Link
+            href={newArticleHref}
+            aria-label="New article"
+            className="flex shrink-0 cursor-pointer items-center gap-2 rounded-lg border border-black bg-transparent px-4 py-3 font-medium font-whisper text-black shadow-button transition-all duration-300 ease-in-out hover:bg-white hover:shadow-button-hover"
+          >
+            <RiAddLine className="h-4 w-4" />
+            New article
+          </Link>
+        ) : (
+          <button
+            type="button"
+            aria-label="New article"
+            disabled
+            className="flex shrink-0 cursor-not-allowed items-center gap-2 rounded-lg border border-neutral-300 bg-transparent px-4 py-3 font-medium font-whisper text-neutral-400 opacity-50"
+          >
+            <RiAddLine className="h-4 w-4" />
+            New article
+          </button>
+        )}
       </div>
 
       {articles.length === 0 ? (

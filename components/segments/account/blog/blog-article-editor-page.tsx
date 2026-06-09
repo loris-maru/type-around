@@ -33,7 +33,12 @@ export default function BlogArticleEditorPage({
   const { studio, isLoading, updateBlogArticles } =
     useStudio();
   const router = useRouter();
+  const [isMounted, setIsMounted] = useState(false);
   const isNew = articleKey === "new";
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const existingArticle = useMemo(
     () =>
@@ -160,7 +165,15 @@ export default function BlogArticleEditorPage({
     }
   };
 
-  if (!isNew && !isLoading && studio && !existingArticle) {
+  if (!isMounted || isLoading) {
+    return (
+      <div className="flex w-full items-center justify-center py-12">
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-neutral-300 border-t-black" />
+      </div>
+    );
+  }
+
+  if (!isNew && studio && !existingArticle) {
     return (
       <div className="flex min-h-[50vh] flex-col items-center justify-center gap-4">
         <p className="font-whisper text-neutral-500">

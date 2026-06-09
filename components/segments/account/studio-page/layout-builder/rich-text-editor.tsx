@@ -8,7 +8,12 @@ import { TextStyle } from "@tiptap/extension-text-style";
 import Underline from "@tiptap/extension-underline";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { useRef, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   RiAlignCenter,
   RiAlignLeft,
@@ -48,9 +53,8 @@ export default function RichTextEditor({
   const videoInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
 
-  const editor = useEditor({
-    immediatelyRender: false,
-    extensions: [
+  const extensions = useMemo(() => {
+    const baseExtensions = [
       StarterKit.configure({
         heading: { levels: [2, 3, 4] },
       }),
@@ -66,29 +70,51 @@ export default function RichTextEditor({
           class: "text-blue-600 underline",
         },
       }),
-      ...(enableMedia
-        ? [
-            Image.configure({
-              HTMLAttributes: {
-                class: "my-4 w-full max-w-full rounded-lg",
-              },
-            }),
-            BlogVideo,
-            BlogVideoEmbed,
-          ]
-        : []),
-    ],
-    content,
-    onUpdate: ({ editor: e }) => {
-      onChange(e.getHTML());
-    },
-    editorProps: {
-      attributes: {
-        class:
-          "prose prose-sm max-w-none min-h-[200px] px-4 py-3 focus:outline-none [&_img]:my-4 [&_img]:w-full [&_img]:max-w-full [&_img]:rounded-lg [&_video]:my-4 [&_video]:w-full [&_video]:rounded-lg [&_.blog-video-embed]:my-4",
+    ];
+
+    if (!enableMedia) {
+      return baseExtensions;
+    }
+
+    return [
+      ...baseExtensions,
+      Image.configure({
+        HTMLAttributes: {
+          class: "my-4 w-full max-w-full rounded-lg",
+        },
+      }),
+      BlogVideo,
+      BlogVideoEmbed,
+    ];
+  }, [enableMedia]);
+
+  const editor = useEditor(
+    {
+      immediatelyRender: false,
+      extensions,
+      content,
+      onUpdate: ({ editor: e }) => {
+        onChange(e.getHTML());
+      },
+      editorProps: {
+        attributes: {
+          class:
+            "prose prose-sm max-w-none min-h-[200px] px-4 py-3 focus:outline-none [&_img]:my-4 [&_img]:w-full [&_img]:max-w-full [&_img]:rounded-lg [&_video]:my-4 [&_video]:w-full [&_video]:rounded-lg [&_.blog-video-embed]:my-4",
+        },
       },
     },
-  });
+    [extensions]
+  );
+
+  useEffect(() => {
+    if (!editor || !content) return;
+    const currentContent = editor.getHTML();
+    if (currentContent !== content) {
+      editor.commands.setContent(content, {
+        emitUpdate: false,
+      });
+    }
+  }, [content, editor]);
 
   if (!editor) return null;
 
