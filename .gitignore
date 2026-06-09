@@ -10,6 +10,12 @@
 !.yarn/releases
 !.yarn/versions
 
+# lockfiles — this project uses bun (bun.lock); ignore other package managers'
+# lockfiles so they aren't committed by accident.
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
 # testing
 /coverage
 /test-results
