@@ -680,7 +680,6 @@ export async function getAllStudiosForDisplay(): Promise<
       studio: string;
       gradient?: string;
       typefaceCardContent?: string;
-      typefaceCardDisplayFontFile?: string;
       fonts: Array<{
         name: string;
         styleName?: string;
@@ -724,13 +723,6 @@ export async function getAllStudiosForDisplay(): Promise<
         gradient: studioGradient,
         typefaces: (typefaces as StudioTypeface[]).map(
           (t) => {
-            const cardDisplayFont =
-              t.typefaceCardDisplayFontId
-                ? (t.fonts ?? []).find(
-                    (f) =>
-                      f.id === t.typefaceCardDisplayFontId
-                  )
-                : null;
             return {
               id: t.id,
               name: t.name,
@@ -749,8 +741,6 @@ export async function getAllStudiosForDisplay(): Promise<
               gradient: t.gradient,
               typefaceCardContent:
                 t.typefaceCardContent ?? "",
-              typefaceCardDisplayFontFile:
-                cardDisplayFont?.file ?? "",
               fonts: Array.isArray(t.fonts)
                 ? t.fonts.map((f) => ({
                     name: f.styleName || f.name || "",
