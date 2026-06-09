@@ -87,20 +87,20 @@ export default function BlogArticleModal({
 
         {/* Scrollable content */}
         <div className="min-h-0 flex-1 space-y-5 overflow-y-auto p-6">
-          {/* Article name */}
+          {/* Article title */}
           <div>
             <label
               htmlFor="article-name"
               className="mb-1 block font-semibold text-black text-sm"
             >
-              Article name
+              Article title
             </label>
             <input
               type="text"
               id="article-name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Enter article name"
+              placeholder="Enter article title"
               className="w-full rounded-lg border border-neutral-300 px-4 py-3 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
             />
           </div>

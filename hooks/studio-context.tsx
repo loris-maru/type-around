@@ -17,12 +17,14 @@ import {
   getStudioById,
   removeStudioTypeface,
   updateStudio as updateStudioFirebase,
+  updateStudioBlogArticles,
   updateStudioInformation,
   updateStudioPage,
   updateStudioSocialMedia,
   updateStudioSpecimen,
   updateStudioTypeface,
 } from "@/lib/firebase/studios";
+import type { StudioBlogArticle } from "@/types/blog";
 import type { LayoutItem } from "@/types/layout";
 import type {
   SocialMedia,
@@ -200,6 +202,20 @@ export function StudioProvider({
     [studio]
   );
 
+  const updateBlogArticles = useCallback(
+    async (blogArticles: StudioBlogArticle[]) => {
+      if (!studio) throw new Error("No studio loaded");
+      await updateStudioBlogArticles(
+        studio.id,
+        blogArticles
+      );
+      setStudio((prev) =>
+        prev ? { ...prev, blogArticles } : null
+      );
+    },
+    [studio]
+  );
+
   const addTypeface = useCallback(
     async (typeface: StudioTypeface) => {
       if (!studio) throw new Error("No studio loaded");
@@ -334,6 +350,7 @@ export function StudioProvider({
       updateInformation,
       updateSocialMedia,
       updateStudioPageSettings,
+      updateBlogArticles,
       addTypeface,
       removeTypeface,
       updateTypeface,
@@ -349,6 +366,7 @@ export function StudioProvider({
       updateInformation,
       updateSocialMedia,
       updateStudioPageSettings,
+      updateBlogArticles,
       addTypeface,
       removeTypeface,
       updateTypeface,

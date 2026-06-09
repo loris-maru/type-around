@@ -176,6 +176,14 @@ export default function AccountNavigation() {
       router.replace(`${pathname}?${params.toString()}`);
       return;
     }
+    if (nav === "blog") {
+      const params = new URLSearchParams(
+        searchParams.toString()
+      );
+      params.set("nav", "articles");
+      router.replace(`${pathname}?${params.toString()}`);
+      return;
+    }
     if (!nav) {
       const params = new URLSearchParams(
         searchParams.toString()

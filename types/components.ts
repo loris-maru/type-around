@@ -1269,6 +1269,8 @@ export type FormValues = Record<string, string>;
 export type RichTextEditorProps = {
   content: string;
   onChange: (html: string) => void;
+  studioId?: string;
+  enableMedia?: boolean;
 };
 
 export type ToolbarButtonProps = {

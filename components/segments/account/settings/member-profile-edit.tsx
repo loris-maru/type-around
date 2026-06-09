@@ -71,6 +71,9 @@ export default function MemberProfileEdit({
   const [imageUrl, setImageUrl] = useState(
     member.imageUrl ?? ""
   );
+  const [biography, setBiography] = useState(
+    member.biography ?? ""
+  );
   const [website, setWebsite] = useState(
     member.website ?? ""
   );
@@ -180,6 +183,7 @@ export default function MemberProfileEdit({
         lastName: lastName.trim(),
         email: email.trim(),
         imageUrl,
+        biography: biography.trim(),
         website: website.trim(),
         socialMedia: socialMedia.map((link) => ({
           name: link.name.toLowerCase().trim(),
@@ -263,6 +267,23 @@ export default function MemberProfileEdit({
           required
           className={inputClassName}
           placeholder="name@example.com"
+        />
+      </div>
+
+      <div>
+        <label
+          htmlFor={`biography-${member.id}`}
+          className="mb-1 block font-whisper text-neutral-600 text-sm"
+        >
+          Biography
+        </label>
+        <textarea
+          id={`biography-${member.id}`}
+          value={biography}
+          onChange={(e) => setBiography(e.target.value)}
+          rows={3}
+          placeholder="A short bio..."
+          className={`${inputClassName} resize-none`}
         />
       </div>
 

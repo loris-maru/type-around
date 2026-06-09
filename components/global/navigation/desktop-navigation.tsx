@@ -42,7 +42,7 @@ export default function DesktopNavigation({
     <nav
       className={cn(
         "fixed top-5 left-0 z-40 hidden w-full gap-x-0.5 px-5 lg:grid",
-        cartCount > 0 ? "grid-cols-7" : "grid-cols-6"
+        cartCount > 0 ? "grid-cols-8" : "grid-cols-7"
       )}
     >
       <Link

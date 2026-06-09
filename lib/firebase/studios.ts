@@ -10,6 +10,10 @@ import {
 } from "firebase/firestore";
 import { EXCLUDED_STUDIO_IDS } from "@/constant/EXCLUDED_STUDIO_IDS";
 import type {
+  PublicBlogArticle,
+  StudioBlogArticle,
+} from "@/types/blog";
+import type {
   SocialMedia,
   Studio,
   StudioSpecimen,
@@ -131,6 +135,7 @@ export async function getStudioById(
         ? normalizeTypefaces(rawData.typefaces)
         : [],
       specimens: rawData.specimens ?? [],
+      blogArticles: rawData.blogArticles ?? [],
     };
     // Validate with Zod
     const result = StudioSchema.safeParse(data);
@@ -290,6 +295,16 @@ export async function updateStudioSocialMedia(
   socialMedia: SocialMedia[]
 ): Promise<void> {
   await updateStudio(id, { socialMedia });
+}
+
+/**
+ * Update studio blog articles
+ */
+export async function updateStudioBlogArticles(
+  id: string,
+  blogArticles: StudioBlogArticle[]
+): Promise<void> {
+  await updateStudio(id, { blogArticles });
 }
 
 /**
@@ -757,4 +772,47 @@ export async function getAllStudiosForDisplay(): Promise<
         ),
       };
     });
+}
+
+/**
+ * Get all published blog articles across studios for the public blog page.
+ */
+export async function getAllPublishedBlogArticles(): Promise<
+  PublicBlogArticle[]
+> {
+  const allStudiosQuery = query(
+    collection(db, COLLECTION_NAME)
+  );
+  const snapshot = await getDocs(allStudiosQuery);
+
+  const articles: PublicBlogArticle[] = [];
+
+  for (const docData of snapshot.docs) {
+    if (EXCLUDED_STUDIO_IDS.includes(docData.id)) continue;
+
+    const rawData = docData.data();
+    const studioName =
+      (rawData.name as string) || "Unknown Studio";
+    const studioSlug = slugify(studioName);
+    const blogArticles = (rawData.blogArticles ??
+      []) as StudioBlogArticle[];
+
+    for (const article of blogArticles) {
+      if (!article.published) continue;
+      articles.push({
+        key: article.key,
+        name: article.name,
+        introduction: article.introduction,
+        studioName,
+        studioSlug,
+        updatedAt: article.updatedAt,
+      });
+    }
+  }
+
+  return articles.sort(
+    (a, b) =>
+      new Date(b.updatedAt).getTime() -
+      new Date(a.updatedAt).getTime()
+  );
 }

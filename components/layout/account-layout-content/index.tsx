@@ -31,12 +31,19 @@ export default function AccountLayoutContent({
 }) {
   const pathname = usePathname();
   const isSpecimenPage = pathname?.includes("/specimen/");
+  const isBlogEditorPage =
+    pathname?.includes("/blog/") &&
+    !pathname?.endsWith("/blog/preview");
+  const isFullWidthEditorPage =
+    isSpecimenPage ||
+    isBlogEditorPage ||
+    pathname?.endsWith("/blog/preview");
 
   return (
     <div
       className={cn(
         "relative w-full",
-        isSpecimenPage
+        isFullWidthEditorPage
           ? "pt-24 pr-0 pb-[30px] pl-10"
           : "px-10 py-44"
       )}
@@ -48,7 +55,7 @@ export default function AccountLayoutContent({
             "linear-gradient(180deg, #FFF8E8 29.33%, #F2F2F2 100%)",
         }}
       />
-      {!isSpecimenPage && (
+      {!isFullWidthEditorPage && (
         <div className="fixed z-50 w-68">
           <AccountNavigation />
         </div>
@@ -56,7 +63,7 @@ export default function AccountLayoutContent({
       <div
         className={cn(
           "relative",
-          !isSpecimenPage && "pl-[320px]"
+          !isFullWidthEditorPage && "pl-[320px]"
         )}
       >
         {children}

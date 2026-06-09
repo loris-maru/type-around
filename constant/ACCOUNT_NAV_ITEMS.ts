@@ -3,6 +3,7 @@ export const ACCOUNT_NAV_ITEMS: string[] = [
   "Studio page",
   "Members",
   "Typefaces",
+  "Articles",
   "Feedback",
   "Fonts in use",
   "Payments",

@@ -13,6 +13,10 @@ export const GLOBAL_NAV_ITEMS: NavigationItem[] = [
     href: "/studios",
   },
   {
+    label: "Blog",
+    href: "/blog",
+  },
+  {
     label: "About",
     href: "/about",
   },

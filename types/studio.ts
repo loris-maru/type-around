@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { LayoutItem } from "./layout";
+import { StudioBlogArticleSchema } from "./blog";
 
 // Zod Schemas
 export const DesignerSocialMediaSchema = z.object({
@@ -393,6 +394,9 @@ export const StudioSchema = z.object({
   typefaces: z.array(StudioTypefaceSchema),
   specimens: z.array(StudioSpecimenSchema).default([]),
   fontsInUse: z.array(FontInUseSchema).default([]),
+  blogArticles: z
+    .array(StudioBlogArticleSchema)
+    .default([]),
   // Payment payouts (designers receive payouts)
   tossSubMerchantId: z.string().optional().default(""),
   paypalEmail: z
@@ -540,6 +544,9 @@ export type StudioContextValue = {
     gradient?: { from: string; to: string };
     pageLayout?: LayoutItem[];
   }) => Promise<void>;
+  updateBlogArticles: (
+    blogArticles: import("./blog").StudioBlogArticle[]
+  ) => Promise<void>;
   addTypeface: (typeface: StudioTypeface) => Promise<void>;
   removeTypeface: (typefaceId: string) => Promise<void>;
   updateTypeface: (
@@ -590,6 +597,7 @@ export const DEFAULT_STUDIO: Omit<
   typefaces: [],
   specimens: [],
   fontsInUse: [],
+  blogArticles: [],
   tossSubMerchantId: "",
   paypalEmail: "",
   members: [],

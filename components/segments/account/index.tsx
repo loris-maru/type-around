@@ -33,6 +33,7 @@ const AccountPayments = dynamic(
 );
 
 import AccountStudioPage from "./studio-page";
+import AccountBlog from "./blog";
 import AccountTypefaces from "./typefaces";
 import TypefaceDetail from "./typefaces/typeface-detail";
 
@@ -48,6 +49,8 @@ const AccountMembers = dynamic(() => import("./settings"), {
 const NAV_COMPONENTS: Record<string, ComponentType> = {
   about: AccountInformation,
   "studio-page": AccountStudioPage,
+  articles: AccountBlog,
+  blog: AccountBlog,
   members: AccountMembers,
   // Legacy: redirect to members, but map here so content shows correctly before redirect
   settings: AccountMembers,

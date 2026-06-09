@@ -152,7 +152,7 @@ export default function AccountSettings() {
   return (
     <div className="relative flex w-full flex-col items-start gap-y-8">
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex w-full items-start justify-between gap-4">
         <div>
           <h2 className="mb-2 font-bold font-ortank text-xl">
             Team Members
@@ -162,6 +162,11 @@ export default function AccountSettings() {
             account and content.
           </p>
         </div>
+        {canManageMembers && !isAddingMember && (
+          <ButtonAddMember
+            onClick={() => setIsAddingMember(true)}
+          />
+        )}
       </div>
 
       {/* Error Message */}
@@ -210,13 +215,6 @@ export default function AccountSettings() {
           onError={setError}
         />
       )}
-
-      {/* Add Member Button (shown when not adding) */}
-      <div className="flex w-full justify-end">
-        <ButtonAddMember
-          onClick={() => setIsAddingMember(true)}
-        />
-      </div>
     </div>
   );
 }

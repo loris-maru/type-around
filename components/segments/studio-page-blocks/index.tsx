@@ -183,6 +183,7 @@ export default function StudioPageBlocks({
             return (
               <BlogBlock
                 key={block.key}
+                studio={studio}
                 data={blogData}
               />
             );

@@ -11,7 +11,7 @@ export default function ButtonAddMember({
       aria-label="Add member"
       type="button"
       onClick={onClick}
-      className="flex cursor-pointer items-center gap-2 rounded-lg border border-black bg-transparent px-4 py-3 font-medium font-whisper text-black shadow-button transition-all duration-300 ease-in-out hover:bg-white hover:shadow-button-hover"
+      className="flex shrink-0 cursor-pointer items-center gap-2 rounded-lg border border-black bg-transparent px-4 py-3 font-medium font-whisper text-black shadow-button transition-all duration-300 ease-in-out hover:bg-white hover:shadow-button-hover"
     >
       <RiUserAddLine className="h-4 w-4" />
       Add member

@@ -71,6 +71,12 @@ export default function MemberListItem({
             <span className="font-whisper text-neutral-500 text-sm">
               {member.email}
             </span>
+            {member.biography?.trim() &&
+              !isProfileExpanded && (
+                <p className="mt-2 max-w-md font-whisper text-neutral-600 text-sm leading-relaxed">
+                  {member.biography}
+                </p>
+              )}
           </div>
         </div>
 
