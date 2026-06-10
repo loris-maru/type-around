@@ -13,6 +13,7 @@ export default function ShopBlock({
   typefaceFonts: (Font & {
     id?: string;
     salesFiles?: string[];
+    file?: string;
   })[];
   typefaceName: string;
   typefaceSlug: string;

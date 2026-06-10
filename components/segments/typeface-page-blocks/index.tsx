@@ -64,6 +64,9 @@ export default function TypefacePageBlocks({
                 key={block.key}
                 typetesterFonts={typetesterFonts}
                 data={ttData}
+                typeTesterConfig={
+                  rawTypeface.typeTesterConfig
+                }
               />
             );
           }
@@ -77,6 +80,8 @@ export default function TypefacePageBlocks({
                 key={block.key}
                 rawTypeface={rawTypeface}
                 data={aboutData}
+                titleFontUrl={titleFontUrl}
+                textFontUrl={textFontUrl}
               />
             );
           }

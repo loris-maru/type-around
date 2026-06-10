@@ -13,7 +13,11 @@ export default function TypefaceShop({
   studioSlug = "",
   data,
 }: {
-  fonts: (Font & { id?: string; salesFiles?: string[] })[];
+  fonts: (Font & {
+    id?: string;
+    salesFiles?: string[];
+    file?: string;
+  })[];
   typefaceName?: string;
   typefaceSlug?: string;
   studioId?: string;

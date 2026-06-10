@@ -11,6 +11,7 @@ import {
   InputCheckbox,
   InputDropdown,
 } from "@/components/global/inputs";
+import StudioPageFontFace from "@/components/global/studio-page-font-face";
 import { useCartStore } from "@/stores/cart";
 import { getCartItemKey } from "@/types/cart";
 import type { Font } from "@/types/typefaces";
@@ -37,13 +38,18 @@ export default function FontLine({
   studioSlug,
   text,
 }: {
-  font: Font & { id?: string; salesFiles?: string[] };
+  font: Font & {
+    id?: string;
+    salesFiles?: string[];
+    file?: string;
+  };
   typefaceName: string;
   typefaceSlug?: string;
   studioId?: string;
   studioSlug?: string;
   text: string;
 }) {
+  const fontFamilyName = `shop-font-${font.id ?? font.weight}`;
   const [isHovered, setIsHovered] = useState(false);
   const controls = useAnimation();
 
@@ -151,16 +157,27 @@ export default function FontLine({
       </div>
       <div className="relative w-full px-0 lg:px-10">
         <div className="relative w-full overflow-hidden">
-          <motion.div
-            className="relative z-10 w-full whitespace-nowrap font-black font-ortank text-9xl"
-            style={{
-              fontVariationSettings: `'wght' ${font.weight}`,
-            }}
-            animate={controls}
-            initial={{ x: 0 }}
+          <StudioPageFontFace
+            key={font.file ?? fontFamilyName}
+            family={fontFamilyName}
+            url={font.file ?? ""}
+            fallbackFamily="sans-serif"
           >
-            {text}
-          </motion.div>
+            {({ fontFamily }) => (
+              <motion.div
+                className="relative z-10 w-full whitespace-nowrap font-black text-9xl"
+                style={{
+                  fontFamily,
+                  fontVariationSettings: `'wght' ${font.weight}`,
+                }}
+                animate={controls}
+                initial={{ x: 0 }}
+                title={font.name}
+              >
+                {text}
+              </motion.div>
+            )}
+          </StudioPageFontFace>
         </div>
 
         <div className="relative z-10 mt-6 flex flex-col flex-wrap items-start gap-x-8 gap-y-2 px-4 font-whisper text-base lg:flex-row lg:items-center lg:px-0 lg:text-sm">

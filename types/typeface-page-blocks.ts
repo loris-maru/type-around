@@ -1,5 +1,8 @@
 import type { TypefaceLayoutItem } from "./layout-typeface";
-import type { StoreProduct } from "./studio";
+import type {
+  StoreProduct,
+  TypeTesterConfig,
+} from "./studio";
 import type { Font, Studio } from "./typefaces";
 import type { TypetesterFont } from "./typetester";
 
@@ -7,6 +10,7 @@ export type RawTypefaceForBlocks = {
   description?: string;
   specimen?: string;
   galleryImages?: string[];
+  typeTesterConfig?: TypeTesterConfig;
   fonts: {
     id?: string;
     styleName?: string;
