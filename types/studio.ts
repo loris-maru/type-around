@@ -116,6 +116,77 @@ export const PackageSchema = z.object({
 });
 export type Package = z.infer<typeof PackageSchema>;
 
+export const GlyphCollectionSchema = z.object({
+  id: z.string(),
+  name: z.string().default(""),
+  glyphs: z.array(z.string()).default([]),
+});
+export type GlyphCollection = z.infer<
+  typeof GlyphCollectionSchema
+>;
+
+const TypeTesterSlotSchema = z.object({
+  fontId: z.string().default(""),
+  content: z.string().default(""),
+});
+
+export const TypeTesterConfigSchema = z.object({
+  col1: z
+    .object({
+      fontSize: z.number().default(48),
+      fontId: z.string().default(""),
+      content: z.string().default(""),
+    })
+    .default({ fontSize: 48, fontId: "", content: "" }),
+  col2: z
+    .object({
+      fontSize: z.number().default(48),
+      slots: z.array(TypeTesterSlotSchema).default([
+        { fontId: "", content: "" },
+        { fontId: "", content: "" },
+      ]),
+    })
+    .default({
+      fontSize: 48,
+      slots: [
+        { fontId: "", content: "" },
+        { fontId: "", content: "" },
+      ],
+    }),
+  col3: z
+    .object({
+      fontSize: z.number().default(48),
+      slots: z.array(TypeTesterSlotSchema).default([
+        { fontId: "", content: "" },
+        { fontId: "", content: "" },
+        { fontId: "", content: "" },
+      ]),
+    })
+    .default({
+      fontSize: 48,
+      slots: [
+        { fontId: "", content: "" },
+        { fontId: "", content: "" },
+        { fontId: "", content: "" },
+      ],
+    }),
+});
+export type TypeTesterConfig = z.infer<
+  typeof TypeTesterConfigSchema
+>;
+
+export const TypefaceContributorSchema = z.object({
+  id: z.string(),
+  type: z.enum(["member", "custom"]),
+  memberId: z.string().optional(),
+  firstName: z.string().default(""),
+  lastName: z.string().default(""),
+  role: z.string().default(""),
+});
+export type TypefaceContributor = z.infer<
+  typeof TypefaceContributorSchema
+>;
+
 export const StudioTypefaceSchema = z.object({
   id: z.string(),
   category: z.array(z.string()),
@@ -143,8 +214,18 @@ export const StudioTypefaceSchema = z.object({
   gradient: z.string().optional(),
   status: TypefaceStatusEnum.default("in progress"),
   published: z.boolean().default(false),
-  // Designer IDs (references to studio.designers[].id)
+  // Designer IDs (references to studio.designers[].id) — legacy
   designerIds: z.array(z.string()).default([]),
+  // Rich contributors (members or custom external contributors)
+  contributors: z
+    .array(TypefaceContributorSchema)
+    .default([]),
+  // Character set collections
+  glyphCollections: z
+    .array(GlyphCollectionSchema)
+    .default([]),
+  // Type tester configuration
+  typeTesterConfig: TypeTesterConfigSchema.optional(),
   fontLineText: z.string().default(""),
   // Font used for display in studio page typeface list
   displayFontId: z.string().default(""),

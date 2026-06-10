@@ -46,6 +46,7 @@ import type {
   StudioMember,
   StudioSpecimen,
   StudioTypeface,
+  TypefaceContributor,
 } from "./studio";
 import type { Typeface } from "./typefaces";
 
@@ -243,9 +244,10 @@ export type BasicInformationSectionProps = {
 };
 
 export type DesignersSectionProps = {
-  designerIds: string[];
-  studioDesigners: Designer[];
-  onDesignerIdsChange: (ids: string[]) => void;
+  contributors: TypefaceContributor[];
+  onContributorsChange: (
+    contributors: TypefaceContributor[]
+  ) => void;
   backgroundColor?: string;
 };
 

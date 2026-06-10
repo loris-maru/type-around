@@ -198,13 +198,6 @@ export default function TypefaceBlockBuilder({
 
   return (
     <div>
-      <h3 className="mb-3 font-normal font-whisper text-neutral-500 text-sm">
-        Page content blocks
-      </h3>
-      <p className="mb-3 font-whisper text-neutral-400 text-xs">
-        Drag blocks to set the order they appear on the
-        public typeface page.
-      </p>
       <SafariBrowserFrame
         url={studioName}
         contentStyle={pageBackgroundStyle}
@@ -230,7 +223,7 @@ export default function TypefaceBlockBuilder({
           {activeItems.length === 0 ? (
             <div className="flex min-h-[120px] items-center justify-center p-6">
               <p className="text-center font-whisper text-neutral-500 text-sm">
-                Click a block on the left to add it to the
+                Click the + button to add a block to the
                 page
               </p>
             </div>

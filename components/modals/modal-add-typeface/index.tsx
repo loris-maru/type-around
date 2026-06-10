@@ -90,6 +90,8 @@ export default function AddTypefaceModal({
         status: "in progress",
         published: false,
         designerIds: [],
+        contributors: [],
+        glyphCollections: [],
         fontLineText: "",
         displayFontId: "",
         typefaceCardDisplayFontId: "",

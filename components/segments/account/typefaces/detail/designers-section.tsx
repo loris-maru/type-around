@@ -1,150 +1,184 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import {
-  RiAddFill,
-  RiArrowDropDownLine,
-  RiCloseLine,
-} from "react-icons/ri";
-import CollapsibleSection from "@/components/global/collapsible-section";
+import { useEffect, useId, useRef, useState } from "react";
+import { RiAddLine, RiCloseLine } from "react-icons/ri";
 import type { DesignersSectionProps } from "@/types/components";
+import type { TypefaceContributor } from "@/types/studio";
+
+function generateId() {
+  return `contributor-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+}
 
 export default function DesignersSection({
-  designerIds,
-  studioDesigners,
-  onDesignerIdsChange,
-  backgroundColor,
+  contributors,
+  onContributorsChange,
 }: DesignersSectionProps) {
-  const [
-    isDesignerDropdownOpen,
-    setIsDesignerDropdownOpen,
-  ] = useState(false);
-  const designerDropdownRef = useRef<HTMLDivElement>(null);
+  const formId = useId();
+  const firstNameInputRef = useRef<HTMLInputElement>(null);
+  const [isAdding, setIsAdding] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [role, setRole] = useState("");
 
+  // Focus the first field when the form opens (replaces autoFocus, which
+  // jsx-a11y/no-autofocus discourages because it disorients sighted and
+  // screen-reader users when the focus jump isn't user-initiated). Here the
+  // user explicitly clicked "Add contributor", so a focus change is expected.
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        designerDropdownRef.current &&
-        !designerDropdownRef.current.contains(
-          event.target as Node
-        )
-      ) {
-        setIsDesignerDropdownOpen(false);
-      }
+    if (isAdding) firstNameInputRef.current?.focus();
+  }, [isAdding]);
+
+  const resetForm = () => {
+    setIsAdding(false);
+    setFirstName("");
+    setLastName("");
+    setRole("");
+  };
+
+  const handleAdd = () => {
+    if (!firstName.trim() && !lastName.trim()) return;
+    const next: TypefaceContributor = {
+      id: generateId(),
+      type: "custom",
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      role: role.trim(),
     };
-    document.addEventListener(
-      "mousedown",
-      handleClickOutside
-    );
-    return () =>
-      document.removeEventListener(
-        "mousedown",
-        handleClickOutside
-      );
-  }, []);
-
-  const handleAddDesigner = (designerId: string) => {
-    if (!designerId || designerIds.includes(designerId))
-      return;
-    onDesignerIdsChange([...designerIds, designerId]);
-    setIsDesignerDropdownOpen(false);
+    onContributorsChange([...contributors, next]);
+    resetForm();
   };
 
-  const handleRemoveDesigner = (designerId: string) => {
-    onDesignerIdsChange(
-      designerIds.filter((id) => id !== designerId)
+  const handleRemove = (id: string) => {
+    onContributorsChange(
+      contributors.filter((c) => c.id !== id)
     );
   };
 
-  const availableDesigners = studioDesigners.filter(
-    (d) => !designerIds.includes(d.id || "")
-  );
-
-  const selectedDesigners = designerIds
-    .map((id) => studioDesigners.find((d) => d.id === id))
-    .filter(Boolean);
+  const canAdd = !!(firstName.trim() || lastName.trim());
 
   return (
-    <CollapsibleSection title="Designers">
-      <div className="flex flex-col gap-y-4">
-        {selectedDesigners.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {selectedDesigners.map((designer) => (
-              <span
-                key={designer?.id}
-                className="inline-flex items-center gap-2 rounded-3xl border border-black bg-transparent px-4 py-2 text-black text-sm"
+    <div className="flex flex-col gap-y-4">
+      {contributors.length > 0 && (
+        <div className="flex flex-col gap-2">
+          {contributors.map((c) => (
+            <div
+              key={c.id}
+              className="flex items-center justify-between rounded-lg border border-neutral-200 px-4 py-3"
+            >
+              <div className="flex flex-col gap-0.5">
+                <span className="font-medium font-whisper text-black text-sm">
+                  {c.firstName} {c.lastName}
+                </span>
+                {c.role && (
+                  <span className="font-whisper text-neutral-500 text-xs">
+                    {c.role}
+                  </span>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={() => handleRemove(c.id)}
+                aria-label={`Remove ${c.firstName} ${c.lastName}`}
+                className="cursor-pointer rounded p-1 transition-colors hover:bg-neutral-100"
               >
-                {designer?.firstName} {designer?.lastName}
-                <button
-                  type="button"
-                  onClick={() =>
-                    handleRemoveDesigner(designer?.id || "")
-                  }
-                  aria-label={`Remove designer ${designer?.firstName} ${designer?.lastName}`}
-                  className="cursor-pointer rounded p-0.5 transition-colors hover:bg-neutral-100"
-                >
-                  <RiCloseLine className="h-3.5 w-3.5 text-neutral-400 hover:text-black" />
-                </button>
-              </span>
-            ))}
-          </div>
-        )}
+                <RiCloseLine className="h-4 w-4 text-neutral-400 hover:text-black" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
 
-        {availableDesigners.length > 0 ? (
-          <div
-            ref={designerDropdownRef}
-            className="relative"
-          >
+      {isAdding ? (
+        <div className="flex flex-col gap-3 rounded-lg border border-neutral-200 p-4">
+          <div className="grid grid-cols-2 gap-3">
+            <div className="flex flex-col gap-1">
+              <label
+                htmlFor={`${formId}-fname`}
+                className="font-whisper text-black text-xs uppercase tracking-wider"
+              >
+                First name
+              </label>
+              <input
+                ref={firstNameInputRef}
+                id={`${formId}-fname`}
+                type="text"
+                value={firstName}
+                onChange={(e) =>
+                  setFirstName(e.target.value)
+                }
+                placeholder="First name"
+                className="rounded-lg border border-neutral-300 px-3 py-2.5 font-whisper text-sm focus:border-black focus:outline-none"
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label
+                htmlFor={`${formId}-lname`}
+                className="font-whisper text-black text-xs uppercase tracking-wider"
+              >
+                Last name
+              </label>
+              <input
+                id={`${formId}-lname`}
+                type="text"
+                value={lastName}
+                onChange={(e) =>
+                  setLastName(e.target.value)
+                }
+                placeholder="Last name"
+                className="rounded-lg border border-neutral-300 px-3 py-2.5 font-whisper text-sm focus:border-black focus:outline-none"
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label
+              htmlFor={`${formId}-role`}
+              className="font-whisper text-black text-xs uppercase tracking-wider"
+            >
+              Role
+            </label>
+            <input
+              id={`${formId}-role`}
+              type="text"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              placeholder="e.g. Type Designer, Art Director…"
+              className="rounded-lg border border-neutral-300 px-3 py-2.5 font-whisper text-sm focus:border-black focus:outline-none"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && canAdd)
+                  handleAdd();
+              }}
+            />
+          </div>
+
+          <div className="flex justify-end gap-2">
             <button
               type="button"
-              onClick={() =>
-                setIsDesignerDropdownOpen((prev) => !prev)
-              }
-              className="flex w-full cursor-pointer items-center justify-between rounded-lg border border-neutral-300 bg-white px-4 py-3 font-whisper text-neutral-500 text-sm transition-colors hover:border-neutral-400"
+              onClick={resetForm}
+              className="rounded-lg border border-neutral-300 px-4 py-2 font-whisper text-neutral-600 text-sm transition-colors hover:bg-neutral-50"
             >
-              <span className="flex items-center gap-2">
-                <RiAddFill className="h-4 w-4" />
-                Add a designer...
-              </span>
-              <RiArrowDropDownLine
-                className={`h-5 w-5 transition-transform ${isDesignerDropdownOpen ? "rotate-180" : ""}`}
-              />
+              Cancel
             </button>
-
-            {isDesignerDropdownOpen && (
-              <div
-                className="absolute right-0 left-0 z-50 mt-1 overflow-hidden rounded-lg border border-neutral-200 shadow-lg"
-                style={{
-                  backgroundColor:
-                    backgroundColor ?? "transparent",
-                }}
-              >
-                {availableDesigners.map((designer) => (
-                  <button
-                    key={designer.id}
-                    type="button"
-                    onClick={() =>
-                      handleAddDesigner(designer.id || "")
-                    }
-                    className="w-full cursor-pointer px-4 py-2.5 text-left font-whisper text-neutral-700 text-sm transition-colors hover:bg-neutral-50"
-                  >
-                    {designer.firstName} {designer.lastName}
-                  </button>
-                ))}
-              </div>
-            )}
+            <button
+              type="button"
+              onClick={handleAdd}
+              disabled={!canAdd}
+              className="rounded-lg bg-black px-4 py-2 font-whisper text-sm text-white transition-opacity disabled:opacity-40"
+            >
+              Add
+            </button>
           </div>
-        ) : (studioDesigners ?? []).length === 0 ? (
-          <p className="text-neutral-500 text-xs">
-            No designers in your studio yet. Add designers
-            from the Members section.
-          </p>
-        ) : (
-          <p className="text-neutral-500 text-xs">
-            All studio designers are assigned.
-          </p>
-        )}
-      </div>
-    </CollapsibleSection>
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setIsAdding(true)}
+          className="flex items-center gap-1.5 self-start rounded-lg border border-neutral-300 px-4 py-2.5 font-whisper text-neutral-600 text-sm transition-colors hover:border-neutral-400 hover:bg-neutral-50"
+        >
+          <RiAddLine className="h-4 w-4" />
+          Add contributor
+        </button>
+      )}
+    </div>
   );
 }

@@ -19,12 +19,17 @@ import type {
 import type { TypefaceLayoutItem } from "@/types/layout-typeface";
 import type {
   Font,
+  GlyphCollection,
   Package,
   StudioTypeface,
+  TypefaceContributor,
+  TypeTesterConfig,
 } from "@/types/studio";
 import { normalizeReleaseYear } from "@/utils/release-year";
 import { slugify } from "@/utils/slugify";
 import ChangesSavedPill from "../changes-saved-pill";
+import CharacterSetSection from "./detail/character-set-section";
+import TypeTesterSection from "./detail/type-tester-section";
 import {
   BasicInformationSection,
   DesignersSection,
@@ -105,6 +110,23 @@ export default function TypefaceDetail({
         supportedLanguages:
           typeface.supportedLanguages || [],
         designerIds: typeface.designerIds || [],
+        contributors:
+          (
+            typeface as StudioTypeface & {
+              contributors?: TypefaceContributor[];
+            }
+          ).contributors ?? [],
+        glyphCollections:
+          (
+            typeface as StudioTypeface & {
+              glyphCollections?: GlyphCollection[];
+            }
+          ).glyphCollections ?? [],
+        typeTesterConfig: (
+          typeface as StudioTypeface & {
+            typeTesterConfig?: TypeTesterConfig;
+          }
+        ).typeTesterConfig,
         fontLineText: typeface.fontLineText || "",
         displayFontId: typeface.displayFontId || "",
         typefaceCardDisplayFontId:
@@ -306,11 +328,33 @@ export default function TypefaceDetail({
     []
   );
 
-  const handleDesignerIdsChange = useCallback(
-    (ids: string[]) => {
+  const handleContributorsChange = useCallback(
+    (contributors: TypefaceContributor[]) => {
       setFormData((prev) => ({
         ...prev,
-        designerIds: ids,
+        contributors,
+      }));
+      setHasChanges(true);
+    },
+    []
+  );
+
+  const handleGlyphCollectionsChange = useCallback(
+    (glyphCollections: GlyphCollection[]) => {
+      setFormData((prev) => ({
+        ...prev,
+        glyphCollections,
+      }));
+      setHasChanges(true);
+    },
+    []
+  );
+
+  const handleTypeTesterConfigChange = useCallback(
+    (typeTesterConfig: TypeTesterConfig) => {
+      setFormData((prev) => ({
+        ...prev,
+        typeTesterConfig,
       }));
       setHasChanges(true);
     },
@@ -649,9 +693,14 @@ export default function TypefaceDetail({
 
       {activeSubsection === "designers" && (
         <DesignersSection
-          designerIds={formData.designerIds || []}
-          studioDesigners={studio?.designers || []}
-          onDesignerIdsChange={handleDesignerIdsChange}
+          contributors={
+            (
+              formData as StudioTypeface & {
+                contributors?: TypefaceContributor[];
+              }
+            ).contributors ?? []
+          }
+          onContributorsChange={handleContributorsChange}
         />
       )}
 
@@ -750,22 +799,21 @@ export default function TypefaceDetail({
         />
       )}
 
-      {activeSubsection === "shop" && (
-        <ShopSection
-          printPrice={String(formData.printPrice ?? 0)}
-          webPrice={String(formData.webPrice ?? 0)}
-          appPrice={String(formData.appPrice ?? 0)}
-          onInputChange={handleInputChange}
-        />
-      )}
-
       {activeSubsection === "fonts" && (
-        <FontsListSection
-          fonts={formData.fonts || []}
-          onRemoveFont={handleRemoveFont}
-          onEditFont={handleEditFont}
-          onAddFontClick={() => setIsFontModalOpen(true)}
-        />
+        <div className="flex flex-col gap-y-10">
+          <FontsListSection
+            fonts={formData.fonts || []}
+            onRemoveFont={handleRemoveFont}
+            onEditFont={handleEditFont}
+            onAddFontClick={() => setIsFontModalOpen(true)}
+          />
+          <ShopSection
+            printPrice={String(formData.printPrice ?? 0)}
+            webPrice={String(formData.webPrice ?? 0)}
+            appPrice={String(formData.appPrice ?? 0)}
+            onInputChange={handleInputChange}
+          />
+        </div>
       )}
 
       {activeSubsection === "packages" && (
@@ -799,6 +847,58 @@ export default function TypefaceDetail({
           typefaceSlug={typefaceSlug}
           specimen={formData.specimen || ""}
           onSpecimenChange={handleFileChange("specimen")}
+        />
+      )}
+
+      {activeSubsection === "character-set" && (
+        <CharacterSetSection
+          glyphCollections={
+            (
+              formData as StudioTypeface & {
+                glyphCollections?: GlyphCollection[];
+              }
+            ).glyphCollections ?? []
+          }
+          onGlyphCollectionsChange={
+            handleGlyphCollectionsChange
+          }
+        />
+      )}
+
+      {activeSubsection === "type-tester" && (
+        <TypeTesterSection
+          typeTesterConfig={
+            (
+              formData as StudioTypeface & {
+                typeTesterConfig?: TypeTesterConfig;
+              }
+            ).typeTesterConfig ?? {
+              col1: {
+                fontSize: 48,
+                fontId: "",
+                content: "",
+              },
+              col2: {
+                fontSize: 48,
+                slots: [
+                  { fontId: "", content: "" },
+                  { fontId: "", content: "" },
+                ],
+              },
+              col3: {
+                fontSize: 48,
+                slots: [
+                  { fontId: "", content: "" },
+                  { fontId: "", content: "" },
+                  { fontId: "", content: "" },
+                ],
+              },
+            }
+          }
+          onTypeTesterConfigChange={
+            handleTypeTesterConfigChange
+          }
+          fonts={formData.fonts || []}
         />
       )}
 
