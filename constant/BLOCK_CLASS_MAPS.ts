@@ -51,5 +51,6 @@ export const CONFIGURABLE_BLOCKS: LayoutBlockId[] = [
   "video",
   "spacer",
   "store",
+  "blog",
   "socials",
 ];

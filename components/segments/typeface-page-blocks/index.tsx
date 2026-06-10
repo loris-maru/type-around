@@ -1,6 +1,7 @@
 "use client";
 
 import type {
+  FontsInUseBlockData,
   GalleryBlockData,
   ImageBlockData,
   StoreBlockData,
@@ -19,6 +20,7 @@ import type { TypefacePageBlocksProps } from "@/types/typeface-page-blocks";
 import AboutBlock from "./about-block";
 import CharacterSetBlock from "./character-set-block";
 import DownloadBlock from "./download-block";
+import FontsInUseBlock from "./fonts-in-use-block";
 import GalleryBlock from "./gallery-block";
 import GoodiesShopBlock from "./goodies-shop-block";
 import ImageBlock from "./image-block";
@@ -208,6 +210,20 @@ export default function TypefacePageBlocks({
                 }
                 titleFontUrl={titleFontUrl}
                 textFontUrl={textFontUrl}
+              />
+            );
+          }
+
+          case "fonts-in-use": {
+            return (
+              <FontsInUseBlock
+                key={block.key}
+                typefaceName={typefaceName}
+                data={
+                  block.data as
+                    | FontsInUseBlockData
+                    | undefined
+                }
               />
             );
           }

@@ -12,7 +12,7 @@ export default function StudioPageBlogBlock({
   studio: Studio;
   data?: BlogBlockData;
 }) {
-  const publishedArticles: BlogArticle[] = (
+  const allPublished: BlogArticle[] = (
     studio.blogArticles ?? []
   )
     .filter((article) => article.published)
@@ -24,6 +24,14 @@ export default function StudioPageBlogBlock({
       authors: article.authors,
       keywords: article.keywords,
     }));
+
+  const selectedKeys = data?.articleKeys;
+  const publishedArticles =
+    selectedKeys && selectedKeys.length > 0
+      ? allPublished.filter((a) =>
+          selectedKeys.includes(a.key)
+        )
+      : allPublished;
 
   const legacyArticles = data?.articles ?? [];
   const articles =

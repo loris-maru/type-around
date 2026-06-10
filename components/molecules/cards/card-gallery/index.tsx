@@ -46,7 +46,7 @@ export default function GalleryCard({
 
   return (
     <>
-      <div className="flex shrink-0 flex-col rounded-lg border border-neutral-300 shadow-medium-gray">
+      <div className="flex shrink-0 flex-col border border-neutral-200">
         {/* biome-ignore lint/a11y/useSemanticElements: div required for overlay hover + click interaction */}
         <div
           role="button"
@@ -59,7 +59,7 @@ export default function GalleryCard({
             }
           }}
           aria-label={`View ${image.title || "gallery image"} fullscreen`}
-          className="group relative aspect-4/3 w-full cursor-pointer overflow-hidden rounded-t-lg bg-neutral-100"
+          className="group relative aspect-4/3 w-full cursor-pointer overflow-hidden bg-neutral-100"
         >
           <Image
             src={image.url}

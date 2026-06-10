@@ -15,7 +15,8 @@ export type TypefaceLayoutBlockId =
   | "video"
   | "gallery"
   | "character-set"
-  | "more-content";
+  | "more-content"
+  | "fonts-in-use";
 
 export type CharacterSetBlockData = {
   sampleText?: string;

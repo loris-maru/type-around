@@ -4,6 +4,7 @@ import { Reorder } from "motion/react";
 import { useState } from "react";
 import { RiCloseLine, RiDraggable } from "react-icons/ri";
 import SafariBrowserFrame from "@/components/global/safari-browser-frame";
+import BlogBlockModal from "@/components/modals/modal-blog-block";
 import FontsInUseBlockModal from "@/components/modals/modal-fonts-in-use-block";
 import GalleryBlockModal from "@/components/modals/modal-gallery-block";
 import MediaBlockModal from "@/components/modals/modal-media-block";
@@ -35,7 +36,6 @@ import type {
 import { getBlockBackgroundSwatchColor } from "@/utils/block-background-color";
 import { getStudioPageBackgroundStyle } from "@/utils/studio-page-background";
 import { cn } from "@/utils/class-names";
-import BlogBlockInline from "./blog-block-inline";
 import StudioPageSafariHero from "./studio-page-safari-hero";
 
 export default function BlockBuilder({
@@ -186,18 +186,19 @@ export default function BlockBuilder({
       const d = item.data as SpacerBlockData;
       return d.size?.toUpperCase() || null;
     }
+    if (blockId === "blog") {
+      const d = item.data as BlogBlockData | undefined;
+      const count =
+        d?.articleKeys?.length ?? d?.articles?.length ?? 0;
+      return count > 0
+        ? `${count} article${count > 1 ? "s" : ""}`
+        : null;
+    }
     return null;
   };
 
   return (
     <div>
-      <h3 className="mb-3 font-normal font-whisper text-neutral-500 text-sm">
-        Page content blocks
-      </h3>
-      <p className="mb-3 font-whisper text-neutral-400 text-xs">
-        Drag blocks to set the order they appear on the
-        public studio page.
-      </p>
       <SafariBrowserFrame
         url={studioName}
         contentStyle={pageBackgroundStyle}
@@ -213,7 +214,7 @@ export default function BlockBuilder({
           {activeItems.length === 0 ? (
             <div className="flex min-h-[120px] items-center justify-center p-6">
               <p className="text-center font-whisper text-neutral-500 text-sm">
-                Click a block on the left to add it to the
+                Click the + button to add a block to the
                 page
               </p>
             </div>
@@ -225,32 +226,6 @@ export default function BlockBuilder({
               className="flex flex-col gap-2 p-4"
             >
               {activeItems.map((item) => {
-                // Blog block gets special inline rendering
-                if (item.blockId === "blog") {
-                  return (
-                    <Reorder.Item
-                      key={item.key}
-                      value={item}
-                      className="cursor-grab transition-shadow active:cursor-grabbing active:shadow-md"
-                    >
-                      <BlogBlockInline
-                        data={
-                          (item.data as BlogBlockData) || {
-                            title: "",
-                            articles: [],
-                          }
-                        }
-                        onUpdateData={(data) =>
-                          handleUpdateData(item.key, data)
-                        }
-                        onRemove={() =>
-                          handleRemove(item.key)
-                        }
-                      />
-                    </Reorder.Item>
-                  );
-                }
-
                 const repeatable = isRepeatable(
                   item.blockId
                 );
@@ -368,6 +343,18 @@ export default function BlockBuilder({
           )}
         </div>
       </SafariBrowserFrame>
+
+      {/* Blog modal */}
+      {editingItem?.blockId === "blog" && (
+        <BlogBlockModal
+          isOpen
+          onClose={() => setEditingItem(null)}
+          onSave={handleModalSave}
+          initialData={
+            editingItem.data as BlogBlockData | undefined
+          }
+        />
+      )}
 
       {/* Gallery modal */}
       {editingItem?.blockId === "gallery" && (

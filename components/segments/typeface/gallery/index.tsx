@@ -92,7 +92,7 @@ export default function TypefaceGallery({
           <RiArrowLeftSLine size={32} />
         </button>
 
-        <div className="relative aspect-video w-full overflow-hidden rounded-2xl">
+        <div className="relative aspect-video w-full overflow-hidden">
           <Image
             src={images[currentIndex].src}
             alt={

@@ -116,11 +116,11 @@ export default function StudioGallery({
         className="relative -mx-2 w-[calc(100%+1rem)] overflow-hidden px-2 pb-4 lg:mx-0 lg:w-full"
         ref={setEmblaRef}
       >
-        <div className="relative flex w-full gap-4">
+        <div className="relative flex w-full gap-1">
           {images.map((img) => (
             <div
               key={img.key}
-              className="relative min-w-[90vw] flex-[0_0_90vw] shrink-0 pr-4 first:pl-0 lg:min-w-0 lg:flex-[0_0_28.57%]"
+              className="relative min-w-[90vw] flex-[0_0_90vw] shrink-0 lg:min-w-0 lg:flex-[0_0_28.57%]"
             >
               <GalleryCard image={img} />
             </div>

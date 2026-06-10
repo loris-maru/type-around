@@ -263,26 +263,30 @@ export default async function TypefacePage({
         rawTypefaces={firebaseStudio.typefaces}
         currentTypefaceSlug={typefaceName}
         titleFontUrl={
-          (
+          ((
             rawTypeface as {
               pageTitleFontSameAsText?: boolean;
             }
           ).pageTitleFontSameAsText
             ? (rawTypeface as { pageTextFont?: string })
-                .pageTextFont || ""
+                .pageTextFont
             : (rawTypeface as { pageTitleFont?: string })
-                .pageTitleFont || ""
+                .pageTitleFont) ||
+          firebaseStudio.headerFont ||
+          ""
         }
         textFontUrl={
-          (
+          ((
             rawTypeface as {
               pageTextFontSameAsTitle?: boolean;
             }
           ).pageTextFontSameAsTitle
             ? (rawTypeface as { pageTitleFont?: string })
-                .pageTitleFont || ""
+                .pageTitleFont
             : (rawTypeface as { pageTextFont?: string })
-                .pageTextFont || ""
+                .pageTextFont) ||
+          firebaseStudio.textFont ||
+          ""
         }
       />
       <MoreContent
@@ -290,26 +294,30 @@ export default async function TypefacePage({
         currentTypefaceSlug={typefaceName}
         rawTypefaces={firebaseStudio.typefaces}
         titleFontUrl={
-          (
+          ((
             rawTypeface as {
               pageTitleFontSameAsText?: boolean;
             }
           ).pageTitleFontSameAsText
             ? (rawTypeface as { pageTextFont?: string })
-                .pageTextFont || ""
+                .pageTextFont
             : (rawTypeface as { pageTitleFont?: string })
-                .pageTitleFont || ""
+                .pageTitleFont) ||
+          firebaseStudio.headerFont ||
+          ""
         }
         textFontUrl={
-          (
+          ((
             rawTypeface as {
               pageTextFontSameAsTitle?: boolean;
             }
           ).pageTextFontSameAsTitle
             ? (rawTypeface as { pageTitleFont?: string })
-                .pageTitleFont || ""
+                .pageTitleFont
             : (rawTypeface as { pageTextFont?: string })
-                .pageTextFont || ""
+                .pageTextFont) ||
+          firebaseStudio.textFont ||
+          ""
         }
       />
       <Footer />

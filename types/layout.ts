@@ -151,6 +151,8 @@ export type BlogArticle = {
 export type BlogBlockData = {
   title: string;
   articles: BlogArticle[];
+  /** Keys of articles selected to display (references studio.blogArticles) */
+  articleKeys?: string[];
 };
 
 export type LayoutItemData =

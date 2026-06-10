@@ -29,4 +29,9 @@ export const LAYOUT_BLOCKS_TYPEFACE: TypefaceLayoutBlock[] =
       label: "More content",
       unique: true,
     },
+    {
+      id: "fonts-in-use",
+      label: "Fonts in use",
+      unique: true,
+    },
   ];
