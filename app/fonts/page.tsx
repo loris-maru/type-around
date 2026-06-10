@@ -9,6 +9,7 @@ import {
 } from "@/constant/SEO_METADATA";
 import { getAllPublishedTypefaces } from "@/lib/firebase/studios";
 import type { Typeface } from "@/types/typefaces";
+import { getCharacterCount } from "@/utils/character-count";
 
 export const revalidate = 3600;
 export const preferredRegion = ["icn1"];
@@ -58,7 +59,7 @@ export default async function FontsPage() {
         style:
           f.style || (f.isItalic ? "italic" : "normal"),
       })),
-      characters: t.characters,
+      characters: getCharacterCount(t.characters),
       releaseDate: t.releaseDate,
       studio: t.studioName,
       typefaceCardContent: t.typefaceCardContent ?? "",

@@ -1,4 +1,5 @@
 import type { TypefaceLayoutItem } from "./layout-typeface";
+import type { StoreProduct } from "./studio";
 import type { Font, Studio } from "./typefaces";
 import type { TypetesterFont } from "./typetester";
 
@@ -22,7 +23,7 @@ export type MoreContentRawTypeface = {
   slug?: string;
   category?: string[];
   fonts: { id: string; file?: string }[];
-  characters?: number;
+  characters?: string | number;
   heroLetter?: string;
   headerImage?: string;
   icon?: string;
@@ -46,4 +47,6 @@ export type TypefacePageBlocksProps = {
   currentTypefaceSlug?: string;
   titleFontUrl?: string;
   textFontUrl?: string;
+  /** Store products live on the account-level Studio; pass them through for the Goodies/Store block. */
+  storeProducts?: StoreProduct[];
 };

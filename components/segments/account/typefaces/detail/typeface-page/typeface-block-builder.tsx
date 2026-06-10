@@ -179,11 +179,7 @@ export default function TypefaceBlockBuilder({
       return null;
     }
     if (blockId === "goodies-shop") {
-      const d = item.data as StoreBlockData;
-      const count = d.products?.length || 0;
-      return count > 0
-        ? `${count} product${count > 1 ? "s" : ""}`
-        : null;
+      return null;
     }
     if (blockId === "download") {
       return null;
@@ -458,7 +454,6 @@ export default function TypefaceBlockBuilder({
           initialData={
             editingItem.data as StoreBlockData | undefined
           }
-          studioId={studioId}
         />
       )}
 

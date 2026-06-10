@@ -52,7 +52,7 @@ export default function TypefacePageLayoutBuilder({
       blockId,
       key: generateUUID(),
       ...(blockId === "goodies-shop" && {
-        data: { products: [] },
+        data: { marginTop: "m", marginBottom: "m" },
       }),
     };
     onChange([...activeItems, newItem]);

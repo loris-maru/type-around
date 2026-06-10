@@ -82,7 +82,7 @@ export default function AddTypefaceModal({
         category: formData.categories,
         icon: "",
         fonts: [],
-        characters: parseInt(formData.characters, 10) || 0,
+        characters: formData.characters ?? "",
         releaseDate:
           normalizeReleaseYear(formData.releaseDate) ||
           String(new Date().getFullYear()),

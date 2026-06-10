@@ -15,6 +15,7 @@ import type {
 } from "@/types/blog";
 import type {
   SocialMedia,
+  StoreProduct,
   Studio,
   StudioSpecimen,
   StudioTypeface,
@@ -26,6 +27,7 @@ import {
   UpdateStudioInfoSchema,
   UpdateStudioPageSchema,
 } from "@/types/studio";
+import { getCharacterCount } from "@/utils/character-count";
 import { normalizeReleaseYear } from "@/utils/release-year";
 import { slugify } from "@/utils/slugify";
 import { db } from "./config";
@@ -268,6 +270,9 @@ export async function updateStudioInformation(
     }[];
     website?: string;
     thumbnail?: string;
+    thumbnailType?: "image" | "color" | "gradient";
+    thumbnailColor?: string;
+    thumbnailGradient?: { from: string; to: string };
     avatar?: string;
   }
 ): Promise<void> {
@@ -305,6 +310,16 @@ export async function updateStudioBlogArticles(
   blogArticles: StudioBlogArticle[]
 ): Promise<void> {
   await updateStudio(id, { blogArticles });
+}
+
+/**
+ * Update studio store products
+ */
+export async function updateStudioProducts(
+  id: string,
+  products: StoreProduct[]
+): Promise<void> {
+  await updateStudio(id, { products });
 }
 
 /**
@@ -750,7 +765,7 @@ export async function getAllStudiosForDisplay(): Promise<
                 t.icon ??
                 "",
               category: t.category ?? [],
-              characters: t.characters ?? 0,
+              characters: getCharacterCount(t.characters),
               releaseDate: t.releaseDate ?? "",
               studio: studioName,
               gradient: t.gradient,

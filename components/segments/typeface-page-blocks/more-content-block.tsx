@@ -3,6 +3,7 @@ import { SmallTypefaceCard } from "@/components/molecules/cards";
 import type { MoreContentBlockData } from "@/types/layout-typeface";
 import type { MoreContentRawTypeface } from "@/types/typeface-page-blocks";
 import type { Studio } from "@/types/typefaces";
+import { getCharacterCount } from "@/utils/character-count";
 import { slugify } from "@/utils/slugify";
 
 export default function MoreContentBlock({
@@ -73,7 +74,7 @@ export default function MoreContentBlock({
           }
           category={tf.category?.[0] ?? ""}
           weights={tf.fonts.length}
-          glyphs={tf.characters ?? 0}
+          glyphs={getCharacterCount(tf.characters)}
           titleFontUrl={titleFontUrl}
           textFontUrl={textFontUrl}
         />

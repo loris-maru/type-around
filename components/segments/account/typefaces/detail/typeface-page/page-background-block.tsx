@@ -76,9 +76,6 @@ export default function PageBackgroundBlock({
   return (
     <div className="mb-8 grid grid-cols-2 gap-4">
       <div>
-        <h3 className="mb-2 font-bold font-ortank text-base">
-          Page background
-        </h3>
         <InputDropdown
           value={background.type}
           options={SPECIMEN_BACKGROUND_TYPE_OPTIONS}

@@ -11,6 +11,7 @@ import { ButtonPreviewPage } from "@/components/molecules/buttons";
 import { DEFAULT_PAGE_LAYOUT } from "@/constant/DEFAULT_PAGE_LAYOUT";
 import { useStudio } from "@/hooks/use-studio";
 import type { LayoutItem } from "@/types/layout";
+import CollapsibleSection from "@/components/global/collapsible-section";
 import AccountSaveBar from "../account-save-bar";
 import AccountForm from "../form";
 import SaveErrorPill from "../save-error-pill";
@@ -272,19 +273,18 @@ export default function AccountStudioPage() {
 
   return (
     <div className="relative flex w-full flex-col gap-y-10">
-      <AccountForm
-        title="Design"
-        FORM_FIELDS={STUDIO_PAGE_FORM_FIELDS}
-        initialValues={displayFormValues}
-        onChange={handleFormChange}
-        isLoading={isLoading}
-      />
+      <CollapsibleSection title="Design">
+        <AccountForm
+          title=""
+          FORM_FIELDS={STUDIO_PAGE_FORM_FIELDS}
+          initialValues={displayFormValues}
+          onChange={handleFormChange}
+          isLoading={isLoading}
+        />
+      </CollapsibleSection>
 
       {studio?.id && (
-        <div className="relative flex w-full flex-col gap-y-4">
-          <h2 className="font-bold font-ortank text-xl">
-            Layout
-          </h2>
+        <CollapsibleSection title="Layout">
           <LayoutBuilder
             value={pageLayout}
             onChange={handleLayoutChange}
@@ -311,7 +311,7 @@ export default function AccountStudioPage() {
               "#F2F2F2"
             }
           />
-        </div>
+        </CollapsibleSection>
       )}
 
       {studio?.id && (

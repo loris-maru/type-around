@@ -12,6 +12,7 @@ import FileDropZone from "@/components/global/file-drop-zone";
 import { MEMBER_SOCIAL_MEDIA_OPTIONS } from "@/constant/MEMBER_SOCIAL_MEDIA_OPTIONS";
 import type { CustomSelectOption } from "@/types/components";
 import type { StudioMember } from "@/types/studio";
+import MemberAvatar from "./member-avatar";
 
 type MemberProfileEditProps = {
   member: StudioMember;
@@ -204,16 +205,28 @@ export default function MemberProfileEdit({
 
   return (
     <div className="space-y-4 rounded-lg border border-neutral-200 bg-neutral-50 p-4">
-      <FileDropZone
-        label="Profile image"
-        accept=".png,.jpg,.jpeg,.webp"
-        value={imageUrl}
-        onChange={setImageUrl}
-        description="PNG, JPEG, or WebP. Upload, replace, or delete your profile photo."
-        icon="image"
-        studioId={studioId}
-        folder="images"
-      />
+      <div className="flex items-center gap-4">
+        <MemberAvatar
+          imageUrl={imageUrl}
+          name={
+            `${firstName} ${lastName}`.trim() ||
+            member.email
+          }
+          size="xl"
+        />
+        <div className="min-w-0 flex-1">
+          <FileDropZone
+            label="Profile image"
+            accept=".png,.jpg,.jpeg,.webp"
+            value={imageUrl}
+            onChange={setImageUrl}
+            description="PNG, JPEG, or WebP. Upload, replace, or delete your profile photo."
+            icon="image"
+            studioId={studioId}
+            folder="images"
+          />
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>

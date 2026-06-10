@@ -34,9 +34,11 @@ export default function AccountForm({
 
   return (
     <div className="relative flex w-full flex-col gap-y-4">
-      <h2 className="font-bold font-ortank text-xl">
-        {title}
-      </h2>
+      {title && (
+        <h2 className="font-bold font-ortank text-xl">
+          {title}
+        </h2>
+      )}
       <div className="grid grid-cols-3 gap-5">
         {FORM_FIELDS.map((field) => {
           const Icon = field.icon;
@@ -75,7 +77,7 @@ export default function AccountForm({
               >
                 <label
                   htmlFor={field.slug}
-                  className="mb-2 block font-normal font-whisper text-black text-sm"
+                  className="mb-2 block font-normal font-whisper text-black text-sm uppercase tracking-wider"
                 >
                   {field.label}
                 </label>
@@ -103,7 +105,7 @@ export default function AccountForm({
             >
               <label
                 htmlFor={field.slug}
-                className="mb-2 block font-normal font-whisper text-black text-sm"
+                className="mb-2 block font-normal font-whisper text-black text-sm uppercase tracking-wider"
               >
                 {field.label}
               </label>

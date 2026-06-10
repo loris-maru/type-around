@@ -26,7 +26,6 @@ import { normalizeReleaseYear } from "@/utils/release-year";
 import { slugify } from "@/utils/slugify";
 import ChangesSavedPill from "../changes-saved-pill";
 import {
-  AssetsSection,
   BasicInformationSection,
   DesignersSection,
   EulaSection,
@@ -226,11 +225,7 @@ export default function TypefaceDetail({
                 ),
               }
             : {}),
-          characters:
-            parseInt(
-              dataToSave.characters?.toString() || "0",
-              10
-            ) || 0,
+          characters: dataToSave.characters ?? "",
         });
         setHasChanges(false);
       } catch (err) {
@@ -330,17 +325,6 @@ export default function TypefaceDetail({
     []
   );
 
-  const handleGalleryImagesChange = useCallback(
-    (images: string[]) => {
-      setFormData((prev) => ({
-        ...prev,
-        galleryImages: images,
-      }));
-      setHasChanges(true);
-    },
-    []
-  );
-
   const handleSaveFont = useCallback(
     (font: Font) => {
       const prev = formDataRef.current;
@@ -383,17 +367,6 @@ export default function TypefaceDetail({
       setFormData((prev) => ({
         ...prev,
         displayFontId: fontId,
-      }));
-      setHasChanges(true);
-    },
-    []
-  );
-
-  const handleTypefaceCardDisplayFontChange = useCallback(
-    (fontId: string) => {
-      setFormData((prev) => ({
-        ...prev,
-        typefaceCardDisplayFontId: fontId,
       }));
       setHasChanges(true);
     },
@@ -566,11 +539,7 @@ export default function TypefaceDetail({
         releaseDate: normalizeReleaseYear(
           String(updatedFormData.releaseDate ?? "")
         ),
-        characters:
-          parseInt(
-            updatedFormData.characters?.toString() || "0",
-            10
-          ) || 0,
+        characters: updatedFormData.characters ?? "",
       });
       setHasChanges(false);
     } catch (err) {
@@ -595,11 +564,7 @@ export default function TypefaceDetail({
         releaseDate: normalizeReleaseYear(
           String(formData.releaseDate ?? "")
         ),
-        characters:
-          parseInt(
-            formData.characters?.toString() || "0",
-            10
-          ) || 0,
+        characters: formData.characters ?? "",
       });
       setHasChanges(false);
     } catch (err) {
@@ -643,6 +608,7 @@ export default function TypefaceDetail({
 
       {activeSubsection === "information" && (
         <BasicInformationSection
+          studioId={studio?.id || ""}
           name={formData.name || ""}
           hangeulName={formData.hangeulName || ""}
           categories={formData.category || []}
@@ -670,15 +636,14 @@ export default function TypefaceDetail({
           displayFontId={formData.displayFontId || ""}
           fontLineText={formData.fontLineText || ""}
           onDisplayFontChange={handleDisplayFontChange}
-          typefaceCardDisplayFontId={
-            formData.typefaceCardDisplayFontId || ""
-          }
-          typefaceCardContent={
-            formData.typefaceCardContent || ""
-          }
-          onTypefaceCardDisplayFontChange={
-            handleTypefaceCardDisplayFontChange
-          }
+          heroLetter={formData.heroLetter || ""}
+          variableFontFile={formData.variableFontFile || ""}
+          onHeroLetterChange={handleFileChange(
+            "heroLetter"
+          )}
+          onVariableFontFileChange={handleFileChange(
+            "variableFontFile"
+          )}
         />
       )}
 
@@ -834,22 +799,6 @@ export default function TypefaceDetail({
           typefaceSlug={typefaceSlug}
           specimen={formData.specimen || ""}
           onSpecimenChange={handleFileChange("specimen")}
-        />
-      )}
-
-      {activeSubsection === "assets" && (
-        <AssetsSection
-          studioId={studio?.id || ""}
-          heroLetter={formData.heroLetter || ""}
-          variableFontFile={formData.variableFontFile || ""}
-          galleryImages={formData.galleryImages || []}
-          onHeroLetterChange={handleFileChange(
-            "heroLetter"
-          )}
-          onVariableFontFileChange={handleFileChange(
-            "variableFontFile"
-          )}
-          onGalleryImagesChange={handleGalleryImagesChange}
         />
       )}
 

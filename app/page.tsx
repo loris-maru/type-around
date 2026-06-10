@@ -9,6 +9,7 @@ import {
 } from "@/constant/SEO_METADATA";
 import { getAllStudiosForDisplay } from "@/lib/firebase/studios";
 import type { Studio } from "@/types/typefaces";
+import { getCharacterCount } from "@/utils/character-count";
 
 // Cache at the edge (Vercel CDN) for 1h so Korean visitors get HTML from the
 // closest PoP (Seoul/Tokyo) instead of round-tripping to the origin.
@@ -63,7 +64,7 @@ export default async function Home() {
       description: t.description,
       icon: t.icon,
       category: t.category,
-      characters: t.characters,
+      characters: getCharacterCount(t.characters),
       releaseDate: t.releaseDate,
       studio: s.name,
       typefaceCardContent: t.typefaceCardContent,

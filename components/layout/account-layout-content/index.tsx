@@ -34,9 +34,11 @@ export default function AccountLayoutContent({
   const isBlogEditorPage =
     pathname?.includes("/blog/") &&
     !pathname?.endsWith("/blog/preview");
+  const isStoreEditorPage = pathname?.includes("/store/");
   const isFullWidthEditorPage =
     isSpecimenPage ||
     isBlogEditorPage ||
+    isStoreEditorPage ||
     pathname?.endsWith("/blog/preview");
 
   return (

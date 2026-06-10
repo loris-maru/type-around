@@ -1,4 +1,3 @@
-export { default as AssetsSection } from "./assets-section";
 export { default as BasicInformationSection } from "./basic-information-section";
 export { default as DesignersSection } from "./designers-section";
 export { default as EulaSection } from "./eula-section";

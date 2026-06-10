@@ -13,6 +13,7 @@ export default function StudioPageStoreBlock({
   return (
     <StudioStoreBlock
       data={data}
+      products={studio?.products ?? []}
       studio={studio}
     />
   );

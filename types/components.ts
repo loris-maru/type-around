@@ -17,6 +17,7 @@ import type {
   SocialsBlockData,
   SpacerBlockData,
   StoreBlockData,
+  StoreProduct,
   TypefaceListBlockData,
   VideoBlockData,
 } from "./layout";
@@ -198,10 +199,11 @@ export type TypefaceDetailHeaderProps = {
 };
 
 export type BasicInformationSectionProps = {
+  studioId: string;
   name: string;
   hangeulName: string;
   categories: string[];
-  characters: number | string;
+  characters: string;
   releaseDate: string;
   description: string;
   supportedLanguages: string[];
@@ -233,10 +235,11 @@ export type BasicInformationSectionProps = {
   displayFontId: string;
   fontLineText: string;
   onDisplayFontChange: (fontId: string) => void;
-  // Typeface card (displayed font + content for typeface card)
-  typefaceCardDisplayFontId: string;
-  typefaceCardContent: string;
-  onTypefaceCardDisplayFontChange: (fontId: string) => void;
+  // File assets moved from former Assets section
+  heroLetter: string;
+  variableFontFile: string;
+  onHeroLetterChange: (value: string) => void;
+  onVariableFontFileChange: (value: string) => void;
 };
 
 export type DesignersSectionProps = {
@@ -323,19 +326,6 @@ export type FontsListSectionProps = {
   onAddFontClick: () => void;
 };
 
-export type FilesAssetsSectionProps = {
-  studioId: string;
-  typefaceSlug: string;
-  heroLetter: string;
-  specimen: string;
-  eula: string;
-  variableFontFile: string;
-  galleryImages: string[];
-  onFileChange: (field: string) => (value: string) => void;
-  onGalleryImagesChange: (images: string[]) => void;
-  onOpenEulaGenerator: () => void;
-};
-
 // ===========================================
 // Typeface Detail Section Props
 // ===========================================
@@ -350,22 +340,6 @@ export type VariableFontFileBlockProps = {
   value: string;
   onChange: (value: string) => void;
   studioId: string;
-};
-
-export type GalleryImagesBlockProps = {
-  studioId: string;
-  images: string[];
-  onChange: (images: string[]) => void;
-};
-
-export type AssetsSectionProps = {
-  studioId: string;
-  heroLetter: string;
-  variableFontFile: string;
-  galleryImages: string[];
-  onHeroLetterChange: (value: string) => void;
-  onVariableFontFileChange: (value: string) => void;
-  onGalleryImagesChange: (images: string[]) => void;
 };
 
 export type EulaSectionProps = {
@@ -472,7 +446,7 @@ export type FontInUseCardProps = {
 export type MemberAvatarProps = {
   imageUrl?: string;
   name: string;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xl";
 };
 
 export type MemberRoleBadgeProps = {
@@ -633,7 +607,6 @@ export type StoreBlockModalProps = {
   onClose: () => void;
   onSave: (data: StoreBlockData) => void;
   initialData?: StoreBlockData;
-  studioId: string;
 };
 
 export type BlogArticleModalProps = {
@@ -706,6 +679,7 @@ export type StudioSpacerBlockProps = {
 
 export type StudioStoreBlockProps = {
   data: StoreBlockData;
+  products: StoreProduct[];
 };
 
 export type StudioBlogBlockProps = {

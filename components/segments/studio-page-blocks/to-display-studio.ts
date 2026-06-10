@@ -1,5 +1,6 @@
 import type { Studio } from "@/types/studio";
 import type { Studio as DisplayStudio } from "@/types/typefaces";
+import { getCharacterCount } from "@/utils/character-count";
 
 export function toDisplayStudio(
   studio: Studio
@@ -42,7 +43,7 @@ export function toDisplayStudio(
           style:
             f.style || (f.isItalic ? "italic" : "normal"),
         })),
-        characters: tf.characters,
+        characters: getCharacterCount(tf.characters),
         releaseDate: tf.releaseDate,
         studio: tf.studio,
         gradient: tf.gradient,

@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
-import { RiArrowDownSLine } from "react-icons/ri";
+import { RiArrowDropRightLine } from "react-icons/ri";
 import type { CollapsibleSectionProps } from "@/types/components";
 import { cn } from "@/utils/class-names";
 
@@ -20,12 +20,15 @@ export default function CollapsibleSection({
   return (
     <section
       {...(id && { id })}
-      className="mb-6 scroll-mt-8"
+      className="scroll-mt-8"
     >
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between mb-4 pb-2 border-b border-neutral-200 cursor-pointer group"
+        className={cn(
+          "w-full flex items-center justify-between border-b border-neutral-200 cursor-pointer group",
+          isOpen ? "mb-4 pb-2" : "mb-4 pb-4"
+        )}
       >
         <h2 className="text-xl font-ortank font-bold">
           {title}
@@ -35,10 +38,10 @@ export default function CollapsibleSection({
             </span>
           )}
         </h2>
-        <RiArrowDownSLine
+        <RiArrowDropRightLine
           className={cn(
             "w-5 h-5 text-neutral-500 transition-transform duration-200",
-            isOpen && "rotate-180"
+            isOpen && "rotate-90"
           )}
         />
       </button>

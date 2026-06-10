@@ -25,6 +25,7 @@ import type {
 import type { Studio } from "@/types/studio";
 import type { Studio as MockStudio } from "@/types/typefaces";
 import { applyBlockBackgroundColor } from "@/utils/block-background-color";
+import { getCharacterCount } from "@/utils/character-count";
 
 function toMockStudio(studio: Studio): MockStudio {
   return {
@@ -61,7 +62,7 @@ function toMockStudio(studio: Studio): MockStudio {
         style:
           f.style || (f.isItalic ? "italic" : "normal"),
       })),
-      characters: tf.characters,
+      characters: getCharacterCount(tf.characters),
       releaseDate: tf.releaseDate,
       studio: tf.studio,
       gradient: tf.gradient,
@@ -173,7 +174,13 @@ export default function PreviewBlockRenderer({
         | StoreBlockData
         | undefined;
       if (!storeData) return null;
-      return <StudioStoreBlock data={storeData} />;
+      return (
+        <StudioStoreBlock
+          data={storeData}
+          products={studio.products ?? []}
+          studio={studio}
+        />
+      );
     }
 
     case "blog": {

@@ -125,7 +125,14 @@ export const StudioTypefaceSchema = z.object({
   description: z.string(),
   icon: z.string(),
   fonts: z.array(FontSchema),
-  characters: z.number().int().min(0),
+  // Free-form (users may type "13,500" or "Latin + Hangeul 2,350"). Legacy
+  // numeric values are coerced to string on read.
+  characters: z
+    .union([z.string(), z.number()])
+    .transform((v) =>
+      typeof v === "number" ? String(v) : v
+    )
+    .default(""),
   releaseDate: z
     .string()
     .refine(
@@ -342,6 +349,42 @@ export type StudioSpecimen = z.infer<
   typeof StudioSpecimenSchema
 >;
 
+// Store products (sold via the studio's Store section/block)
+export const StoreProductVariantSchema = z.object({
+  key: z.string(),
+  title: z.string().default(""),
+  price: z.number().min(0).default(0),
+});
+export type StoreProductVariant = z.infer<
+  typeof StoreProductVariantSchema
+>;
+
+export const StoreProductSchema = z.object({
+  key: z.string(),
+  name: z.string().default(""),
+  description: z.string().default(""),
+  category: z.string().default(""),
+  images: z.array(z.string()).default([]),
+  // Index into `images` for the cover image. Defaults to 0 so existing
+  // products keep their first image as the cover.
+  coverImageIndex: z
+    .number()
+    .int()
+    .min(0)
+    .optional()
+    .default(0),
+  available: z.boolean().optional().default(true),
+  /** @deprecated Use variants instead. Kept for backward compatibility. */
+  price: z.number().min(0).optional(),
+  variants: z
+    .array(StoreProductVariantSchema)
+    .optional()
+    .default([]),
+});
+export type StoreProduct = z.infer<
+  typeof StoreProductSchema
+>;
+
 export const FontInUseSchema = z.object({
   id: z.string(),
   images: z
@@ -376,6 +419,18 @@ export const StudioSchema = z.object({
     .or(z.literal("")),
   description: z.string().default(""),
   thumbnail: z.string().default(""),
+  // How the studio thumbnail should be rendered. Existing docs default to
+  // "image" (preserving today's behavior).
+  thumbnailType: z
+    .enum(["image", "color", "gradient"])
+    .default("image"),
+  thumbnailColor: z.string().default("#000000"),
+  thumbnailGradient: z
+    .object({
+      from: z.string().default("#FFF8E8"),
+      to: z.string().default("#F2F2F2"),
+    })
+    .default({ from: "#FFF8E8", to: "#F2F2F2" }),
   avatar: z.string().default(""),
   socialMedia: z.array(SocialMediaSchema),
   headerFont: z.string(),
@@ -397,6 +452,8 @@ export const StudioSchema = z.object({
   blogArticles: z
     .array(StudioBlogArticleSchema)
     .default([]),
+  // Store products (sold via Store section + Store block on the studio page)
+  products: z.array(StoreProductSchema).default([]),
   // Payment payouts (designers receive payouts)
   tossSubMerchantId: z.string().optional().default(""),
   paypalEmail: z
@@ -478,6 +535,16 @@ export const UpdateStudioInfoSchema = z.object({
     .optional(),
   website: z.string().url().or(z.literal("")).optional(),
   thumbnail: z.string().optional(),
+  thumbnailType: z
+    .enum(["image", "color", "gradient"])
+    .optional(),
+  thumbnailColor: z.string().optional(),
+  thumbnailGradient: z
+    .object({
+      from: z.string(),
+      to: z.string(),
+    })
+    .optional(),
   avatar: z.string().optional(),
 });
 export type UpdateStudioInfo = z.infer<
@@ -532,6 +599,9 @@ export type StudioContextValue = {
     }[];
     website?: string;
     thumbnail?: string;
+    thumbnailType?: "image" | "color" | "gradient";
+    thumbnailColor?: string;
+    thumbnailGradient?: { from: string; to: string };
     avatar?: string;
   }) => Promise<void>;
   updateSocialMedia: (
@@ -566,6 +636,9 @@ export type StudioContextValue = {
   updateStudio: (
     data: Partial<Omit<Studio, "id" | "ownerEmail">>
   ) => Promise<void>;
+  updateProducts: (
+    products: StoreProduct[]
+  ) => Promise<void>;
 };
 
 // Default values for creating a new studio
@@ -584,6 +657,9 @@ export const DEFAULT_STUDIO: Omit<
   website: "",
   description: "",
   thumbnail: "",
+  thumbnailType: "image",
+  thumbnailColor: "#000000",
+  thumbnailGradient: { from: "#FFF8E8", to: "#F2F2F2" },
   avatar: "",
   socialMedia: [],
   headerFont: "",
@@ -598,6 +674,7 @@ export const DEFAULT_STUDIO: Omit<
   specimens: [],
   fontsInUse: [],
   blogArticles: [],
+  products: [],
   tossSubMerchantId: "",
   paypalEmail: "",
   members: [],

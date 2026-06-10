@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAllStudiosForDisplay } from "@/lib/firebase/studios";
 import type { Studio } from "@/types/typefaces";
+import { getCharacterCount } from "@/utils/character-count";
 
 /**
  * GET /api/studios/display
@@ -45,7 +46,7 @@ export async function GET() {
           description: t.description,
           icon: t.icon,
           category: t.category,
-          characters: t.characters,
+          characters: getCharacterCount(t.characters),
           releaseDate: t.releaseDate,
           studio: s.name,
           typefaceCardContent: t.typefaceCardContent,

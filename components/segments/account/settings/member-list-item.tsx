@@ -46,18 +46,18 @@ export default function MemberListItem({
 
   return (
     <div className="flex w-full flex-col py-4">
-      <div className="flex w-full items-center justify-between">
-        {/* Left: Avatar, First name, Last name, email */}
-        <div className="flex w-full items-center gap-4">
+      <div className="flex w-full items-start justify-between gap-4">
+        {/* Left: Avatar + identity + biography */}
+        <div className="flex w-full items-start gap-4">
           <MemberAvatar
             imageUrl={member.imageUrl}
             name={
               `${member.firstName} ${member.lastName}`.trim() ||
               member.email
             }
-            size="md"
+            size={isProfileExpanded ? "md" : "xl"}
           />
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-0.5">
             <div className="flex items-center gap-2">
               <span className="font-medium font-whisper text-black">
                 {member.firstName} {member.lastName}
@@ -71,16 +71,15 @@ export default function MemberListItem({
             <span className="font-whisper text-neutral-500 text-sm">
               {member.email}
             </span>
-            {member.biography?.trim() &&
-              !isProfileExpanded && (
-                <p className="mt-2 max-w-md font-whisper text-neutral-600 text-sm leading-relaxed">
-                  {member.biography}
-                </p>
-              )}
+            {member.biography?.trim() && (
+              <p className="mt-2 font-whisper text-neutral-600 text-sm leading-relaxed">
+                {member.biography}
+              </p>
+            )}
           </div>
         </div>
 
-        {/* Right: Role dropdown, edit button (own row), delete button */}
+        {/* Right: Role dropdown, edit button, delete button */}
         <div className="flex shrink-0 items-center gap-2">
           {member.role === "owner" ? (
             <span className="font-medium font-whisper text-black">
@@ -139,7 +138,7 @@ export default function MemberListItem({
       {canEditProfile &&
         (onProfileUpdate || onError) &&
         isProfileExpanded && (
-          <div className="mt-3 pl-14">
+          <div className="mt-3 pl-20">
             <MemberProfileEdit
               member={member}
               studioId={studioId}

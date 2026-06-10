@@ -13,7 +13,6 @@ export const TYPEFACE_SECTIONS: TypefaceSection[] = [
   { id: "packages", label: "Packages" },
   { id: "eula", label: "EULA" },
   { id: "specimen", label: "Specimen" },
-  { id: "assets", label: "Assets" },
 ];
 
 export const DEFAULT_TYPEFACE_SUBSECTION =

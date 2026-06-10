@@ -64,7 +64,7 @@ export default function GradientColorInput({
 
   return (
     <div className="relative w-full">
-      <span className="mb-2 block font-normal font-whisper text-black text-sm">
+      <span className="mb-2 block font-medium font-whisper text-black text-xs uppercase tracking-wider">
         Gradient Color
       </span>
 

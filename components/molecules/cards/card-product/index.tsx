@@ -34,8 +34,14 @@ export default function CardProduct({
   const addToCart = useCartStore((s) => s.addToCart);
   const [isDescriptionExpanded, setIsDescriptionExpanded] =
     useState<boolean>(false);
+  const initialImageIndex = (() => {
+    const cover = product.coverImageIndex ?? 0;
+    const max = (product.images?.length ?? 0) - 1;
+    if (max < 0) return 0;
+    return Math.min(Math.max(0, cover), max);
+  })();
   const [currentImageIndex, setCurrentImageIndex] =
-    useState(0);
+    useState(initialImageIndex);
   const [isClamped, setIsClamped] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const descRef = useRef<HTMLParagraphElement>(null);

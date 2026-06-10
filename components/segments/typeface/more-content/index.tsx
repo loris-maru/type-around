@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SmallTypefaceCard } from "@/components/molecules/cards";
 import type { Studio } from "@/types/typefaces";
+import { getCharacterCount } from "@/utils/character-count";
 import { slugify } from "@/utils/slugify";
 
 type RawTypeface = {
@@ -8,7 +9,7 @@ type RawTypeface = {
   slug?: string;
   category?: string[];
   fonts: { id: string; file?: string }[];
-  characters?: number;
+  characters?: string | number;
   heroLetter?: string;
   headerImage?: string;
   icon?: string;
@@ -59,7 +60,7 @@ export default function MoreContent({
           }
           category={tf.category?.[0] ?? ""}
           weights={tf.fonts.length}
-          glyphs={tf.characters ?? 0}
+          glyphs={getCharacterCount(tf.characters)}
           titleFontUrl={titleFontUrl}
           textFontUrl={textFontUrl}
         />

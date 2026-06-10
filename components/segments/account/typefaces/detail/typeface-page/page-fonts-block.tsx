@@ -55,9 +55,6 @@ export default function PageFontsBlock({
 }: PageFontsBlockProps) {
   return (
     <div className="mb-8">
-      <h3 className="mb-3 font-bold font-ortank text-base">
-        Page fonts
-      </h3>
       <div className="grid grid-cols-2 gap-4">
         {/* Title font */}
         <div className="flex flex-col gap-3">

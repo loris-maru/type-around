@@ -123,24 +123,18 @@ export type SpacerBlockData = {
 
 // --- Store block ---
 
-export type StoreProductVariant = {
-  key: string;
-  title: string;
-  price: number;
-};
-
-export type StoreProduct = {
-  key: string;
-  name: string;
-  description: string;
-  images: string[];
-  /** @deprecated Use variants instead. Kept for backward compatibility. */
-  price?: number;
-  variants?: StoreProductVariant[];
-};
+// Products themselves live on the Studio (see types/studio.ts).
+// The Store block only renders them with the styling defined here.
+export type {
+  StoreProduct,
+  StoreProductVariant,
+} from "./studio";
 
 export type StoreBlockData = {
-  products: StoreProduct[];
+  backgroundColor?: string;
+  fontColor?: string;
+  marginTop?: BlockMargin;
+  marginBottom?: BlockMargin;
 };
 
 // --- Blog block ---

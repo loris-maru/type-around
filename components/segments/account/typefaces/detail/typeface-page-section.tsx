@@ -26,49 +26,69 @@ export default function TypefacePageSection({
   studioTypefaces,
 }: TypefacePageSectionProps) {
   return (
-    <CollapsibleSection title="Typeface page">
-      <div className="mt-4">
-        <PageBackgroundBlock
-          value={
-            typefacePageBackground ?? {
-              type: "color",
-              color: "#ffffff",
-              image: "",
+    <div className="flex flex-col">
+      <CollapsibleSection
+        title="Background"
+        defaultOpen={false}
+      >
+        <div className="pb-4">
+          <PageBackgroundBlock
+            value={
+              typefacePageBackground ?? {
+                type: "color",
+                color: "#ffffff",
+                image: "",
+              }
             }
-          }
-          onChange={onPageBackgroundChange}
-          studioId={studioId}
-        />
-        <PageFontsBlock
-          titleFont={pageTitleFont}
-          textFont={pageTextFont}
-          titleFontSameAsText={pageTitleFontSameAsText}
-          textFontSameAsTitle={pageTextFontSameAsTitle}
-          onTitleFontChange={onPageTitleFontChange}
-          onTextFontChange={onPageTextFontChange}
-          onTitleFontSameAsTextChange={
-            onPageTitleFontSameAsTextChange
-          }
-          onTextFontSameAsTitleChange={
-            onPageTextFontSameAsTitleChange
-          }
-          studioId={studioId}
-        />
-        <TypefacePageLayoutBuilder
-          key={typefaceId}
-          value={typefacePageLayout}
-          onChange={onLayoutChange}
-          studioId={studioId}
-          typefaceId={typefaceId}
-          typefaceHangeulName={typefaceHangeulName}
-          pageTitleFont={pageTitleFont}
-          pageTextFont={pageTextFont}
-          pageTitleFontSameAsText={pageTitleFontSameAsText}
-          typefacePageBackground={typefacePageBackground}
-          typefaceFonts={typefaceFonts}
-          studioTypefaces={studioTypefaces}
-        />
-      </div>
-    </CollapsibleSection>
+            onChange={onPageBackgroundChange}
+            studioId={studioId}
+          />
+        </div>
+      </CollapsibleSection>
+
+      <CollapsibleSection
+        title="Fonts"
+        defaultOpen={false}
+      >
+        <div className="pb-4">
+          <PageFontsBlock
+            titleFont={pageTitleFont}
+            textFont={pageTextFont}
+            titleFontSameAsText={pageTitleFontSameAsText}
+            textFontSameAsTitle={pageTextFontSameAsTitle}
+            onTitleFontChange={onPageTitleFontChange}
+            onTextFontChange={onPageTextFontChange}
+            onTitleFontSameAsTextChange={
+              onPageTitleFontSameAsTextChange
+            }
+            onTextFontSameAsTitleChange={
+              onPageTextFontSameAsTitleChange
+            }
+            studioId={studioId}
+          />
+        </div>
+      </CollapsibleSection>
+
+      <CollapsibleSection title="Layout">
+        <div className="pb-4">
+          <TypefacePageLayoutBuilder
+            key={typefaceId}
+            value={typefacePageLayout}
+            onChange={onLayoutChange}
+            studioId={studioId}
+            typefaceId={typefaceId}
+            typefaceHangeulName={typefaceHangeulName}
+            pageTitleFont={pageTitleFont}
+            pageTextFont={pageTextFont}
+            pageTitleFontSameAsText={
+              pageTitleFontSameAsText
+            }
+            typefacePageBackground={typefacePageBackground}
+            typefaceFonts={typefaceFonts}
+            studioTypefaces={studioTypefaces}
+          />
+        </div>
+      </CollapsibleSection>
+    </div>
   );
 }

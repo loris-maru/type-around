@@ -20,6 +20,7 @@ import {
   updateStudioBlogArticles,
   updateStudioInformation,
   updateStudioPage,
+  updateStudioProducts,
   updateStudioSocialMedia,
   updateStudioSpecimen,
   updateStudioTypeface,
@@ -28,6 +29,7 @@ import type { StudioBlogArticle } from "@/types/blog";
 import type { LayoutItem } from "@/types/layout";
 import type {
   SocialMedia,
+  StoreProduct,
   Studio,
   StudioContextValue,
   StudioSpecimen,
@@ -131,6 +133,9 @@ export function StudioProvider({
       }[];
       website?: string;
       thumbnail?: string;
+      thumbnailType?: "image" | "color" | "gradient";
+      thumbnailColor?: string;
+      thumbnailGradient?: { from: string; to: string };
       avatar?: string;
     }) => {
       if (!studio) throw new Error("No studio loaded");
@@ -211,6 +216,17 @@ export function StudioProvider({
       );
       setStudio((prev) =>
         prev ? { ...prev, blogArticles } : null
+      );
+    },
+    [studio]
+  );
+
+  const updateProducts = useCallback(
+    async (products: StoreProduct[]) => {
+      if (!studio) throw new Error("No studio loaded");
+      await updateStudioProducts(studio.id, products);
+      setStudio((prev) =>
+        prev ? { ...prev, products } : null
       );
     },
     [studio]
@@ -351,6 +367,7 @@ export function StudioProvider({
       updateSocialMedia,
       updateStudioPageSettings,
       updateBlogArticles,
+      updateProducts,
       addTypeface,
       removeTypeface,
       updateTypeface,
@@ -367,6 +384,7 @@ export function StudioProvider({
       updateSocialMedia,
       updateStudioPageSettings,
       updateBlogArticles,
+      updateProducts,
       addTypeface,
       removeTypeface,
       updateTypeface,

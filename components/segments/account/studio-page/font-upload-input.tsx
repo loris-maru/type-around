@@ -166,14 +166,14 @@ export default function FontUploadInput({
   })();
 
   return (
-    <div className="relative w-full">
-      <div className="mb-2 flex flex-col gap-0.5">
-        <span className="block font-normal font-whisper text-black text-sm">
+    <div className="relative flex h-full w-full flex-col border border-neutral-200 rounded-lg p-4">
+      <div className="mb-2 flex flex-row w-full justify-between gap-0.5">
+        <div className="block font-medium font-whisper text-black text-xs uppercase tracking-wider">
           {label}
-        </span>
-        <span className="block text-neutral-400 text-xs">
-          Upload only woff2 files.
-        </span>
+        </div>
+        <div className="block text-neutral-400 text-xs">
+          WOFF2 only
+        </div>
       </div>
 
       <input
@@ -186,14 +186,14 @@ export default function FontUploadInput({
       />
 
       {isUploading ? (
-        <div className="flex w-full flex-col items-center justify-center gap-3 rounded-lg border-2 border-neutral-300 border-dashed bg-neutral-50 px-6 py-8">
+        <div className="flex flex-1 w-full flex-col items-center justify-center gap-3 rounded-lg border-2 border-neutral-300 border-dashed bg-neutral-50 px-6 py-8">
           <RiLoader4Line className="h-10 w-10 animate-spin text-neutral-400" />
           <p className="text-neutral-500 text-sm">
             Uploading...
           </p>
         </div>
       ) : currentValue ? (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-1 flex-col gap-3">
           <StudioPageFontFace
             family={previewFamily}
             url={currentValue}
@@ -259,7 +259,7 @@ export default function FontUploadInput({
           onDrop={handleDrop}
           onClick={() => inputRef.current?.click()}
           className={cn(
-            "w-full cursor-pointer rounded-lg border-2 border-dashed px-6 py-8",
+            "flex-1 w-full cursor-pointer rounded-lg border-2 border-dashed px-6 py-8",
             "flex flex-col items-center justify-center gap-3 transition-colors",
             isDragging
               ? "border-neutral-300 bg-neutral-100"

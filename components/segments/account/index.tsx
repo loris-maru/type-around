@@ -34,6 +34,7 @@ const AccountPayments = dynamic(
 
 import AccountStudioPage from "./studio-page";
 import AccountBlog from "./blog";
+import AccountStore from "./store";
 import AccountTypefaces from "./typefaces";
 import TypefaceDetail from "./typefaces/typeface-detail";
 
@@ -56,6 +57,7 @@ const NAV_COMPONENTS: Record<string, ComponentType> = {
   settings: AccountMembers,
   designers: AccountMembers,
   typefaces: AccountTypefaces,
+  store: AccountStore,
   feedback: AccountFeedback,
   "fonts-in-use": AccountFontsInUse,
   payments: AccountPayments,

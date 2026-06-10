@@ -14,6 +14,7 @@ import { getStudioBySlug } from "@/lib/firebase/studios";
 import type { TypefaceLayoutItem } from "@/types/layout-typeface";
 import type { Studio, Typeface } from "@/types/typefaces";
 import type { TypetesterFont } from "@/types/typetester";
+import { getCharacterCount } from "@/utils/character-count";
 import { slugify } from "@/utils/slugify";
 import type { Metadata } from "next";
 
@@ -156,6 +157,7 @@ export default async function TypefacePage({
           ? firebaseStudio.gradient.from
           : "#FFF8E8",
     category: rawTypeface.category || null,
+    characters: getCharacterCount(rawTypeface.characters),
     fonts: rawTypeface.fonts.map((font) => ({
       ...font,
       price: font.printPrice || font.price || 0,
@@ -191,6 +193,7 @@ export default async function TypefacePage({
       (tf, index) => ({
         ...tf,
         id: hash + index,
+        characters: getCharacterCount(tf.characters),
         fonts: tf.fonts.map((font) => ({
           ...font,
           price: font.printPrice || font.price || 0,
@@ -256,6 +259,7 @@ export default async function TypefacePage({
         typetesterFonts={typetesterFonts}
         typefaceFonts={typeface.fonts}
         studio={studioWithTypefaces}
+        storeProducts={firebaseStudio.products ?? []}
         rawTypefaces={firebaseStudio.typefaces}
         currentTypefaceSlug={typefaceName}
         titleFontUrl={

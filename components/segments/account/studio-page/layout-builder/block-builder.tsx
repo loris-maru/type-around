@@ -151,6 +151,15 @@ export default function BlockBuilder({
         text: data?.foregroundColor ?? "#000000",
       };
     }
+    if (blockId === "store") {
+      const data = d as StoreBlockData | undefined;
+      return {
+        bg: getBlockBackgroundSwatchColor(
+          data?.backgroundColor
+        ),
+        text: data?.fontColor ?? "#000000",
+      };
+    }
     return null;
   };
 
@@ -176,13 +185,6 @@ export default function BlockBuilder({
     if (blockId === "spacer") {
       const d = item.data as SpacerBlockData;
       return d.size?.toUpperCase() || null;
-    }
-    if (blockId === "store") {
-      const d = item.data as StoreBlockData;
-      const count = d.products?.length || 0;
-      return count > 0
-        ? `${count} product${count > 1 ? "s" : ""}`
-        : null;
     }
     return null;
   };
@@ -429,7 +431,6 @@ export default function BlockBuilder({
           initialData={
             editingItem.data as StoreBlockData | undefined
           }
-          studioId={studioId}
         />
       )}
 

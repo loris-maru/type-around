@@ -42,6 +42,7 @@ export default function TypefacePageBlocks({
   currentTypefaceSlug,
   titleFontUrl,
   textFontUrl,
+  storeProducts,
 }: TypefacePageBlocksProps) {
   const galleryImages = (
     rawTypeface.galleryImages || []
@@ -131,6 +132,7 @@ export default function TypefacePageBlocks({
               <GoodiesShopBlock
                 key={block.key}
                 data={storeData}
+                products={storeProducts ?? []}
               />
             );
           }
