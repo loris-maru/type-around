@@ -125,6 +125,8 @@ export type FileDropZoneProps = {
   icon?: "file" | "image";
   studioId: string;
   folder: UploadFolder;
+  /** Path to an image shown in the info-icon tooltip */
+  tooltipImage?: string;
 };
 
 // ===========================================

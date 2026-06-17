@@ -26,8 +26,8 @@ export const TYPEFACE_VISION_PLAYFUL = [
 ] as const;
 
 export const TYPEFACE_VISION_FRAME = [
-  "In Frame",
-  "Out of Frame",
+  "네모꼴 (frame)",
+  "탈네모꼴 (out of frame)",
 ] as const;
 
 export const TYPEFACE_VISION_SERIF = [
@@ -103,10 +103,13 @@ export function typefaceVisionToSearchString(
   for (const frame of splitVisionValue(vision.frame)) {
     const frameLower = frame.toLowerCase();
     parts.push(frame, frameLower);
-    if (frameLower.includes("in"))
-      parts.push("in frame", "inframe");
-    if (frameLower.includes("out"))
-      parts.push("out of frame", "outframe");
+    if (
+      frameLower.includes("네모꼴") &&
+      !frameLower.includes("탈")
+    )
+      parts.push("in frame", "inframe", "네모꼴");
+    if (frameLower.includes("탈네모꼴"))
+      parts.push("out of frame", "outframe", "탈네모꼴");
   }
   for (const serif of splitVisionValue(vision.serif)) {
     parts.push(serif);

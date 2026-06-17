@@ -10,6 +10,7 @@ import {
   RiAlignCenter,
   RiAlignLeft,
   RiAlignRight,
+  RiAddLine,
 } from "react-icons/ri";
 import type { TypeTesterBlockData } from "@/types/layout-typeface";
 import type { TypeTesterConfig } from "@/types/studio";
@@ -25,6 +26,12 @@ type ColState = {
   textAlign: TextAlign;
 };
 
+type TesterBlock = {
+  id: string;
+  cols: 1 | 2 | 3;
+  slots: ColState[];
+};
+
 const DEFAULT_CONTENTS = {
   col1: "서체제작을 통해 늘 새로운 유형의 세상을 찾아 나가고 있습니다. 다양한 서체들과 진행 중인 여러 작업들을 통해서 저희의 열정을 끊임없이 보여주고자 합니다.",
   col2: [
@@ -38,20 +45,193 @@ const DEFAULT_CONTENTS = {
   ],
 } as const;
 
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
 function initCol(
   fontId: string,
   content: string,
   fontSize: number,
+  lineHeight: number,
   defaultContent: string
 ): ColState {
   return {
     fontId,
     content: content || defaultContent,
     fontSize: fontSize || 48,
-    lineHeight: 1.2,
+    lineHeight: lineHeight || 1.2,
     textAlign: "left",
   };
 }
+
+function makeBlankSlot(
+  fontSize: number,
+  lineHeight = 1.2
+): ColState {
+  return {
+    fontId: "",
+    content: "",
+    fontSize,
+    lineHeight,
+    textAlign: "left",
+  };
+}
+
+const GRID_CLASS: Record<1 | 2 | 3, string> = {
+  1: "",
+  2: "grid grid-cols-2 divide-x divide-neutral-200",
+  3: "grid grid-cols-3 divide-x divide-neutral-200",
+};
+
+// ── Build initial 3 blocks from config ───────────────────────────────────────
+
+function buildInitialBlocks(
+  cfg: TypeTesterConfig | undefined
+): TesterBlock[] {
+  const c = cfg ?? {
+    col1: {
+      fontSize: 60,
+      lineHeight: 1.2,
+      fontId: "",
+      content: "",
+    },
+    col2: {
+      slots: [
+        {
+          fontId: "",
+          content: "",
+          fontSize: 30,
+          lineHeight: 1.2,
+        },
+        {
+          fontId: "",
+          content: "",
+          fontSize: 30,
+          lineHeight: 1.2,
+        },
+      ],
+    },
+    col3: {
+      slots: [
+        {
+          fontId: "",
+          content: "",
+          fontSize: 20,
+          lineHeight: 1.2,
+        },
+        {
+          fontId: "",
+          content: "",
+          fontSize: 20,
+          lineHeight: 1.2,
+        },
+        {
+          fontId: "",
+          content: "",
+          fontSize: 20,
+          lineHeight: 1.2,
+        },
+      ],
+    },
+  };
+
+  const block1: TesterBlock = {
+    id: "initial-1",
+    cols: 1,
+    slots: [
+      initCol(
+        c.col1.fontId,
+        c.col1.content,
+        c.col1.fontSize || 60,
+        c.col1.lineHeight || 1.2,
+        DEFAULT_CONTENTS.col1
+      ),
+    ],
+  };
+
+  const block2: TesterBlock = {
+    id: "initial-2",
+    cols: 2,
+    slots: (
+      c.col2.slots ?? [
+        {
+          fontId: "",
+          content: "",
+          fontSize: 30,
+          lineHeight: 1.2,
+        },
+        {
+          fontId: "",
+          content: "",
+          fontSize: 30,
+          lineHeight: 1.2,
+        },
+      ]
+    ).map((s, i) =>
+      initCol(
+        s.fontId,
+        s.content,
+        (s as { fontSize?: number }).fontSize || 30,
+        (s as { lineHeight?: number }).lineHeight || 1.2,
+        DEFAULT_CONTENTS.col2[i] ?? DEFAULT_CONTENTS.col2[0]
+      )
+    ),
+  };
+
+  const block3: TesterBlock = {
+    id: "initial-3",
+    cols: 3,
+    slots: (
+      c.col3.slots ?? [
+        {
+          fontId: "",
+          content: "",
+          fontSize: 20,
+          lineHeight: 1.2,
+        },
+        {
+          fontId: "",
+          content: "",
+          fontSize: 20,
+          lineHeight: 1.2,
+        },
+        {
+          fontId: "",
+          content: "",
+          fontSize: 20,
+          lineHeight: 1.2,
+        },
+      ]
+    ).map((s, i) =>
+      initCol(
+        s.fontId,
+        s.content,
+        (s as { fontSize?: number }).fontSize || 20,
+        (s as { lineHeight?: number }).lineHeight || 1.2,
+        DEFAULT_CONTENTS.col3[i] ?? DEFAULT_CONTENTS.col3[0]
+      )
+    ),
+  };
+
+  return [block1, block2, block3];
+}
+
+function makeNewBlock(cols: 1 | 2 | 3): TesterBlock {
+  const defaults: Record<1 | 2 | 3, number> = {
+    1: 60,
+    2: 30,
+    3: 20,
+  };
+  const fs = defaults[cols];
+  return {
+    id: `block-${Date.now()}-${Math.random()}`,
+    cols,
+    slots: Array.from({ length: cols }, () =>
+      makeBlankSlot(fs)
+    ),
+  };
+}
+
+// ── Sub-components ────────────────────────────────────────────────────────────
 
 function FontFaceStyles({
   fontIds,
@@ -165,7 +345,6 @@ function ParamBar({
 
       <span className="h-3 w-px shrink-0 bg-neutral-200" />
 
-      {/* Font size slider */}
       <ParamSlider
         label="Sz"
         value={state.fontSize}
@@ -180,7 +359,6 @@ function ParamBar({
 
       <span className="h-3 w-px shrink-0 bg-neutral-200" />
 
-      {/* Line height slider */}
       <ParamSlider
         label="Lh"
         value={state.lineHeight}
@@ -259,7 +437,6 @@ function TypeTesterColumn({
       el.style.height = `${el.scrollHeight}px`;
     };
     resize();
-    // Re-run after custom font may have finished loading
     const t = setTimeout(resize, 300);
     return () => clearTimeout(t);
   }, [
@@ -275,7 +452,6 @@ function TypeTesterColumn({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Param bar — absolute overlay, hidden by default, shown on hover */}
       <div
         className="absolute top-0 right-0 left-0 z-10 transition-opacity duration-150"
         style={{
@@ -292,9 +468,9 @@ function TypeTesterColumn({
       <textarea
         ref={textareaRef}
         value={state.content}
-        onChange={(e) => {
-          onChange({ ...state, content: e.target.value });
-        }}
+        onChange={(e) =>
+          onChange({ ...state, content: e.target.value })
+        }
         placeholder="Type here…"
         rows={1}
         className="w-full resize-none bg-transparent p-6 focus:outline-none"
@@ -311,70 +487,75 @@ function TypeTesterColumn({
   );
 }
 
-type BlockState = {
-  col1: ColState;
-  col2: ColState[];
-  col3: ColState[];
-};
+// ── Add-block picker ──────────────────────────────────────────────────────────
 
-function buildInitialState(
-  cfg: TypeTesterConfig | undefined
-): BlockState {
-  const c = cfg ?? {
-    col1: { fontSize: 60, fontId: "", content: "" },
-    col2: {
-      fontSize: 30,
-      slots: [
-        { fontId: "", content: "" },
-        { fontId: "", content: "" },
-      ],
-    },
-    col3: {
-      fontSize: 20,
-      slots: [
-        { fontId: "", content: "" },
-        { fontId: "", content: "" },
-        { fontId: "", content: "" },
-      ],
-    },
-  };
+function AddBlockButton({
+  onAdd,
+}: {
+  onAdd: (cols: 1 | 2 | 3) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
 
-  return {
-    col1: initCol(
-      c.col1.fontId,
-      c.col1.content,
-      c.col1.fontSize || 60,
-      DEFAULT_CONTENTS.col1
-    ),
-    col2: (
-      c.col2.slots ?? [
-        { fontId: "", content: "" },
-        { fontId: "", content: "" },
-      ]
-    ).map((s, i) =>
-      initCol(
-        s.fontId,
-        s.content,
-        c.col2.fontSize || 30,
-        DEFAULT_CONTENTS.col2[i] ?? DEFAULT_CONTENTS.col2[0]
-      )
-    ),
-    col3: (
-      c.col3.slots ?? [
-        { fontId: "", content: "" },
-        { fontId: "", content: "" },
-        { fontId: "", content: "" },
-      ]
-    ).map((s, i) =>
-      initCol(
-        s.fontId,
-        s.content,
-        c.col3.fontSize || 20,
-        DEFAULT_CONTENTS.col3[i] ?? DEFAULT_CONTENTS.col3[0]
-      )
-    ),
-  };
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: MouseEvent) => {
+      if (
+        ref.current &&
+        !ref.current.contains(e.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () =>
+      document.removeEventListener("mousedown", handler);
+  }, [open]);
+
+  const options: { cols: 1 | 2 | 3; label: string }[] = [
+    { cols: 1, label: "1 column" },
+    { cols: 2, label: "2 columns" },
+    { cols: 3, label: "3 columns" },
+  ];
+
+  return (
+    <div
+      ref={ref}
+      className="relative flex justify-center"
+    >
+      <button
+        type="button"
+        onClick={() => setOpen((p) => !p)}
+        className="flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-4 py-2 font-whisper text-neutral-500 text-sm transition-colors hover:border-neutral-400 hover:text-black"
+      >
+        <RiAddLine
+          className={`h-4 w-4 transition-transform duration-200 ${open ? "rotate-45" : ""}`}
+        />
+        Add block
+      </button>
+
+      {open && (
+        <div className="absolute bottom-full mb-2 flex flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-lg">
+          {options.map(({ cols, label }) => (
+            <button
+              key={cols}
+              type="button"
+              onClick={() => {
+                onAdd(cols);
+                setOpen(false);
+              }}
+              className="whitespace-nowrap px-5 py-3 text-left font-whisper text-neutral-700 text-sm transition-colors hover:bg-neutral-50 hover:text-black"
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
+
+// ── Main export ───────────────────────────────────────────────────────────────
 
 export default function TypeTesterBlock({
   typetesterFonts,
@@ -385,8 +566,8 @@ export default function TypeTesterBlock({
   data?: TypeTesterBlockData;
   typeTesterConfig?: TypeTesterConfig;
 }) {
-  const [state, setState] = useState<BlockState>(() =>
-    buildInitialState(typeTesterConfig)
+  const [blocks, setBlocks] = useState<TesterBlock[]>(() =>
+    buildInitialBlocks(typeTesterConfig)
   );
 
   const backgroundColor =
@@ -397,31 +578,32 @@ export default function TypeTesterBlock({
   const allFontIds = useMemo(
     () =>
       [
-        ...new Set([
-          state.col1.fontId,
-          ...state.col2.map((c) => c.fontId),
-          ...state.col3.map((c) => c.fontId),
-        ]),
+        ...new Set(
+          blocks.flatMap((b) =>
+            b.slots.map((s) => s.fontId)
+          )
+        ),
       ].filter(Boolean),
-    [state]
+    [blocks]
   );
 
-  const patchCol1 = (s: ColState) =>
-    setState((prev) => ({ ...prev, col1: s }));
-
-  const patchCol2 = (i: number, s: ColState) =>
-    setState((prev) => {
-      const slots = [...prev.col2];
-      slots[i] = s;
-      return { ...prev, col2: slots };
+  const patchSlot = (
+    blockIdx: number,
+    slotIdx: number,
+    s: ColState
+  ) => {
+    setBlocks((prev) => {
+      const next = [...prev];
+      const slots = [...next[blockIdx].slots];
+      slots[slotIdx] = s;
+      next[blockIdx] = { ...next[blockIdx], slots };
+      return next;
     });
+  };
 
-  const patchCol3 = (i: number, s: ColState) =>
-    setState((prev) => {
-      const slots = [...prev.col3];
-      slots[i] = s;
-      return { ...prev, col3: slots };
-    });
+  const addBlock = (cols: 1 | 2 | 3) => {
+    setBlocks((prev) => [...prev, makeNewBlock(cols)]);
+  };
 
   return (
     <div style={{ backgroundColor }}>
@@ -430,40 +612,28 @@ export default function TypeTesterBlock({
         fonts={typetesterFonts}
       />
 
-      {/* 1 column */}
-      <div className="border-neutral-200 border-b">
-        <TypeTesterColumn
-          state={state.col1}
-          onChange={patchCol1}
-          foregroundColor={foregroundColor}
-          fonts={typetesterFonts}
-        />
-      </div>
+      {blocks.map((block, blockIdx) => (
+        <div
+          key={block.id}
+          className={`border-neutral-200 border-b ${GRID_CLASS[block.cols]}`}
+        >
+          {block.slots.map((slot, slotIdx) => (
+            <TypeTesterColumn
+              key={slotIdx}
+              state={slot}
+              onChange={(s) =>
+                patchSlot(blockIdx, slotIdx, s)
+              }
+              foregroundColor={foregroundColor}
+              fonts={typetesterFonts}
+            />
+          ))}
+        </div>
+      ))}
 
-      {/* 2 columns */}
-      <div className="grid grid-cols-2 border-neutral-200 border-b divide-x divide-neutral-200">
-        {state.col2.map((col, i) => (
-          <TypeTesterColumn
-            key={i}
-            state={col}
-            onChange={(s) => patchCol2(i, s)}
-            foregroundColor={foregroundColor}
-            fonts={typetesterFonts}
-          />
-        ))}
-      </div>
-
-      {/* 3 columns */}
-      <div className="grid grid-cols-3 divide-x divide-neutral-200">
-        {state.col3.map((col, i) => (
-          <TypeTesterColumn
-            key={i}
-            state={col}
-            onChange={(s) => patchCol3(i, s)}
-            foregroundColor={foregroundColor}
-            fonts={typetesterFonts}
-          />
-        ))}
+      {/* Add block */}
+      <div className="border-neutral-200 border-b py-4">
+        <AddBlockButton onAdd={addBlock} />
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
+import CollapsibleSection from "@/components/global/collapsible-section";
 import { useStudio } from "@/hooks/use-studio";
 import AccountSaveBar from "../account-save-bar";
 import AccountForm from "../form";
@@ -258,22 +259,28 @@ export default function AccountInformation() {
   }, [handleSave]);
 
   return (
-    <div className="relative flex w-full flex-col gap-y-12">
-      <AccountForm
-        title="Studio Information"
-        FORM_FIELDS={ACCOUNT_FORM}
-        initialValues={studioValues}
-        onChange={handleStudioChange}
-        isLoading={isLoading}
-      />
-      <StudioImages />
-      <AccountForm
-        title="Social Media"
-        FORM_FIELDS={SOCIAL_FORM}
-        initialValues={socialValues}
-        onChange={handleSocialChange}
-        isLoading={isLoading}
-      />
+    <div className="relative flex w-full flex-col gap-y-2">
+      <CollapsibleSection title="Information">
+        <AccountForm
+          title=""
+          FORM_FIELDS={ACCOUNT_FORM}
+          initialValues={studioValues}
+          onChange={handleStudioChange}
+          isLoading={isLoading}
+        />
+      </CollapsibleSection>
+      <CollapsibleSection title="Images">
+        <StudioImages />
+      </CollapsibleSection>
+      <CollapsibleSection title="Social media">
+        <AccountForm
+          title=""
+          FORM_FIELDS={SOCIAL_FORM}
+          initialValues={socialValues}
+          onChange={handleSocialChange}
+          isLoading={isLoading}
+        />
+      </CollapsibleSection>
 
       <div className="fixed right-6 bottom-6 z-50">
         <AccountSaveBar

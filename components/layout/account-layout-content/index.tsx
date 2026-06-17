@@ -58,7 +58,7 @@ export default function AccountLayoutContent({
         }}
       />
       {!isFullWidthEditorPage && (
-        <div className="fixed z-50 w-68">
+        <div className="fixed z-50 w-68 top-24">
           <AccountNavigation />
         </div>
       )}

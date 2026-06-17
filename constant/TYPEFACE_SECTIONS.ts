@@ -5,12 +5,12 @@ export interface TypefaceSection {
 
 export const TYPEFACE_SECTIONS: TypefaceSection[] = [
   { id: "information", label: "Information" },
-  { id: "designers", label: "Contributors" },
   { id: "fonts", label: "Fonts" },
   { id: "packages", label: "Packages" },
+  { id: "character-set", label: "Character set" },
+  { id: "designers", label: "Contributors" },
   { id: "eula", label: "EULA" },
   { id: "specimen", label: "Specimen" },
-  { id: "character-set", label: "Character set" },
   { id: "type-tester", label: "Type tester" },
   { id: "typeface-page", label: "⚡ Page builder" },
 ];

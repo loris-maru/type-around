@@ -76,7 +76,7 @@ export default function InputMultiSelect({
         id={id}
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full items-center justify-between rounded-lg border border-neutral-300 bg-transparent px-4 py-3 text-left focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
+        className="flex w-full items-center justify-between rounded-lg border border-neutral-300 bg-white px-4 py-3 text-left focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black"
       >
         <span
           className={
@@ -100,8 +100,7 @@ export default function InputMultiSelect({
         <div
           className="absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-lg border border-neutral-300 shadow-lg"
           style={{
-            backgroundColor:
-              backgroundColor ?? "transparent",
+            backgroundColor: backgroundColor ?? "white",
           }}
         >
           {options.map((option) => {

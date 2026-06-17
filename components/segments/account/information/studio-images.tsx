@@ -84,9 +84,6 @@ export default function StudioImages() {
 
   return (
     <div className="relative w-full">
-      <h2 className="mb-6 font-bold font-ortank text-xl">
-        Studio Images
-      </h2>
       <div className="grid grid-cols-2 gap-6">
         <div className="flex flex-col gap-4">
           <div>

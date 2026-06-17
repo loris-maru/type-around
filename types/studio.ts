@@ -128,46 +128,100 @@ export type GlyphCollection = z.infer<
 const TypeTesterSlotSchema = z.object({
   fontId: z.string().default(""),
   content: z.string().default(""),
+  fontSize: z.number().default(30),
+  lineHeight: z.number().default(1.2),
 });
 
 export const TypeTesterConfigSchema = z.object({
   col1: z
     .object({
-      fontSize: z.number().default(48),
+      fontSize: z.number().default(60),
+      lineHeight: z.number().default(1.2),
       fontId: z.string().default(""),
       content: z.string().default(""),
     })
-    .default({ fontSize: 48, fontId: "", content: "" }),
+    .default({
+      fontSize: 60,
+      lineHeight: 1.2,
+      fontId: "",
+      content: "",
+    }),
   col2: z
     .object({
-      fontSize: z.number().default(48),
       slots: z.array(TypeTesterSlotSchema).default([
-        { fontId: "", content: "" },
-        { fontId: "", content: "" },
+        {
+          fontId: "",
+          content: "",
+          fontSize: 30,
+          lineHeight: 1.2,
+        },
+        {
+          fontId: "",
+          content: "",
+          fontSize: 30,
+          lineHeight: 1.2,
+        },
       ]),
     })
     .default({
-      fontSize: 48,
       slots: [
-        { fontId: "", content: "" },
-        { fontId: "", content: "" },
+        {
+          fontId: "",
+          content: "",
+          fontSize: 30,
+          lineHeight: 1.2,
+        },
+        {
+          fontId: "",
+          content: "",
+          fontSize: 30,
+          lineHeight: 1.2,
+        },
       ],
     }),
   col3: z
     .object({
-      fontSize: z.number().default(48),
       slots: z.array(TypeTesterSlotSchema).default([
-        { fontId: "", content: "" },
-        { fontId: "", content: "" },
-        { fontId: "", content: "" },
+        {
+          fontId: "",
+          content: "",
+          fontSize: 20,
+          lineHeight: 1.2,
+        },
+        {
+          fontId: "",
+          content: "",
+          fontSize: 20,
+          lineHeight: 1.2,
+        },
+        {
+          fontId: "",
+          content: "",
+          fontSize: 20,
+          lineHeight: 1.2,
+        },
       ]),
     })
     .default({
-      fontSize: 48,
       slots: [
-        { fontId: "", content: "" },
-        { fontId: "", content: "" },
-        { fontId: "", content: "" },
+        {
+          fontId: "",
+          content: "",
+          fontSize: 20,
+          lineHeight: 1.2,
+        },
+        {
+          fontId: "",
+          content: "",
+          fontSize: 20,
+          lineHeight: 1.2,
+        },
+        {
+          fontId: "",
+          content: "",
+          fontSize: 20,
+          lineHeight: 1.2,
+        },
       ],
     }),
 });

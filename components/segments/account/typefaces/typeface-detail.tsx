@@ -875,22 +875,46 @@ export default function TypefaceDetail({
             ).typeTesterConfig ?? {
               col1: {
                 fontSize: 48,
+                lineHeight: 1.2,
                 fontId: "",
                 content: "",
               },
               col2: {
-                fontSize: 48,
                 slots: [
-                  { fontId: "", content: "" },
-                  { fontId: "", content: "" },
+                  {
+                    fontId: "",
+                    content: "",
+                    fontSize: 48,
+                    lineHeight: 1.2,
+                  },
+                  {
+                    fontId: "",
+                    content: "",
+                    fontSize: 48,
+                    lineHeight: 1.2,
+                  },
                 ],
               },
               col3: {
-                fontSize: 48,
                 slots: [
-                  { fontId: "", content: "" },
-                  { fontId: "", content: "" },
-                  { fontId: "", content: "" },
+                  {
+                    fontId: "",
+                    content: "",
+                    fontSize: 48,
+                    lineHeight: 1.2,
+                  },
+                  {
+                    fontId: "",
+                    content: "",
+                    fontSize: 48,
+                    lineHeight: 1.2,
+                  },
+                  {
+                    fontId: "",
+                    content: "",
+                    fontSize: 48,
+                    lineHeight: 1.2,
+                  },
                 ],
               },
             }

@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import {
   RiFileTextLine,
   RiImageLine,
+  RiInformation2Fill,
   RiLoader4Line,
   RiUploadCloud2Line,
 } from "react-icons/ri";
@@ -26,6 +27,7 @@ export default function FileDropZone({
   icon = "file",
   studioId,
   folder,
+  tooltipImage,
 }: FileDropZoneProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -121,8 +123,27 @@ export default function FileDropZone({
     <div>
       {label && (
         <div className="mb-1 flex flex-col gap-0.5">
-          <span className="block font-medium text-black text-sm">
+          <span className="flex items-center gap-1.5 font-medium text-black text-sm">
             {label}
+            {tooltipImage && (
+              <span className="group/tip relative inline-flex items-center">
+                <RiInformation2Fill className="h-3.5 w-3.5 cursor-pointer text-neutral-400 transition-colors hover:text-black" />
+                <span className="pointer-events-none absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 opacity-0 transition-opacity duration-150 group-hover/tip:opacity-100">
+                  <span className="block overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-xl">
+                    <Image
+                      src={tooltipImage}
+                      alt="tooltip"
+                      width={280}
+                      height={180}
+                      className="block max-w-[280px] object-contain"
+                      unoptimized
+                    />
+                  </span>
+                  {/* arrow */}
+                  <span className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-white" />
+                </span>
+              </span>
+            )}
           </span>
           {(description || instruction) && (
             <span className="block text-neutral-400 text-xs">

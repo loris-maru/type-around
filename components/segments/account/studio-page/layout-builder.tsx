@@ -130,10 +130,10 @@ export default function LayoutBuilder({
           type="button"
           onClick={() => setIsPanelOpen((prev) => !prev)}
           aria-label="Add block"
-          className="flex h-9 w-9 items-center justify-center rounded-full bg-black shadow-md transition-colors hover:bg-neutral-800"
+          className="flex h-16 w-16 items-center justify-center rounded-full bg-black shadow-md transition-colors hover:bg-neutral-800"
         >
           <RiAddLine
-            className={`h-5 w-5 text-white transition-transform duration-200 ${isPanelOpen ? "rotate-45" : "rotate-0"}`}
+            className={`h-7 w-7 text-white transition-transform duration-200 ${isPanelOpen ? "rotate-45" : "rotate-0"}`}
           />
         </button>
 

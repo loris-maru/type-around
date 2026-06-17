@@ -55,17 +55,17 @@ const NavigationButton = ({
       type="button"
       aria-label={label}
       className={cn(
-        "relative flex w-full cursor-pointer items-center justify-between rounded-lg border px-4 py-2 text-left font-whisper text-base transition-all duration-300 ease-in-out",
+        "flex w-full cursor-pointer items-center justify-between py-2 text-left font-whisper text-base transition-colors",
         isActive
-          ? "border-black font-semibold text-black shadow-button"
-          : "border-medium-gray font-medium text-dark-gray shadow-medium-gray"
+          ? "font-semibold text-black"
+          : "font-normal text-neutral-500 hover:text-black"
       )}
       onClick={handleClick}
     >
       <div>{label}</div>
       <div className="flex items-center gap-2">
         {count !== undefined && (
-          <span className="text-neutral-500 text-sm">
+          <span className="text-neutral-400 text-sm">
             {count}
           </span>
         )}
@@ -259,7 +259,7 @@ export default function AccountNavigation() {
       <div className="mb-2 font-bold font-ortank text-xl">
         {studio?.name || "Your studio"}
       </div>
-      <div className="relative flex w-full flex-col gap-y-2">
+      <div className="relative flex w-full flex-col divide-y divide-neutral-200">
         {navItems.map((item) => {
           const isTypefaces = item === "Typefaces";
           const isReviewerItem = item === "Reviewer";
