@@ -137,22 +137,26 @@ export default async function StudioPage({
   // Build metadata for each typeface (display font file + font line text)
   const typefaceMeta = (firebaseStudio.typefaces ?? []).map(
     (t) => {
+      const fonts = t.fonts || [];
       const displayFont = t.displayFontId
-        ? (t.fonts || []).find(
-            (f) => f.id === t.displayFontId
-          )
+        ? fonts.find((f) => f.id === t.displayFontId)
         : null;
-      const hasTrialFonts = (t.fonts || []).some(
+      // Fall back to the first font with a file when no display font is set
+      const displayFontFile =
+        displayFont?.file ||
+        fonts.find((f) => f.file)?.file ||
+        "";
+      const hasTrialFonts = fonts.some(
         (f) => f.trialFiles && f.trialFiles.length > 0
       );
       const firstTrialFile = hasTrialFonts
-        ? (t.fonts || [])
+        ? fonts
             .flatMap((f) => f.trialFiles || [])
             .find((url) => url) || ""
         : "";
       return {
         slug: t.slug,
-        displayFontFile: displayFont?.file || "",
+        displayFontFile,
         fontLineText: t.fontLineText || "",
         specimenUrl: t.specimen || "",
         trialFontUrl: firstTrialFile,
