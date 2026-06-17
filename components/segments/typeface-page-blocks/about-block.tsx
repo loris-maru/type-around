@@ -4,11 +4,13 @@ import type { RawTypefaceForBlocks } from "@/types/typeface-page-blocks";
 
 export default function AboutBlock({
   rawTypeface,
+  typefaceName,
   data,
   titleFontUrl,
   textFontUrl,
 }: {
   rawTypeface: RawTypefaceForBlocks;
+  typefaceName?: string;
   data?: AboutBlockData;
   titleFontUrl?: string;
   textFontUrl?: string;
@@ -16,6 +18,13 @@ export default function AboutBlock({
   return (
     <TypefaceAbout
       description={rawTypeface.description || ""}
+      typefaceName={typefaceName || rawTypeface.name || ""}
+      fontCount={rawTypeface.fonts?.length ?? 0}
+      characters={rawTypeface.characters}
+      specimenUrl={rawTypeface.specimen}
+      trialFiles={rawTypeface.fonts?.flatMap(
+        (f) => f.trialFiles ?? []
+      )}
       data={data}
       titleFontUrl={titleFontUrl}
       textFontUrl={textFontUrl}

@@ -256,7 +256,7 @@ export default function AccountNavigation() {
 
   return (
     <div className="relative z-0 w-full">
-      <div className="mb-2 font-bold font-ortank text-xl">
+      <div className="mb-2 font-black font-whisper text-base uppercase tracking-wider px-3 py-2 border border-black rounded-md">
         {studio?.name || "Your studio"}
       </div>
       <div className="relative flex w-full flex-col divide-y divide-neutral-200">

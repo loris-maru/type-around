@@ -6,7 +6,7 @@ export default function LayoutMyAccount({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative w-full px-10 py-44">
+    <div className="relative w-full px-10 py-20">
       <div
         className="fixed inset-0 -z-10 h-screen w-screen"
         style={{

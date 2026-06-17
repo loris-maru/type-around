@@ -179,25 +179,29 @@ export default function CharacterSetSection({
                 }}
               />
             ) : (
-              <button
-                type="button"
-                onClick={() => setActiveId(col.id)}
-                className={`flex items-center gap-1.5 rounded-full border px-4 py-1.5 font-whisper text-sm transition-colors ${
-                  activeId === col.id
-                    ? "border-black bg-black text-white"
-                    : "border-neutral-300 text-neutral-600 hover:border-neutral-400 hover:bg-neutral-50"
-                }`}
-              >
-                {col.name || "Untitled"}
+              <div className="flex items-center">
+                <button
+                  type="button"
+                  onClick={() => setActiveId(col.id)}
+                  className={`flex items-center rounded-full border px-4 py-1.5 font-whisper text-sm transition-colors ${
+                    activeId === col.id
+                      ? "border-black bg-black text-white"
+                      : "border-neutral-300 text-neutral-600 hover:border-neutral-400 hover:bg-neutral-50"
+                  }`}
+                >
+                  {col.name || "Untitled"}
+                </button>
+
+                {/* Action buttons — siblings of the tab button, never children */}
                 {activeId === col.id && (
-                  <>
+                  <div className="ml-1 flex items-center gap-0.5">
                     <button
                       type="button"
                       onClick={(e) =>
                         startEditingName(col, e)
                       }
                       aria-label="Rename collection"
-                      className="rounded p-0.5 transition-colors hover:bg-white/20"
+                      className="rounded p-1 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-black"
                     >
                       <RiPencilLine className="h-3 w-3" />
                     </button>
@@ -209,14 +213,14 @@ export default function CharacterSetSection({
                           handleDeleteCollection(col.id);
                         }}
                         aria-label="Delete collection"
-                        className="rounded p-0.5 transition-colors hover:bg-white/20"
+                        className="rounded p-1 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-red-500"
                       >
                         <RiDeleteBinLine className="h-3 w-3" />
                       </button>
                     )}
-                  </>
+                  </div>
                 )}
-              </button>
+              </div>
             )}
           </div>
         ))}

@@ -44,7 +44,7 @@ export default function StudioProfile({
     <section
       className={cn(
         "relative flex w-full flex-col gap-y-10 px-8 lg:px-56",
-        defaultMargin ? "my-12 lg:my-32" : ""
+        defaultMargin ? "py-12 lg:py-32" : ""
       )}
       id="about"
       style={sectionStyle}
@@ -94,7 +94,7 @@ export default function StudioProfile({
 
       {/* Designers */}
       {designersList.length > 0 && (
-        <div className="relative mb-32 grid w-full grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="relative grid w-full grid-cols-1 gap-6 lg:grid-cols-2">
           {designersList.map((designer) =>
             designer ? (
               <DesignerCardProfile

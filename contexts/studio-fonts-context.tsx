@@ -49,6 +49,11 @@ export function StudioFontsProvider({
     textReady,
   ]);
 
+  // Consider fonts "done" only for the ones that were actually requested.
+  const displayDone = !displayFontUrl || displayReady;
+  const textDone = !textFontUrl || textReady;
+  const fontsReady = displayDone && textDone;
+
   const fontStyle = {
     ["--studio-display-font-family" as string]:
       value.displayFontFamily,
@@ -76,9 +81,43 @@ export function StudioFontsProvider({
           onReadyChange={setTextReady}
         />
       ) : null}
+
+      {/* Skeleton — shown while any requested studio font is still loading */}
+      {!fontsReady && (
+        <div
+          className="animate-pulse space-y-6 p-8"
+          aria-hidden="true"
+        >
+          {/* Hero area */}
+          <div className="h-64 w-full rounded-2xl bg-neutral-200" />
+          {/* Content rows */}
+          {[100, 80, 90, 60].map((w, i) => (
+            <div
+              key={i}
+              className="h-6 rounded-lg bg-neutral-200"
+              style={{ width: `${w}%` }}
+            />
+          ))}
+          {/* Cards row */}
+          <div className="grid grid-cols-3 gap-4">
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="h-40 rounded-xl bg-neutral-200"
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Real content — hidden (not unmounted) while fonts load so hooks inside still run */}
       <div
-        className="studio-page-fonts"
-        style={fontStyle}
+        className="studio-page-fonts transition-opacity duration-300"
+        style={{
+          ...fontStyle,
+          opacity: fontsReady ? 1 : 0,
+          pointerEvents: fontsReady ? "auto" : "none",
+        }}
       >
         {children}
       </div>

@@ -7,10 +7,12 @@ import type { Font, Studio } from "./typefaces";
 import type { TypetesterFont } from "./typetester";
 
 export type RawTypefaceForBlocks = {
+  name?: string;
   description?: string;
   specimen?: string;
   galleryImages?: string[];
   typeTesterConfig?: TypeTesterConfig;
+  characters?: string | number;
   fonts: {
     id?: string;
     styleName?: string;

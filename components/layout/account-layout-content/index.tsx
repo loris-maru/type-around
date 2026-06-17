@@ -47,7 +47,7 @@ export default function AccountLayoutContent({
         "relative w-full",
         isFullWidthEditorPage
           ? "pt-24 pr-0 pb-[30px] pl-10"
-          : "px-10 py-44"
+          : "px-10 pt-16 pb-20"
       )}
     >
       <div

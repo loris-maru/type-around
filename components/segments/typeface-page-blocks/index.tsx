@@ -81,6 +81,7 @@ export default function TypefacePageBlocks({
               <AboutBlock
                 key={block.key}
                 rawTypeface={rawTypeface}
+                typefaceName={typefaceName}
                 data={aboutData}
                 titleFontUrl={titleFontUrl}
                 textFontUrl={textFontUrl}

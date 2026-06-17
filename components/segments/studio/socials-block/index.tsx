@@ -79,6 +79,9 @@ function SocialsBlockTitle({
   }, [error, fontUrl, hookReady]);
 
   const displayFontReady = hookReady || fallbackReady;
+  // While a custom font is requested but not yet ready, block rendering.
+  const isLoading = fontUrl.length > 0 && !displayFontReady;
+
   const fontFamily =
     fontUrl.length > 0 && displayFontReady
       ? `"${STUDIO_SOCIALS_BLOCK_TITLE_FONT_FAMILY}", sans-serif`
@@ -91,6 +94,17 @@ function SocialsBlockTitle({
       );
     };
   }, []);
+
+  if (isLoading) {
+    return (
+      <div
+        className="max-w-md shrink-0 animate-pulse"
+        aria-hidden="true"
+      >
+        <div className="h-14 w-48 rounded-xl bg-neutral-200" />
+      </div>
+    );
+  }
 
   return (
     <h2
