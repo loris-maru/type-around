@@ -18,7 +18,7 @@ export default function HeroLetterBlock({
       icon="image"
       studioId={studioId}
       folder="icons"
-      tooltipImage="/tooltips/tooltip_svg-image..png"
+      tooltipImage="/tooltips/tooltip_svg-image.png"
     />
   );
 }
