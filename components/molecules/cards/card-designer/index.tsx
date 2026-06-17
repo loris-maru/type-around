@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
 import {
   RiDeleteBinLine,
   RiUserLine,
@@ -12,6 +13,8 @@ export default function DesignerCard({
   onEdit,
   onRemove,
 }: DesignerCardProps) {
+  const [imgError, setImgError] = useState(false);
+
   const handleCardClick = (e: React.MouseEvent) => {
     if ((e.target as HTMLElement).closest("button")) return;
     if ((e.target as HTMLElement).closest("a")) return;
@@ -48,16 +51,14 @@ export default function DesignerCard({
       className="relative flex cursor-pointer flex-col justify-between rounded-lg border border-black bg-white p-4 shadow-button transition-all duration-300 ease-in-out hover:-translate-x-1 hover:-translate-y-1 hover:shadow-button-hover"
     >
       <div className="relative mb-3 h-24 w-24 shrink-0 overflow-hidden rounded-full bg-neutral-100">
-        {designer.avatar ? (
+        {designer.avatar && !imgError ? (
           <Image
             src={designer.avatar}
             alt={fullName}
             fill
             className="object-cover"
-            unoptimized={
-              designer.avatar.startsWith("data:") ||
-              designer.avatar.includes("firebasestorage")
-            }
+            unoptimized
+            onError={() => setImgError(true)}
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">

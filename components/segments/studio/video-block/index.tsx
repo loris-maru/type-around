@@ -32,8 +32,6 @@ export default function StudioVideoBlock({
   );
   if (data.fontColor) sectionStyle.color = data.fontColor;
 
-  const isNoMargin = (data.margin || "m") === "none";
-
   const toggleMute = () => {
     setMuted((prev) => {
       const next = !prev;
@@ -48,7 +46,6 @@ export default function StudioVideoBlock({
     <section
       className={cn(
         "relative flex w-full flex-col",
-        isNoMargin ? "px-0" : "px-10",
         MARGIN_CLASS_MAP[data.margin || "m"],
         ALIGNMENT_CLASS_MAP[data.alignment || "center"]
       )}
@@ -57,12 +54,7 @@ export default function StudioVideoBlock({
       <div
         className={cn(SIZE_CLASS_MAP[data.size || "full"])}
       >
-        <div
-          className={cn(
-            "relative aspect-video w-full overflow-hidden bg-neutral-100",
-            !isNoMargin && "rounded-lg"
-          )}
-        >
+        <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-neutral-100">
           <video
             ref={videoRef}
             src={data.url}

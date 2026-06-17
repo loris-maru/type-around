@@ -174,8 +174,9 @@ export default function TypefaceHeader({
           {typeface.name}
         </div>
         <h1
-          className="whitespace-nowrap font-black text-8xl!"
+          className="relative -top-4 whitespace-nowrap font-black"
           style={{
+            fontSize: "120px",
             fontFamily: fontLoaded
               ? '"typeface-header-display", var(--font-ortank)'
               : "var(--font-ortank)",

@@ -1,11 +1,11 @@
 import type { LayoutBlockId } from "@/types/layout";
 
 export const MARGIN_CLASS_MAP: Record<string, string> = {
-  none: "py-0",
-  s: "py-4",
-  m: "py-8",
-  l: "py-16",
-  xl: "py-32",
+  none: "px-0",
+  s: "px-4",
+  m: "px-8",
+  l: "px-16",
+  xl: "px-32",
 };
 
 export const ALIGNMENT_CLASS_MAP: Record<string, string> = {
@@ -23,15 +23,15 @@ export const SIZE_CLASS_MAP: Record<string, string> = {
   "80": "w-4/5",
 };
 
-/** Vertical margin classes for Updates/Shop blocks (S, M, L, XL) */
+/** Horizontal padding classes for Updates/Shop blocks (S, M, L, XL) */
 export const BLOCK_MARGIN_CLASS_MAP: Record<
   string,
   string
 > = {
-  s: "my-4 lg:my-8",
-  m: "my-8 lg:my-16",
-  l: "my-12 lg:my-24",
-  xl: "my-16 lg:my-32",
+  s: "px-4 lg:px-8",
+  m: "px-8 lg:px-16",
+  l: "px-12 lg:px-24",
+  xl: "px-16 lg:px-32",
 };
 
 export const SPACER_CLASS_MAP: Record<string, string> = {

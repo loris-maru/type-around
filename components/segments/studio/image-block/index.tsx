@@ -26,13 +26,10 @@ export default function StudioImageBlock({
   );
   if (data.fontColor) sectionStyle.color = data.fontColor;
 
-  const isNoMargin = (data.margin || "m") === "none";
-
   return (
     <section
       className={cn(
         "relative flex w-full flex-col",
-        isNoMargin ? "px-0" : "px-10",
         MARGIN_CLASS_MAP[data.margin || "m"],
         ALIGNMENT_CLASS_MAP[data.alignment || "center"]
       )}
@@ -41,12 +38,7 @@ export default function StudioImageBlock({
       <div
         className={cn(SIZE_CLASS_MAP[data.size || "full"])}
       >
-        <div
-          className={cn(
-            "relative w-full overflow-hidden bg-neutral-100",
-            !isNoMargin && "rounded-lg"
-          )}
-        >
+        <div className="relative w-full overflow-hidden rounded-lg bg-neutral-100">
           <Image
             src={data.url}
             alt={data.title || ""}

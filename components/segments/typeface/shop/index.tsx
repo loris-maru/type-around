@@ -52,7 +52,7 @@ export default function TypefaceShop({
   const marginClass =
     data?.margin && BLOCK_MARGIN_CLASS_MAP[data.margin]
       ? BLOCK_MARGIN_CLASS_MAP[data.margin]
-      : "my-[20vh]";
+      : "";
   const sectionStyle: React.CSSProperties = {};
   applyBlockBackgroundColor(
     sectionStyle,
@@ -73,7 +73,7 @@ export default function TypefaceShop({
           : undefined
       }
     >
-      <h2 className="mb-12 mb-4 px-5 font-black font-ortank text-2xl text-black lg:px-10">
+      <h2 className="mb-4 px-5 font-black font-ortank text-2xl text-black lg:px-10">
         Shop
       </h2>
       {orderedFonts.map((font, index: number) => (

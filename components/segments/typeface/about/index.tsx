@@ -78,10 +78,8 @@ export default function TypefaceAbout({
   const sectionStyle: React.CSSProperties = {};
   applyBlockBackgroundColor(sectionStyle, backgroundColor);
   if (marginValue) {
-    sectionStyle.marginTop = marginValue;
-    sectionStyle.marginRight = marginValue;
-    sectionStyle.marginBottom = marginValue;
-    sectionStyle.marginLeft = marginValue;
+    sectionStyle.paddingLeft = marginValue;
+    sectionStyle.paddingRight = marginValue;
   }
 
   const hasMarginOverride = !!marginValue;
@@ -113,10 +111,7 @@ export default function TypefaceAbout({
   if (isLoading) {
     return (
       <section
-        className={cn(
-          "relative w-full p-10",
-          !hasMarginOverride && "my-20"
-        )}
+        className="relative w-full p-10"
         id="about"
         aria-hidden="true"
       >
@@ -145,8 +140,8 @@ export default function TypefaceAbout({
   return (
     <section
       className={cn(
-        "relative w-full py-24 px-12",
-        !hasMarginOverride && "my-20"
+        "relative w-full py-24",
+        !hasMarginOverride && "px-20"
       )}
       id="about"
       style={

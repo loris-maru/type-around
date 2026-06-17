@@ -31,19 +31,11 @@ export default function StudioAboutBlock({
   studio: Studio;
   data?: AboutBlockData;
 }) {
-  const typefaces = Array.isArray(studio?.typefaces)
-    ? studio.typefaces
-    : [];
-  const totalFonts = typefaces.reduce(
-    (sum, tf) =>
-      sum +
-      (Array.isArray(tf?.fonts) ? tf.fonts.length : 0),
-    0
-  );
   const marginPreset = data?.margin;
   const marginValue =
-    marginPreset &&
-    ABOUT_BLOCK_MARGIN_PRESET_MAP[marginPreset];
+    (marginPreset &&
+      ABOUT_BLOCK_MARGIN_PRESET_MAP[marginPreset]) ||
+    "";
 
   const sectionStyle: React.CSSProperties = {};
   applyBlockBackgroundColor(
@@ -52,21 +44,18 @@ export default function StudioAboutBlock({
   );
   if (data?.textColor) sectionStyle.color = data.textColor;
   if (marginValue) {
-    sectionStyle.marginTop = marginValue;
-    sectionStyle.marginRight = marginValue;
-    sectionStyle.marginBottom = marginValue;
-    sectionStyle.marginLeft = marginValue;
+    sectionStyle.paddingLeft = marginValue;
+    sectionStyle.paddingRight = marginValue;
   }
 
   return (
     <StudioProfile
+      name={studio.name || ""}
       image={
         studio.thumbnail ||
         studio.avatar ||
         "/placeholders/studio_image_placeholder.svg"
       }
-      families={typefaces.length}
-      fonts={totalFonts}
       description={studio.description || ""}
       designers={studio.designers ?? []}
       sectionStyle={
@@ -84,6 +73,7 @@ export default function StudioAboutBlock({
           ? TEXT_ALIGN_CLASSES[data.textAlign]
           : undefined
       }
+      marginValue={marginValue}
       defaultMargin={!marginValue}
     />
   );

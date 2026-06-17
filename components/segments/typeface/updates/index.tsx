@@ -90,7 +90,7 @@ export default function TypefaceUpdates({
   const marginClass =
     data?.margin && BLOCK_MARGIN_CLASS_MAP[data.margin]
       ? BLOCK_MARGIN_CLASS_MAP[data.margin]
-      : "my-12 lg:my-[20vh]";
+      : "px-4 lg:px-10";
   const sectionStyle: React.CSSProperties = {};
   applyBlockBackgroundColor(
     sectionStyle,
@@ -100,10 +100,7 @@ export default function TypefaceUpdates({
 
   return (
     <div
-      className={cn(
-        "relative w-full px-4 lg:px-10",
-        marginClass
-      )}
+      className={cn("relative w-full", marginClass)}
       id="updates"
       style={
         Object.keys(sectionStyle).length > 0

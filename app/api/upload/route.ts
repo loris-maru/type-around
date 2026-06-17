@@ -27,7 +27,6 @@ const BUCKET_NAME =
 
 export async function POST(request: NextRequest) {
   try {
-    // Verify authentication
     const { userId } = await auth();
     if (!userId) {
       return NextResponse.json(
@@ -36,13 +35,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
-    const { studioId, fileName, contentType, folder } =
-      body;
+    const formData = await request.formData();
+    const file = formData.get("file") as File | null;
+    const studioId = formData.get("studioId") as
+      | string
+      | null;
+    const folder = formData.get("folder") as string | null;
 
-    if (!studioId || !fileName || !contentType || !folder) {
+    if (!file || !studioId || !folder) {
       return NextResponse.json(
-        { error: "Missing required fields" },
+        {
+          error:
+            "Missing required fields: file, studioId, folder",
+        },
         { status: 400 }
       );
     }
@@ -56,7 +61,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if user is owner or member
     const clerk = await clerkClient();
     const user = await clerk.users.getUser(userId);
     const userEmail =
@@ -74,40 +78,44 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate unique file path while preserving the original filename
-    const sanitizedName = fileName.replace(
+    const sanitizedName = file.name.replace(
       /[^a-zA-Z0-9._-]/g,
       "_"
     );
     const uniqueFileName = `${crypto.randomUUID()}_${sanitizedName}`;
     const filePath = `studios/${studioId}/${folder}/${uniqueFileName}`;
 
-    // Get signed URL
     const storage = getStorageClient();
     const bucket = storage.bucket(BUCKET_NAME);
-    const file = bucket.file(filePath);
+    const gcFile = bucket.file(filePath);
 
-    const [signedUrl] = await file.getSignedUrl({
-      version: "v4",
-      action: "write",
-      expires: Date.now() + 15 * 60 * 1000, // 15 minutes
-      contentType,
+    const buffer = Buffer.from(await file.arrayBuffer());
+    await gcFile.save(buffer, {
+      metadata: {
+        contentType:
+          file.type || "application/octet-stream",
+      },
+      resumable: false,
     });
+
+    try {
+      await gcFile.makePublic();
+    } catch {
+      // Uniform bucket-level access is enabled; public access must be
+      // configured via bucket IAM (allUsers → Storage Object Viewer).
+    }
 
     const publicUrl = `https://storage.googleapis.com/${BUCKET_NAME}/${filePath}`;
 
-    return NextResponse.json({
-      uploadUrl: signedUrl,
-      publicUrl,
-    });
+    return NextResponse.json({ publicUrl });
   } catch (error) {
-    console.error("Error generating signed URL:", error);
+    console.error("Error uploading file:", error);
     return NextResponse.json(
       {
         error:
           error instanceof Error
             ? error.message
-            : "Failed to generate upload URL",
+            : "Failed to upload file",
       },
       { status: 500 }
     );
