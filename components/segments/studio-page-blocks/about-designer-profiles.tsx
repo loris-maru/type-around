@@ -14,7 +14,7 @@ export default function StudioAboutDesignerProfilesBlock({
 }) {
   return (
     <div
-      className="grid grid-cols-2 mt-32"
+      className="grid grid-cols-3 mt-32"
       style={{ fontFamily: textFontFamily }}
     >
       {/* Bilingual header */}
@@ -46,7 +46,7 @@ export default function StudioAboutDesignerProfilesBlock({
       </div>
 
       {/* Designer cards */}
-      <div className="col-span-1 flex flex-col py-20 gap-5">
+      <div className="col-span-2 flex flex-col py-20 gap-5">
         {designersList.map((designer) =>
           designer ? (
             <DesignerCardProfile

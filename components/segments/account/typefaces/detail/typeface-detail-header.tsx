@@ -10,6 +10,7 @@ import {
 import CustomSelect from "@/components/global/custom-select";
 import { TYPEFACE_STATUS_OPTIONS } from "@/constant/TYPEFACE_STATUS";
 import type { TypefaceDetailHeaderProps } from "@/types/components";
+import { cn } from "@/utils/class-names";
 
 export default function TypefaceDetailHeader({
   typefaceName,
@@ -24,27 +25,55 @@ export default function TypefaceDetailHeader({
 }: TypefaceDetailHeaderProps) {
   return (
     <>
-      <div className="mb-8 flex w-full flex-row items-center justify-between">
-        <h1 className="font-bold font-ortank text-3xl">
-          Type family: {typefaceName}
-        </h1>
-        <CustomSelect
-          value={status}
-          options={TYPEFACE_STATUS_OPTIONS}
-          onChange={onStatusChange}
-        />
-      </div>
+      <header className="swiss-rule mb-12 grid w-full grid-cols-12 gap-x-6 pt-3">
+        <div className="col-span-8">
+          <div className="swiss-label mb-6 flex items-center gap-2 text-neutral-500">
+            <span className="inline-block h-2 w-2 bg-swiss-red" />
+            04 Typefaces / Type family
+          </div>
+          <h1 className="swiss-display">{typefaceName}</h1>
+        </div>
+        <div className="col-span-4 flex flex-col items-end gap-3">
+          <div className="flex items-center gap-3">
+            <span className="swiss-label text-neutral-500">
+              Status
+            </span>
+            <CustomSelect
+              value={status}
+              options={TYPEFACE_STATUS_OPTIONS}
+              onChange={onStatusChange}
+            />
+          </div>
+          <div
+            className={cn(
+              "swiss-label flex items-center gap-2",
+              isPublished
+                ? "text-black"
+                : "text-neutral-400"
+            )}
+          >
+            <span
+              className={cn(
+                "inline-block h-2 w-2",
+                isPublished
+                  ? "bg-swiss-red"
+                  : "bg-neutral-300"
+              )}
+            />
+            {isPublished ? "Live" : "Unpublished"}
+          </div>
+        </div>
+      </header>
 
-      {/* Fixed bottom-right buttons */}
-      <div className="fixed right-6 bottom-6 z-50 flex items-center gap-3">
-        {/* Save button — slides in when there are changes */}
+      {/* Fixed bottom-right action bar */}
+      <div className="fixed right-6 bottom-6 z-50 flex items-stretch">
         <AnimatePresence>
           {hasChanges && (
             <motion.button
               type="button"
               onClick={onSave}
               disabled={isSaving}
-              className="flex cursor-pointer items-center gap-2 rounded-lg bg-black px-6 py-3 text-white shadow-lg transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-400"
+              className="swiss-btn swiss-btn-red min-h-12 px-6"
               initial={{ x: 60, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: 60, opacity: 0 }}
@@ -54,50 +83,42 @@ export default function TypefaceDetailHeader({
                 damping: 25,
               }}
             >
-              <RiSaveLine className="h-5 w-5" />
-              {isSaving ? "Saving..." : "Save Changes"}
+              <RiSaveLine className="h-4 w-4" />
+              {isSaving ? "Saving..." : "Save changes"}
             </motion.button>
           )}
         </AnimatePresence>
 
-        {/* View page button */}
         <Link
           href={viewHref}
           target="_blank"
           aria-label="View typeface page"
-          className="flex cursor-pointer items-center gap-2 rounded-lg border border-neutral-300 bg-white px-6 py-3 font-normal font-whisper text-black transition-colors hover:bg-neutral-50"
+          className="swiss-btn -ml-px min-h-12 px-6"
         >
-          <RiEyeLine className="h-5 w-5" />
+          <RiEyeLine className="h-4 w-4" />
           View page
         </Link>
 
-        {/* Publish / Live button — always visible */}
-        {isPublished ? (
-          <button
-            type="button"
-            onClick={onTogglePublish}
-            className="flex cursor-pointer items-center gap-2 rounded-lg border border-neutral-300 bg-white px-6 py-3 text-black transition-colors hover:bg-neutral-50"
-            style={{
-              boxShadow:
-                "0 0 12px 2px rgba(34, 197, 94, 0.35)",
-            }}
-          >
-            <span className="relative flex h-3 w-3">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-              <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500" />
-            </span>
-            Live
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={onTogglePublish}
-            className="flex cursor-pointer items-center gap-2 rounded-lg bg-black px-6 py-3 text-white shadow-lg transition-colors hover:bg-neutral-800"
-          >
-            <RiFileUploadLine className="h-5 w-5" />
-            Publish
-          </button>
-        )}
+        <button
+          type="button"
+          onClick={onTogglePublish}
+          className={cn(
+            "swiss-btn -ml-px min-h-12 px-6",
+            !isPublished && "swiss-btn-solid"
+          )}
+        >
+          {isPublished ? (
+            <>
+              <span className="inline-block h-2 w-2 bg-swiss-red" />
+              Live
+            </>
+          ) : (
+            <>
+              <RiFileUploadLine className="h-4 w-4" />
+              Publish
+            </>
+          )}
+        </button>
       </div>
     </>
   );

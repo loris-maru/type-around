@@ -10,7 +10,7 @@ export default function ButtonSendRequest({
     <button
       type="button"
       onClick={onClick}
-      className={`cursor-pointer rounded-lg border border-black bg-black px-4 py-2 font-whisper text-sm text-white transition-colors hover:bg-neutral-800 ${className}`}
+      className={`swiss-btn swiss-btn-solid ${className}`}
     >
       Send request
     </button>

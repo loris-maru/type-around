@@ -1,9 +1,11 @@
+import AccountPageHeader from "../page-header";
+
 export default function StudioPageHeader() {
   return (
-    <div className="relative flex w-full flex-col gap-y-4">
-      <h1 className="font-bold font-ortank text-xl">
-        Studio Page
-      </h1>
-    </div>
+    <AccountPageHeader
+      eyebrow="02 Studio page"
+      title="Studio page"
+      description="Compose the public page of your studio: hero, fonts, colours and content blocks."
+    />
   );
 }

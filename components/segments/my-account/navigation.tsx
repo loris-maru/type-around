@@ -45,12 +45,20 @@ export default function MyAccountNavigation() {
   );
 
   return (
-    <div className="relative z-0 w-full">
-      <div className="mb-2 font-ortank font-bold text-xl">
-        My Account
+    <nav
+      aria-label="My account"
+      className="relative z-0 w-full"
+    >
+      <div className="swiss-rule pt-3">
+        <div className="swiss-label flex items-center gap-2 text-neutral-500">
+          <span className="inline-block h-2 w-2 bg-swiss-red" />
+          Account
+        </div>
+        <div className="swiss-h2 mt-3">My account</div>
       </div>
-      <div className="relative w-full flex flex-col gap-y-2">
-        {MY_ACCOUNT_NAV_ITEMS.map((item) => {
+
+      <div className="swiss-rule relative mt-8 flex w-full flex-col divide-y divide-neutral-200">
+        {MY_ACCOUNT_NAV_ITEMS.map((item, itemIndex) => {
           const slug = slugify(item);
           const isActive = activeNav === slug;
 
@@ -59,32 +67,43 @@ export default function MyAccountNavigation() {
               key={item}
               type="button"
               aria-label={item}
+              aria-current={isActive ? "page" : undefined}
               className={cn(
-                "relative w-full text-base font-whisper rounded-lg border text-left px-4 py-2 cursor-pointer transition-all duration-300 ease-in-out",
+                "group flex w-full cursor-pointer items-center gap-4 py-3 text-left font-sotto text-[15px] leading-none transition-colors",
                 isActive
-                  ? "text-black border-black shadow-button font-semibold"
-                  : "text-dark-gray border-medium-gray shadow-medium-gray font-medium"
+                  ? "font-semibold text-black"
+                  : "font-normal text-neutral-500 hover:text-black"
               )}
               onClick={() => handleNavChange(slug)}
             >
-              {item}
+              <span
+                className={cn(
+                  "swiss-num w-6 shrink-0 text-xs",
+                  isActive
+                    ? "text-swiss-red"
+                    : "text-neutral-400 group-hover:text-black"
+                )}
+              >
+                {String(itemIndex + 1).padStart(2, "0")}
+              </span>
+              <span className="flex-1">{item}</span>
             </button>
           );
         })}
       </div>
 
-      {/* Logout Button */}
-      <div className="mt-4">
+      {/* Logout */}
+      <div className="swiss-rule mt-8 pt-3">
         <SignOutButton redirectUrl="/">
           <button
             type="button"
-            className="w-full flex items-center gap-2 text-base font-whisper text-black transition-colors cursor-pointer"
+            className="swiss-label flex w-full cursor-pointer items-center gap-2 py-1 text-neutral-500 transition-colors hover:text-swiss-red"
           >
-            <RiLogoutBoxLine className="w-4 h-4" />
-            Log-out
+            <RiLogoutBoxLine className="h-3.5 w-3.5" />
+            Log out
           </button>
         </SignOutButton>
       </div>
-    </div>
+    </nav>
   );
 }

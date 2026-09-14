@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { RiAddLine } from "react-icons/ri";
 import { useStudio } from "@/hooks/use-studio";
 import { cn } from "@/utils/class-names";
+import AccountPageHeader from "../page-header";
 
 export default function AccountBlog() {
   const { studio, isLoading } = useStudio();
@@ -25,37 +26,33 @@ export default function AccountBlog() {
 
   return (
     <div className="relative flex w-full flex-col gap-y-8">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="font-bold font-ortank text-3xl">
-            Articles
-          </h1>
-          <p className="mt-2 font-whisper text-neutral-500 text-sm">
-            Create and publish articles for your studio blog
-            block.
-          </p>
-        </div>
-        {newArticleHref ? (
-          <Link
-            href={newArticleHref}
-            aria-label="New article"
-            className="flex shrink-0 cursor-pointer items-center gap-2 rounded-lg border border-black bg-transparent px-4 py-3 font-medium font-whisper text-black shadow-button transition-all duration-300 ease-in-out hover:bg-white hover:shadow-button-hover"
-          >
-            <RiAddLine className="h-4 w-4" />
-            New article
-          </Link>
-        ) : (
-          <button
-            type="button"
-            aria-label="New article"
-            disabled
-            className="flex shrink-0 cursor-not-allowed items-center gap-2 rounded-lg border border-neutral-300 bg-transparent px-4 py-3 font-medium font-whisper text-neutral-400 opacity-50"
-          >
-            <RiAddLine className="h-4 w-4" />
-            New article
-          </button>
-        )}
-      </div>
+      <AccountPageHeader
+        eyebrow="05 Articles"
+        title="Articles"
+        description="Create and publish articles for your studio blog block."
+        actions={
+          newArticleHref ? (
+            <Link
+              href={newArticleHref}
+              aria-label="New article"
+              className="swiss-btn"
+            >
+              <RiAddLine className="h-4 w-4" />
+              New article
+            </Link>
+          ) : (
+            <button
+              type="button"
+              aria-label="New article"
+              disabled
+              className="swiss-btn"
+            >
+              <RiAddLine className="h-4 w-4" />
+              New article
+            </button>
+          )
+        }
+      />
 
       {articles.length === 0 ? (
         <div className="flex min-h-[240px] flex-col items-center justify-center rounded-lg border border-neutral-300 border-dashed bg-white/60 p-8 text-center">

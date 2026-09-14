@@ -1,4 +1,4 @@
-import { SectionTitleProps } from "@/types/components";
+import type { SectionTitleProps } from "@/types/components";
 
 export default function SectionTitle({
   title,
@@ -6,11 +6,13 @@ export default function SectionTitle({
   countLabel,
 }: SectionTitleProps) {
   return (
-    <h2 className="text-xl font-ortank font-bold mb-4 pb-2 border-b border-neutral-200">
-      {title}
-      {count !== undefined &&
-        countLabel &&
-        ` (${count} ${countLabel})`}
+    <h2 className="swiss-rule mb-6 flex items-baseline gap-4 pt-3">
+      <span className="swiss-h2">{title}</span>
+      {count !== undefined && countLabel && (
+        <span className="swiss-label text-neutral-500">
+          {count} {countLabel}
+        </span>
+      )}
     </h2>
   );
 }

@@ -16,6 +16,7 @@ import type {
   MemberRole,
   StudioMember,
 } from "@/types/studio";
+import AccountPageHeader from "../page-header";
 import AddMemberForm from "./add-member-form";
 import MemberListItem from "./member-list-item";
 
@@ -152,30 +153,25 @@ export default function AccountSettings() {
   return (
     <div className="relative flex w-full flex-col items-start gap-y-8">
       {/* Header */}
-      <div className="flex w-full items-start justify-between gap-4">
-        <div>
-          <h2 className="mb-2 font-bold font-ortank text-xl">
-            Team Members
-          </h2>
-          <p className="font-whisper text-neutral-500">
-            Manage who has access to edit your studio
-            account and content.
-          </p>
-        </div>
-        {canManageMembers && !isAddingMember && (
-          <ButtonAddMember
-            onClick={() => setIsAddingMember(true)}
-          />
-        )}
-      </div>
+      <AccountPageHeader
+        eyebrow="03 Members"
+        title="Team members"
+        description="Manage who has access to edit your studio account and content."
+        actions={
+          canManageMembers &&
+          !isAddingMember && (
+            <ButtonAddMember
+              onClick={() => setIsAddingMember(true)}
+            />
+          )
+        }
+      />
 
       {/* Error Message */}
       {error && (
-        <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4">
-          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-500 font-bold text-white text-xs">
-            !
-          </div>
-          <p className="font-whisper text-red-800">
+        <div className="flex w-full items-start gap-3 border border-swiss-red p-4">
+          <span className="mt-1 inline-block h-2 w-2 shrink-0 bg-swiss-red" />
+          <p className="font-sotto text-sm text-swiss-red">
             {error}
           </p>
           <ButtonDismissError
@@ -185,7 +181,7 @@ export default function AccountSettings() {
       )}
 
       {/* Members List */}
-      <div className="w-full divide-y divide-neutral-200">
+      <div className="swiss-rule w-full divide-y divide-neutral-200">
         {allMembers.map((member) => (
           <MemberListItem
             key={member.id}

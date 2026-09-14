@@ -33,16 +33,15 @@ export default function AccountForm({
   );
 
   return (
-    <div className="relative flex w-full flex-col gap-y-4">
-      {title && (
-        <h2 className="font-bold font-ortank text-xl">
-          {title}
-        </h2>
-      )}
-      <div className="grid grid-cols-3 gap-5">
-        {FORM_FIELDS.map((field) => {
+    <div className="relative flex w-full flex-col gap-y-6">
+      {title && <h2 className="swiss-h2">{title}</h2>}
+      <div className="grid grid-cols-12 gap-x-6 gap-y-10">
+        {FORM_FIELDS.map((field, fieldIndex) => {
           const Icon = field.icon;
           const CustomComponent = field.customComponent;
+          const fieldNumber = String(
+            fieldIndex + 1
+          ).padStart(2, "0");
 
           // Render custom component if provided
           if (CustomComponent) {
@@ -53,8 +52,8 @@ export default function AccountForm({
                 className={cn(
                   "relative w-full",
                   colSpan === 2
-                    ? "col-span-2"
-                    : "col-span-1"
+                    ? "col-span-8"
+                    : "col-span-4"
                 )}
               >
                 <CustomComponent
@@ -73,12 +72,15 @@ export default function AccountForm({
             return (
               <div
                 key={field.slug}
-                className="relative col-span-2 w-full"
+                className="relative col-span-8 w-full"
               >
                 <label
                   htmlFor={field.slug}
-                  className="mb-2 block font-normal font-whisper text-black text-sm uppercase tracking-wider"
+                  className="swiss-label mb-3 flex items-center gap-3 text-neutral-500"
                 >
+                  <span className="swiss-num text-neutral-400">
+                    {fieldNumber}
+                  </span>
                   {field.label}
                 </label>
                 <textarea
@@ -92,7 +94,7 @@ export default function AccountForm({
                   disabled={isLoading}
                   rows={4}
                   aria-label={field.label}
-                  className="w-full resize-y border border-neutral-300 px-6 py-5 font-whisper text-base placeholder:font-medium placeholder:font-whisper placeholder:text-base placeholder:text-black disabled:cursor-not-allowed disabled:bg-neutral-100"
+                  className="swiss-field resize-y"
                 />
               </div>
             );
@@ -101,17 +103,20 @@ export default function AccountForm({
           return (
             <div
               key={field.slug}
-              className="relative w-full"
+              className="relative col-span-4 w-full"
             >
               <label
                 htmlFor={field.slug}
-                className="mb-2 block font-normal font-whisper text-black text-sm uppercase tracking-wider"
+                className="swiss-label mb-3 flex items-center gap-3 text-neutral-500"
               >
+                <span className="swiss-num text-neutral-400">
+                  {fieldNumber}
+                </span>
                 {field.label}
               </label>
               <div className="relative w-full">
                 {Icon && (
-                  <Icon className="absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-black" />
+                  <Icon className="absolute top-1/2 left-0 h-4 w-4 -translate-y-1/2 text-black" />
                 )}
                 <input
                   type={field.type}
@@ -124,8 +129,8 @@ export default function AccountForm({
                   }
                   disabled={isLoading}
                   className={cn(
-                    "w-full border border-neutral-300 py-5 pr-6 placeholder:font-medium placeholder:font-whisper placeholder:text-base placeholder:text-black disabled:cursor-not-allowed disabled:bg-neutral-100",
-                    Icon ? "pl-12" : "pl-6"
+                    "swiss-field",
+                    Icon ? "pl-7" : "pl-0"
                   )}
                 />
               </div>

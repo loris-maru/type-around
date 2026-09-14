@@ -21,6 +21,7 @@ import {
 import type { FontInUseSubmission } from "@/types/my-account";
 import type { FontInUse } from "@/types/studio";
 import { generateUUID } from "@/utils/generate-uuid";
+import AccountPageHeader from "../page-header";
 
 export default function AccountFontsInUse() {
   const { studio, updateStudio } = useStudio();
@@ -155,15 +156,17 @@ export default function AccountFontsInUse() {
 
   return (
     <div className="relative w-full">
-      <h1 className="mb-8 font-bold font-ortank text-3xl">
-        Fonts In Use
-      </h1>
+      <AccountPageHeader
+        eyebrow="08 Fonts in use"
+        title="Fonts in use"
+        description="Showcase real-world uses of your typefaces and review cases submitted by the community."
+      />
 
       {/* ============================== */}
       {/* My fonts in use */}
       {/* ============================== */}
       <section className="mb-12">
-        <h2 className="mb-4 font-bold font-ortank text-xl">
+        <h2 className="swiss-rule swiss-h2 mb-6 pt-3">
           My fonts in use
         </h2>
         <div className="grid grid-cols-4 gap-4">
@@ -187,13 +190,11 @@ export default function AccountFontsInUse() {
       {/* Submitted cases */}
       {/* ============================== */}
       <section>
-        <div className="mb-4 flex items-center gap-3">
-          <h2 className="font-bold font-ortank text-xl">
-            Submitted cases
-          </h2>
+        <div className="swiss-rule mb-6 flex items-baseline gap-4 pt-3">
+          <h2 className="swiss-h2">Submitted cases</h2>
           {submissions.length > 0 && (
-            <span className="rounded-full bg-yellow-100 px-2.5 py-0.5 font-medium text-xs text-yellow-800">
-              {submissions.length}
+            <span className="swiss-label text-swiss-red">
+              {submissions.length} pending
             </span>
           )}
         </div>

@@ -11,10 +11,10 @@ export default function ButtonAddCard({
     <button
       type="button"
       onClick={onClick}
-      className="flex min-h-[200px] cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-neutral-300 p-4 transition-all duration-300 ease-in-out hover:border-black hover:bg-neutral-50"
+      className="group flex min-h-[200px] cursor-pointer flex-col items-start justify-between border border-neutral-300 p-5 text-left transition-colors hover:border-black"
     >
-      <RiAddFill className="h-8 w-8 text-neutral-400" />
-      <span className="font-medium text-neutral-500">
+      <RiAddFill className="h-6 w-6 text-neutral-400 transition-colors group-hover:text-swiss-red" />
+      <span className="swiss-label text-neutral-500 transition-colors group-hover:text-black">
         {label}
       </span>
     </button>

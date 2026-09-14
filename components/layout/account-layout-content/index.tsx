@@ -10,13 +10,19 @@ const AccountNavigation = dynamic(
     ssr: false,
     loading: () => (
       <div className="relative z-0 w-full">
-        <div className="mb-2 h-7 w-48 animate-pulse rounded bg-neutral-200" />
-        <div className="mt-2 flex flex-col gap-2">
-          {[1, 2, 3, 4].map((i) => (
+        <div className="swiss-rule pt-3">
+          <div className="h-3 w-16 animate-pulse bg-neutral-200" />
+          <div className="mt-3 h-8 w-40 animate-pulse bg-neutral-200" />
+        </div>
+        <div className="mt-8 flex flex-col">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
             <div
               key={i}
-              className="h-10 w-full animate-pulse rounded-lg bg-neutral-100"
-            />
+              className="swiss-rule-light flex items-center gap-4 py-3"
+            >
+              <div className="h-3 w-5 animate-pulse bg-neutral-200" />
+              <div className="h-3 w-24 animate-pulse bg-neutral-200" />
+            </div>
           ))}
         </div>
       </div>
@@ -44,24 +50,21 @@ export default function AccountLayoutContent({
   return (
     <div
       className={cn(
-        "relative w-full",
+        "account-swiss relative w-full",
         isFullWidthEditorPage
           ? "pt-24 pr-0 pb-[30px] pl-10"
-          : "px-10 pt-16 pb-20"
+          : "px-10 pt-24 pb-24"
       )}
     >
-      <div
-        className="fixed inset-0 -z-10 h-screen w-screen"
-        style={{
-          background:
-            "linear-gradient(180deg, #FFF8E8 29.33%, #F2F2F2 100%)",
-        }}
-      />
+      {/* Flat white ground: the Swiss page is the sheet, not a gradient */}
+      <div className="fixed inset-0 -z-10 h-screen w-screen bg-white" />
+
       {!isFullWidthEditorPage && (
-        <div className="fixed z-50 w-68 top-24">
+        <aside className="fixed top-24 z-50 w-64">
           <AccountNavigation />
-        </div>
+        </aside>
       )}
+
       <div
         className={cn(
           "relative",

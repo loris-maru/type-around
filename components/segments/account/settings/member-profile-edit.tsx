@@ -200,12 +200,11 @@ export default function MemberProfileEdit({
     setIsSaving(false);
   };
 
-  const inputClassName =
-    "w-full rounded-lg border border-neutral-300 px-3 py-2 font-whisper text-sm placeholder:text-neutral-400 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-black";
+  const inputClassName = "swiss-field";
 
   return (
-    <div className="space-y-4 rounded-lg border border-neutral-200 bg-neutral-50 p-4">
-      <div className="flex items-center gap-4">
+    <div className="space-y-6">
+      <div className="flex items-center gap-6">
         <MemberAvatar
           imageUrl={imageUrl}
           name={
@@ -228,11 +227,11 @@ export default function MemberProfileEdit({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div>
           <label
             htmlFor={`firstName-${member.id}`}
-            className="mb-1 block font-whisper text-neutral-600 text-sm"
+            className="swiss-label mb-2 block text-neutral-500"
           >
             First name
           </label>
@@ -249,7 +248,7 @@ export default function MemberProfileEdit({
         <div>
           <label
             htmlFor={`lastName-${member.id}`}
-            className="mb-1 block font-whisper text-neutral-600 text-sm"
+            className="swiss-label mb-2 block text-neutral-500"
           >
             Last name
           </label>
@@ -268,7 +267,7 @@ export default function MemberProfileEdit({
       <div>
         <label
           htmlFor={`email-${member.id}`}
-          className="mb-1 block font-whisper text-neutral-600 text-sm"
+          className="swiss-label mb-2 block text-neutral-500"
         >
           Email address
         </label>
@@ -286,7 +285,7 @@ export default function MemberProfileEdit({
       <div>
         <label
           htmlFor={`biography-${member.id}`}
-          className="mb-1 block font-whisper text-neutral-600 text-sm"
+          className="swiss-label mb-2 block text-neutral-500"
         >
           Biography
         </label>
@@ -303,7 +302,7 @@ export default function MemberProfileEdit({
       <div>
         <label
           htmlFor={`website-${member.id}`}
-          className="mb-1 block font-whisper text-neutral-600 text-sm"
+          className="swiss-label mb-2 block text-neutral-500"
         >
           Personal website
         </label>
@@ -318,18 +317,18 @@ export default function MemberProfileEdit({
       </div>
 
       <div>
-        <span className="mb-2 block font-whisper text-neutral-600 text-sm">
+        <span className="swiss-label mb-2 block text-neutral-500">
           Social media
         </span>
         {socialMedia.length > 0 && (
-          <div className="mb-3 space-y-2">
+          <div className="mb-4 space-y-4">
             {socialMedia.map((social, index) => (
               <div
                 key={`${social.name}-${index}`}
-                className="flex flex-col gap-2 rounded-lg border border-neutral-200 bg-white p-3 sm:flex-row sm:items-end"
+                className="flex flex-col gap-4 sm:flex-row sm:items-end"
               >
                 <div className="min-w-0 flex-1 sm:max-w-[180px]">
-                  <span className="mb-1 block font-whisper text-neutral-500 text-xs">
+                  <span className="swiss-label mb-2 block text-neutral-500">
                     Platform
                   </span>
                   <CustomSelect
@@ -346,7 +345,7 @@ export default function MemberProfileEdit({
                 <div className="min-w-0 flex-1">
                   <label
                     htmlFor={`social-url-${member.id}-${index}`}
-                    className="mb-1 block font-whisper text-neutral-500 text-xs"
+                    className="swiss-label mb-2 block text-neutral-500"
                   >
                     Profile URL
                   </label>
@@ -368,9 +367,9 @@ export default function MemberProfileEdit({
                   type="button"
                   onClick={() => handleRemoveSocial(index)}
                   aria-label={`Remove ${social.name}`}
-                  className="shrink-0 self-end rounded-lg p-2 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-500"
+                  className="flex h-9 w-9 shrink-0 items-center justify-center self-end border border-swiss-rule text-neutral-500 transition-colors hover:border-swiss-red hover:text-swiss-red"
                 >
-                  <RiDeleteBinLine className="h-5 w-5" />
+                  <RiDeleteBinLine className="h-4 w-4" />
                 </button>
               </div>
             ))}
@@ -380,19 +379,19 @@ export default function MemberProfileEdit({
           type="button"
           onClick={handleAddSocial}
           disabled={!canAddSocialLink}
-          className="flex items-center gap-2 rounded-lg border border-neutral-300 bg-white px-3 py-2 font-medium font-whisper text-sm transition-colors hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-50"
+          className="swiss-btn"
         >
-          <RiAddFill className="h-5 w-5" />
+          <RiAddFill className="h-4 w-4" />
           Add social link
         </button>
       </div>
 
-      <div className="flex justify-end gap-2">
+      <div className="swiss-rule-light flex justify-end gap-4 pt-6">
         <button
           type="button"
           onClick={handleSave}
           disabled={isSaving}
-          className="flex items-center gap-2 rounded-lg bg-black px-4 py-2 font-medium font-whisper text-sm text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-300"
+          className="swiss-btn swiss-btn-solid"
         >
           {isSaving ? (
             <>

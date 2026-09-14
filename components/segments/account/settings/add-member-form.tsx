@@ -140,21 +140,24 @@ export default function AddMemberForm({
       : lookupResult?.email || "";
 
   return (
-    <div className="rounded-lg border border-neutral-200 p-6">
-      <h3 className="mb-4 font-bold font-ortank text-sm">
-        Invite a new member
-      </h3>
+    <div className="swiss-rule border-swiss-ink border-b py-6">
+      <div className="mb-6 flex items-baseline gap-4">
+        <span className="swiss-label text-swiss-red">
+          Invite
+        </span>
+        <h3 className="swiss-h2">Invite a new member</h3>
+      </div>
 
       {/* Step 1: Email lookup */}
       {!lookupResult && (
-        <div className="flex gap-3">
+        <div className="flex items-end gap-4">
           <input
             type="email"
             value={inviteEmail}
             onChange={(e) => setInviteEmail(e.target.value)}
             placeholder="Enter email address..."
             aria-label="Email address to invite member"
-            className="flex-1 rounded-lg border border-neutral-300 px-4 py-3 font-whisper placeholder:text-neutral-400"
+            className="swiss-field flex-1"
             onKeyDown={(e) =>
               e.key === "Enter" && handleLookupUser()
             }
@@ -163,7 +166,7 @@ export default function AddMemberForm({
             type="button"
             onClick={handleLookupUser}
             disabled={isLookingUp || !inviteEmail.trim()}
-            className="flex items-center gap-2 rounded-lg bg-black px-6 py-3 font-medium font-whisper text-white hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-300"
+            className="swiss-btn swiss-btn-solid"
           >
             {isLookingUp ? (
               <>
@@ -177,7 +180,7 @@ export default function AddMemberForm({
           <button
             type="button"
             onClick={onCancel}
-            className="rounded-lg border border-neutral-300 px-4 py-3 font-whisper hover:bg-neutral-50"
+            className="swiss-btn"
           >
             Cancel
           </button>
@@ -186,8 +189,8 @@ export default function AddMemberForm({
 
       {/* Step 2: Confirm user */}
       {lookupResult && (
-        <div className="space-y-4">
-          <div className="flex items-center gap-4 rounded-lg bg-neutral-50 p-4">
+        <div className="space-y-6">
+          <div className="swiss-rule-light flex items-center gap-6 pt-4">
             <MemberAvatar
               imageUrl={lookupResult.imageUrl}
               name={displayName}
@@ -195,7 +198,7 @@ export default function AddMemberForm({
             />
             <div className="flex flex-col gap-1">
               <label
-                className="font-whisper text-neutral-600 text-sm"
+                className="swiss-label mb-2 block text-neutral-500"
                 htmlFor="role"
               >
                 Role
@@ -218,20 +221,18 @@ export default function AddMemberForm({
               />
             </div>
             <div>
-              <p className="font-medium font-whisper">
-                {displayName}
-              </p>
-              <p className="font-whisper text-neutral-500 text-sm">
+              <p className="swiss-h3">{displayName}</p>
+              <p className="swiss-num text-neutral-500 text-sm">
                 {lookupResult.email}
               </p>
             </div>
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-6">
             <div>
               <label
                 htmlFor="add-member-bio"
-                className="mb-1 block font-whisper text-neutral-600 text-sm"
+                className="swiss-label mb-2 block text-neutral-500"
               >
                 Biography
               </label>
@@ -246,14 +247,14 @@ export default function AddMemberForm({
                 }
                 rows={3}
                 placeholder="A short bio..."
-                className="w-full resize-none rounded-lg border border-neutral-300 px-3 py-2 font-whisper text-sm placeholder:text-neutral-400"
+                className="swiss-field resize-none"
               />
             </div>
 
             <div>
               <label
                 htmlFor="add-member-website"
-                className="mb-1 block font-whisper text-neutral-600 text-sm"
+                className="swiss-label mb-2 block text-neutral-500"
               >
                 Website
               </label>
@@ -268,12 +269,12 @@ export default function AddMemberForm({
                   })
                 }
                 placeholder="https://example.com"
-                className="w-full rounded-lg border border-neutral-300 px-3 py-2 font-whisper text-sm placeholder:text-neutral-400"
+                className="swiss-field"
               />
             </div>
 
             <div>
-              <span className="mb-1 block font-whisper text-neutral-600 text-sm">
+              <span className="swiss-label mb-2 block text-neutral-500">
                 Social media
               </span>
               {(lookupResult.socialMedia ?? []).length >
@@ -283,12 +284,12 @@ export default function AddMemberForm({
                     (social, index) => (
                       <div
                         key={`${social.name}-${index}`}
-                        className="flex items-center gap-2 rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2"
+                        className="flex items-center gap-3 border-swiss-rule border-b py-2"
                       >
-                        <span className="font-medium text-black text-sm">
+                        <span className="swiss-label w-24 shrink-0 text-swiss-ink">
                           {social.name}
                         </span>
-                        <span className="flex-1 truncate text-neutral-500 text-sm">
+                        <span className="swiss-num flex-1 truncate text-neutral-500 text-sm">
                           {social.url}
                         </span>
                         <button
@@ -297,7 +298,7 @@ export default function AddMemberForm({
                             handleRemoveSocialMedia(index)
                           }
                           aria-label={`Remove ${social.name}`}
-                          className="shrink-0 p-1 text-neutral-400 transition-colors hover:text-red-500"
+                          className="shrink-0 p-1 text-neutral-400 transition-colors hover:text-swiss-red"
                         >
                           <RiDeleteBinLine className="h-4 w-4" />
                         </button>
@@ -306,7 +307,7 @@ export default function AddMemberForm({
                   )}
                 </div>
               )}
-              <div className="flex gap-2">
+              <div className="flex items-end gap-4">
                 <input
                   type="text"
                   value={newSocialName}
@@ -314,7 +315,7 @@ export default function AddMemberForm({
                     setNewSocialName(e.target.value)
                   }
                   placeholder="Platform (e.g. Instagram)"
-                  className="flex-1 rounded-lg border border-neutral-300 px-3 py-2 font-whisper text-sm placeholder:text-neutral-400"
+                  className="swiss-field flex-1"
                 />
                 <input
                   type="url"
@@ -323,7 +324,7 @@ export default function AddMemberForm({
                     setNewSocialUrl(e.target.value)
                   }
                   placeholder="URL"
-                  className="flex-1 rounded-lg border border-neutral-300 px-3 py-2 font-whisper text-sm placeholder:text-neutral-400"
+                  className="swiss-field flex-1"
                 />
                 <button
                   type="button"
@@ -332,21 +333,21 @@ export default function AddMemberForm({
                     !newSocialName.trim() ||
                     !newSocialUrl.trim()
                   }
-                  className="shrink-0 rounded-lg bg-black p-2 text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-300"
+                  className="swiss-btn swiss-btn-solid shrink-0 px-3"
                   aria-label="Add social link"
                 >
-                  <RiAddFill className="h-5 w-5" />
+                  <RiAddFill className="h-4 w-4" />
                 </button>
               </div>
             </div>
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex gap-4 pt-2">
             <button
               type="button"
               onClick={handleAddMember}
               disabled={isSubmitting}
-              className="flex items-center gap-2 rounded-lg bg-black px-6 py-3 font-medium font-whisper text-white hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-300"
+              className="swiss-btn swiss-btn-solid"
             >
               {isSubmitting ? (
                 <>
@@ -363,7 +364,7 @@ export default function AddMemberForm({
             <button
               type="button"
               onClick={onCancel}
-              className="rounded-lg border border-neutral-300 px-4 py-3 font-whisper hover:bg-neutral-50"
+              className="swiss-btn"
             >
               Cancel
             </button>
@@ -371,7 +372,7 @@ export default function AddMemberForm({
         </div>
       )}
 
-      <p className="mt-4 font-whisper text-neutral-500 text-sm">
+      <p className="swiss-body mt-6 text-neutral-500 text-sm">
         The user must have an existing account to be added
         as a member.
       </p>

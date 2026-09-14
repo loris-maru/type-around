@@ -11,6 +11,7 @@ import { useStudio } from "@/hooks/use-studio";
 import type { StudioMember } from "@/types/studio";
 import { cn } from "@/utils/class-names";
 import FeedbackForm from "./feedback-form";
+import AccountPageHeader from "../page-header";
 
 function membersToReviewers(
   members: StudioMember[]
@@ -48,33 +49,40 @@ export default function AccountFeedback() {
   return (
     <div className="relative flex w-full flex-col gap-y-12 pb-20">
       <div>
-        <h1 className="font-bold font-ortank text-2xl text-neutral-800">
-          Feedback
-        </h1>
-        <p className="mt-2 font-whisper text-neutral-600 text-sm">
-          Request feedback on your typeface from a designer.
-        </p>
+        <AccountPageHeader
+          eyebrow="07 Feedback"
+          title="Feedback"
+          description="Request feedback on your typeface from a designer."
+        />
 
         {typefaces.length > 0 && (
-          <div className="mt-6 w-full rounded-lg border border-neutral-200 px-4 py-3">
-            <div className="flex w-full flex-row justify-between">
-              {FEEDBACK_STEPS.map((s) => (
-                <div
-                  key={s.num}
+          <ol className="swiss-rule grid w-full grid-cols-12 gap-x-6 pt-3">
+            {FEEDBACK_STEPS.map((s) => (
+              <li
+                key={s.num}
+                className={cn(
+                  "col-span-3 flex items-baseline gap-3 py-1",
+                  step === s.num
+                    ? "text-black"
+                    : step > s.num
+                      ? "text-neutral-500"
+                      : "text-neutral-400"
+                )}
+              >
+                <span
                   className={cn(
-                    "flex items-center gap-2 font-whisper text-sm",
-                    step === s.num
-                      ? "font-semibold text-black"
-                      : step > s.num
-                        ? "text-neutral-500"
-                        : "text-neutral-400"
+                    "swiss-num text-xs",
+                    step === s.num && "text-swiss-red"
                   )}
                 >
-                  <span>{s.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+                  {String(s.num).padStart(2, "0")}
+                </span>
+                <span className="swiss-label">
+                  {s.label}
+                </span>
+              </li>
+            ))}
+          </ol>
         )}
       </div>
 

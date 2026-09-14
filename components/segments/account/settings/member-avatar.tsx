@@ -16,7 +16,7 @@ export default function MemberAvatar({
 }: MemberAvatarProps) {
   return (
     <div
-      className={`${AVATAR_SIZE_CLASSES[size]} rounded-full bg-neutral-200 flex items-center justify-center overflow-hidden`}
+      className={`${AVATAR_SIZE_CLASSES[size]} flex shrink-0 items-center justify-center overflow-hidden border border-swiss-ink bg-white`}
     >
       {imageUrl ? (
         <Image

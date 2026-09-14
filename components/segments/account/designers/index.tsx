@@ -6,6 +6,7 @@ import AddDesignerModal from "@/components/modals/modal-add-designer";
 import { DesignerCard } from "@/components/molecules/cards";
 import { useStudio } from "@/hooks/use-studio";
 import type { Designer } from "@/types/studio";
+import AccountPageHeader from "../page-header";
 
 export default function AccountDesigners() {
   const { studio, updateStudio } = useStudio();
@@ -62,9 +63,10 @@ export default function AccountDesigners() {
 
   return (
     <div className="relative w-full">
-      <h1 className="mb-8 font-bold font-ortank text-3xl">
-        Designers
-      </h1>
+      <AccountPageHeader
+        eyebrow="Designers"
+        title="Designers"
+      />
 
       <div className="grid grid-cols-4 gap-4">
         {designers.map((designer) => (
@@ -79,11 +81,11 @@ export default function AccountDesigners() {
         <button
           type="button"
           onClick={() => setIsModalOpen(true)}
-          className="flex min-h-[200px] cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-neutral-300 border-dashed p-4 transition-all duration-300 ease-in-out hover:border-black hover:bg-neutral-50"
+          className="group flex min-h-[200px] cursor-pointer flex-col items-start justify-between border border-neutral-300 p-5 text-left transition-colors hover:border-black"
         >
-          <RiAddFill className="h-8 w-8 text-neutral-400" />
-          <span className="font-medium text-neutral-500">
-            Add Designer
+          <RiAddFill className="h-6 w-6 text-neutral-400 transition-colors group-hover:text-swiss-red" />
+          <span className="swiss-label text-neutral-500 transition-colors group-hover:text-black">
+            Add designer
           </span>
         </button>
       </div>

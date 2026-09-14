@@ -25,16 +25,16 @@ export default function ButtonModalSave({
       disabled={disabled}
       aria-label={effectiveAriaLabel}
       aria-busy={isBusy}
-      className={`flex w-full items-center justify-center gap-2 rounded-lg bg-black py-3 font-medium font-whisper text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-400 ${className}`}
+      className={`swiss-btn swiss-btn-solid w-full ${className}`}
     >
       {showSpinner ? (
         <RiLoader4Line
-          className="h-5 w-5 animate-spin"
+          className="h-4 w-4 animate-spin"
           aria-hidden
         />
       ) : (
         <RiSaveLine
-          className="h-5 w-5 shrink-0"
+          className="h-4 w-4 shrink-0"
           aria-hidden
         />
       )}

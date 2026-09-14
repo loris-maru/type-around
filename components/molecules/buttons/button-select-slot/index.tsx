@@ -10,7 +10,7 @@ export default function ButtonSelectSlot({
     <button
       type="button"
       onClick={onClick}
-      className="cursor-pointer rounded-lg border border-neutral-300 px-3 py-2 font-whisper text-neutral-700 text-sm transition-colors hover:border-black hover:bg-neutral-50"
+      className="swiss-btn swiss-num min-h-9 px-3 text-xs tracking-normal normal-case"
     >
       {slot}
     </button>

@@ -14,9 +14,9 @@ export default function ButtonSaveForm({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className="flex w-40 cursor-pointer items-center justify-center gap-2 rounded-lg border border-black bg-black py-3 text-white shadow-lg transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-400"
+      className="swiss-btn swiss-btn-solid w-40"
     >
-      <RiSaveLine className="h-5 w-5" />
+      <RiSaveLine className="h-4 w-4" />
       {disabled ? loadingLabel : label}
     </button>
   );

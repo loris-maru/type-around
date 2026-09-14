@@ -13,13 +13,14 @@ export default function SaveErrorPill({
 }: SaveErrorPillProps) {
   return (
     <div
-      className={`fixed right-6 z-50 flex items-center gap-3 rounded-2xl bg-red-100 px-4 py-3 font-whisper text-red-800 text-sm ${className}`}
+      role="alert"
+      className={`fixed right-6 z-50 flex items-center gap-4 border border-swiss-red bg-white py-2 pr-2 pl-4 font-sotto text-sm text-swiss-red ${className}`}
     >
       <span>{message}</span>
       <button
         type="button"
         onClick={onRetry}
-        className="rounded-lg bg-red-200 px-3 py-1 font-medium hover:bg-red-300"
+        className="swiss-btn swiss-btn-red min-h-9 px-4"
       >
         Retry
       </button>

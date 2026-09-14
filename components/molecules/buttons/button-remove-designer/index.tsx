@@ -12,7 +12,7 @@ export default function ButtonRemoveDesigner({
       type="button"
       onClick={onClick}
       aria-label={ariaLabel}
-      className="cursor-pointer transition-colors hover:text-red-500"
+      className="cursor-pointer transition-colors hover:text-swiss-red"
     >
       {children}
     </button>

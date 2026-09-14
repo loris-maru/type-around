@@ -17,12 +17,12 @@ export default function AddTypeface({
       <button
         type="button"
         onClick={() => setIsModalOpen(true)}
-        className="relative flex h-[320px] w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-neutral-300 transition-colors hover:border-neutral-400"
+        className="group relative flex h-[320px] w-full cursor-pointer flex-col items-start justify-between border border-neutral-300 bg-white p-5 text-left transition-colors hover:border-black"
       >
-        <div className="relative font-bold font-ortank text-xl">
+        <RiAddFill className="h-6 w-6 text-neutral-400 transition-colors group-hover:text-swiss-red" />
+        <div className="swiss-h2 text-neutral-400 transition-colors group-hover:text-black">
           Add typeface
         </div>
-        <RiAddFill className="h-8 w-8 text-black" />
       </button>
 
       {/* Modal */}

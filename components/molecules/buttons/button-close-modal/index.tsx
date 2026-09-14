@@ -13,7 +13,7 @@ export default function ButtonCloseModal({
       <button
         type="button"
         onClick={onClick}
-        className="rounded p-1 transition-colors hover:bg-neutral-100"
+        className="p-1 text-neutral-500 transition-colors hover:text-swiss-red"
         aria-label="Close"
       >
         <RiCloseLine className="h-5 w-5" />
@@ -24,7 +24,7 @@ export default function ButtonCloseModal({
     <button
       type="button"
       onClick={onClick}
-      className="flex-1 cursor-pointer rounded-lg border border-neutral-300 px-4 py-2 font-whisper text-neutral-600 text-sm transition-colors hover:bg-neutral-50"
+      className="swiss-btn flex-1"
     >
       {children}
     </button>

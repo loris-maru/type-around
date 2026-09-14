@@ -1,8 +1,32 @@
-import { redirect } from "next/navigation";
 import { currentUser } from "@clerk/nextjs/server";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { RiArrowRightLine } from "react-icons/ri";
 import { getStudiosByUserEmail } from "@/lib/firebase/studios";
+
+function EmptyState({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="account-swiss flex min-h-screen items-center bg-white px-10">
+      <div className="swiss-rule w-full max-w-2xl pt-3">
+        <div className="swiss-label mb-6 flex items-center gap-2 text-neutral-500">
+          <span className="inline-block h-2 w-2 bg-swiss-red" />
+          Account
+        </div>
+        <h1 className="swiss-h1">{title}</h1>
+        <p className="swiss-body mt-6 text-neutral-600">
+          {description}
+        </p>
+      </div>
+    </div>
+  );
+}
 
 export default async function AccountPage() {
   const user = await currentUser();
@@ -15,16 +39,10 @@ export default async function AccountPage() {
 
   if (!email) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-ortank font-bold mb-4">
-            No Email Found
-          </h1>
-          <p className="text-neutral-500 font-whisper">
-            Please add an email address to your account.
-          </p>
-        </div>
-      </div>
+      <EmptyState
+        title="No email found"
+        description="Please add an email address to your account."
+      />
     );
   }
 
@@ -38,37 +56,39 @@ export default async function AccountPage() {
   // If user has no studios
   if (studios.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center max-w-md">
-          <h1 className="text-2xl font-ortank font-bold mb-4">
-            No Studio Found
-          </h1>
-          <p className="text-neutral-500 font-whisper mb-6">
-            You are not associated with any studio yet.
-            Please contact an administrator to be added to a
-            studio.
-          </p>
-        </div>
-      </div>
+      <EmptyState
+        title="No studio found"
+        description="You are not associated with any studio yet. Please contact an administrator to be added to a studio."
+      />
     );
   }
 
   // If user has multiple studios, show a list
   return (
-    <div className="min-h-screen flex items-center justify-center p-8">
-      <div className="w-full max-w-2xl">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-ortank font-bold mb-4">
-            Select a Studio
-          </h1>
-          <p className="text-neutral-500 font-whisper">
-            You have access to multiple studios. Choose
-            which one to manage.
+    <div className="account-swiss min-h-screen bg-white px-10 pt-24 pb-24">
+      <div className="grid w-full grid-cols-12 gap-x-6">
+        <header className="swiss-rule col-span-12 pt-3 pb-16 lg:col-span-4">
+          <div className="swiss-label mb-6 flex items-center gap-2 text-neutral-500">
+            <span className="inline-block h-2 w-2 bg-swiss-red" />
+            Account
+          </div>
+          <h1 className="swiss-display">Select a studio</h1>
+          <p className="swiss-body mt-6 text-neutral-600">
+            You have access to several studios. Choose which
+            one to manage.
           </p>
-        </div>
+          <div className="mt-10 flex flex-col">
+            <span className="swiss-label text-neutral-500">
+              Studios
+            </span>
+            <span className="swiss-num text-6xl leading-none">
+              {studios.length}
+            </span>
+          </div>
+        </header>
 
-        <div className="grid gap-4">
-          {studios.map((studio) => {
+        <ol className="swiss-rule col-span-12 flex flex-col divide-y divide-neutral-200 lg:col-span-8">
+          {studios.map((studio, studioIndex) => {
             const isOwner = studio.ownerEmail === email;
             const member = studio.members?.find(
               (m) => m.email === email
@@ -76,79 +96,72 @@ export default async function AccountPage() {
             const role = isOwner
               ? "Owner"
               : member?.role || "Member";
+            const typefaceCount =
+              studio.typefaces?.length || 0;
 
             return (
-              <Link
-                key={studio.id}
-                href={`/account/${studio.id}`}
-                className="group flex items-center justify-between p-6 bg-white border border-neutral-200 rounded-xl hover:border-black hover:shadow-lg transition-all duration-200"
-              >
-                <div className="flex items-center gap-4">
-                  {/* Studio Avatar */}
-                  <div className="w-14 h-14 rounded-full bg-neutral-100 flex items-center justify-center overflow-hidden">
+              <li key={studio.id}>
+                <Link
+                  href={`/account/${studio.id}`}
+                  className="group grid grid-cols-12 items-center gap-x-6 py-6 transition-colors hover:bg-black hover:text-white"
+                >
+                  <span className="swiss-num col-span-1 pl-2 text-neutral-500 text-xs group-hover:text-neutral-400">
+                    {String(studioIndex + 1).padStart(
+                      2,
+                      "0"
+                    )}
+                  </span>
+
+                  <div className="col-span-1 flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-neutral-100">
                     {studio.avatar ? (
                       <Image
                         src={studio.avatar}
                         alt={studio.name || "Studio avatar"}
-                        width={56}
-                        height={56}
-                        className="w-full h-full object-cover"
+                        width={48}
+                        height={48}
+                        className="h-full w-full object-cover"
                       />
                     ) : (
-                      <span className="text-2xl font-ortank font-bold text-neutral-400">
+                      <span className="font-godo text-neutral-400 text-xl">
                         {studio.name?.charAt(0) || "S"}
                       </span>
                     )}
                   </div>
 
-                  {/* Studio Info */}
-                  <div>
-                    <h2 className="text-lg font-ortank font-bold group-hover:text-black">
-                      {studio.name || "Unnamed Studio"}
+                  <div className="col-span-6 flex flex-col gap-1">
+                    <h2 className="swiss-h2">
+                      {studio.name || "Unnamed studio"}
                     </h2>
-                    <p className="text-sm text-neutral-500 font-whisper">
-                      {studio.typefaces?.length || 0}{" "}
-                      typeface
-                      {(studio.typefaces?.length || 0) !== 1
-                        ? "s"
-                        : ""}
+                    <p className="font-sotto text-neutral-500 text-sm group-hover:text-neutral-400">
+                      {typefaceCount} typeface
+                      {typefaceCount !== 1 ? "s" : ""}
                       {studio.location &&
                         ` · ${studio.location}`}
                     </p>
                   </div>
-                </div>
 
-                {/* Role Badge */}
-                <div className="flex items-center gap-3">
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-whisper font-medium ${
-                      isOwner
-                        ? "bg-black text-white"
-                        : "bg-neutral-100 text-neutral-600"
-                    }`}
-                  >
-                    {role}
-                  </span>
-                  <svg
-                    className="w-5 h-5 text-neutral-400 group-hover:text-black group-hover:translate-x-1 transition-all"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    <title>Go to studio</title>
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
+                  <div className="col-span-3 flex items-center gap-2">
+                    <span
+                      className={
+                        isOwner
+                          ? "inline-block h-2 w-2 bg-swiss-red"
+                          : "inline-block h-2 w-2 bg-neutral-300"
+                      }
                     />
-                  </svg>
-                </div>
-              </Link>
+                    <span className="swiss-label">
+                      {role}
+                    </span>
+                  </div>
+
+                  <RiArrowRightLine
+                    aria-hidden
+                    className="col-span-1 h-5 w-5 justify-self-end pr-0 text-neutral-400 transition-transform group-hover:translate-x-1 group-hover:text-white"
+                  />
+                </Link>
+              </li>
             );
           })}
-        </div>
+        </ol>
       </div>
     </div>
   );

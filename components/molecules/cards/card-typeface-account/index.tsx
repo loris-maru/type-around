@@ -5,24 +5,43 @@ import type { TypefaceCardProps } from "@/types/components";
 export default function TypefaceCardAccount({
   typeface,
   onClick,
+  index,
 }: TypefaceCardProps) {
+  const fontCount = typeface.fonts.length;
+
   return (
     <button
       type="button"
       onClick={onClick}
-      className="relative flex h-[320px] w-full cursor-pointer flex-col items-start justify-between rounded-lg border border-black bg-white p-6 shadow-button transition-all duration-300 ease-in-out hover:-translate-x-1 hover:-translate-y-1 hover:shadow-button-hover"
+      className="group relative flex h-[320px] w-full cursor-pointer flex-col items-start justify-between border border-black bg-white p-5 text-left transition-colors hover:bg-black hover:text-white"
     >
-      <div className="flex flex-col gap-1">
-        <div className="text-left font-bold font-ortank text-3xl text-black">
-          {typeface.name}
-          <br />
-          {typeface.hangeulName}
-        </div>
+      <div className="flex w-full items-start justify-between">
+        {index !== undefined && (
+          <span className="swiss-num text-xs text-neutral-500 group-hover:text-neutral-400">
+            {String(index).padStart(2, "0")}
+          </span>
+        )}
+        <span className="inline-block h-2 w-2 bg-swiss-red" />
       </div>
-      <div className="relative flex flex-row font-normal font-whisper text-black text-sm">
-        <div className="flex flex-row flex-nowrap">
-          Fonts: {typeface.fonts.length}
+
+      <div className="flex w-full flex-col gap-2">
+        <div className="swiss-h1 break-words text-[2.25rem]">
+          {typeface.name}
         </div>
+        {typeface.hangeulName && (
+          <div className="font-ortank text-lg leading-tight text-neutral-500 group-hover:text-neutral-400">
+            {typeface.hangeulName}
+          </div>
+        )}
+      </div>
+
+      <div className="swiss-rule-light flex w-full items-baseline justify-between pt-3 group-hover:border-neutral-700">
+        <span className="swiss-label text-neutral-500 group-hover:text-neutral-400">
+          Fonts
+        </span>
+        <span className="swiss-num text-sm">
+          {fontCount}
+        </span>
       </div>
     </button>
   );

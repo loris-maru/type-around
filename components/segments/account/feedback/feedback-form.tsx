@@ -47,16 +47,16 @@ function ReviewerCard({
   return (
     <ButtonSelectReviewer onSelect={onSelect}>
       <div
-        className="h-12 w-12 shrink-0 rounded-full"
+        className="h-12 w-12 shrink-0"
         style={{ background: reviewer.gradient }}
         aria-hidden
       />
       <div className="min-w-0 flex-1">
-        <div className="font-medium font-whisper text-neutral-800 text-sm">
+        <div className="swiss-h3 text-swiss-ink">
           {reviewer.firstName} {reviewer.lastName}
         </div>
         {studioName && (
-          <div className="font-whisper text-neutral-500 text-xs">
+          <div className="swiss-label mt-1 text-neutral-500">
             {studioName}
           </div>
         )}
@@ -207,8 +207,8 @@ export default function FeedbackForm({
 
   if (typefaces.length === 0) {
     return (
-      <div className="rounded-lg border border-amber-200 bg-amber-50 p-6">
-        <p className="font-whisper text-amber-800 text-sm">
+      <div className="swiss-rule py-6">
+        <p className="swiss-body text-swiss-ink">
           Add at least one typeface to your studio to
           request feedback.
         </p>
@@ -218,8 +218,8 @@ export default function FeedbackForm({
 
   if (reviewers.length === 0) {
     return (
-      <div className="rounded-lg border border-amber-200 bg-amber-50 p-6">
-        <p className="font-whisper text-amber-800 text-sm">
+      <div className="swiss-rule py-6">
+        <p className="swiss-body text-swiss-ink">
           No reviewers available. Add reviewers in Settings
           → Team Members by enabling the
           &quot;Reviewer&quot; checkbox for members.
@@ -229,19 +229,19 @@ export default function FeedbackForm({
   }
 
   return (
-    <div className="flex flex-col gap-8 bg-white p-6">
+    <div className="swiss-rule flex flex-col gap-10 pt-8">
       {step === 1 && (
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col gap-6"
+          className="flex flex-col gap-10"
         >
-          <div>
+          <div className="max-w-md">
             <label
-              className="mb-2 block font-whisper text-neutral-600 text-sm"
+              className="swiss-label mb-2 block text-neutral-500"
               htmlFor="feedback-typeface"
             >
-              Typeface to give feedback on:
+              Typeface to give feedback on
             </label>
             <InputDropdown
               value={selectedTypeface?.id ?? ""}
@@ -257,10 +257,10 @@ export default function FeedbackForm({
           </div>
 
           <div>
-            <p className="mb-3 font-whisper text-neutral-600 text-sm">
+            <p className="swiss-label mb-2 block text-neutral-500 mb-4">
               Select the designer you want feedback from
             </p>
-            <div className="grid grid-cols-3 gap-5">
+            <div className="grid grid-cols-3 gap-x-6">
               {reviewers.map((reviewer) => (
                 <ReviewerCard
                   key={reviewer.id}
@@ -280,29 +280,29 @@ export default function FeedbackForm({
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col gap-4"
+          className="flex flex-col gap-6"
         >
           <ButtonGoBack onClick={handleBack} />
-          <div className="flex items-center gap-4 rounded-lg border border-neutral-200 bg-white p-3">
+          <div className="swiss-rule-light flex items-center gap-4 py-4">
             <div
-              className="h-10 w-10 shrink-0 rounded-full"
+              className="h-10 w-10 shrink-0"
               style={{
                 background: selectedReviewer.gradient,
               }}
               aria-hidden
             />
-            <span className="font-whisper text-neutral-800 text-sm">
+            <span className="swiss-h3 text-swiss-ink">
               {selectedReviewer.firstName}{" "}
               {selectedReviewer.lastName}
             </span>
           </div>
-          <p className="font-whisper text-neutral-600 text-sm">
+          <p className="swiss-label mb-2 block text-neutral-500">
             Select an available date and time
           </p>
           {useNylas && nylasConfigId ? (
             <div
               ref={nylasContainerRef}
-              className="min-h-[400px] rounded-lg border border-neutral-200 bg-white p-4"
+              className="min-h-[400px] border border-swiss-ink bg-white p-4"
             >
               <NylasScheduling
                 configurationId={nylasConfigId}
@@ -310,10 +310,10 @@ export default function FeedbackForm({
               />
             </div>
           ) : (
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-6">
               {FEEDBACK_MOCK_DAYS.map((day) => (
                 <div key={day.date}>
-                  <div className="mb-2 font-whisper text-neutral-600 text-xs">
+                  <div className="swiss-label mb-3 text-swiss-ink">
                     {day.label}
                   </div>
                   <div className="flex flex-wrap gap-2">
@@ -338,29 +338,29 @@ export default function FeedbackForm({
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col gap-6"
+          className="flex flex-col gap-8"
         >
           <ButtonGoBack onClick={handleBack} />
 
-          <div className="flex items-center gap-4 rounded-lg border border-neutral-200 bg-white p-4">
+          <div className="swiss-rule-light flex items-center gap-5 py-4">
             <div
-              className="h-12 w-12 shrink-0 rounded-full"
+              className="h-12 w-12 shrink-0"
               style={{
                 background: selectedReviewer.gradient,
               }}
               aria-hidden
             />
             <div>
-              <div className="font-medium font-whisper text-neutral-800 text-sm">
+              <div className="swiss-h3 text-swiss-ink">
                 {selectedReviewer.firstName}{" "}
                 {selectedReviewer.lastName}
               </div>
               {selectedTypeface && (
-                <div className="font-whisper text-neutral-500 text-xs">
+                <div className="swiss-label mt-1 text-neutral-500">
                   {selectedTypeface.name}
                 </div>
               )}
-              <div className="font-whisper text-neutral-500 text-xs">
+              <div className="swiss-num mt-1 text-neutral-500 text-sm">
                 {selectedDay} · {selectedSlot}
               </div>
             </div>
@@ -369,7 +369,7 @@ export default function FeedbackForm({
           <div>
             <label
               htmlFor="feedback-comment"
-              className="mb-1 block font-medium text-black text-sm"
+              className="swiss-label mb-2 block text-neutral-500"
             >
               Comment
             </label>
@@ -378,12 +378,12 @@ export default function FeedbackForm({
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               rows={3}
-              className="w-full rounded-lg border border-neutral-300 px-3 py-2 font-whisper text-neutral-800 text-sm outline-none focus:border-black"
+              className="swiss-field resize-none"
               placeholder="Add your comment..."
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-6">
             <div>
               <FileDropZone
                 label="Typographic proof"
@@ -410,7 +410,7 @@ export default function FeedbackForm({
             </div>
           </div>
 
-          <div className="flex gap-4">
+          <div className="swiss-rule-light flex gap-4 pt-6">
             <ButtonCancelForm onClick={handleCancel} />
             <ButtonSendRequest
               onClick={handleSendRequest}
@@ -424,16 +424,16 @@ export default function FeedbackForm({
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.3 }}
-          className="flex flex-col items-center gap-6 py-8"
+          className="flex flex-col items-start gap-8 py-8"
         >
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
-            <CheckIcon className="h-8 w-8 text-green-600" />
+          <div className="flex h-16 w-16 items-center justify-center bg-swiss-red">
+            <CheckIcon className="h-8 w-8 text-white" />
           </div>
-          <div className="text-center">
-            <h3 className="font-bold font-ortank text-lg text-neutral-800">
+          <div>
+            <h3 className="swiss-h2">
               Request sent successfully
             </h3>
-            <p className="mt-2 font-whisper text-neutral-600 text-sm">
+            <p className="swiss-body mt-3 text-neutral-600">
               Your feedback request has been submitted. The
               designer will get back to you soon.
             </p>

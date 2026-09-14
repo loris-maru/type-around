@@ -10,7 +10,7 @@ export default function ButtonGoBack({
     <button
       type="button"
       onClick={onClick}
-      className="flex w-fit cursor-pointer items-center gap-2 font-whisper text-neutral-600 text-sm transition-colors hover:text-black"
+      className="swiss-label flex w-fit cursor-pointer items-center gap-2 text-neutral-500 transition-colors hover:text-swiss-ink"
     >
       <RiArrowLeftLine className="h-4 w-4" />
       Back

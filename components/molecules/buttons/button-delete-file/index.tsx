@@ -10,7 +10,7 @@ export default function ButtonDeleteFile({
     <button
       type="button"
       onClick={onClick}
-      className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border border-red-200 px-4 py-2 font-medium font-whisper text-red-600 text-sm transition-colors hover:bg-red-50"
+      className="swiss-btn flex-1 border-swiss-red text-swiss-red hover:!border-swiss-red hover:!bg-swiss-red"
     >
       <RiDeleteBinLine className="h-4 w-4" />
       Delete

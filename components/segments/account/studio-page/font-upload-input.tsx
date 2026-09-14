@@ -23,7 +23,7 @@ import type { FontUploadInputProps } from "@/types/components";
 import { cn } from "@/utils/class-names";
 
 const DISPLAY_FALLBACK = "Ortank, sans-serif";
-const TEXT_FALLBACK = '"Whisper", monospace';
+const TEXT_FALLBACK = '"Sotto", "Ortank", sans-serif';
 const FONT_PREVIEW_SAMPLE = "AaBbCc 123 가나다";
 
 export default function FontUploadInput({

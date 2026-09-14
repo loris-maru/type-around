@@ -23,7 +23,11 @@ export default function ChangesSavedPill({
             damping: 25,
           }}
         >
-          <div className="rounded-2xl bg-green-600 px-16 py-6 font-whisper text-base text-white">
+          <div
+            role="status"
+            className="swiss-label flex min-h-12 items-center gap-3 bg-black px-6 text-white"
+          >
+            <span className="inline-block h-2 w-2 bg-swiss-red" />
             Changes saved
           </div>
         </motion.div>

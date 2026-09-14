@@ -45,7 +45,7 @@ export default function MemberListItem({
   };
 
   return (
-    <div className="flex w-full flex-col py-4">
+    <div className="flex w-full flex-col py-5">
       <div className="flex w-full items-start justify-between gap-4">
         {/* Left: Avatar + identity + biography */}
         <div className="flex w-full items-start gap-4">
@@ -57,22 +57,22 @@ export default function MemberListItem({
             }
             size={isProfileExpanded ? "md" : "xl"}
           />
-          <div className="flex flex-col gap-0.5">
-            <div className="flex items-center gap-2">
-              <span className="font-medium font-whisper text-black">
+          <div className="flex flex-col gap-1">
+            <div className="flex items-baseline gap-3">
+              <span className="swiss-h3 text-swiss-ink">
                 {member.firstName} {member.lastName}
               </span>
               {isCurrentUser && (
-                <span className="rounded-2xl bg-white px-4 py-2 text-black text-xs">
+                <span className="swiss-label text-swiss-red">
                   You
                 </span>
               )}
             </div>
-            <span className="font-whisper text-neutral-500 text-sm">
+            <span className="swiss-num text-neutral-500 text-sm">
               {member.email}
             </span>
             {member.biography?.trim() && (
-              <p className="mt-2 font-whisper text-neutral-600 text-sm leading-relaxed">
+              <p className="swiss-body mt-2 text-neutral-600 text-sm">
                 {member.biography}
               </p>
             )}
@@ -80,9 +80,9 @@ export default function MemberListItem({
         </div>
 
         {/* Right: Role dropdown, edit button, delete button */}
-        <div className="flex shrink-0 items-center gap-2">
+        <div className="flex shrink-0 items-center gap-4">
           {member.role === "owner" ? (
-            <span className="font-medium font-whisper text-black">
+            <span className="swiss-label border border-swiss-ink px-3 py-2 text-swiss-ink">
               {ROLE_LABELS.owner}
             </span>
           ) : canManageMembers && onRoleChange ? (
@@ -98,7 +98,7 @@ export default function MemberListItem({
               }
             />
           ) : (
-            <span className="font-medium font-whisper text-black">
+            <span className="swiss-label border border-swiss-rule px-3 py-2 text-neutral-600">
               {ROLE_LABELS[member.role]}
             </span>
           )}
@@ -109,7 +109,7 @@ export default function MemberListItem({
                 onClick={() =>
                   setIsProfileExpanded((prev) => !prev)
                 }
-                className="rounded-lg p-2 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-black"
+                className="flex h-9 w-9 items-center justify-center border border-swiss-rule text-neutral-500 transition-colors hover:border-swiss-ink hover:text-swiss-ink"
                 title="Edit member profile"
                 aria-label="Edit member profile"
               >
@@ -121,7 +121,7 @@ export default function MemberListItem({
               type="button"
               onClick={handleDeleteClick}
               disabled={isRemoving}
-              className="rounded-lg p-2 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-500 disabled:opacity-50"
+              className="flex h-9 w-9 items-center justify-center border border-swiss-rule text-neutral-500 transition-colors hover:border-swiss-red hover:text-swiss-red disabled:opacity-50"
               title="Remove member"
             >
               {isRemoving ? (
@@ -138,7 +138,7 @@ export default function MemberListItem({
       {canEditProfile &&
         (onProfileUpdate || onError) &&
         isProfileExpanded && (
-          <div className="mt-3 pl-20">
+          <div className="swiss-rule-light mt-5 pt-5">
             <MemberProfileEdit
               member={member}
               studioId={studioId}
@@ -160,25 +160,25 @@ export default function MemberListItem({
             onClick={() => setShowDeleteConfirm(false)}
           />
           <div
-            className="relative mx-4 w-full max-w-sm rounded-lg bg-white p-6 shadow-xl"
+            className="relative mx-4 w-full max-w-sm border border-swiss-ink bg-white p-6"
             role="dialog"
             aria-modal="true"
             aria-labelledby="delete-member-title"
           >
             <h3
               id="delete-member-title"
-              className="mb-2 font-bold font-ortank text-lg"
+              className="swiss-h2 mb-3"
             >
               Delete member
             </h3>
-            <p className="mb-6 font-whisper text-neutral-600 text-sm">
+            <p className="swiss-body mb-8 text-neutral-600">
               Are you sure you want to delete the member?
             </p>
             <div className="flex justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setShowDeleteConfirm(false)}
-                className="rounded-lg border border-neutral-300 px-4 py-2 font-medium font-whisper transition-colors hover:bg-neutral-50"
+                className="swiss-btn"
               >
                 Cancel
               </button>
@@ -186,7 +186,7 @@ export default function MemberListItem({
                 type="button"
                 onClick={handleConfirmDelete}
                 disabled={isRemoving}
-                className="rounded-lg bg-red-600 px-4 py-2 font-medium font-whisper text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+                className="swiss-btn swiss-btn-red"
               >
                 {isRemoving ? "Deleting..." : "Delete"}
               </button>

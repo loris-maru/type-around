@@ -13,11 +13,11 @@ export default function ButtonAddAvailabilityDay({
     <button
       type="button"
       onClick={onClick}
-      className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-0.5 rounded-lg border border-neutral-200 bg-white font-whisper text-neutral-800 text-sm transition-colors hover:border-neutral-400 hover:bg-neutral-50"
+      className="swiss-num flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 border border-swiss-rule bg-white text-sm text-swiss-ink transition-colors hover:border-swiss-ink"
     >
       <span>{day}</span>
       {hasSlots ? (
-        <span className="rounded-full bg-black px-1.5 py-0.5 text-[10px] text-white">
+        <span className="min-w-4 bg-swiss-red px-1 py-0.5 text-center font-medium text-[10px] text-white leading-none">
           {slotCount}
         </span>
       ) : (

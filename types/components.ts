@@ -429,6 +429,8 @@ export type PackageCardProps = {
 export type TypefaceCardProps = {
   typeface: StudioTypeface;
   onClick?: () => void;
+  /** 1-based position used for the Swiss-style numeral on account cards */
+  index?: number;
 };
 
 export type PublicTypefaceCardProps = {

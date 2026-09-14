@@ -3,6 +3,7 @@
 import { useUser } from "@clerk/nextjs";
 import { useCallback, useMemo, useState } from "react";
 import { InputDropdown } from "@/components/global/inputs";
+import AccountPageHeader from "../page-header";
 import AddAvailabilityModal from "@/components/modals/modal-add-availability";
 import { ButtonAddAvailabilityDay } from "@/components/molecules/buttons";
 import { CALENDAR_MONTHS } from "@/constant/CALENDAR_MONTHS";
@@ -93,22 +94,19 @@ export default function AccountReviewerCalendar() {
   );
 
   return (
-    <div className="relative flex w-full flex-col gap-y-28 pb-20">
-      <div>
-        <h1 className="font-bold font-ortank text-2xl text-neutral-800">
-          Calendar
-        </h1>
-        <p className="mt-2 font-whisper text-neutral-600 text-sm">
-          Manage your availability for feedback sessions.
-        </p>
-      </div>
+    <div className="relative flex w-full flex-col gap-y-12 pb-20">
+      <AccountPageHeader
+        eyebrow="Reviewer"
+        title="Calendar"
+        description="Manage your availability for feedback sessions."
+      />
 
-      <div className="flex flex-col gap-6">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col gap-8">
+        <div className="flex items-end gap-6">
           <div>
             <label
               htmlFor="calendar-month"
-              className="mb-1 block font-whisper text-neutral-600 text-xs"
+              className="swiss-label mb-2 block text-neutral-500"
             >
               Month
             </label>
@@ -124,7 +122,7 @@ export default function AccountReviewerCalendar() {
           <div>
             <label
               htmlFor="calendar-year"
-              className="mb-1 block font-whisper text-neutral-600 text-xs"
+              className="swiss-label mb-2 block text-neutral-500"
             >
               Year
             </label>
@@ -139,7 +137,7 @@ export default function AccountReviewerCalendar() {
           </div>
         </div>
 
-        <div className="grid grid-cols-7 gap-1">
+        <div className="swiss-rule grid grid-cols-7 gap-px bg-swiss-rule pt-px [&>*]:bg-white">
           {[
             "Sun",
             "Mon",
@@ -151,7 +149,7 @@ export default function AccountReviewerCalendar() {
           ].map((day) => (
             <div
               key={day}
-              className="py-2 text-center font-whisper text-neutral-500 text-xs"
+              className="swiss-label py-3 text-center text-neutral-500"
             >
               {day}
             </div>

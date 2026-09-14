@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
-import { RiArrowDropRightLine } from "react-icons/ri";
+import { RiAddLine, RiSubtractLine } from "react-icons/ri";
 import type { CollapsibleSectionProps } from "@/types/components";
 import { cn } from "@/utils/class-names";
 
@@ -16,33 +16,33 @@ export default function CollapsibleSection({
 }: CollapsibleSectionProps) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const [isAnimating, setIsAnimating] = useState(false);
+  const Icon = isOpen ? RiSubtractLine : RiAddLine;
 
   return (
     <section
       {...(id && { id })}
-      className="scroll-mt-8"
+      className="swiss-rule scroll-mt-8 pt-3"
     >
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
         className={cn(
-          "w-full flex items-center justify-between border-b border-neutral-200 cursor-pointer group",
-          isOpen ? "mb-4 pb-2" : "mb-4 pb-4"
+          "group flex w-full cursor-pointer items-start justify-between gap-6 text-left",
+          isOpen ? "mb-8" : "mb-4"
         )}
       >
-        <h2 className="text-xl font-ortank font-bold">
+        <h2 className="swiss-h2 flex items-baseline gap-4">
           {title}
           {count !== undefined && countLabel && (
-            <span className="text-neutral-500 font-whisper text-sm font-normal ml-2">
-              ({count} {countLabel})
+            <span className="swiss-label text-neutral-500">
+              {count} {countLabel}
             </span>
           )}
         </h2>
-        <RiArrowDropRightLine
-          className={cn(
-            "w-5 h-5 text-neutral-500 transition-transform duration-200",
-            isOpen && "rotate-90"
-          )}
+        <Icon
+          aria-hidden
+          className="mt-1 h-4 w-4 shrink-0 text-neutral-400 transition-colors group-hover:text-black"
         />
       </button>
 
@@ -60,11 +60,12 @@ export default function CollapsibleSection({
             onAnimationComplete={() =>
               setIsAnimating(false)
             }
-            className={
+            className={cn(
+              "pb-12",
               isAnimating
                 ? "overflow-hidden"
                 : "overflow-visible"
-            }
+            )}
           >
             {children}
           </motion.div>

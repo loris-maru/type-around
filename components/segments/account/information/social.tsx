@@ -37,11 +37,9 @@ const FORM_FIELDS: FormField[] = [
 
 export default function AccountInformationSocial() {
   return (
-    <div className="relative w-full flex flex-col gap-y-4">
-      <h1 className="text-xl font-ortank font-bold">
-        Social Media
-      </h1>
-      <form className="grid grid-cols-2 gap-6">
+    <div className="relative flex w-full flex-col gap-y-8">
+      <h2 className="swiss-h2">Social media</h2>
+      <form className="grid grid-cols-2 gap-x-12 gap-y-8">
         {FORM_FIELDS.map((field) => {
           const Icon = field.icon;
           return (
@@ -51,20 +49,20 @@ export default function AccountInformationSocial() {
             >
               <label
                 htmlFor={field.slug}
-                className="block font-whisper text-sm font-normal text-black mb-2"
+                className="swiss-label mb-2 block text-neutral-500"
               >
                 {field.label}
               </label>
               <div className="relative w-full">
                 {Icon && (
-                  <Icon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-black" />
+                  <Icon className="absolute top-1/2 left-0 h-4 w-4 -translate-y-1/2 text-swiss-ink" />
                 )}
                 <input
                   type={field.type}
                   id={field.slug}
                   name={field.slug}
                   placeholder={field.placeholder}
-                  className="w-full pl-12 pr-6 py-5 border border-neutral-300 placeholder:text-black placeholder:text-base placeholder:font-whisper placeholder:font-medium"
+                  className="swiss-field pl-8"
                 />
               </div>
             </div>

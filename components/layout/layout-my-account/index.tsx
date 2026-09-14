@@ -6,17 +6,11 @@ export default function LayoutMyAccount({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative w-full px-10 py-20">
-      <div
-        className="fixed inset-0 -z-10 h-screen w-screen"
-        style={{
-          background:
-            "linear-gradient(180deg, #FFF8E8 29.33%, #F2F2F2 100%)",
-        }}
-      />
-      <div className="fixed z-50 w-68">
+    <div className="account-swiss relative w-full px-10 pt-24 pb-24">
+      <div className="fixed inset-0 -z-10 h-screen w-screen bg-white" />
+      <aside className="fixed top-24 z-50 w-64">
         <MyAccountNavigation />
-      </div>
+      </aside>
       <div className="relative pl-[320px]">{children}</div>
     </div>
   );

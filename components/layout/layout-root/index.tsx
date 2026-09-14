@@ -20,7 +20,7 @@ export default function LayoutRoot({
     type: "font/woff2",
     crossOrigin: "anonymous",
   });
-  ReactDOM.preload("/fonts/WhisperMono-VAR.woff2", {
+  ReactDOM.preload("/fonts/Sotto_VAR.woff2", {
     as: "font",
     type: "font/woff2",
     crossOrigin: "anonymous",
@@ -48,7 +48,7 @@ export default function LayoutRoot({
         <body
           className={`antialiased`}
           style={{
-            fontFamily: "Whisper, Ortank, sans-serif",
+            fontFamily: "Sotto, Ortank, sans-serif",
           }}
           suppressHydrationWarning
         >

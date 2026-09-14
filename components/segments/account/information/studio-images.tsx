@@ -73,10 +73,10 @@ export default function StudioImages() {
   if (isLoading || !studio) {
     return (
       <div className="animate-pulse">
-        <div className="mb-6 h-8 w-48 rounded bg-neutral-200" />
+        <div className="mb-6 h-8 w-48 bg-neutral-200" />
         <div className="grid grid-cols-2 gap-6">
-          <div className="h-40 rounded bg-neutral-200" />
-          <div className="h-40 rounded bg-neutral-200" />
+          <div className="h-40 bg-neutral-200" />
+          <div className="h-40 bg-neutral-200" />
         </div>
       </div>
     );
@@ -84,13 +84,13 @@ export default function StudioImages() {
 
   return (
     <div className="relative w-full">
-      <div className="grid grid-cols-2 gap-6">
-        <div className="flex flex-col gap-4">
+      <div className="grid grid-cols-2 gap-x-12 gap-y-6">
+        <div className="flex flex-col gap-6">
           <div>
-            <span className="mb-2 block font-semibold text-black text-sm">
-              Studio Thumbnail
+            <span className="swiss-label mb-2 block text-neutral-500">
+              Studio thumbnail
             </span>
-            <p className="mb-3 font-whisper text-neutral-500 text-xs">
+            <p className="swiss-body mb-4 text-neutral-500 text-sm">
               Choose how your studio thumbnail is displayed.
             </p>
             <InputDropdown
@@ -123,10 +123,10 @@ export default function StudioImages() {
 
           {thumbnailType === "color" && (
             <div>
-              <span className="mb-2 block font-semibold text-black text-sm">
+              <span className="swiss-label mb-2 block text-neutral-500">
                 Color
               </span>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <ColorPicker
                   id="studio-thumbnail-color"
                   value={thumbnailColor}
@@ -143,19 +143,19 @@ export default function StudioImages() {
                   }
                   maxLength={7}
                   placeholder="#000000"
-                  className="min-w-0 flex-1 rounded-lg border border-neutral-300 px-3 py-2 font-whisper text-sm uppercase"
+                  className="swiss-field swiss-num min-w-0 flex-1 uppercase"
                 />
               </div>
             </div>
           )}
 
           {thumbnailType === "gradient" && (
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-6">
               <div>
-                <span className="mb-2 block font-semibold text-black text-sm">
+                <span className="swiss-label mb-2 block text-neutral-500">
                   From
                 </span>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                   <ColorPicker
                     id="studio-thumbnail-gradient-from"
                     value={gradientFrom}
@@ -175,15 +175,15 @@ export default function StudioImages() {
                     }
                     maxLength={7}
                     placeholder="#FFF8E8"
-                    className="min-w-0 flex-1 rounded-lg border border-neutral-300 px-3 py-2 font-whisper text-sm uppercase"
+                    className="swiss-field swiss-num min-w-0 flex-1 uppercase"
                   />
                 </div>
               </div>
               <div>
-                <span className="mb-2 block font-semibold text-black text-sm">
+                <span className="swiss-label mb-2 block text-neutral-500">
                   To
                 </span>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                   <ColorPicker
                     id="studio-thumbnail-gradient-to"
                     value={gradientTo}
@@ -202,7 +202,7 @@ export default function StudioImages() {
                     }
                     maxLength={7}
                     placeholder="#F2F2F2"
-                    className="min-w-0 flex-1 rounded-lg border border-neutral-300 px-3 py-2 font-whisper text-sm uppercase"
+                    className="swiss-field swiss-num min-w-0 flex-1 uppercase"
                   />
                 </div>
               </div>
@@ -222,8 +222,8 @@ export default function StudioImages() {
         />
       </div>
       {isSaving && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white/50">
-          <span className="text-neutral-500 text-sm">
+        <div className="absolute inset-0 flex items-center justify-center bg-white/60">
+          <span className="swiss-label text-neutral-500">
             Saving...
           </span>
         </div>
@@ -256,7 +256,7 @@ function ThumbnailPreview({
 
   return (
     <div
-      className="relative aspect-[3/2] w-full overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100"
+      className="relative aspect-[3/2] w-full overflow-hidden border border-swiss-ink bg-white"
       style={style}
     >
       {type === "image" &&
@@ -271,7 +271,7 @@ function ThumbnailPreview({
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
-            <span className="font-whisper text-neutral-400 text-xs">
+            <span className="swiss-label text-neutral-400">
               No image yet
             </span>
           </div>

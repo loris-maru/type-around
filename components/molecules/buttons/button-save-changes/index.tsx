@@ -14,9 +14,9 @@ export default function ButtonSaveChanges({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className="flex cursor-pointer items-center gap-2 rounded-lg bg-black px-6 py-3 text-white shadow-lg transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-400"
+      className="swiss-btn swiss-btn-solid min-h-12 px-6"
     >
-      <RiSaveLine className="h-5 w-5" />
+      <RiSaveLine className="h-4 w-4" />
       {disabled ? loadingLabel : label}
     </button>
   );

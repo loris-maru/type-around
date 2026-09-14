@@ -14,6 +14,7 @@ import {
 } from "@/actions/studio-payments";
 import ModalTossSubMerchantInfo from "@/components/modals/modal-toss-sub-merchant-info";
 import { useStudio } from "@/hooks/use-studio";
+import AccountPageHeader from "../page-header";
 import type { Studio } from "@/types/studio";
 
 function PaymentForm({
@@ -74,37 +75,38 @@ function PaymentForm({
   };
 
   return (
-    <div className="relative flex w-full flex-col gap-y-8">
-      <div>
-        <h2 className="mb-2 font-bold font-ortank text-xl">
-          Payment Settings
-        </h2>
-        <p className="font-whisper text-neutral-500">
-          Add your payout details to receive payments for
-          font sales.
-        </p>
-      </div>
+    <div className="relative flex w-full flex-col gap-y-10">
+      <AccountPageHeader
+        eyebrow="09 Payments"
+        title="Payment settings"
+        description="Add your payout details to receive payments for font sales."
+      />
 
       {error && (
-        <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4">
-          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-500 font-bold text-white text-xs">
-            !
-          </div>
-          <p className="font-whisper text-red-800">
+        <div className="flex items-start gap-3 border border-swiss-red p-4">
+          <span className="swiss-label mt-0.5 text-swiss-red">
+            Error
+          </span>
+          <p className="swiss-body text-swiss-ink">
             {error}
           </p>
         </div>
       )}
 
       {/* Toss (Local) */}
-      <div className="rounded-lg border border-neutral-200 p-6">
-        <div className="flex items-start gap-4">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-[#0064FF]">
-            <RiBankCardLine className="h-6 w-6 text-white" />
+      <div className="swiss-rule grid grid-cols-12 gap-x-6 py-6">
+        <div className="col-span-1">
+          <span className="swiss-label text-neutral-500">
+            01
+          </span>
+        </div>
+        <div className="col-span-11 flex items-start gap-5">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-swiss-ink">
+            <RiBankCardLine className="h-5 w-5 text-swiss-ink" />
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2">
-              <h3 className="font-bold font-ortank text-lg">
+              <h3 className="swiss-h2">
                 Local Payout (Toss)
               </h3>
               <button
@@ -112,7 +114,7 @@ function PaymentForm({
                 onClick={() => setIsTossInfoOpen(true)}
                 aria-label="서브몰 ID 발급 방법"
                 title="서브몰 ID 발급 방법"
-                className="inline-flex shrink-0 items-center justify-center rounded-full text-blue-600 transition-colors hover:border-neutral-400 hover:bg-neutral-50 hover:text-black"
+                className="inline-flex shrink-0 items-center justify-center text-neutral-400 transition-colors hover:text-swiss-red"
               >
                 <RiInformation2Fill
                   className="h-5 w-5"
@@ -120,29 +122,29 @@ function PaymentForm({
                 />
               </button>
             </div>
-            <p className="mt-0.5 font-whisper text-neutral-500 text-sm">
+            <p className="swiss-body mt-2 text-neutral-500 text-sm">
               Toss/KakaoPay/Naver Pay 결제용 하위 가맹점 ID
             </p>
           </div>
         </div>
-        <div className="mt-4 flex gap-3">
+        <div className="col-span-11 col-start-2 mt-6 flex items-end gap-4">
           <input
             type="text"
             value={tossId}
             onChange={(e) => setTossId(e.target.value)}
             placeholder="Sub-merchant ID"
-            className="flex-1 rounded-lg border border-neutral-200 px-4 py-2 font-whisper text-sm"
+            className="swiss-field swiss-num flex-1"
           />
           <button
             type="button"
             onClick={handleSaveToss}
             disabled={isSavingToss}
-            className="rounded-lg bg-black px-4 py-2 font-whisper text-sm text-white disabled:opacity-60"
+            className="swiss-btn swiss-btn-solid w-32"
           >
             {isSavingToss ? (
               <RiLoaderLine className="h-4 w-4 animate-spin" />
             ) : tossSuccess ? (
-              <RiCheckLine className="h-4 w-4 text-green-400" />
+              <RiCheckLine className="h-4 w-4" />
             ) : (
               "Save"
             )}
@@ -156,38 +158,43 @@ function PaymentForm({
       />
 
       {/* PayPal (Global) */}
-      <div className="rounded-lg border border-neutral-200 p-6">
-        <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#003087]">
-            <RiPaypalFill className="h-6 w-6 text-white" />
+      <div className="swiss-rule grid grid-cols-12 gap-x-6 border-swiss-ink border-b py-6">
+        <div className="col-span-1">
+          <span className="swiss-label text-neutral-500">
+            02
+          </span>
+        </div>
+        <div className="col-span-11 flex items-start gap-5">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-swiss-ink">
+            <RiPaypalFill className="h-5 w-5 text-swiss-ink" />
           </div>
           <div>
-            <h3 className="font-bold font-ortank text-lg">
+            <h3 className="swiss-h2">
               Global Payout (PayPal)
             </h3>
-            <p className="font-whisper text-neutral-500 text-sm">
+            <p className="swiss-body mt-2 text-neutral-500 text-sm">
               PayPal email for international sales
             </p>
           </div>
         </div>
-        <div className="mt-4 flex gap-3">
+        <div className="col-span-11 col-start-2 mt-6 flex items-end gap-4">
           <input
             type="email"
             value={paypalEmail}
             onChange={(e) => setPaypalEmail(e.target.value)}
             placeholder="your@paypal.email"
-            className="flex-1 rounded-lg border border-neutral-200 px-4 py-2 font-whisper text-sm"
+            className="swiss-field swiss-num flex-1"
           />
           <button
             type="button"
             onClick={handleSavePaypal}
             disabled={isSavingPaypal}
-            className="rounded-lg bg-black px-4 py-2 font-whisper text-sm text-white disabled:opacity-60"
+            className="swiss-btn swiss-btn-solid w-32"
           >
             {isSavingPaypal ? (
               <RiLoaderLine className="h-4 w-4 animate-spin" />
             ) : paypalSuccess ? (
-              <RiCheckLine className="h-4 w-4 text-green-400" />
+              <RiCheckLine className="h-4 w-4" />
             ) : (
               "Save"
             )}

@@ -10,6 +10,7 @@ import {
 import CollapsibleSection from "@/components/global/collapsible-section";
 import { useStudio } from "@/hooks/use-studio";
 import AccountSaveBar from "../account-save-bar";
+import AccountPageHeader from "../page-header";
 import AccountForm from "../form";
 import SaveErrorPill from "../save-error-pill";
 import ACCOUNT_FORM from "./ACCOUNT_FORM";
@@ -259,7 +260,12 @@ export default function AccountInformation() {
   }, [handleSave]);
 
   return (
-    <div className="relative flex w-full flex-col gap-y-2">
+    <div className="relative flex w-full flex-col">
+      <AccountPageHeader
+        eyebrow="01 About"
+        title={studio?.name || "About the studio"}
+        description="Name, location, contact details, images and social links shown on your public studio profile."
+      />
       <CollapsibleSection title="Information">
         <AccountForm
           title=""

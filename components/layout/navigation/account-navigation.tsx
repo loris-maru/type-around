@@ -26,6 +26,7 @@ import { slugify } from "@/utils/slugify";
 import { getTypefaceSubsectionFromSearchParams } from "@/utils/typeface-subsection";
 
 const NavigationButton = ({
+  index,
   label,
   activeNav,
   onNavChange,
@@ -33,6 +34,7 @@ const NavigationButton = ({
   isExpanded,
   count,
 }: {
+  index: number;
   label: string;
   activeNav: string;
   onNavChange: (slug: string) => void;
@@ -54,18 +56,29 @@ const NavigationButton = ({
     <button
       type="button"
       aria-label={label}
+      aria-current={isActive ? "page" : undefined}
       className={cn(
-        "flex w-full cursor-pointer items-center justify-between py-2 text-left font-whisper text-base transition-colors",
+        "group flex w-full cursor-pointer items-center gap-4 py-3 text-left font-sotto text-[15px] leading-none transition-colors",
         isActive
           ? "font-semibold text-black"
           : "font-normal text-neutral-500 hover:text-black"
       )}
       onClick={handleClick}
     >
-      <div>{label}</div>
-      <div className="flex items-center gap-2">
+      <span
+        className={cn(
+          "swiss-num w-6 shrink-0 text-xs",
+          isActive
+            ? "text-swiss-red"
+            : "text-neutral-400 group-hover:text-black"
+        )}
+      >
+        {String(index).padStart(2, "0")}
+      </span>
+      <span className="flex-1">{label}</span>
+      <span className="flex items-center gap-2">
         {count !== undefined && (
-          <span className="text-neutral-400 text-sm">
+          <span className="swiss-num text-neutral-400 text-xs">
             {count}
           </span>
         )}
@@ -77,7 +90,7 @@ const NavigationButton = ({
             )}
           />
         )}
-      </div>
+      </span>
     </button>
   );
 };
@@ -96,12 +109,18 @@ const TypefaceSubItem = ({
       type="button"
       onClick={onClick}
       className={cn(
-        "w-full px-4 text-left font-whisper text-base transition-colors",
+        "flex w-full items-center gap-3 py-1.5 pl-10 text-left font-sotto text-[15px] leading-none transition-colors",
         isActive
           ? "font-semibold text-black"
-          : "font-normal text-dark-gray"
+          : "font-normal text-neutral-500 hover:text-black"
       )}
     >
+      <span
+        className={cn(
+          "h-px w-3 shrink-0",
+          isActive ? "bg-swiss-red" : "bg-neutral-300"
+        )}
+      />
       {name}
     </button>
   );
@@ -121,10 +140,10 @@ const SectionLink = ({
       type="button"
       onClick={onClick}
       className={cn(
-        "w-full px-6 py-2 text-left font-whisper text-sm transition-colors",
+        "swiss-label w-full py-2 pl-4 text-left transition-colors",
         isActive
-          ? "font-bold text-black"
-          : "text-neutral-500 hover:text-black"
+          ? "text-black"
+          : "text-neutral-400 hover:text-black"
       )}
     >
       {label}
@@ -255,12 +274,27 @@ export default function AccountNavigation() {
   );
 
   return (
-    <div className="relative z-0 w-full">
-      <div className="mb-2 font-black font-whisper text-base uppercase tracking-wider px-3 py-2 border border-black rounded-md">
-        {studio?.name || "Your studio"}
+    <nav
+      aria-label="Account"
+      className="relative z-0 w-full"
+    >
+      <div className="swiss-rule pt-3">
+        <div className="swiss-label flex items-center gap-2 text-neutral-500">
+          <span className="inline-block h-2 w-2 bg-swiss-red" />
+          Studio
+        </div>
+        <div className="swiss-h2 mt-3 break-words">
+          {studio?.name || "Your studio"}
+        </div>
+        {studio?.hangeulName && (
+          <div className="mt-1 font-sotto text-neutral-500 text-sm">
+            {studio.hangeulName}
+          </div>
+        )}
       </div>
-      <div className="relative flex w-full flex-col divide-y divide-neutral-200">
-        {navItems.map((item) => {
+
+      <div className="swiss-rule relative mt-8 flex w-full flex-col divide-y divide-neutral-200">
+        {navItems.map((item, itemIndex) => {
           const isTypefaces = item === "Typefaces";
           const isReviewerItem = item === "Reviewer";
           const hasTypefaces =
@@ -274,6 +308,7 @@ export default function AccountNavigation() {
           return (
             <div key={item}>
               <NavigationButton
+                index={itemIndex + 1}
                 label={item}
                 activeNav={activeNav}
                 onNavChange={handleNavChange}
@@ -287,7 +322,7 @@ export default function AccountNavigation() {
 
               {/* Typefaces submenu */}
               {hasTypefaces && isTypefacesExpanded && (
-                <div className="mt-1 flex flex-col gap-y-3 py-4">
+                <div className="flex flex-col gap-y-1 pb-4">
                   {studio.typefaces.map((typeface) => {
                     const isActiveTypeface =
                       activeTypeface === typeface.slug;
@@ -304,7 +339,7 @@ export default function AccountNavigation() {
                         />
                         {/* Section links for active typeface */}
                         {isActiveTypeface && (
-                          <div className="my-4 ml-4 flex flex-col border-neutral-300 border-l">
+                          <div className="my-3 ml-10 flex flex-col border-black border-l">
                             {TYPEFACE_SECTIONS.map(
                               (section) => (
                                 <SectionLink
@@ -332,7 +367,7 @@ export default function AccountNavigation() {
 
               {/* Reviewer submenu */}
               {isReviewerItem && isReviewerExpanded && (
-                <div className="my-4 ml-4 flex flex-col border-neutral-300 border-l">
+                <div className="mb-4 ml-10 flex flex-col border-black border-l">
                   {REVIEWER_SECTIONS.map((section) => (
                     <button
                       key={section.id}
@@ -341,10 +376,10 @@ export default function AccountNavigation() {
                         handleReviewerNavChange(section.id)
                       }
                       className={cn(
-                        "w-full px-6 py-2 text-left font-whisper text-sm transition-colors",
+                        "swiss-label w-full py-2 pl-4 text-left transition-colors",
                         activeReviewerSection === section.id
-                          ? "font-semibold text-black"
-                          : "text-neutral-500 hover:text-black"
+                          ? "text-black"
+                          : "text-neutral-400 hover:text-black"
                       )}
                     >
                       {section.label}
@@ -357,18 +392,18 @@ export default function AccountNavigation() {
         })}
       </div>
 
-      {/* Logout Button */}
-      <div className="mt-4">
+      {/* Logout */}
+      <div className="swiss-rule mt-8 pt-3">
         <SignOutButton redirectUrl="/">
           <button
             type="button"
-            className="flex w-full cursor-pointer items-center gap-2 font-whisper text-base text-black transition-colors"
+            className="swiss-label flex w-full cursor-pointer items-center gap-2 py-1 text-neutral-500 transition-colors hover:text-swiss-red"
           >
-            <RiLogoutBoxLine className="h-4 w-4" />
-            Log-out
+            <RiLogoutBoxLine className="h-3.5 w-3.5" />
+            Log out
           </button>
         </SignOutButton>
       </div>
-    </div>
+    </nav>
   );
 }
